@@ -98,6 +98,10 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-field--error.q-field--focused .q-field__control { outline-color: var(--qds-stroke-error); box-shadow: #{$well}, 0 0 0 0.25rem color-mix(in srgb, var(--qds-stroke-error) 22%, transparent); }
   #{$zen} .q-field--error :is(.q-field__bottom, .q-field__marginal) { color: var(--qds-fg-negative); }
   #{$zen} :is(.qds-field--positive, .qds-field--warning) .q-field__control { border-color: var(--qds-field-tone-fg); }
+  // Ghost and borderless are the quiet inline fields: no well or depth, only their 3:1 line.
+  #{$zen} :is(.q-field--borderless, .qds-field--ghost):not(.q-field--focused, .q-field--error, .q-pagination *) .q-field__control { background: transparent; box-shadow: none; }
+  #{$zen} :is(.q-field--borderless, .qds-field--ghost):not(.q-field--focused, .q-field--error, .q-field--disabled, .q-field--readonly, .q-pagination *) .q-field__control:hover { background: #{$tint}; }
+  #{$zen} .q-field--borderless:not(.qds-field--ghost, .q-pagination *) .q-field__control { border-width: 0 0 1px; border-radius: 0; padding-inline: 0.25rem; }
   #{$zen} .q-field--readonly .q-field__control { border-style: dashed; background: #{$raised}; box-shadow: none; }
   #{$zen} .q-field--disabled .q-field__control { background: #{$inset}; box-shadow: none; }
 }
@@ -152,9 +156,10 @@ $ease: var(--qds-motion-fast);
 }
 
 @mixin type {
-  #{$zen} :where(h1, h2, h3, h4, h5, h6, .text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6, .qds-display, .q-toolbar__title) { font-style: italic; }
-  #{$zen} .q-toolbar__title { font-family: var(--qds-font-family-display); font-weight: var(--qds-font-weight-h5); letter-spacing: 0; }
-  #{$zen} :where(.text-overline, .q-item__label--header) { text-transform: uppercase; letter-spacing: var(--qds-letter-spacing-overline); }
+  // The italic serif is a display voice; working titles stay upright in the UI face.
+  #{$zen} :where(h1, h2, h3, .text-h1, .text-h2, .text-h3, .qds-display) { font-style: italic; }
+  #{$zen} :is(h4, h5, h6, .text-h4, .text-h5, .text-h6, .q-toolbar__title) { font-family: var(--qds-font-family); font-style: normal; font-weight: var(--qds-font-weight-semibold); letter-spacing: 0; }
+  #{$zen} :is(.text-overline, .q-item__label--header):not(.text-uppercase, .text-capitalize) { text-transform: none; letter-spacing: 0; font-weight: var(--qds-font-weight-semibold); }
 }
 
 @mixin selection {
