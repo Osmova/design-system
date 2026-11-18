@@ -99,6 +99,26 @@ $dark-semantic: (
   bar-dark-bg: var(--qds-bg-surface-1), bar-dark-fg: var(--qds-fg-default),
 ) !default;
 
+// Win-only WinUI 3 values (Common_themeresources_any.xaml), emitted on the
+// win variant class so the other profiles keep the shared semantic maps.
+// The accent bottom stroke is deliberately softer than WinUI's #66000000.
+$win-light: (
+  fg-disabled: rgba(0, 0, 0, 0.361), state-hover: rgba(0, 0, 0, 0.035), state-pressed: rgba(0, 0, 0, 0.024),
+  control-stroke-on-accent-bottom: rgba(0, 0, 0, 0.2),
+  accent-fill-disabled: rgba(0, 0, 0, 0.216), text-on-accent-disabled: #ffffff,
+  bg-overlay: rgba(0, 0, 0, 0.302), stroke-divider: rgba(0, 0, 0, 0.058),
+  layer-alt: map.get($light-surfaces, 0), surface-stroke: rgba(117, 117, 117, 0.4),
+) !default;
+// text-muted is TextFillColorSecondary (#C5FFFFFF) flattened onto the #202020 base.
+$win-dark: (
+  fg-disabled: map.get($dark-semantic, fg-disabled), state-hover: rgba(255, 255, 255, 0.059), state-pressed: rgba(255, 255, 255, 0.039),
+  control-stroke-on-accent-bottom: map.get($dark-semantic, control-stroke-on-accent-bottom),
+  accent-fill-disabled: rgba(255, 255, 255, 0.157), text-on-accent-disabled: rgba(255, 255, 255, 0.529),
+  bg-overlay: map.get($win-light, bg-overlay), stroke-divider: rgba(255, 255, 255, 0.082),
+  layer-alt: map.get($dark-semantic, card-fill), surface-stroke: map.get($win-light, surface-stroke),
+  text-muted: #cccccc,
+) !default;
+
 $space: (xs: 0.25rem, sm: 0.5rem, md: 1rem, lg: 1.5rem, xl: 2rem) !default;
 $radius: (xs: 2px, sm: 4px, md: 8px, lg: 8px, xl: 16px, full: 9999px, control: 4px) !default;
 

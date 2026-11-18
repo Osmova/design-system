@@ -9,7 +9,7 @@ import { readFileSync } from 'node:fs'
 import { compileMechanics, compilePilot, families, root } from './grammar-fixture.mjs'
 import { compileSubstrateBaseline, substrateBaseline } from './grammar-fixture-baseline.mjs'
 import { ruleKeys } from './css-rules.mjs'
-import { ADDED_IMPORTANT_RULE, applyDeclaredFluentChanges, applyDeclaredShadcnChanges } from './declared-fluent-changes.mjs'
+import { ADDED_WIN_RULE, ADDED_IMPORTANT_RULE, applyDeclaredFluentChanges, applyDeclaredShadcnChanges } from './declared-fluent-changes.mjs'
 
 test('independent hooks compile identically after physically excluding all compatibility modules', () => {
   assert.equal(compilePilot(), compilePilot({ removed: true }))
@@ -63,7 +63,7 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
     }
     added.push(...current.slice(cursor))
     for (const rule of added) {
-      if (ADDED_IMPORTANT_RULE.test(rule) || VARIANT_SENTINEL.test(rule)) continue
+      if (ADDED_IMPORTANT_RULE.test(rule) || ADDED_WIN_RULE.test(rule) || VARIANT_SENTINEL.test(rule)) continue
       assert.match(rule, PROFILE_SCOPES, `T184 parity: ${entry} added a rule outside the added profiles: ${rule.slice(0, 160)}`)
     }
     assert.ok(added.length > 0, `${entry} must actually carry the added profiles`)

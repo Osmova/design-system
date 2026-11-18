@@ -5,6 +5,8 @@ $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
+$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
+$win-dialog-fill: linear-gradient(var(--_qds-win-layer-alt), var(--_qds-win-layer-alt)), var(--qds-surface-1);
 
 @mixin styles {
   .qds-ui .q-dialog__backdrop { background: var(--qds-bg-overlay); }
@@ -48,6 +50,22 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
   .qds-ui .q-dialog .q-card__actions .q-btn:is(.q-btn--flat, .q-btn--outline):not(:last-child, .text-negative, .text-warning, .text-positive, .disabled) { @include importance.declarations { color: var(--qds-fg-default) !important; } }
   // The Dialog plugin defaults its actions to Quasar's amber in dark mode.
   .qds-ui .q-dialog-plugin .q-btn.text-amber { @include importance.declarations { color: var(--qds-fg-brand) !important; } }
+
+  // WinUI ContentDialog: a solid layer over the base, with the command row on a base-coloured footer band.
+  #{$win} :where(.q-dialog__inner--minimized) > .q-card {
+    border-color: var(--_qds-win-surface-stroke);
+    @include materials.solid($win-dialog-fill);
+  }
+
+  #{$win} .q-dialog__inner > .q-card > .q-card__section:has(+ .q-card__actions:last-child) { padding-block-end: var(--qds-space-lg); }
+
+  #{$win} :where(.q-dialog__inner--minimized) > .q-card > .q-card__actions:last-child {
+    padding: var(--qds-space-lg);
+    background: var(--qds-surface-1);
+    border-block-start: var(--qds-border-width-control) solid var(--qds-card-stroke);
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+  }
 
   #{$one} .q-dialog__inner > :is(.q-card, .q-bottom-sheet) {
     --qds-surface-focus-block: color-mix(in srgb, var(--qds-surface-transient) 92%, var(--qds-text));
