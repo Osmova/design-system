@@ -261,7 +261,8 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
       await page.goto('/#components')
       await applyTheme(page, mode, 'win')
 
-      const focusColor = await resolvedColor(page, '--qds-stroke-focus')
+      // WinUI draws keyboard focus in the high-contrast outer ring colour, not the accent.
+      const focusColor = await resolvedColor(page, '--_qds-win-focus-outer')
       const ringWidth = await page.locator('body').evaluate((element) => {
         const probe = document.createElement('span')
         probe.style.outline = 'var(--qds-focus-ring-width) solid'
@@ -298,7 +299,7 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
         expect(ring.focusVisible, `${mode} ${name} button matches :focus-visible after keyboard-style focus`).toBe(true)
         const outlineRing = ring.outlineStyle !== 'none' && ring.outlineWidth === ringWidth && ring.outlineColor === focusColor
         const shadowRing = ring.layers.some((layer) => layer.color === focusColor && layer.x === 0 && layer.y === 0 && layer.blur === 0 && layer.spread >= ringWidth)
-        expect.soft(outlineRing || shadowRing, `${mode} ${name} button shows a ${ringWidth}px --qds-stroke-focus ring (outline ${ring.outlineStyle} ${ring.outlineWidth}px ${ring.outlineColor})`).toBe(true)
+        expect.soft(outlineRing || shadowRing, `${mode} ${name} button shows a ${ringWidth}px WinUI focus ring (outline ${ring.outlineStyle} ${ring.outlineWidth}px ${ring.outlineColor})`).toBe(true)
         await button.blur()
       }
     })

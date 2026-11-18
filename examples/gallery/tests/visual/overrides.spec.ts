@@ -657,7 +657,7 @@ test.describe('QDS override gate', () => {
           expect.soft(await anchor.evaluate((el) => getComputedStyle(el).textDecorationLine), `${cell} Quasar anchor components keep no underline`).toBe('none')
           expect.soft(await anchor.evaluate((el) => getComputedStyle(el).color), `${cell} Quasar anchor components keep their own ink`).not.toBe(await resolvedColor(page, '--qds-fg-brand'))
         }
-        const focusStroke = await resolvedColor(page, '--qds-stroke-focus')
+        const focusStroke = await resolvedColor(page, variant === 'win' ? '--_qds-win-focus-outer' : '--qds-stroke-focus')
         for (const target of [link, '[data-test="qds-type-role-button"]']) {
           const focus = await ring(target)
           expect.soft(focus.visible, `${cell} ${target} shows focus-visible`).toBe(true)
