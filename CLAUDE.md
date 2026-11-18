@@ -79,11 +79,13 @@ do not silently recolor it or extend library-palette guarantees to arbitrary aut
 
 ### CSS delivery
 
-`pnpm build` compiles `src/css/index(.layered).scss` and `scripts/css-partition.mjs` splits the output by variant
-scope selector into `dist/css/index.css` (shared + `win`) and `dist/css/variants/<name>.css` (plus `layered/`
-twins). `./css`, `./css/layered` and `./css/variants/*` export those files; `./css/all` keeps the SCSS source.
-A new variant needs no extra wiring as long as every rule is scoped by `.qds-variant-<name>`; add the name to
-`VARIANT_SCOPES` in the partition script. Mixed selector lists are split per selector.
+`pnpm build` compiles `src/css/index(.layered).scss` and `scripts/css-partition.mjs` writes `dist/css/index.css`
+(shared + `win`) and `dist/css/variants/<name>.css`, each the full stylesheet in source order minus every other
+variant's rules (plus `layered/` twins). Separate additive files would reorder equal-specificity ties, so variant
+files are complete and replace `./css`. `./css`, `./css/layered` and `./css/variants/*` export those files;
+`./css/all` keeps the SCSS source. A new variant needs no extra wiring as long as every rule is scoped by
+`.qds-variant-<name>`; add the name to `VARIANT_SCOPES` in the partition script. Mixed selector lists are split
+per selector.
 
 ### CSS entry point
 

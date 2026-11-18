@@ -24,10 +24,10 @@ const BASELINE = '71bb9d52bf483a93de0b50202df122b73f70ed9e'
  * full catalog ~570000 min / ~56800 gzip / ~4450 component lines; caps set just above that.
  */
 const LIMITS = { important: 46, doubled: 0, lines: 4600 }
-// Opt-in delivery: ./css is the shared grammar plus the unscoped win default; each variant is its own file.
+// Opt-in delivery: ./css is the shared grammar plus the unscoped win default; each variant file is that grammar plus the one variant.
 const ENTRIES = ['src/css/index.scss', 'src/css/index.layered.scss']
 const CORE_CAP = { min: 210000, gzip: 26000 }
-const VARIANT_CAP = { min: 190000, gzip: 23000 }
+const VARIANT_CAP = { min: 380000, gzip: 46000 }
 const EXTENSION_ALLOWANCE = { lines: 80, min: 4096, gzip: 1024 }
 const failures = []
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })

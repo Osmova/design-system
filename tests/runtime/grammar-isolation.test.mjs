@@ -4,7 +4,7 @@ import { compile } from 'sass'
 import { createHash } from 'node:crypto'
 import { gzipSync } from 'node:zlib'
 import postcss from 'postcss'
-import { compileEntry, partitionCss, VARIANT_SCOPES } from '../../scripts/css-partition.mjs'
+import { compileEntry, ownerOfSelector, partitionCss, VARIANT_SCOPES } from '../../scripts/css-partition.mjs'
 import { readFileSync } from 'node:fs'
 import { compileMechanics, compilePilot, families, root } from './grammar-fixture.mjs'
 import { compileSubstrateBaseline, substrateBaseline } from './grammar-fixture-baseline.mjs'
@@ -70,11 +70,11 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
 
 // css:budget owns these caps; this gate repeats them so a runtime-only run
 // cannot report green while the shipped bundle is over budget.
-test('the shared core and every variant bundle stay inside the reviewed CSS budget', () => {
+test('the shared core and every complete variant bundle stay inside the reviewed CSS budget', () => {
   for (const entry of ['index.scss', 'index.layered.scss']) {
     const parts = partitionCss(compileEntry(new URL(`src/css/${entry}`, root).pathname))
     for (const [name, css] of Object.entries(parts)) {
-      const [maxMin, maxGzip] = name === 'core' ? [210000, 26000] : [190000, 23000]
+      const [maxMin, maxGzip] = name === 'core' ? [210000, 26000] : [380000, 46000]
       const bytes = Buffer.byteLength(css)
       const gzip = gzipSync(css, { level: 9 }).length
       assert.ok(bytes <= maxMin && gzip <= maxGzip, `${entry} ${name}: measured min ${bytes} / gzip ${gzip} against caps ${maxMin} / ${maxGzip}`)
@@ -82,28 +82,31 @@ test('the shared core and every variant bundle stay inside the reviewed CSS budg
   }
 })
 
-test('opt-in bundles partition the full stylesheet without losing or leaking a rule', () => {
-  const flatten = (css) => {
-    const out = []
+test('each variant bundle is the full stylesheet minus every other variant, in the original rule order', () => {
+  // Adjacent rules with identical declarations are one rule split by owner; their selector order is immaterial.
+  const rules = (css, keep = () => true) => {
+    const rows = []
     postcss.parse(css).walkRules((rule) => {
       const at = []
       for (let p = rule.parent; p && p.type !== 'root'; p = p.parent) at.unshift(`${p.name} ${p.params}`)
-      for (const selector of rule.selectors) out.push(`${at.join('>')}|${selector}|${rule.nodes.map((n) => n.toString()).join(';')}`)
+      const head = `${at.join('>')}|${rule.nodes.map((n) => n.toString()).join(';')}`
+      const selectors = rule.selectors.filter(keep)
+      if (!selectors.length) return
+      const last = rows[rows.length - 1]
+      if (last?.head === head) last.selectors.push(...selectors)
+      else rows.push({ head, selectors })
     })
-    return out.sort()
+    return rows.map(({ head, selectors }) => `${head}|${selectors.sort().join(',')}`)
   }
   for (const entry of ['index.scss', 'index.layered.scss']) {
     const full = compileEntry(new URL(`src/css/${entry}`, root).pathname)
     const parts = partitionCss(full)
-    assert.deepEqual(flatten(Object.values(parts).join('\n')), flatten(full), `${entry}: the parts reassemble the full bundle`)
-    for (const name of VARIANT_SCOPES) {
-      const own = new RegExp(`qds-variant-${name}\\b${name === 'zen' ? '|qds-reading' : ''}`)
-      for (const key of flatten(parts[name] ?? '')) assert.match(key.split('|')[1], own, `${entry}: ${name} bundle holds only ${name}-scoped selectors`)
-    }
-    for (const key of flatten(parts.core)) {
-      const [, selector] = key.split('|')
-      const owners = VARIANT_SCOPES.filter((name) => new RegExp(`qds-variant-${name}\\b`).test(selector))
-      assert.notEqual(owners.length, 1, `${entry}: core keeps no single-variant selector: ${selector.slice(0, 120)}`)
+    for (const name of ['core', ...VARIANT_SCOPES]) {
+      const keep = (selector) => {
+        const owner = ownerOfSelector(selector)
+        return owner === null || owner === name
+      }
+      assert.deepEqual(rules(parts[name]), rules(full, keep), `${entry}: ${name} keeps its own and the shared rules in source order`)
     }
   }
 })
