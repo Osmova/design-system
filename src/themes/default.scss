@@ -312,6 +312,9 @@
     --qds-material-edge: inset 0 1px 0 rgba(255, 255, 255, 0.18);
     --_qds-glass-knob: #{qds-variant-token(glass, dark-text-strong)};
     --_qds-glass-nested: var(--qds-surface-2);
+    // The page stays black, but a well inside a card is the elevated grey, never a black hole.
+    --qds-bg-surface-1: var(--qds-surface-2);
+    --qds-chrome-surface: color-mix(in srgb, var(--qds-surface-0) var(--qds-chrome-surface-mix, 86%), transparent);
     // A light role on a dark track would wash out the light knob.
     --_qds-glass-on-track: color-mix(in srgb, currentColor 70%, var(--qds-surface-0));
   }

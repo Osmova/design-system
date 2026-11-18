@@ -70,7 +70,7 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
   }
   #{$glass} .q-toolbar { gap: var(--qds-space-xs); padding-inline: var(--qds-space-md); }
   #{$glass} .q-toolbar__title { padding-inline: 0; font-weight: var(--qds-font-weight-bold); letter-spacing: -0.01em; }
-  #{$glass} .q-bar:not(.q-bar--dark) { background: var(--qds-surface-1); border-radius: var(--qds-radius-control); }
+  #{$glass} .q-bar:not(.q-bar--dark) { background: var(--qds-bg-surface-1); border-radius: var(--qds-radius-control); }
   #{$glass} .q-separator { background: var(--qds-border-subtle); }
 
 

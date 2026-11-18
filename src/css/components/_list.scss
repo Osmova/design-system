@@ -116,7 +116,7 @@ $rail: ".qds-ui .q-item:is(.q-item--active, [aria-selected='true'])::before, .qd
   #{$glass} .q-list--bordered { padding: 0; overflow: hidden; background: var(--qds-surface-0); border-color: var(--qds-border-subtle); }
   #{$glass} .q-list--separator > .q-item-type + .q-item-type { margin-inline-start: var(--qds-space-md); padding-inline-start: 0; }
   #{$glass} .q-item { padding-inline: var(--qds-space-md); border-radius: var(--qds-radius-control); }
-  #{$glass} .q-list--bordered > .q-item { border-radius: 0; }
+  #{$glass} :is(.q-list--bordered, .q-list--separator, .q-virtual-scroll__content) > .q-item { border-radius: 0; }
   #{$glass} .q-item:is(.q-item--active, [aria-selected='true']) { color: var(--qds-fg-brand); background-color: var(--qds-surface-brand-soft); }
   #{$glass} .q-item:is(.q-item--active, [aria-selected='true'])::before,
   #{$glass} #{$nav-parent}::before { display: none; }
