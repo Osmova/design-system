@@ -10,6 +10,7 @@ import {
 
 import {
   DESIGN_SYSTEM_VARIANTS,
+  isBuiltInDesignSystemVariantName,
   isDesignSystemVariantName,
   isShadcnAccentColor,
   isShadcnBaseColor,
@@ -126,6 +127,7 @@ export const DEFAULT_DESIGN_SYSTEM_OPTIONS: Required<
 const THEME_MODES: DesignSystemMode[] = ['light', 'dark', 'system']
 const DESIGN_SYSTEM_SCOPE_CLASS = 'qds-ui'
 const LEGACY_VARIANT_CLASSES = [
+  'qds-variant-fluent',
   'qds-variant-air',
   'qds-variant-feather',
   'qds-variant-mobile',
@@ -203,6 +205,7 @@ export function createDesignSystemController(
 
   let mediaQuery: MediaQueryList | null = null
   let onMediaChange: ((event: MediaQueryListEvent) => void) | null = null
+  const checkedVariants = new Set<string>()
 
   const resolveMode = (): DesignSystemResolvedMode => {
     return state.mode === 'system' ? (state.prefersDark ? 'dark' : 'light') : state.mode
@@ -241,6 +244,11 @@ export function createDesignSystemController(
     Object.values(variantRegistry).forEach((variant) => {
       target.classList.toggle(variant.cssClass, variant.name === state.variant)
     })
+
+    if (state.enabled && !checkedVariants.has(state.variant)) {
+      checkedVariants.add(state.variant)
+      warnIfVariantCssMissing(target, state.variant)
+    }
   }
 
   const loadStoredState = () => {
@@ -418,6 +426,30 @@ function normalizeVariant(value: unknown): DesignSystemVariantName {
   }
 
   return isDesignSystemVariantName(value) ? value : DEFAULT_DESIGN_SYSTEM_OPTIONS.variant
+}
+
+function isProduction(): boolean {
+  try {
+    // Bundlers replace this exact expression; a browser without one throws and counts as development.
+    return process.env.NODE_ENV === 'production'
+  } catch {
+    return false
+  }
+}
+
+function warnIfVariantCssMissing(target: HTMLElement, variant: string): void {
+  if (isProduction() || !isBuiltInDesignSystemVariantName(variant) || typeof getComputedStyle !== 'function' || target.isConnected === false) {
+    return
+  }
+
+  try {
+    if (getComputedStyle(target).getPropertyValue('--_qds-variant').trim() !== variant) {
+      const file = variant === 'win' ? 'css' : `css/variants/${variant}`
+      console.warn(`[quasar-design-system] The "${variant}" variant is active but its stylesheet is not loaded. Import '@osmova/quasar-design-system/${file}' (or css/all) before applying it.`)
+    }
+  } catch {
+    // Diagnostics must never break theming.
+  }
 }
 
 function getSystemPrefersDark(): boolean {

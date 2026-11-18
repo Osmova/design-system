@@ -34,6 +34,8 @@ test('neutral mechanics emit layout/containment only, without focus, paint, typo
 // The immutable baseline source hash is never regenerated.
 // data-qds-shadcn-accent: optional shadcn brand accent added after 150d952 (token-only rules).
 const PROFILE_SCOPES = /qds-variant-zen|qds-reading|qds-variant-glass|data-qds-shadcn-accent/
+// The runtime's per-variant stylesheet sentinel, one declaration per variant scope.
+const VARIANT_SENTINEL = /\.qds-variant-([a-z]+)\{--_qds-variant: ?\1\}$/
 test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only added-profile rules', () => {
   assert.equal(substrateBaseline, '150d9526aa9aad65af8259cb4aab313d7ab6cce4')
   const baselines = [
@@ -61,7 +63,7 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
     }
     added.push(...current.slice(cursor))
     for (const rule of added) {
-      if (ADDED_IMPORTANT_RULE.test(rule)) continue
+      if (ADDED_IMPORTANT_RULE.test(rule) || VARIANT_SENTINEL.test(rule)) continue
       assert.match(rule, PROFILE_SCOPES, `T184 parity: ${entry} added a rule outside the added profiles: ${rule.slice(0, 160)}`)
     }
     assert.ok(added.length > 0, `${entry} must actually carry the added profiles`)
@@ -70,9 +72,12 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
 
 // css:budget owns these caps; this gate repeats them so a runtime-only run
 // cannot report green while the shipped bundle is over budget.
-test('the shared core and every complete variant bundle stay inside the reviewed CSS budget', () => {
+test('the all-in bundle, the shared core and every complete variant bundle stay inside the reviewed CSS budget', () => {
   for (const entry of ['index.scss', 'index.layered.scss']) {
-    const parts = partitionCss(compileEntry(new URL(`src/css/${entry}`, root).pathname))
+    const full = compileEntry(new URL(`src/css/${entry}`, root).pathname)
+    const [allMin, allGzip] = [Buffer.byteLength(full), gzipSync(full, { level: 9 }).length]
+    assert.ok(allMin <= 610000 && allGzip <= 60000, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 610000 / 60000`)
+    const parts = partitionCss(full)
     for (const [name, css] of Object.entries(parts)) {
       const [maxMin, maxGzip] = name === 'core' ? [210000, 26000] : [380000, 46000]
       const bytes = Buffer.byteLength(css)
@@ -111,9 +116,10 @@ test('each variant bundle is the full stylesheet minus every other variant, in t
   }
 })
 
-test('mandatory runtime and publish gates run grammar browser proof serially after the existing checks', () => {
+test('mandatory runtime and publish gates run the grammar and variant bundle browser proofs serially after the existing checks', () => {
   const { scripts } = JSON.parse(readFileSync(new URL('package.json', root), 'utf8'))
   assert.equal(scripts['test:runtime:grammar:browser'], 'node tests/runtime/grammar-fixture-browser.mjs')
-  assert.equal(scripts['test:runtime'], 'pnpm test:runtime:ssr && pnpm test:runtime:colorjs && pnpm test:runtime:fill-contrast && pnpm test:runtime:grammar:browser')
+  assert.equal(scripts['test:runtime:variants:browser'], 'node tests/runtime/variant-bundles-browser.mjs')
+  assert.equal(scripts['test:runtime'], 'pnpm test:runtime:ssr && pnpm test:runtime:colorjs && pnpm test:runtime:fill-contrast && pnpm test:runtime:grammar:browser && pnpm test:runtime:variants:browser')
   assert.ok(scripts['verify:publish'].split(' && ').includes('pnpm test:runtime'))
 })

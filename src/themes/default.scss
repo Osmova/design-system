@@ -576,3 +576,14 @@ $qds-material-scopes: '.qds-theme-dark, body.qds-ui.body--dark, .qds-variant-one
 @include qds-zen-scopes;
 @include qds-glass-scopes;
 @include shadcn.scopes;
+
+// Runtime sentinel: the controller warns in development when the active variant's stylesheet is missing.
+@mixin qds-variant-sentinels {
+  @layer qds.tokens {
+    @each $variant in win, ink, one, term, shadcn, zen, glass {
+      .qds-variant-#{$variant} { --_qds-variant: #{$variant}; }
+    }
+  }
+}
+
+@include qds-variant-sentinels;

@@ -29,9 +29,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Fixed
 
 - Toolbars and segmented controls inside a dark card now flip with the card.
+- The runtime now also removes a stale `qds-variant-fluent` class (server-rendered or hand-written) from its target.
 
 ### Added
 
+- **Missing-stylesheet warning** — in development, the runtime warns once per variant when the active
+  variant's stylesheet is not loaded (for example `variant: 'zen'` with only `./css` imported). It reads a
+  `--_qds-variant` sentinel each variant scope defines, and stays silent in production, SSR and on errors.
 - **`glass` variant** — inspired by Apple's design language, and the seventh canonical variant.
   Controls and navigation float on a translucent functional layer above opaque content: the header
   and footer carry no fill or rule of their own and gain a soft scroll-edge blur once content scrolls under

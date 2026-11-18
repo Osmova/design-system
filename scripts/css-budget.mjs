@@ -28,6 +28,8 @@ const LIMITS = { important: 46, doubled: 0, lines: 4600 }
 const ENTRIES = ['src/css/index.scss', 'src/css/index.layered.scss']
 const CORE_CAP = { min: 210000, gzip: 26000 }
 const VARIANT_CAP = { min: 380000, gzip: 46000 }
+// css/all and css/all/layered (every variant, for runtime switching); measured 603993 / 59263 at most.
+const ALL_CAP = { min: 610000, gzip: 60000 }
 const EXTENSION_ALLOWANCE = { lines: 80, min: 4096, gzip: 1024 }
 const failures = []
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
@@ -107,7 +109,9 @@ const components = currentRows('src/css/components')
 for (const row of components) console.log(JSON.stringify(row))
 enforce('components', total(components), LIMITS)
 for (const file of ENTRIES) {
-  const parts = partitionCss(compileEntry(fileURLToPath(new URL(file, ROOT))))
+  const full = compileEntry(fileURLToPath(new URL(file, ROOT)))
+  enforce(`${file} all`, { min: Buffer.byteLength(full), gzip: gzipSync(full, { level: 9 }).length }, ALL_CAP)
+  const parts = partitionCss(full)
   for (const [name, css] of Object.entries(parts)) {
     enforce(`${file} ${name}`, { min: Buffer.byteLength(css), gzip: gzipSync(css, { level: 9 }).length }, name === 'core' ? CORE_CAP : VARIANT_CAP)
   }

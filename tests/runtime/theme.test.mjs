@@ -297,3 +297,43 @@ test('configureDesignSystem initializes and provides the complete compiled publi
   assert.equal(env.body.dataset.qdsShadcnBaseColor, 'slate')
   c.destroy()
 })
+
+test('stale qds-variant-fluent is removed and a missing variant stylesheet warns once in development only', (t) => {
+  const env = browser()
+  env.body.classes.add('qds-variant-fluent')
+  const loaded = new Set(['win'])
+  globalThis.getComputedStyle = (element) => ({
+    getPropertyValue: (name) => {
+      const variant = [...element.classes].find((c) => c.startsWith('qds-variant-'))?.slice(12)
+      return name === '--_qds-variant' && loaded.has(variant) ? ` ${variant}` : ''
+    },
+  })
+  t.after(() => { delete globalThis.getComputedStyle })
+  const warn = t.mock.method(console, 'warn', () => {})
+  const c = createDesignSystemController({ persist: false, variant: 'win' })
+  c.initialize()
+  assert.equal(env.body.classes.has('qds-variant-fluent'), false)
+  assert.equal(warn.mock.callCount(), 0)
+  c.setVariant('zen')
+  c.setDark()
+  c.setVariant('zen')
+  assert.equal(warn.mock.callCount(), 1)
+  assert.match(warn.mock.calls[0].arguments[0], /"zen".*css\/variants\/zen/)
+  loaded.add('glass')
+  c.setVariant('glass')
+  c.setVariant('custom-unknown')
+  assert.equal(warn.mock.callCount(), 1)
+  c.destroy()
+
+  globalThis.getComputedStyle = () => { throw new Error('boom') }
+  assert.doesNotThrow(() => { const d = createDesignSystemController({ persist: false, variant: 'ink' }); d.initialize(); d.destroy() })
+
+  const nodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'production'
+  t.after(() => { if (nodeEnv === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = nodeEnv })
+  globalThis.getComputedStyle = () => ({ getPropertyValue: () => '' })
+  const p = createDesignSystemController({ persist: false, variant: 'ink' })
+  p.initialize()
+  p.destroy()
+  assert.equal(warn.mock.callCount(), 1)
+})
