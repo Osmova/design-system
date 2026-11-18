@@ -108,7 +108,7 @@ $win-light: (
   accent-fill-disabled: rgba(0, 0, 0, 0.216), text-on-accent-disabled: #ffffff,
   bg-overlay: rgba(0, 0, 0, 0.302), stroke-divider: rgba(0, 0, 0, 0.058),
   layer-alt: map.get($light-surfaces, 0), surface-stroke: rgba(117, 117, 117, 0.4),
-  material-stroke: rgba(0, 0, 0, 0.058), focus-outer: rgba(0, 0, 0, 0.894),
+  material-stroke: rgba(0, 0, 0, 0.058), focus-outer: rgba(0, 0, 0, 0.894), backdrop-brand: 0.08, backdrop-accent: 0.05,
 ) !default;
 // text-muted is TextFillColorSecondary (#C5FFFFFF) flattened onto the #202020 base.
 $win-dark: (
@@ -118,11 +118,28 @@ $win-dark: (
   bg-overlay: map.get($win-light, bg-overlay), stroke-divider: rgba(255, 255, 255, 0.082),
   layer-alt: map.get($dark-semantic, card-fill), surface-stroke: map.get($win-light, surface-stroke),
   material-stroke: rgba(0, 0, 0, 0.2), focus-outer: #ffffff, text-muted: #cccccc,
+  // The light-blue dark accent needs a fainter Mica wash than the shared 0.18.
+  backdrop-brand: 0.07, backdrop-accent: 0.04,
 ) !default;
 // Segoe UI Variable first where Windows ships it; nothing is bundled.
 $win-font: (
   body: ('Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', 'Inter Variable', Inter, 'Open Sans', 'SF Pro Text', 'Avenir Next', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif),
   display: ('Segoe UI Variable Display', 'Segoe UI Variable', 'Segoe UI', 'Inter Variable', Inter, 'Open Sans', 'SF Pro Display', 'Avenir Next', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif),
+) !default;
+// Windows 11 default accent ramp (SystemAccentColor #0078D4) and system status colours. Light fills take a white
+// label and dark fills a black one, as TextOnAccentFillColorPrimary does; info follows the Attention severity.
+// Light warning is Caution #9D5D00 darkened one step so its pressed fill keeps 4.5:1 under the white label.
+$win-palette: (
+  light: (
+    primary: #005fb8, primary-light: #0078d4, primary-dark: #003e92, positive: #0f7b0f, negative: #c42b1c, warning: #925600, info: #005fb8,
+    on-fill: #ffffff, fg-brand: var(--qds-color-primary-dark), fg-info: #003e92,
+    positive-soft: #dff6dd, negative-soft: #fde7e9, warning-soft: #fff4ce,
+  ),
+  dark: (
+    primary: #60cdff, primary-light: #99ebff, primary-dark: #0078d4, positive: #6ccb5f, negative: #ff99a4, warning: #fce100, info: #60cdff,
+    on-fill: #000000, fg-brand: var(--qds-color-primary-light), fg-info: #99ebff,
+    positive-soft: #393d1b, negative-soft: #442726, warning-soft: #433519,
+  ),
 ) !default;
 
 $space: (xs: 0.25rem, sm: 0.5rem, md: 1rem, lg: 1.5rem, xl: 2rem) !default;
