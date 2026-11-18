@@ -2,9 +2,11 @@ import { compile } from 'sass'
 import postcss from 'postcss'
 
 export const VARIANT_SCOPES = ['ink', 'one', 'term', 'shadcn', 'zen', 'glass']
+// Rules scoped to the default variant ship only in the core bundle, which is the win default.
+export const DEFAULT_SCOPE = 'win'
 const OWNED_BY = { reading: 'zen' }
 
-const scopeRe = new RegExp(`\\.qds-variant-(${VARIANT_SCOPES.join('|')})\\b|\\.qds-(reading)\\b`, 'g')
+const scopeRe = new RegExp(`\\.qds-variant-(${[DEFAULT_SCOPE, ...VARIANT_SCOPES].join('|')})\\b|\\.qds-(reading)\\b`, 'g')
 
 function ownersOf(selector) {
   const owners = new Set()
@@ -73,7 +75,7 @@ export function partitionCss(css) {
   const root = postcss.parse(css)
   const entries = []
   split(root, entries)
-  const out = { core: emit(entries.filter((entry) => entry.owner === 'core')).toString() }
+  const out = { core: emit(entries.filter((entry) => entry.owner === 'core' || entry.owner === DEFAULT_SCOPE)).toString() }
   for (const name of VARIANT_SCOPES) {
     out[name] = emit(entries.filter((entry) => entry.owner === 'core' || entry.owner === name)).toString()
   }
