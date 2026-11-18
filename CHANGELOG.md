@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.2] — 2026-11-18
+
+### Fixed
+
+- **Bare heading styles no longer override app heading classes** — `body.qds-ui :where(h3)` had specificity
+  (0,1,1), so an app's `.card__title` on an `h3` rendered at the h3 type step. Headings now use
+  `:where(body.qds-ui) h3` (element specificity): they still replace Quasar's bare `h1`–`h6` sizes and lose to any class.
+
 ## [0.9.1] — 2026-11-05
 
 ### Changed
