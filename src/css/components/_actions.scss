@@ -175,6 +175,8 @@ $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
   }
 
   // Related actions share one capsule.
-  #{$glass} .q-btn-group:not(.q-btn-toggle) { overflow: hidden; }
-  #{$glass} .q-btn-group:not(.q-btn-toggle) > .q-btn { border-radius: 0; }
+  // The ends take the group's capsule without clipping, so floating badges stay visible.
+  #{$glass} .q-btn-group:not(.q-btn-toggle) > .q-btn { border-radius: inherit; }
+  #{$glass} .q-btn-group:not(.q-btn-toggle) > .q-btn:not(:last-child) { border-start-end-radius: 0; border-end-end-radius: 0; }
+  #{$glass} .q-btn-group:not(.q-btn-toggle) > .q-btn:not(:first-child) { border-start-start-radius: 0; border-end-start-radius: 0; }
 }

@@ -5,6 +5,7 @@ $ink: ':is(.qds-ui.qds-variant-ink, .qds-ui .qds-variant-ink)';
 $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
 $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
+$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 
 @mixin styles {
   .qds-ui .q-notification {
@@ -57,6 +58,10 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
     border-color: color-mix(in srgb, var(--qds-notify-accent) 32%, var(--qds-border));
     @include materials.solid;
   }
+
+  // Glass banners float as rounded glass; the role reads from the icon, not an edge stripe.
+  #{$glass} .q-notification { padding-inline-start: var(--qds-space-md); border-color: var(--qds-material-stroke); box-shadow: var(--qds-material-edge), var(--qds-shadow-md); }
+  #{$glass} .q-notification::before { content: none; }
 
   #{$shadcn} .q-notification { --qds-notify-bg: var(--qds-bg-flyout); --qds-notify-icon: var(--qds-fg-primary); padding-inline: var(--qds-space-md); border-color: var(--qds-border); font-size: var(--qds-font-size-body); line-height: var(--qds-line-height-body); transition-duration: var(--qds-motion-duration-base); @include materials.solid; }
   #{$shadcn} .q-notification:is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative, .bg-warning, .bg-info) { --qds-notify-accent: var(--_qds-fill); --qds-notify-on-accent: var(--_qds-on); --qds-notify-icon: var(--_qds-fg); }
