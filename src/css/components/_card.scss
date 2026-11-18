@@ -126,6 +126,7 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
   #{$glass} .q-card > .q-card__section:is(.qds-card__header, .qds-card-header) { border-block-end-color: transparent; }
   #{$glass} .q-card > .q-card__actions { justify-content: flex-end; gap: var(--qds-space-sm); padding-block-start: 0; }
   #{$glass} .q-card > .q-card__actions .q-btn + .q-btn { margin-inline-start: 0; }
+  #{$glass} :is(.q-card, .qds-card) .qds-settings-card { --qds-card-fill: var(--_qds-glass-nested); }
   #{$glass} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile) { background: var(--_qds-glass-nested); border-radius: calc(var(--qds-card-radius) - var(--_qds-glass-pad)); box-shadow: none; }
   #{$glass} .q-card.q-card--flat { box-shadow: none; }
   #{$glass} .q-card.q-card--square { border-radius: 0; }
