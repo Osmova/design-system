@@ -10,14 +10,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 - **Opt-in variant bundles (breaking)** — `@osmova/quasar-design-system/css` (and `css/layered`) now ships the
   shared grammar plus the default `win` variant, built to `dist/css` (about 24 KB gzipped, down from 58.5 KB).
-  Every other variant is its own stylesheet, `css/variants/<name>` and `css/layered/variants/<name>`
-  (`ink`, `one`, `term`, `shadcn`, `zen`, `glass`; 4–22 KB gzipped each), imported after `./css`.
-  Apps that used a non-default variant must add that variant's import; `css/all` and `css/all/layered`
+  Every other variant is its own complete stylesheet, `css/variants/<name>` and `css/layered/variants/<name>`
+  (`ink`, `one`, `term`, `shadcn`, `zen`, `glass`; 26–43 KB gzipped), imported **instead of** `./css`. Each file keeps
+  the original rule order minus the other variants' rules, so rendering is identical to the single bundle.
+  Apps that used a non-default variant must switch to that variant's file; `css/all` and `css/all/layered`
   keep the previous everything-in-one SCSS entries. The CSS budget now applies to the core and to each variant.
 - **`fluent` is now `win`** — the default variant follows Windows 11 / WinUI 3 rather than Fluent 2. The
   body class is `qds-variant-win`; `fluent` (like `air` and `studio`) stays accepted as a legacy input
   and normalizes to `win`, so stored preferences and `?variant=fluent` links keep working. Selectors that
   targeted `.qds-variant-fluent` must move to `.qds-variant-win`.
+- **`glass` no longer aliases `fluent` (breaking).** A configured or persisted `variant: 'glass'` now
+  selects the new glass variant instead of resolving to the default; import `css/variants/glass` for it. To keep
+  the previous look, use `variant: 'win'`; a stored `glass` record is not migrated. `air` and `studio` still
+  resolve to `win`.
+- **Zen rebuilt as a soft tactile grammar** (zen only): warm depth model, sage palette, Figtree UI and Fraunces
+  display faces (load them with `@osmova/quasar-design-system/fonts/zen.css`), and all zen rules in one partial.
+
+### Fixed
+
+- Toolbars and segmented controls inside a dark card now flip with the card.
 
 ### Added
 
@@ -39,13 +50,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   and the selected tab or segment keep a 3:1 boundary; labelled buttons, chips and bars use a hairline,
   and disabled buttons drop to the plain border. Under forced colours the selected tab and segment
   take a system outline.
-
-### Changed (breaking)
-
-- **`glass` no longer aliases `fluent`.** A configured or persisted `variant: 'glass'` now
-  selects the new glass variant instead of resolving to fluent. To keep the previous look, use
-  `variant: 'fluent'`; a stored `glass` record is not migrated. `air` and `studio` still resolve to
-  `fluent`.
 
 ## [0.9.1] — 2026-11-05
 
