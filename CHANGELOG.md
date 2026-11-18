@@ -38,11 +38,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   `--_qds-variant` sentinel each variant scope defines, and stays silent in production, SSR and on errors.
 - **`glass` variant** — inspired by Apple's design language, and the seventh canonical variant.
   Controls and navigation float on a translucent functional layer above opaque content: the header
-  and footer carry no fill or rule of their own and gain a soft scroll-edge blur once content scrolls under
-  them, related bar buttons share one glass capsule (toolbars inside content stay plain, or opt in with
-  `.qds-glass-bar`), the sidebar is an inset floating panel, dialogs and bottom
-  sheets float inset with a large radius, and menus open with a short spring.
-  Prominent controls (buttons, tab bars, segmented controls, switches) are capsules; dense controls and
+  and footer carry no fill or rule of their own, and a uniform glass bar with a hairline divider appears once
+  content scrolls under them, related bar buttons share one glass capsule (toolbars inside content stay plain, or opt in with
+  `.qds-glass-bar`), a docked sidebar runs edge to edge on glass while an overlay sidebar floats inset, dialogs and
+  bottom sheets float inset with a large radius, alerts and partial sheets are regular glass, content tabs are a
+  recessed segmented control while bar tabs float on glass, and menus open with a short spring.
+  Prominent controls (buttons, tab bars, segmented controls, switches) are capsules, as are switch and slider knobs; dense controls and
   fields are rounded rectangles; nested shapes are concentric — a nested block, menu row, sidebar row or
   dialog field takes its container's radius minus the padding between them. Tint is reserved for role
   fills and selection, titles are bolder, and safe-area insets reach the header, footer, sidebar and
