@@ -61,8 +61,9 @@ test.describe('QDS variant distinctiveness lab', () => {
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .variant-card__nested', 'border-radius'), 'a nested block is its card radius minus the padding').toBe('10px')
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .q-btn:not(.q-btn--dense)', 'border-radius'), 'prominent buttons are capsules').toBe('9999px')
     expect.soft(await computed(page, '.q-header', 'background-color'), 'the bar carries no fill of its own').toBe('rgba(0, 0, 0, 0)')
-    expect.soft(await computed(page, '.q-header', 'backdrop-filter', '::before'), 'a soft scroll edge blurs content under the bar').not.toBe('none')
-    expect.soft(await computed(page, '.q-header', 'mask-image', '::before'), 'the scroll edge fades instead of ruling a line').toContain('linear-gradient')
+    expect.soft(await computed(page, '.q-header', 'backdrop-filter', '::before'), 'the scroll edge blurs content under the bar').not.toBe('none')
+    expect.soft(await computed(page, '.q-header', 'mask-image', '::before'), 'the scroll edge is a uniform bar, not a fade').toBe('none')
+    expect.soft(await computed(page, '.q-header', 'box-shadow', '::before'), 'the scroll edge rules a hairline divider').toContain('inset')
   })
 
   // A bare-class fallback (0,1,0) never beats the dark scope (0,3,1).
@@ -74,7 +75,7 @@ test.describe('QDS variant distinctiveness lab', () => {
 
       expect.soft(await customProperty(page, '--qds-material-thin-filter'), 'the acrylic filter is dropped').toBe('none')
       expect.soft(await customProperty(page, '--qds-control-fill-default'), 'control fills become opaque').not.toContain('color-mix')
-      expect.soft(await customProperty(page, '--_qds-glass-fade'), 'the scroll edge becomes a plain opaque bar').toBe('none')
+      expect.soft(await customProperty(page, '--_qds-glass-bar-line'), 'bars keep a permanent divider once glass is opaque').not.toBe('transparent')
     })
 
     test(`glass resolves increased contrast to opaque glass and a deeper accent in ${mode}`, async ({ page }) => {
@@ -191,7 +192,7 @@ test.describe('QDS variant distinctiveness lab', () => {
     await page.goto('/#catalog?variant=glass')
     await applyTheme(page, 'light', 'glass')
 
-    expect.soft(await customProperty(page, '--qds-toggle-track-width'), 'the capsule survives the generic size ramp').toBe('3.1875rem')
+    expect.soft(await customProperty(page, '--qds-toggle-track-width'), 'the capsule survives the generic size ramp').toBe('3.9375rem')
     const toggle = page.locator('[data-test="qds-catalog-toggle"]')
     await expect(toggle).toBeVisible()
     const track = toggle.locator('.q-toggle__track')

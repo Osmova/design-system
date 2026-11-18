@@ -58,7 +58,7 @@ test('no-filter, reduced transparency, forced colours and increased contrast all
   const opaque = (pattern) => rules.filter(([path, body]) => pattern.test(path)
     && body.includes('--qds-material-regular-bg:var(--qds-surface-0)')
     && body.includes('--qds-material-regular-filter:none')
-    && body.includes('--_qds-glass-fade:none'))
+    && body.includes('--_qds-glass-bar-line:var(--qds-border)'))
   for (const [name, pattern] of [
     ['no backdrop-filter', /@supports not/],
     ['reduced transparency', /prefers-reduced-transparency:reduce/],
@@ -96,7 +96,7 @@ function glassTokens(scheme) {
 
 const FILL_STATES = { hover: 0.88, pressed: 0.76 }
 const ROLE_FG_MIX = 0.86
-const MATERIAL = { light: 0.88, dark: 0.92 }
+const MATERIAL = { light: 0.92, dark: 0.92 }
 
 export function glassPairs(scheme) {
   const token = glassTokens(scheme)
