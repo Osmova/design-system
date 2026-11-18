@@ -54,7 +54,34 @@ import '@osmova/quasar-design-system/css'
 import '@osmova/quasar-design-system/css/variants/zen' // instead of './css'
 ```
 
-Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 24 KB and a variant bundle is 26–43 KB, against 58.5 KB for everything. An app that switches variants at runtime swaps the stylesheet, for example by loading `@osmova/quasar-design-system/css/variants/zen` lazily and removing the previous one. `./css/all` (SCSS source) ships every variant at once.
+Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 24 KB and a variant bundle is 26–43 KB, against 58.5 KB for everything. A variant file **replaces** `./css`: importing both applies the default rules twice and lets them override the variant.
+
+An app that switches variants at runtime either imports every variant at once:
+
+```ts
+import '@osmova/quasar-design-system/css/all' // SCSS source, every variant; instead of './css'
+```
+
+or keeps exactly one variant stylesheet loaded and swaps it before calling `setVariant` (Vite `?url` imports shown):
+
+```ts
+import winUrl from '@osmova/quasar-design-system/css?url'
+import zenUrl from '@osmova/quasar-design-system/css/variants/zen?url'
+
+const urls = { win: winUrl, zen: zenUrl } // one entry per variant the app offers
+
+async function switchVariant(name: keyof typeof urls) {
+  const previous = document.getElementById('qds-css')! // <link id="qds-css" rel="stylesheet" href="…">
+  const next = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: urls[name] })
+  previous.after(next)
+  await new Promise((resolve, reject) => { next.onload = resolve; next.onerror = reject })
+  previous.remove()
+  next.id = 'qds-css'
+  designSystem.setVariant(name)
+}
+```
+
+The initial `<link id="qds-css">` must come after Quasar's CSS. In development the runtime warns once when the active variant's stylesheet is not loaded.
 
 The default `./css` bundle is **unlayered** and must be imported **after** Quasar's CSS — Quasar ships unlayered CSS, so the overrides win on cascade order plus specificity, not on `@layer`. If your app deliberately places Quasar's CSS in a lower `@layer`, use the advanced `@osmova/quasar-design-system/css/layered` bundle instead. Mixing the layered bundle with unlayered Quasar CSS is unsupported (a layer cannot beat unlayered rules).
 
