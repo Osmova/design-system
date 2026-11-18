@@ -109,8 +109,9 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-field--standout:not(.q-field--focused, .q-field--disabled, .q-field--readonly) .q-field__control { box-shadow: #{$well}; }
   #{$zen} .q-field--standout.q-field--focused .q-field__control { background: #{$raised}; box-shadow: #{$lift-1}, #{$edge}, #{$glow}; outline: 1px solid var(--qds-stroke-focus); outline-offset: -2px; }
   #{$zen} .q-field--standout.q-field--focused .q-field__control :is(.q-field__native, .q-field__input, .q-field__prefix, .q-field__suffix, .q-field__marginal, .q-field__label) { color: inherit; }
+  // Semantic role bars and standout fills own their on-fill ink, as role fills do everywhere else.
   @each $role in $roles {
-    #{$zen} .q-field--standout.q-field--focused .q-field__control.bg-#{$role} :is(.q-field__native, .q-field__input, .q-field__prefix, .q-field__suffix, .q-field__marginal, .q-field__label) { color: var(--qds-text-on-#{$role}); }
+    #{$zen} :is(:is(.q-tabs.bg-#{$role}, .bg-#{$role} > .q-tabs, :is(.q-toolbar, .q-header).bg-#{$role} .q-tabs) .q-tab, .q-field--standout.q-field--focused .q-field__control.bg-#{$role} :is(.q-field__native, .q-field__input, .q-field__prefix, .q-field__suffix, .q-field__marginal, .q-field__label)) { color: var(--qds-text-on-#{$role}); }
   }
   #{$zen} .q-field--rounded .q-field__control { border-radius: var(--qds-radius-full); padding-inline: 1.25rem; }
   #{$zen} .q-field__label { color: var(--qds-fg-muted); font-size: var(--qds-field-label-size); }
@@ -167,10 +168,6 @@ $ease: var(--qds-motion-fast);
   #{$zen} :is(.q-tabs[class*='bg-'], #{$role-fill} > .q-tabs, :is(.q-toolbar, .q-header)#{$role-fill} .q-tabs) .q-tab { color: inherit; }
   #{$zen} :is(.q-tabs[class*='bg-'], #{$role-fill} > .q-tabs, :is(.q-toolbar, .q-header)#{$role-fill} .q-tabs) .q-tab:not(.q-tab--active) { opacity: 0.82; }
   #{$zen} :is(.q-tabs[class*='bg-'], #{$role-fill} > .q-tabs, :is(.q-toolbar, .q-header)#{$role-fill} .q-tabs) .q-tab__indicator { color: currentColor; }
-  // Semantic role bars own their on-fill ink, as role fills do everywhere else.
-  @each $role in $roles {
-    #{$zen} :is(.q-tabs.bg-#{$role}, .bg-#{$role} > .q-tabs, :is(.q-toolbar, .q-header).bg-#{$role} .q-tabs) .q-tab { color: var(--qds-text-on-#{$role}); }
-  }
   #{$zen} .q-tabs__arrow { color: var(--qds-fg-muted); text-shadow: none; }
   // Floating pill dock for footer navigation; the active stop is a filled pebble.
   #{$zen} .q-footer:has(> .q-tabs) { padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom)); border: 0; background: transparent; box-shadow: none; }
@@ -232,14 +229,14 @@ $ease: var(--qds-motion-fast);
 @mixin actions {
   #{$zen} :is(.q-btn-group, .q-btn-toggle, .q-chip) { border: 1px solid var(--qds-stroke-strong); border-radius: var(--qds-radius-full); box-shadow: #{$lift-1}, #{$edge}; }
   // Outer corners follow the pill instead of clipping, so floating badges stay whole.
-  #{$zen} .q-btn-group > .q-btn { border: 0; border-radius: 0; transform: none; }
   // Children of a group never lift on their own, whatever their fill; pressing still recedes.
-  #{$zen} .q-btn-group > .q-btn.q-btn.q-btn.q-btn { --_qds-zen-depth: 0 0 transparent; }
-  #{$zen} .q-btn-group > .q-btn.q-btn.q-btn.q-btn:not(.disabled):active { --_qds-zen-depth: #{$press}; }
+  #{$zen} .q-btn-group > .q-btn { border: 0; border-radius: 0; box-shadow: none; transform: none; }
+  #{$zen} .q-btn-group--push > .q-btn { box-shadow: #{$push}; }
+  #{$zen} .q-btn-group > .q-btn:focus-visible { box-shadow: #{$glow}; }
+  #{$zen} .q-btn-group > .q-btn:not(.disabled):active { box-shadow: #{$press}; }
   #{$zen} .q-btn-group.q-btn-group--flat { border-color: transparent; box-shadow: none; }
   #{$zen} .q-btn-group.q-btn-group--unelevated { box-shadow: none; }
   #{$zen} .q-btn-group.q-btn-group--push { box-shadow: #{$lift-1}; }
-  #{$zen} .q-btn-group--push > .q-btn.q-btn.q-btn.q-btn:not(.disabled) { --_qds-zen-depth: #{$push}; }
   #{$zen} .q-btn-group.q-btn-group--outline { border-color: transparent; box-shadow: none; }
   #{$zen} .q-btn-group--outline > .q-btn { border: 1px solid currentColor; }
   #{$zen} .q-btn-group--outline > .q-btn + .q-btn { border-inline-start-width: 0; }
@@ -343,7 +340,7 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-table tbody tr:not(.disabled):hover > td { background: #{$tint}; }
   #{$zen} .q-table tbody tr.selected > td { background: var(--qds-surface-brand-soft); }
   #{$zen} :is(.q-table--flat, .q-stepper--flat) { box-shadow: none; }
-  #{$zen} :is(.q-card--bordered, .q-table--bordered, .q-stepper--bordered, .q-list--bordered.q-list--bordered) { border-color: var(--qds-stroke-strong); }
+  #{$zen} :is(.q-card--bordered, .q-table--bordered, .q-stepper--bordered) { border-color: var(--qds-stroke-strong); }
   #{$zen} .q-table__container.q-table--square { border-radius: 0; }
   // Grid mode drops the frame; each row becomes its own raised block.
   #{$zen} .q-table__container.q-table--grid { border: 0; background: transparent; box-shadow: none; overflow: visible; }
@@ -417,7 +414,7 @@ $ease: var(--qds-motion-fast);
 @mixin reading {
   #{$reading} :is(.q-btn, .q-field__control, .q-tabs, .q-tab, .q-menu, .q-item, .q-chip, .q-btn-toggle, .q-btn-group, .q-breadcrumbs, .q-banner, .q-toggle__track, .q-slider__inner, .q-slider__thumb, .q-checkbox__bg, .q-radio__bg, .q-skeleton, .q-linear-progress__track, .q-stepper__dot, .q-pagination .q-btn) { box-shadow: none; transform: none; }
   #{$reading} .q-toggle__thumb::after { box-shadow: none; }
-  #{$reading} .q-btn-toggle > .q-btn.q-btn-item.q-btn-item { box-shadow: none; }
+  #{$reading} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) { box-shadow: none; }
   #{$reading} :is(.q-table__grid-item-card, .qds-glass) { border-color: var(--qds-stroke-strong); box-shadow: none; }
   #{$reading} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-list--bordered, .q-table__container, .q-stepper, .q-uploader, .q-editor, .q-splitter, .q-date, .q-time, .q-color-picker, .q-notification, .q-tooltip, .q-popup-edit, .q-dialog__inner > .q-card, .q-dialog__inner > .q-bottom-sheet, .q-loading .q-loading__box, .q-drawer, .q-header, .q-footer, .q-footer > .q-tabs) { box-shadow: none; }
   #{$reading} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-list--bordered, .q-table__container, .q-banner, .q-breadcrumbs) { border-color: var(--qds-stroke-strong); }
