@@ -394,6 +394,49 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
   }
 }
 
+@mixin qds-win-values($values) {
+  @each $token in fg-disabled, state-hover, state-pressed, control-stroke-on-accent-bottom, bg-overlay, stroke-divider {
+    --qds-#{$token}: #{map.get($values, $token)};
+  }
+  @each $token in accent-fill-disabled, text-on-accent-disabled, layer-alt, surface-stroke {
+    --_qds-win-#{$token}: #{map.get($values, $token)};
+  }
+  // Derived, so every dark scope re-emits it; WinUI keeps 16px glyphs when dense.
+  --qds-button-dense-icon-size: var(--qds-control-icon-size-md);
+}
+
+// Win's WinUI deltas live on its own variant class, isolated in one mixin
+// like zen/atrium, so the frozen theme hash stays verifiable and every other
+// profile keeps the shared semantic values.
+@mixin qds-win-scopes {
+  $dark: '.qds-theme-dark.qds-variant-win, .qds-theme-dark .qds-variant-win, .qds-variant-win .qds-theme-dark, body.qds-ui.body--dark.qds-variant-win, body.qds-ui.body--dark .qds-variant-win';
+  @layer qds.tokens {
+  .qds-variant-win {
+    @include qds-win-values(tokens.$win-light);
+    --qds-control-icon-opacity: 1;
+    --qds-control-icon-opacity-active: 1;
+  }
+
+  #{$dark} {
+    @include qds-win-values(tokens.$win-dark);
+    --qds-text-muted: #{map.get(tokens.$win-dark, text-muted)};
+    // Rebound here so a win subtree inside a dark root does not keep the inherited value.
+    @each $alias in fg-muted, interactive-text-muted, control-icon-color {
+      --qds-#{$alias}: var(--qds-text-muted);
+    }
+  }
+
+  // Opaque material fallbacks drop the accent edge, as on :root.
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; }
+  }
+
+  @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; }
+  }
+  }
+}
+
 @mixin qds-term-crisp($scheme) {
   @each $step, $geometry in tokens.$shadow-steps {
     --qds-shadow-#{$step}: none;
@@ -583,6 +626,7 @@ $qds-material-scopes: '.qds-theme-dark, body.qds-ui.body--dark, .qds-variant-one
 
 @include qds-zen-scopes;
 @include qds-glass-scopes;
+@include qds-win-scopes;
 @include shadcn.scopes;
 
 // Runtime sentinel: the controller warns in development when the active variant's stylesheet is missing.

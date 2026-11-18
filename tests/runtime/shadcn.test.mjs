@@ -66,6 +66,7 @@ test('existing default-theme values stay byte-identical with only the two static
   const old = source.replace("@use 'shadcn';\n", '').replace('\n@include shadcn.scopes;\n', '\n')
     .replace('@include qds-zen-scopes;\n', '')
     .replace('@include qds-glass-scopes;\n', '')
+    .replace('@include qds-win-scopes;\n', '')
     .replace('\n@include qds-variant-sentinels;\n', '\n')
   const options = { url: path, loadPaths: [root.pathname], silenceDeprecations: ['if-function'] }
   const baseline = sass.compileString(old, options).css
