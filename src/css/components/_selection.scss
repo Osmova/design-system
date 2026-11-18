@@ -336,15 +336,12 @@ $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive
   #{$glass} .q-toggle { --_qds-glass-knob-width: calc(var(--qds-toggle-thumb-size) * 1.5); }
   #{$glass} .q-toggle--dense { --qds-toggle-track-width: 3.25rem; --qds-toggle-track-height: 1.5rem; }
   #{$glass} .q-toggle .q-toggle__thumb { width: var(--_qds-glass-knob-width); }
-  #{$glass} .q-toggle .q-toggle__thumb::after { border-radius: var(--qds-radius-full); }
   #{$glass} .q-toggle .q-toggle__inner--truthy .q-toggle__thumb { inset-inline-start: calc(var(--qds-toggle-track-width) - var(--_qds-glass-knob-width) - var(--qds-toggle-thumb-inset)); }
   #{$glass} .q-toggle .q-toggle__inner--indet .q-toggle__thumb { inset-inline-start: calc((var(--qds-toggle-track-width) - var(--_qds-glass-knob-width)) / 2); }
   #{$glass} .q-toggle .q-toggle__track { background: var(--qds-stroke-strong); border-color: transparent; }
   #{$glass} .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__track { background: var(--_qds-glass-on-track); border-color: transparent; }
   #{$glass} .q-toggle.disabled .q-toggle__inner--falsy .q-toggle__track { background: var(--qds-bg-surface-2); }
-  #{$glass} .q-toggle .q-toggle__thumb::after,
-  #{$glass} .q-toggle .q-toggle__inner--truthy .q-toggle__thumb::after,
-  #{$glass} .q-toggle.disabled .q-toggle__thumb::after { background: var(--_qds-glass-knob); box-shadow: var(--qds-shadow-sm); }
+  #{$glass} .q-toggle:is(*, .disabled) :is(.q-toggle__thumb, .q-toggle__inner--truthy .q-toggle__thumb)::after { border-radius: var(--qds-radius-full); background: var(--_qds-glass-knob); box-shadow: var(--qds-shadow-sm); }
   #{$glass} .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track { background: color-mix(in srgb, var(--qds-stroke-strong) 84%, var(--qds-text-strong)); }
   #{$glass} :is(.q-checkbox, .q-radio) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet, .q-radio__inner--truthy) :is(.q-checkbox__bg, .q-radio__bg) { border-color: transparent; }
   #{$glass} .q-radio .q-radio__inner--truthy .q-radio__bg { background: currentColor; }
