@@ -32,13 +32,7 @@ import 'quasar/src/css/index.sass'
 import '@osmova/quasar-design-system/fonts/inter.css'
 import '@osmova/quasar-design-system/fonts/open-sans.css'
 import '@osmova/quasar-design-system/fonts/selawik.css'
-import '@osmova/quasar-design-system/css'
-import '@osmova/quasar-design-system/css/variants/ink'
-import '@osmova/quasar-design-system/css/variants/one'
-import '@osmova/quasar-design-system/css/variants/term'
-import '@osmova/quasar-design-system/css/variants/shadcn'
-import '@osmova/quasar-design-system/css/variants/zen'
-import '@osmova/quasar-design-system/css/variants/glass'
+import '@osmova/quasar-design-system/css/all'
 
 interface PreviewController {
   state: { initialized: boolean }

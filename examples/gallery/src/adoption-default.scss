@@ -1,11 +1,5 @@
 // One indivisible consumer stylesheet: native CSS, QDS, then its optional extension.
 @use 'quasar/src/css/index.sass' as native;
 @use '@quasar/quasar-ui-qwindow/index.css' as native-window;
-@use '@osmova/quasar-design-system/css' as qds;
-@use '@osmova/quasar-design-system/css/variants/ink' as qds-ink;
-@use '@osmova/quasar-design-system/css/variants/one' as qds-one;
-@use '@osmova/quasar-design-system/css/variants/term' as qds-term;
-@use '@osmova/quasar-design-system/css/variants/shadcn' as qds-shadcn;
-@use '@osmova/quasar-design-system/css/variants/zen' as qds-zen;
-@use '@osmova/quasar-design-system/css/variants/glass' as qds-glass;
+@use '@osmova/quasar-design-system/css/all' as qds;
 @use '@osmova/quasar-design-system/css/extensions/qwindow' as qds-window;

@@ -12,14 +12,16 @@ function ownersOf(selector) {
   return owners
 }
 
-function ownerOfSelector(selector) {
+export function ownerOfSelector(selector) {
   const own = ownersOf(selector)
   return own.size === 1 ? [...own][0] : null
 }
 
 const LEAF_AT_RULES = new Set(['keyframes', 'font-face', 'property'])
 
-function split(container, buckets) {
+let seq = 0
+
+function split(container, entries) {
   for (const node of [...container.nodes]) {
     if (node.type === 'rule') {
       const groups = new Map()
@@ -30,12 +32,12 @@ function split(container, buckets) {
       }
       for (const [owner, selectors] of groups) {
         const part = groups.size === 1 ? node : node.clone({ selectors })
-        ;(buckets[owner] ??= []).push({ node: part, path: parents(node) })
+        entries.push({ node: part, path: parents(node), owner, idx: seq++ })
       }
     } else if (node.type === 'atrule' && node.nodes && !LEAF_AT_RULES.has(node.name)) {
-      split(node, buckets)
+      split(node, entries)
     } else {
-      ;(buckets.core ??= []).push({ node, path: parents(node) })
+      entries.push({ node, path: parents(node), owner: 'core', idx: seq++ })
     }
   }
 }
@@ -65,12 +67,16 @@ function emit(entries) {
   return root
 }
 
+// Each variant file is the complete stylesheet in its original rule order minus every other variant's rules,
+// so equal-specificity ties resolve exactly as in the single bundle. `core` is the win default alone.
 export function partitionCss(css) {
   const root = postcss.parse(css)
-  const buckets = {}
-  split(root, buckets)
-  const out = {}
-  for (const [name, entries] of Object.entries(buckets)) out[name] = emit(entries).toString()
+  const entries = []
+  split(root, entries)
+  const out = { core: emit(entries.filter((entry) => entry.owner === 'core')).toString() }
+  for (const name of VARIANT_SCOPES) {
+    out[name] = emit(entries.filter((entry) => entry.owner === 'core' || entry.owner === name)).toString()
+  }
   return out
 }
 

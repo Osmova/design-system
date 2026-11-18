@@ -48,13 +48,13 @@ import 'quasar/src/css/index.sass'
 import '@osmova/quasar-design-system/css'
 ```
 
-`./css` is the shared grammar plus the default `win` variant. Every other variant is opt-in: import only the ones your app uses, after `./css`.
+`./css` is the shared grammar plus the default `win` variant. To use another variant, import its bundle **instead of** `./css` (each one already contains the shared grammar), so an app only ships the variant it uses:
 
 ```ts
-import '@osmova/quasar-design-system/css/variants/zen'
+import '@osmova/quasar-design-system/css/variants/zen' // instead of './css'
 ```
 
-Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is already in `./css`). Gzipped, `./css` is about 24 KB and a variant adds 4–22 KB. An app that switches variants at runtime can load the stylesheet lazily, for example `import('@osmova/quasar-design-system/css/variants/zen')`. `./css/all` (SCSS source) ships everything for apps that want every variant at once.
+Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 24 KB and a variant bundle is 26–43 KB, against 58.5 KB for everything. An app that switches variants at runtime swaps the stylesheet, for example by loading `@osmova/quasar-design-system/css/variants/zen` lazily and removing the previous one. `./css/all` (SCSS source) ships every variant at once.
 
 The default `./css` bundle is **unlayered** and must be imported **after** Quasar's CSS — Quasar ships unlayered CSS, so the overrides win on cascade order plus specificity, not on `@layer`. If your app deliberately places Quasar's CSS in a lower `@layer`, use the advanced `@osmova/quasar-design-system/css/layered` bundle instead. Mixing the layered bundle with unlayered Quasar CSS is unsupported (a layer cannot beat unlayered rules).
 
@@ -69,7 +69,7 @@ For the layered path, declare the order **before** importing either framework or
 ```ts
 import './quasar-layered.css'
 import '@osmova/quasar-design-system/css/layered'
-import '@osmova/quasar-design-system/css/layered/variants/zen' // optional, per variant
+// or, for another variant instead of the layered core: '@osmova/quasar-design-system/css/layered/variants/zen'
 ```
 
 Choose one adoption path; do not combine the default and layered exports in the same Sass compilation. Inline author important declarations still win over stylesheet declarations.
