@@ -52,12 +52,14 @@ $win-dialog-fill: linear-gradient(var(--_qds-win-layer-alt), var(--_qds-win-laye
   .qds-ui .q-dialog-plugin .q-btn.text-amber { @include importance.declarations { color: var(--qds-fg-brand) !important; } }
 
   // WinUI ContentDialog: a solid layer over the base, with the command row on a base-coloured footer band.
-  #{$win} :where(.q-dialog__inner--minimized) > .q-card {
+  #{$win} :where(.q-dialog__inner--minimized) > .q-card:not(.q-bottom-sheet) {
     border-color: var(--_qds-win-surface-stroke);
     @include materials.solid($win-dialog-fill);
   }
 
   #{$win} .q-dialog__inner > .q-card > .q-card__section:has(+ .q-card__actions:last-child) { padding-block-end: var(--qds-space-lg); }
+  // ContentDialog settles in from 105%.
+  #{$win} .q-dialog__inner:is(.q-transition--scale-enter-from, .q-transition--scale-leave-to) > * { transform: scale3d(1.05, 1.05, 1); }
 
   #{$win} :where(.q-dialog__inner--minimized) > .q-card > .q-card__actions:last-child {
     padding: var(--qds-space-lg);

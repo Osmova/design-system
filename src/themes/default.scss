@@ -394,15 +394,21 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
   }
 }
 
-@mixin qds-win-values($values) {
-  @each $token in fg-disabled, state-hover, state-pressed, control-stroke-on-accent-bottom, bg-overlay, stroke-divider {
+@mixin qds-win-values($values, $scheme) {
+  $material: map.get(tokens.$materials, $scheme);
+  @each $token in fg-disabled, state-hover, state-pressed, control-stroke-on-accent-bottom, bg-overlay, stroke-divider, material-stroke {
     --qds-#{$token}: #{map.get($values, $token)};
   }
-  @each $token in accent-fill-disabled, text-on-accent-disabled, layer-alt, surface-stroke {
+  @each $token in accent-fill-disabled, text-on-accent-disabled, layer-alt, surface-stroke, focus-outer {
     --_qds-win-#{$token}: #{map.get($values, $token)};
   }
   // Derived, so every dark scope re-emits it; WinUI keeps 16px glyphs when dense.
   --qds-button-dense-icon-size: var(--qds-control-icon-size-md);
+  // WinUI elevation: flyouts sit at 32, dialogs at 128.
+  @each $token in menu-shadow, notification-shadow, elevation-flyout {
+    --qds-#{$token}: var(--qds-shadow-28);
+  }
+  --qds-backdrop: radial-gradient(ellipse 64rem 36rem at 0% 0%, rgba(var(--qds-color-primary-rgb), #{map.get($material, backdrop-brand)}), transparent 72%), radial-gradient(ellipse 56rem 36rem at 100% 100%, rgba(var(--qds-color-primary-rgb), #{map.get($material, backdrop-accent)}), transparent 72%), var(--qds-surface-1);
 }
 
 // Win's WinUI deltas live on its own variant class, isolated in one mixin
@@ -412,13 +418,16 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
   $dark: '.qds-theme-dark.qds-variant-win, .qds-theme-dark .qds-variant-win, .qds-variant-win .qds-theme-dark, body.qds-ui.body--dark.qds-variant-win, body.qds-ui.body--dark .qds-variant-win';
   @layer qds.tokens {
   .qds-variant-win {
-    @include qds-win-values(tokens.$win-light);
+    @include qds-win-values(tokens.$win-light, light);
+    --qds-font-family: #{map.get(tokens.$win-font, body)};
+    --qds-font-family-display: #{map.get(tokens.$win-font, display)};
+    --qds-focus-ring-offset: 1px;
     --qds-control-icon-opacity: 1;
     --qds-control-icon-opacity-active: 1;
   }
 
   #{$dark} {
-    @include qds-win-values(tokens.$win-dark);
+    @include qds-win-values(tokens.$win-dark, dark);
     --qds-text-muted: #{map.get(tokens.$win-dark, text-muted)};
     // Rebound here so a win subtree inside a dark root does not keep the inherited value.
     @each $alias in fg-muted, interactive-text-muted, control-icon-color {
@@ -426,13 +435,13 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
     }
   }
 
-  // Opaque material fallbacks drop the accent edge, as on :root.
+  // Opaque material fallbacks drop the accent edge and the Mica tint, as on :root.
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; }
+    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; --qds-backdrop: var(--qds-surface-1); }
   }
 
   @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
-    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; }
+    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; --qds-backdrop: var(--qds-surface-1); }
   }
   }
 }

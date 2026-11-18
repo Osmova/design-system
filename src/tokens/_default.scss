@@ -108,6 +108,7 @@ $win-light: (
   accent-fill-disabled: rgba(0, 0, 0, 0.216), text-on-accent-disabled: #ffffff,
   bg-overlay: rgba(0, 0, 0, 0.302), stroke-divider: rgba(0, 0, 0, 0.058),
   layer-alt: map.get($light-surfaces, 0), surface-stroke: rgba(117, 117, 117, 0.4),
+  material-stroke: rgba(0, 0, 0, 0.058), focus-outer: rgba(0, 0, 0, 0.894),
 ) !default;
 // text-muted is TextFillColorSecondary (#C5FFFFFF) flattened onto the #202020 base.
 $win-dark: (
@@ -116,7 +117,12 @@ $win-dark: (
   accent-fill-disabled: rgba(255, 255, 255, 0.157), text-on-accent-disabled: rgba(255, 255, 255, 0.529),
   bg-overlay: map.get($win-light, bg-overlay), stroke-divider: rgba(255, 255, 255, 0.082),
   layer-alt: map.get($dark-semantic, card-fill), surface-stroke: map.get($win-light, surface-stroke),
-  text-muted: #cccccc,
+  material-stroke: rgba(0, 0, 0, 0.2), focus-outer: #ffffff, text-muted: #cccccc,
+) !default;
+// Segoe UI Variable first where Windows ships it; nothing is bundled.
+$win-font: (
+  body: ('Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', 'Inter Variable', Inter, 'Open Sans', 'SF Pro Text', 'Avenir Next', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif),
+  display: ('Segoe UI Variable Display', 'Segoe UI Variable', 'Segoe UI', 'Inter Variable', Inter, 'Open Sans', 'SF Pro Display', 'Avenir Next', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif),
 ) !default;
 
 $space: (xs: 0.25rem, sm: 0.5rem, md: 1rem, lg: 1.5rem, xl: 2rem) !default;
