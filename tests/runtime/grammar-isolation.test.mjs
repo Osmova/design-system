@@ -4,7 +4,7 @@ import { compile } from 'sass'
 import { createHash } from 'node:crypto'
 import { gzipSync } from 'node:zlib'
 import postcss from 'postcss'
-import { compileEntry, ownerOfSelector, partitionCss, VARIANT_SCOPES } from '../../scripts/css-partition.mjs'
+import { compileEntry, DEFAULT_SCOPE, ownerOfSelector, partitionCss, VARIANT_SCOPES } from '../../scripts/css-partition.mjs'
 import { readFileSync } from 'node:fs'
 import { compileMechanics, compilePilot, families, root } from './grammar-fixture.mjs'
 import { compileSubstrateBaseline, substrateBaseline } from './grammar-fixture-baseline.mjs'
@@ -109,7 +109,7 @@ test('each variant bundle is the full stylesheet minus every other variant, in t
     for (const name of ['core', ...VARIANT_SCOPES]) {
       const keep = (selector) => {
         const owner = ownerOfSelector(selector)
-        return owner === null || owner === name
+        return owner === null || owner === name || (name === 'core' && owner === DEFAULT_SCOPE)
       }
       assert.deepEqual(rules(parts[name]), rules(full, keep), `${entry}: ${name} keeps its own and the shared rules in source order`)
     }
