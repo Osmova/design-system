@@ -21,6 +21,7 @@ $well: var(--_qds-zen-inset);
 $press: var(--_qds-zen-press);
 $glow: 0 0 0 0.25rem color-mix(in srgb, var(--qds-stroke-focus) 26%, transparent);
 $tint: color-mix(in srgb, var(--qds-fg-default) 6%, transparent);
+$tint-edge: color-mix(in srgb, currentColor 62%, transparent);
 $spring: var(--_qds-zen-spring);
 $ease: var(--qds-motion-fast);
 
@@ -53,10 +54,12 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-btn[class*='bg-']:not(.q-btn--flat, .q-btn--outline) { --_qds-zen-depth: #{$lift-1}; border-color: transparent; }
   #{$zen} .q-btn[class*='bg-']:not(.q-btn--flat, .q-btn--outline, .disabled):hover { --_qds-zen-depth: #{$lift-2}; }
   #{$zen} .q-btn[class*='bg-']:not(.q-btn--flat, .q-btn--outline, .disabled):active { --_qds-zen-depth: #{$press}; }
+  // Tonal tints sit near the paper tone, so unlike role fills they keep an edge.
+  #{$zen} .q-btn.qds-tonal:not(.q-btn--flat, .q-btn--outline) { border-color: #{$tint-edge}; }
   #{$zen} .q-btn.disabled { --_qds-zen-depth: 0 0 transparent; transform: none; }
   #{$zen} .q-btn--dense { min-height: var(--qds-button-dense-min-height); padding-inline: 0.75rem; }
   #{$zen} .q-btn--square { border-radius: var(--qds-radius-md); }
-  #{$zen} .q-btn:is(.q-btn--round, .q-btn--fab, .q-btn--fab-mini) { padding-inline: 0; }
+  #{$zen} .q-btn--round { padding-inline: 0; }
   #{$zen} .q-btn__content { gap: 0.5rem; }
 }
 
@@ -73,6 +76,7 @@ $ease: var(--qds-motion-fast);
     color: var(--qds-fg-default);
     transition: border-color #{$ease}, box-shadow #{$ease}, background-color #{$ease};
   }
+  #{$zen} .q-field--auto-height .q-field__control { height: auto; }
   #{$zen} .q-field__control::before,
   #{$zen} .q-field__control::after { content: none; }
   #{$zen} .q-field__control:hover { background: #{$base}; }
@@ -207,7 +211,9 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-badge:not([class*='bg-']) { border: 1px solid var(--qds-stroke-default); background: #{$raised}; color: var(--qds-fg-default); }
   // Chips are pebbles: raised and bounded at rest, pressed when selected.
   #{$zen} .q-chip { background: #{$raised}; transition: box-shadow #{$spring}, background-color #{$ease}; }
-  #{$zen} .q-chip[class*='bg-'] { border-color: transparent; box-shadow: none; }
+  #{$zen} .q-chip[class*='bg-'] { box-shadow: none; }
+  #{$zen} .q-chip[class*='bg-']:not(.qds-solid) { border-color: #{$tint-edge}; }
+  #{$zen} .q-chip.qds-solid { border-color: transparent; }
   #{$zen} .q-chip.q-chip--clickable:not(.disabled):hover { box-shadow: #{$lift-2}, #{$edge}; }
   #{$zen} .q-chip:is(.q-chip--selected, .q-chip--clickable:not(.disabled):active) { background: #{$inset}; box-shadow: #{$press}; }
   #{$zen} .q-rating__icon { color: var(--qds-fg-muted); text-shadow: none; }
@@ -216,12 +222,12 @@ $ease: var(--qds-motion-fast);
 
 @mixin blocks {
   // Blocks are raised sheets; a nested block steps down a tone instead of stacking shadows.
-  #{$zen} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-stepper, .q-uploader, .q-editor, .q-splitter, .q-date, .q-time, .q-color-picker) { border: 1px solid var(--qds-stroke-default); border-radius: var(--qds-radius-lg); background: #{$raised}; box-shadow: #{$lift-3}, #{$edge}; }
+  #{$zen} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .qds-glass, .q-stepper, .q-uploader, .q-editor, .q-splitter, .q-date, .q-time, .q-color-picker) { border: 1px solid var(--qds-stroke-default); border-radius: var(--qds-radius-lg); background: #{$raised}; box-shadow: #{$lift-3}, #{$edge}; }
   #{$zen} .q-card > .q-card__section--vert { padding: var(--qds-space-md) var(--qds-space-lg); }
   #{$zen} .q-card > .q-card__section:is(.qds-card__header, .qds-card-header) { padding: var(--qds-space-md) var(--qds-space-lg); border-block-end: 1px solid var(--qds-stroke-default); background: none; }
   #{$zen} .q-card > .q-card__actions { gap: var(--qds-space-sm); padding: var(--qds-space-sm) var(--qds-space-lg) var(--qds-space-md); }
   #{$zen} .q-card > .q-card__actions .q-btn + .q-btn { margin-inline-start: 0; }
-  #{$zen} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile, .qds-settings-card) { border-radius: var(--qds-radius-md); background: #{$base}; box-shadow: none; }
+  #{$zen} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .qds-glass) { border-radius: var(--qds-radius-md); background: #{$base}; box-shadow: none; }
   #{$zen} :is(.q-card, .qds-card, .qds-tile).q-card--flat { box-shadow: none; }
   #{$zen} .q-card.q-card--square { border-radius: 0; }
   #{$zen} .q-card:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); }
@@ -237,6 +243,7 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-img { border-radius: var(--qds-radius-md); }
   #{$zen} .q-date__content { width: 100%; min-width: 0; }
   #{$zen} .q-date__arrow { width: auto; --qds-button-dense-min-height: 1.75rem; }
+  #{$zen} .q-time__clock-pointer { color: var(--qds-color-primary); }
   #{$zen} .q-option-group--inline { gap: var(--qds-space-md); }
   #{$zen} .qds-option-group--card :is(.q-radio, .q-checkbox) { border: 1px solid var(--qds-stroke-strong); border-radius: var(--qds-radius-lg); background: #{$raised}; box-shadow: #{$lift-1}, #{$edge}; }
   #{$zen} .qds-option-group--card :is(.q-radio, .q-checkbox).qds-active { border-color: var(--qds-fg-brand); background: var(--qds-surface-brand-soft); box-shadow: #{$press}; }
@@ -267,6 +274,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-list .q-item__label--header { padding: var(--qds-space-md) var(--qds-space-md) var(--qds-space-xs); color: var(--qds-fg-muted); font-size: var(--qds-font-size-overline); font-weight: var(--qds-font-weight-semibold); }
   #{$zen} .q-item .q-item__section--side > .q-icon { color: var(--qds-fg-muted); }
   #{$zen} .q-expansion-item { border-radius: var(--qds-radius-lg); }
+  #{$zen} .q-tree__node--selected { border-radius: var(--qds-radius-control); outline: 1px solid transparent; outline-offset: -1px; background: #{$inset}; box-shadow: inset 0 0 0 1px var(--qds-stroke-strong), #{$press}; }
+  #{$zen} .q-tree__node--selected::after { display: none; }
   #{$zen} .q-table thead th { color: var(--qds-fg-muted); font-weight: var(--qds-font-weight-semibold); background: #{$base}; }
   #{$zen} .q-table :is(th, td) { border-color: var(--qds-stroke-default); }
   #{$zen} .q-table tbody tr:last-child > td { border-bottom: 0; }
@@ -274,7 +283,10 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-table tbody tr.selected > td { background: var(--qds-surface-brand-soft); }
   #{$zen} .q-card > .q-table__container { border: 0; border-radius: 0; background: transparent; box-shadow: none; }
   #{$zen} .q-table__bottom--nodata { margin: var(--qds-space-sm); border: 1px dashed var(--qds-stroke-strong); border-radius: var(--qds-radius-md); color: var(--qds-fg-muted); }
-  #{$zen} .q-pagination .q-btn { min-width: var(--qds-button-min-height); padding-inline: 0.5rem; border-radius: var(--qds-radius-full); }
+  // Quasar inlines a 2em min-width; an explicit width sizes the pebble while it can still shrink.
+  #{$zen} .q-pagination .q-btn { width: var(--qds-button-min-height); border-radius: var(--qds-radius-full); }
+  #{$zen} .q-pagination .q-field__control { padding-inline: 0.25rem; }
+  #{$zen} .q-pagination .q-field__native { text-align: center; }
   #{$zen} .q-pagination { --qds-pagination-active-bg: var(--qds-color-primary); --qds-pagination-active-text: var(--qds-text-on-solid); }
   #{$zen} .q-pagination .q-btn[aria-current='page'] { --_qds-zen-depth: #{$lift-1}; }
 }
@@ -313,7 +325,7 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-linear-progress { font-size: 0.375rem; }
   #{$zen} .q-linear-progress__track { background: #{$inset}; box-shadow: #{$well}; }
   #{$zen} .q-linear-progress__model { border-radius: var(--qds-radius-full); }
-  #{$zen} .q-circular-progress__track { color: var(--qds-bg-surface-2); }
+  #{$zen} .q-circular-progress__track { color: color-mix(in srgb, var(--qds-fg-default) 16%, transparent); }
 }
 
 @mixin local-dark {
@@ -329,6 +341,7 @@ $ease: var(--qds-motion-fast);
   #{$reading} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-list--bordered, .q-table__container, .q-banner, .q-breadcrumbs) { border-color: var(--qds-stroke-strong); }
   #{$reading} :is(.q-field__control, .q-slider__inner, .q-toggle__track, .q-checkbox__bg, .q-radio__bg) { background: var(--qds-control-fill-default); }
   #{$reading} .q-item:is(.q-item--active, [aria-selected='true']) { background-color: var(--qds-surface-brand-soft); }
+  #{$reading} .q-tree__node--selected { background: var(--qds-surface-brand-soft); box-shadow: inset 0 0 0 1px var(--qds-stroke-strong); }
   #{$reading} :is(.q-btn, .q-field__control, .q-tab, .q-menu, .q-item, .q-chip, .q-toggle__thumb, .q-toggle__track),
   #{$reading} :is(.q-field__control, .q-item, .q-toggle__thumb, .q-toggle__track)::before,
   #{$reading} :is(.q-field__control, .q-item, .q-toggle__thumb, .q-toggle__track)::after {
