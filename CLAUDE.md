@@ -39,9 +39,10 @@ selectors. Anything that is not generic, reusable visual language does not belon
 - `pnpm gallery:shadcn-reference:test` — dedicated two-origin comparison config; add `QDS_SCREENS=1` only in the matching pinned Playwright image for screenshot pairs.
 
 The package publishes built TypeScript runtime entrypoints in `dist/` (`main` and `types` in
-`package.json` point at compiled ESM and `.d.ts` files), while SCSS and font exports remain source-first
-from `src/`. Run `pnpm build` after changing exported `.ts` files so the gallery and package exports use
-fresh compiled runtime code. Validate visual work via `typecheck` + visual review in the gallery.
+`package.json` point at compiled ESM and `.d.ts` files) and compiled CSS bundles in `dist/css`, while the
+other SCSS and font exports remain source-first from `src/`. Run `pnpm build` after changing exported `.ts` files so the gallery and package exports use
+fresh compiled runtime code. The gallery imports `css/all` (SCSS source), so SCSS edits need no `pnpm build`.
+Validate visual work via `typecheck` + visual review in the gallery.
 
 ## Architecture
 
@@ -84,12 +85,13 @@ do not silently recolor it or extend library-palette guarantees to arbitrary aut
 variant's rules (plus `layered/` twins). Separate additive files would reorder equal-specificity ties, so variant
 files are complete and replace `./css`. `./css`, `./css/layered` and `./css/variants/*` export those files;
 `./css/all` keeps the SCSS source. A new variant needs no extra wiring as long as every rule is scoped by
-`.qds-variant-<name>`; add the name to `VARIANT_SCOPES` in the partition script. Mixed selector lists are split
-per selector.
+`.qds-variant-<name>`; add the name to `VARIANT_SCOPES` in the partition script and to the `--_qds-variant`
+sentinel loop in `src/themes/default.scss` (the runtime's missing-stylesheet warning reads it). Mixed selector
+lists are split per selector.
 
 ### CSS entry point
 
-`src/css/index.scss` (the `./css` export) `@use`s `themes/fallbacks` (a guaranteed base layer defining
+`src/css/index.scss` (the `./css/all` export, built into `dist/css/index.css` for `./css`) `@use`s `themes/fallbacks` (a guaranteed base layer defining
 every public `--qds-*` once) then `themes/default`, then `@include`s each override partial's
 top-level (unlayered) `@mixin styles`. Adding a component override = create
 `src/css/components/_name.scss` exposing `@mixin styles` (scoped to `.qds-ui`, consuming `var(--qds-*)`)
@@ -138,9 +140,10 @@ notice for the adaptation; the development-only reference application is exclude
 ### Public API surface
 
 `src/index.ts` re-exports the runtime controller, theme metadata/types, `QDS_TOKENS` (+ token types),
-and `qdsIconSet`. `package.json#exports` exposes `.`, `./css`, `./css/layered`, `./quasar-variables`,
-`./runtime`, `./tokens`, `./tokens/default`, `./themes`, `./themes/default`, `./themes/fallbacks`,
-`./fonts/*`, and `./icons/quasar-icon-set`. Update both when changing the public surface.
+and `qdsIconSet`. `package.json#exports` exposes `.`, `./runtime`, `./tokens`, `./themes`,
+`./icons/quasar-icon-set`, `./qwindow`, `./css`, `./css/layered`, `./css/variants/*`, `./css/layered/variants/*`,
+`./css/all`, `./css/all/layered`, `./css/extensions/*` (`qwindow`, `qwindow/layered`), `./quasar-variables`,
+`./tokens/default`, `./themes/default`, `./themes/fallbacks`, and `./fonts/*`. Update both when changing the public surface.
 
 ## Conventions
 
