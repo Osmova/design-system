@@ -45,7 +45,7 @@ import './src/fonts/selawik.css'
 import './src/css/index.scss'
 import '@quasar/quasar-ui-qwindow/index.css'
 import '@osmova/quasar-design-system/css/extensions/qwindow'
-import './stories/_shared/story.scss'
+import './examples/storybook/demos/showcase.scss'
 
 type QuasarInstall = (app: App, options: object, ssrContext?: unknown) => void
 
