@@ -2,6 +2,7 @@
 @use '../importance';
 
 $shadcn: ':is(.qds-ui.qds-variant-shadcn, .qds-ui .qds-variant-shadcn)';
+$zen: '.qds-variant-zen:is(.qds-ui, .qds-ui *)';
 
 @mixin styles {
   // This optional extension intentionally targets only the QWindow BEM contract.
@@ -87,5 +88,18 @@ $shadcn: ':is(.qds-ui.qds-variant-shadcn, .qds-ui .qds-variant-shadcn)';
     .qds-window--headless { border-color: var(--qds-stroke-default); }
     .qds-window--dense .qds-window__chrome { gap: var(--qds-space-xs); }
   }
+  // Zen: an opaque raised sheet with an essential edge; no acrylic, depth drops in reading mode.
+  #{$zen} {
+    .qds-window { color: var(--qds-fg-default); background: var(--qds-bg-card); border-color: var(--qds-stroke-default); border-radius: var(--qds-radius-lg); box-shadow: var(--qds-shadow-lg), var(--_qds-zen-edge); }
+    .qds-window--floating { @include materials.solid(var(--qds-bg-card)); }
+    .qds-window--active { border-color: var(--qds-stroke-strong); }
+    .qds-window--embedded { box-shadow: var(--qds-shadow-sm), var(--_qds-zen-edge); }
+    .qds-window__titlebar { color: var(--qds-fg-strong); background: var(--qds-bg-surface-1); border-block-end: 1px solid var(--qds-stroke-default); }
+    .qds-window__title { font-family: var(--qds-font-family); letter-spacing: 0; }
+    .qds-window__action.q-btn.q-btn--flat { border-radius: var(--qds-radius-full); }
+    .qds-window__body { color: var(--qds-fg-default); background: var(--qds-bg-card); }
+    :is(.qds-window--maximized, .qds-window--fullscreen) { border-radius: 0; box-shadow: none; }
+  }
+  .qds-variant-zen.qds-reading:is(.qds-ui, .qds-ui *) .qds-window { border-color: var(--qds-stroke-strong); box-shadow: none; }
   @media (forced-colors: active) { :is(.qds-variant-shadcn,.qds-variant-term,.qds-variant-one):is(.qds-ui,.qds-ui *) .qds-window__action--close { --_qds-window-close-ring: Highlight; } }
 }
