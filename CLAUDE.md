@@ -5,8 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 `@osmova/quasar-design-system` — an opinionated **visual layer** for Quasar 2. Microsoft Fluent 2 is the
-primary direction, now with tonal/acrylic defaults; the `ink` variant is the paper-neutral editorial
-surface with charcoal type and pastel role washes, and the `one` variant references Samsung One UI
+primary direction, now with tonal/acrylic defaults; the `ink` variant is a single-ink e-ink
+interface (charcoal, black or navy ink on flat paper, roles as fill patterns, one red for errors), and the `one` variant references Samsung One UI
 (neutral grey or true-black pages, rounded blocks, pill controls, a calm blue accent). It provides design tokens, surfaces, shape, motion, typography,
 Quasar component overrides, and a runtime light/dark/system + variant controller.
 The fifth variant, `shadcn`, provides opaque New York-inspired native Quasar styling with
@@ -107,6 +107,8 @@ and `@include` it in `index.scss` (and the layered entry).
   `qds-theme-light|dark` and `.qds-ui` classes onto the target (default `document.body`).
 - `.qds-ui` is the scoping class the stronger overrides depend on — it is added here, not by hand.
 - Applies the `variant` as a body class (`qds-variant-win|ink|one|term|shadcn|zen|glass`; legacy `fluent`/`air`/`studio` normalize to `win`; legacy `feather` normalizes to `ink`; legacy `mobile`/`terminal` normalize to `one`/`term`).
+- Exposes `inkColor` (`charcoal` default, `black`, `navy`) the same way: `setInkColor()`, `INK_COLORS`, `InkColor`,
+  `data-qds-ink` written only while ink is active.
 - Exposes `shadcnBaseColor` in options/state/computed refs and `setShadcnBaseColor()`; exports
   `SHADCN_BASE_COLORS` and `ShadcnBaseColor`. Invalid palettes normalize to Neutral. Selection survives
   other variants, while the active palette attribute exists only on shadcn.

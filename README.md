@@ -54,7 +54,7 @@ import '@osmova/quasar-design-system/css'
 import '@osmova/quasar-design-system/css/variants/zen' // instead of './css'
 ```
 
-Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 24 KB and a variant bundle is 26–43 KB, against 58.5 KB for everything. A variant file **replaces** `./css`: importing both applies the default rules twice and lets them override the variant.
+Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 25 KB and a variant bundle is 26–43 KB, against about 70 KB for everything. A variant file **replaces** `./css`: importing both applies the default rules twice and lets them override the variant.
 
 An app that switches variants at runtime either imports every variant at once:
 
@@ -228,7 +228,7 @@ Tokens: `--qds-material-{thin,regular,thick}-{bg,blur,filter}`, `--qds-material-
 The package is structured around `src/themes/`. For now there is one real theme, `default`, plus small runtime variants layered over it:
 
 - `win`: default Windows 11 (WinUI 3) direction, formerly named `fluent`, with a Mica app backdrop, acrylic overlays, solid reading surfaces, and low-border content. Absorbs the legacy Air translucency behavior.
-- `ink`: paper-neutral editorial surfaces with charcoal type and coordinated pastel role washes.
+- `ink`: a single-ink e-ink interface. One ink on flat paper (charcoal by default, or black or navy), dark is the same ink inverted, roles read as solid ink, outline, double stroke or fill patterns, selection inverts, one red marks errors and destructive actions, and media renders greyscale.
 - `one`: Samsung One UI-inspired neutral grey or true-black pages, rounded blocks, pill controls, a calm blue accent, and touch-friendly rhythm.
 - `term`: opaque amber developer UI on warm cream or near-black panes, with crisp hairline rules, amber fills carrying dark ink, and a monospace-forward feel.
 - `zen`: linen paper with sage controls and a quiet reading rhythm — warm linen surfaces, a muted sage primary, 12px control and 20px block radii, gentle diffuse depth, and an essential 1px edge on every control so nothing depends on a shadow alone. The opt-in `.qds-reading` class strips decorative depth and motion while every boundary survives.
@@ -268,6 +268,17 @@ theme.setShadcnBaseColor(nextPalette)
 ```
 
 Mode, variant, and `shadcnBaseColor` persist together under the existing storage key (`bastvi.quasar-design-system.theme` by default). A valid stored palette wins over configuration; an older stored record without that field keeps the configured palette, or Neutral. Invalid JavaScript/storage palette values normalize to Neutral. Switching to another variant retains the palette selection but removes `data-qds-shadcn-base-color`; returning to shadcn restores it. `destroy()` removes owned attributes/classes and the system-theme listener. The controller can be created without a DOM for SSR; select deterministic server markup and initialize on the client to apply system preference and persistence.
+
+The ink variant has its own ink colour (`charcoal`, `black` or `navy`; charcoal by default), with the same model:
+
+```ts
+import { configureDesignSystem, INK_COLORS, type InkColor } from '@osmova/quasar-design-system'
+
+const theme = configureDesignSystem(app, { variant: 'ink', inkColor: 'navy' })
+theme.setInkColor('black')
+```
+
+It persists with the mode and variant, and the runtime writes `data-qds-ink` only while ink is active (CSS-only: put `data-qds-ink="navy"` next to `qds-variant-ink`; missing or invalid values use charcoal). Ink renders media greyscale; add `qds-media-color` (always in colour), `qds-media-color-hover` (colour on hover or focus) or `qds-media-color-reveal` (fades to colour once it appears, static under reduced motion) to the media or any ancestor. Handwriting is opt-in through `.qds-hand` / `.text-hand`, display titles and `<em>`/`<i>`; load the faces with `@osmova/quasar-design-system/fonts/ink.css`.
 
 Use the default **body target** for Quasar's teleported dialogs, menus, tooltips, notifications, and loading plugins. A custom `target` scopes descendant controls only: portals mounted elsewhere do not inherit it, and body typography/backdrop rules are not relocated to that subtree. Supported visual scoping is a single body root or an isolated custom root; sibling roots can be themed independently when their scopes do not overlap. Put the variant, palette, and mode on the **same element**.
 
