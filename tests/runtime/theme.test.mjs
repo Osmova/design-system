@@ -120,7 +120,7 @@ test('all palettes switch on the same custom target and persist with mode and va
     assert.equal(subtree.dataset.qdsShadcnBaseColor, name)
     assert.equal(subtree.dataset.qdsVariant, 'shadcn')
     assert.equal(subtree.dataset.qdsMode, 'light')
-    assert.deepEqual(JSON.parse(env.storage.get(storageKey)), { mode: 'light', variant: 'shadcn', shadcnBaseColor: name, shadcnAccent: 'none', inkColor: 'navy' })
+    assert.deepEqual(JSON.parse(env.storage.get(storageKey)), { mode: 'light', variant: 'shadcn', shadcnBaseColor: name, shadcnAccent: 'none', inkColor: 'charcoal' })
   }
   controller.setDark()
   assert.equal(subtree.dataset.qdsResolved, 'dark')
@@ -161,8 +161,8 @@ test('shadcn accent applies only on shadcn, persists, and falls back to none', (
 
 test('ink colours: exports, attribute only on ink (legacy feather too), persistence, cleanup', () => {
   assert.equal(inkThemesExport, INK_COLORS)
-  assert.deepEqual(INK_COLORS.map(({ name, label }) => [name, label]), [['navy', 'Navy'], ['black', 'Black'], ['charcoal', 'Charcoal']])
-  assert.equal(DEFAULT_DESIGN_SYSTEM_OPTIONS.inkColor, 'navy')
+  assert.deepEqual(INK_COLORS.map(({ name, label }) => [name, label]), [['charcoal', 'Charcoal'], ['black', 'Black'], ['navy', 'Navy']])
+  assert.equal(DEFAULT_DESIGN_SYSTEM_OPTIONS.inkColor, 'charcoal')
   for (const bad of [undefined, null, '', 'Navy', 'navy ', '__proto__', 'toString', {}, ['black'], 1]) {
     assert.equal(isInkColor(bad), false)
   }
@@ -170,8 +170,8 @@ test('ink colours: exports, attribute only on ink (legacy feather too), persiste
   const subtree = target()
   const controller = createDesignSystemController({ target: subtree, variant: 'ink', mode: 'light' })
   controller.initialize()
-  assert.equal(controller.inkColor.value, 'navy')
-  assert.equal(subtree.dataset.qdsInk, 'navy')
+  assert.equal(controller.inkColor.value, 'charcoal')
+  assert.equal(subtree.dataset.qdsInk, 'charcoal')
   for (const { name } of INK_COLORS) {
     assert.equal(controller.setInkColor(name), name)
     assert.equal(subtree.dataset.qdsInk, name)
@@ -181,7 +181,7 @@ test('ink colours: exports, attribute only on ink (legacy feather too), persiste
   controller.setVariant('shadcn')
   assert.equal(subtree.dataset.qdsInk, undefined)
   assert.equal(subtree.dataset.qdsShadcnBaseColor, 'neutral')
-  assert.equal(controller.inkColor.value, 'charcoal')
+  assert.equal(controller.inkColor.value, 'navy')
   controller.setInkColor('black')
   assert.equal(subtree.dataset.qdsInk, undefined)
   assert.equal(controller.setVariant('feather'), 'ink')
@@ -192,20 +192,20 @@ test('ink colours: exports, attribute only on ink (legacy feather too), persiste
   assert.deepEqual(env.body.dataset, { author: 'retained' })
 
   browser()
-  const legacy = createDesignSystemController({ persist: false, variant: 'feather', inkColor: 'charcoal' })
+  const legacy = createDesignSystemController({ persist: false, variant: 'feather', inkColor: 'navy' })
   legacy.initialize()
-  assert.equal(document.body.dataset.qdsInk, 'charcoal')
+  assert.equal(document.body.dataset.qdsInk, 'navy')
   legacy.destroy()
   assert.equal(document.body.dataset.qdsInk, undefined)
 })
 
-test('stored ink colour wins; absent old field preserves configured colour; invalid values normalise Navy', () => {
+test('stored ink colour wins; absent old field preserves configured colour; invalid values normalise Charcoal', () => {
   for (const [stored, config, expected] of [
     [{ mode: 'dark', variant: 'ink', inkColor: 'black' }, 'charcoal', 'black'],
-    [{ mode: 'dark', variant: 'ink', shadcnBaseColor: 'slate' }, 'charcoal', 'charcoal'],
-    [{ mode: 'light', variant: 'term' }, undefined, 'navy'],
-    [{ inkColor: null }, 'black', 'navy'],
-    [{ inkColor: 'unknown' }, 'charcoal', 'navy'],
+    [{ mode: 'dark', variant: 'ink', shadcnBaseColor: 'slate' }, 'navy', 'navy'],
+    [{ mode: 'light', variant: 'term' }, undefined, 'charcoal'],
+    [{ inkColor: null }, 'black', 'charcoal'],
+    [{ inkColor: 'unknown' }, 'black', 'charcoal'],
   ]) {
     const env = browser(stored)
     const controller = createDesignSystemController({ mode: 'light', variant: 'ink', inkColor: config })
@@ -218,10 +218,10 @@ test('stored ink colour wins; absent old field preserves configured colour; inva
   for (const bad of [null, 'Black', 'bad', '', '__proto__', 'toString', {}, ['black'], 42, false]) {
     const controller = createDesignSystemController({ inkColor: bad, persist: false, variant: 'ink' })
     controller.initialize()
-    assert.equal(controller.inkColor.value, 'navy')
+    assert.equal(controller.inkColor.value, 'charcoal')
     controller.setInkColor('black')
-    assert.equal(controller.setInkColor(bad), 'navy')
-    assert.equal(document.body.dataset.qdsInk, 'navy')
+    assert.equal(controller.setInkColor(bad), 'charcoal')
+    assert.equal(document.body.dataset.qdsInk, 'charcoal')
     controller.destroy()
   }
 })
@@ -236,7 +236,7 @@ test('mandatory SSR: ink colour switches and persists state without any DOM', ()
   controller.setVariant('win')
   controller.destroy()
   controller.initialize()
-  assert.equal(controller.inkColor.value, 'charcoal')
+  assert.equal(controller.inkColor.value, 'navy')
   controller.destroy()
 })
 

@@ -124,7 +124,7 @@ export const DEFAULT_DESIGN_SYSTEM_OPTIONS: Required<
   variant: 'win',
   shadcnBaseColor: 'neutral',
   shadcnAccent: 'none',
-  inkColor: 'navy',
+  inkColor: 'charcoal',
   syncWithSystem: true,
   persist: true,
   storageKey: 'bastvi.quasar-design-system.theme',
@@ -433,7 +433,7 @@ function normalizeShadcnAccent(value: unknown): ShadcnAccentColor {
 }
 
 function normalizeInkColor(value: unknown): InkColor {
-  return isInkColor(value) ? value : 'navy'
+  return isInkColor(value) ? value : 'charcoal'
 }
 
 function normalizeVariant(value: unknown): DesignSystemVariantName {
