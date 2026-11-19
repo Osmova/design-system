@@ -4,6 +4,7 @@ $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
+$win: '.qds-variant-win:is(.qds-ui, .qds-ui *)';
 
 @mixin styles {
   // QMarkupTable carries the same container/card classes, so one anatomy covers both.
@@ -26,6 +27,7 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
   .qds-ui :is(.q-table--bordered, .qds-table--bordered) { border: var(--qds-border-width-control) solid var(--qds-stroke-default); }
 
   .qds-ui .q-table__container :is(.q-table__top, .q-table__bottom, thead, tr, th, td) { border-color: var(--qds-table-divider); }
+  #{$win} .q-table__container { --qds-table-divider: var(--qds-stroke-divider); }
   .qds-ui :is(.q-table__top, .q-table__bottom) { color: var(--qds-fg-muted); }
   .qds-ui .q-table { color: inherit; background: transparent; }
   .qds-ui .q-table thead tr { height: var(--qds-table-header-height); background: var(--qds-table-header-bg); }

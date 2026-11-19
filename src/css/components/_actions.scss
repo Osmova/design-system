@@ -5,6 +5,7 @@ $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
 $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
+$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
 
 @mixin styles {
   .qds-ui .q-breadcrumbs { color: var(--qds-fg-muted); font-size: var(--qds-font-size-body1); }
@@ -82,6 +83,17 @@ $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
   .qds-ui .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) {
     @include importance.declarations { color: var(--qds-fg-strong) !important; background-color: var(--qds-segmented-thumb-bg) !important; }
     box-shadow: var(--qds-shadow-2);
+  }
+
+  // Toolkit Segmented: idle labels stay primary and the selected segment carries a 16 x 3px accent pill.
+  #{$win} .q-btn-toggle > .q-btn.q-btn-item:where(:not(.disabled)) { --qds-fg-muted: var(--qds-fg-default); }
+  #{$win} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active)::after {
+    position: absolute;
+    inset: auto calc(50% - 0.5rem) 0;
+    height: 3px;
+    content: '';
+    background: var(--qds-tab-active-rail);
+    border-radius: var(--qds-radius-full);
   }
 
   .qds-ui .q-fab .q-fab__actions { gap: var(--qds-space-xs); }

@@ -67,13 +67,13 @@ async function renderedBoundaryContrast(page: Parameters<typeof computed>[0], se
 
 const EXPECTED: Record<Mode, Record<Variant, { surface: string; primary: string; controlRadius: string; cardRadius: string }>> = {
   light: {
-    win: { surface: '#ffffff', primary: 'rgb(15, 108, 189)', controlRadius: '4px', cardRadius: '8px' },
+    win: { surface: '#ffffff', primary: 'rgb(0, 95, 184)', controlRadius: '4px', cardRadius: '8px' },
     ink: { surface: '#fbf9f5', primary: 'rgb(46, 44, 40)', controlRadius: '10px', cardRadius: '16px' },
     one: { surface: '#ffffff', primary: 'rgb(27, 95, 207)', controlRadius: '14px', cardRadius: '24px' },
     term: { surface: '#f8f6f0', primary: 'rgb(252, 196, 13)', controlRadius: '6px', cardRadius: '10px' },
   },
   dark: {
-    win: { surface: '#292929', primary: 'rgb(25, 118, 202)', controlRadius: '4px', cardRadius: '8px' },
+    win: { surface: '#292929', primary: 'rgb(96, 205, 255)', controlRadius: '4px', cardRadius: '8px' },
     ink: { surface: '#282622', primary: 'rgb(236, 229, 216)', controlRadius: '10px', cardRadius: '16px' },
     one: { surface: '#1a1a1a', primary: 'rgb(47, 111, 220)', controlRadius: '14px', cardRadius: '24px' },
     term: { surface: '#141412', primary: 'rgb(252, 196, 13)', controlRadius: '6px', cardRadius: '10px' },
@@ -657,7 +657,7 @@ test.describe('QDS override gate', () => {
           expect.soft(await anchor.evaluate((el) => getComputedStyle(el).textDecorationLine), `${cell} Quasar anchor components keep no underline`).toBe('none')
           expect.soft(await anchor.evaluate((el) => getComputedStyle(el).color), `${cell} Quasar anchor components keep their own ink`).not.toBe(await resolvedColor(page, '--qds-fg-brand'))
         }
-        const focusStroke = await resolvedColor(page, '--qds-stroke-focus')
+        const focusStroke = await resolvedColor(page, variant === 'win' ? '--_qds-win-focus-outer' : '--qds-stroke-focus')
         for (const target of [link, '[data-test="qds-type-role-button"]']) {
           const focus = await ring(target)
           expect.soft(focus.visible, `${cell} ${target} shows focus-visible`).toBe(true)

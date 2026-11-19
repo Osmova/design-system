@@ -99,6 +99,49 @@ $dark-semantic: (
   bar-dark-bg: var(--qds-bg-surface-1), bar-dark-fg: var(--qds-fg-default),
 ) !default;
 
+// Win-only WinUI 3 values (Common_themeresources_any.xaml), emitted on the
+// win variant class so the other profiles keep the shared semantic maps.
+// The accent bottom stroke is deliberately softer than WinUI's #66000000.
+$win-light: (
+  fg-disabled: rgba(0, 0, 0, 0.361), state-hover: rgba(0, 0, 0, 0.035), state-pressed: rgba(0, 0, 0, 0.024),
+  control-stroke-on-accent-bottom: rgba(0, 0, 0, 0.2),
+  accent-fill-disabled: rgba(0, 0, 0, 0.216), text-on-accent-disabled: #ffffff,
+  bg-overlay: rgba(0, 0, 0, 0.302), stroke-divider: rgba(0, 0, 0, 0.058),
+  layer-alt: map.get($light-surfaces, 0), surface-stroke: rgba(117, 117, 117, 0.4),
+  material-stroke: rgba(0, 0, 0, 0.058), focus-outer: rgba(0, 0, 0, 0.894), backdrop-brand: 0.08, backdrop-accent: 0.05,
+) !default;
+// text-muted is TextFillColorSecondary (#C5FFFFFF) flattened onto the #202020 base.
+$win-dark: (
+  fg-disabled: map.get($dark-semantic, fg-disabled), state-hover: rgba(255, 255, 255, 0.059), state-pressed: rgba(255, 255, 255, 0.039),
+  control-stroke-on-accent-bottom: map.get($dark-semantic, control-stroke-on-accent-bottom),
+  accent-fill-disabled: rgba(255, 255, 255, 0.157), text-on-accent-disabled: rgba(255, 255, 255, 0.529),
+  bg-overlay: map.get($win-light, bg-overlay), stroke-divider: rgba(255, 255, 255, 0.082),
+  layer-alt: map.get($dark-semantic, card-fill), surface-stroke: map.get($win-light, surface-stroke),
+  material-stroke: rgba(0, 0, 0, 0.2), focus-outer: #ffffff, text-muted: #cccccc,
+  // The light-blue dark accent needs a fainter Mica wash than the shared 0.18.
+  backdrop-brand: 0.07, backdrop-accent: 0.04,
+) !default;
+// Segoe UI Variable first where Windows ships it; nothing is bundled.
+$win-font: (
+  body: ('Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', 'Inter Variable', Inter, 'Open Sans', 'SF Pro Text', 'Avenir Next', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif),
+  display: ('Segoe UI Variable Display', 'Segoe UI Variable', 'Segoe UI', 'Inter Variable', Inter, 'Open Sans', 'SF Pro Display', 'Avenir Next', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif),
+) !default;
+// Windows 11 default accent ramp (SystemAccentColor #0078D4) and system status colours. Light fills take a white
+// label and dark fills a black one, as TextOnAccentFillColorPrimary does; info follows the Attention severity.
+// Light warning is Caution #9D5D00 darkened one step so its pressed fill keeps 4.5:1 under the white label.
+$win-palette: (
+  light: (
+    primary: #005fb8, primary-light: #0078d4, primary-dark: #003e92, positive: #0f7b0f, negative: #c42b1c, warning: #925600, info: #005fb8,
+    on-fill: #ffffff, fg-brand: var(--qds-color-primary-dark), fg-info: #003e92,
+    positive-soft: #dff6dd, negative-soft: #fde7e9, warning-soft: #fff4ce,
+  ),
+  dark: (
+    primary: #60cdff, primary-light: #99ebff, primary-dark: #0078d4, positive: #6ccb5f, negative: #ff99a4, warning: #fce100, info: #60cdff,
+    on-fill: #000000, fg-brand: var(--qds-color-primary-light), fg-info: #99ebff,
+    positive-soft: #393d1b, negative-soft: #442726, warning-soft: #433519,
+  ),
+) !default;
+
 $space: (xs: 0.25rem, sm: 0.5rem, md: 1rem, lg: 1.5rem, xl: 2rem) !default;
 $radius: (xs: 2px, sm: 4px, md: 8px, lg: 8px, xl: 16px, full: 9999px, control: 4px) !default;
 

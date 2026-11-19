@@ -473,7 +473,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
         expect.soft(boundary.stroke !== 'rgba(0, 0, 0, 0)' || boundary.shadow !== 'none', `${mode}/${variant} overlay has a visible boundary (stroke or shadow)`).toBe(true)
         expect.soft(await computed(page, '.q-notification', 'background-color'), `${mode}/${variant} overlay has a surfaced background`).not.toBe('rgba(0, 0, 0, 0)')
         if (variant === 'win') {
-          expect.soft(boundary.shadow, `${mode}/Fluent transient overlay is lifted by the flyout shadow`).toBe(await resolvedShadow(page, '--qds-shadow-md'))
+          expect.soft(boundary.shadow, `${mode}/Fluent transient overlay is lifted by the WinUI flyout shadow`).toBe(await resolvedShadow(page, '--qds-shadow-28'))
           expect.soft(boundary.stroke, `${mode}/Fluent toast relies on shadow, not a stroke`).toBe('rgba(0, 0, 0, 0)')
         }
         if (variant === 'ink') {
