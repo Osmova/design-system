@@ -1,0 +1,98 @@
+{
+  "from": "@osmova/quasar-design-system@0.10.0",
+  "to": "@osmova/ds-quasar@1.0.0-alpha.0",
+  "rules": [
+    {
+      "kind": "package",
+      "find": "@osmova/quasar-design-system",
+      "replace": "@osmova/ds-quasar"
+    },
+    {
+      "kind": "repository",
+      "find": "github.com/Osmova/quasar-design-system",
+      "replace": "github.com/Osmova/design-system"
+    },
+    {
+      "kind": "storage-key",
+      "find": "bastvi.quasar-design-system.theme",
+      "replace": "osmova.ds.theme"
+    },
+    {
+      "kind": "product-name",
+      "find": "Quasar Design System",
+      "replace": "Osmova Design System"
+    },
+    {
+      "kind": "private-custom-property",
+      "pattern": "--_qds-",
+      "replace": "--_ods-"
+    },
+    {
+      "kind": "custom-property",
+      "pattern": "--qds-",
+      "replace": "--ods-"
+    },
+    {
+      "kind": "data-attribute",
+      "pattern": "data-qds-",
+      "replace": "data-ods-"
+    },
+    {
+      "kind": "sass-variable",
+      "pattern": "\\$qds-",
+      "replace": "$ods-"
+    },
+    {
+      "kind": "cascade-layer",
+      "pattern": "(?<![A-Za-z0-9_$./-])qds(?=\\.(?:reset|tokens|base|utilities|quasar|overrides)(?![A-Za-z0-9_-]))",
+      "replace": "ods"
+    },
+    {
+      "kind": "cascade-layer",
+      "pattern": "(?<=@layer\\b[^;{}]*)(?<![A-Za-z0-9_$.-])qds(?![A-Za-z0-9_.-])",
+      "replace": "ods"
+    },
+    {
+      "kind": "constant",
+      "pattern": "(?<![A-Za-z0-9])QDS_",
+      "replace": "ODS_"
+    },
+    {
+      "kind": "camel-identifier",
+      "pattern": "(?<![A-Za-z0-9])qds(?=[A-Z])",
+      "replace": "ods"
+    },
+    {
+      "kind": "pascal-identifier",
+      "pattern": "(?<![A-Za-z0-9])Qds(?=[A-Z])",
+      "replace": "Ods"
+    },
+    {
+      "kind": "class-or-name",
+      "pattern": "(?<![A-Za-z0-9_-])qds-",
+      "replace": "ods-"
+    },
+    {
+      "kind": "abbreviation",
+      "pattern": "(?<![A-Za-z0-9_])QDS(?![A-Za-z0-9_])",
+      "replace": "ODS"
+    }
+  ],
+  "keep": {
+    "files": [
+      "**/CHANGELOG.md",
+      "pnpm-lock.yaml",
+      "scripts/rename-map.json",
+      "scripts/rename-prefix.mjs",
+      "**/__screens__/**",
+      ".github/workflows/deploy.yml",
+      "examples/shadcn-reference/upstream/**"
+    ],
+    "derivedTokens": "data-test hook values (static and template prefixes) and hook names in screenshot baselines",
+    "tokens": [
+      "qds-catalog-select-",
+      "qds-dialog-",
+      "qds-menu-"
+    ]
+  }
+}

@@ -32,7 +32,9 @@
     "test:tokens:parity": "pnpm -C packages/quasar test:tokens:parity",
     "css:budget": "pnpm -C packages/quasar css:budget",
     "pack:dry": "pnpm -C packages/quasar pack:dry",
-    "verify:publish": "pnpm -C packages/quasar verify:publish"
+    "verify:publish": "pnpm -C packages/quasar verify:publish",
+    "rename:check": "node scripts/rename-prefix.mjs --check",
+    "rename:parity": "node scripts/check-rename-parity.mjs"
   },
   "engines": {
     "node": ">=20.19 <27"
