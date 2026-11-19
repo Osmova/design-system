@@ -1,0 +1,36 @@
+{
+  "name": "@bastvi/qds-gallery",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dogfood gallery that consumes @osmova/quasar-design-system as an external app.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test:visual": "playwright test",
+    "test:screens": "bash scripts/screens.sh"
+  },
+  "dependencies": {
+    "@osmova/quasar-design-system": "workspace:*",
+    "@phosphor-icons/vue": "^2.2.1",
+    "@quasar/quasar-ui-qwindow": "^3.0.2",
+    "quasar": "^2.35.0",
+    "quasar-extras-svg-icons": "^3.4.0",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@fluentui/tokens": "1.0.0-alpha.24",
+    "@fluentui/web-components": "^3.1.3",
+    "@microsoft/fast-element": "^3.0.3",
+    "@microsoft/focusgroup-polyfill": "^1.6.0",
+    "@playwright/test": "^1.48.0",
+    "@quasar/vite-plugin": "^1.9.0",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "sass-embedded": "^1.105.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.7",
+    "vue-tsc": "^3.3.12"
+  }
+}

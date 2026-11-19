@@ -1,161 +1,40 @@
 {
-  "name": "@osmova/quasar-design-system",
-  "version": "0.10.0",
-  "description": "Opinionated Quasar 2 design system inspired by Fluent 2, Apple, and One UI.",
+  "name": "osmova-design-system",
+  "version": "0.0.0",
+  "private": true,
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "sideEffects": [
-    "*.css",
-    "*.scss",
-    "src/**/*.css",
-    "src/**/*.scss",
-    "src/fonts/**/*"
-  ],
-  "files": [
-    "dist",
-    "src",
-    "CHANGELOG.md",
-    "README.md"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./runtime": {
-      "types": "./dist/runtime/theme.d.ts",
-      "import": "./dist/runtime/theme.js"
-    },
-    "./tokens": {
-      "types": "./dist/tokens/index.d.ts",
-      "import": "./dist/tokens/index.js"
-    },
-    "./themes": {
-      "types": "./dist/themes/index.d.ts",
-      "import": "./dist/themes/index.js"
-    },
-    "./icons/quasar-icon-set": {
-      "types": "./dist/icons/quasar-icon-set.d.ts",
-      "import": "./dist/icons/quasar-icon-set.js"
-    },
-    "./qwindow": {
-      "types": "./dist/qwindow.d.ts",
-      "import": "./dist/qwindow.js"
-    },
-    "./css": "./dist/css/index.css",
-    "./css/layered": "./dist/css/layered/index.css",
-    "./css/variants/*": "./dist/css/variants/*.css",
-    "./css/layered/variants/*": "./dist/css/layered/variants/*.css",
-    "./css/all": "./src/css/index.scss",
-    "./css/all/layered": "./src/css/index.layered.scss",
-    "./css/extensions/qwindow": "./src/css/extensions/qwindow.scss",
-    "./css/extensions/qwindow/layered": "./src/css/extensions/qwindow.layered.scss",
-    "./quasar-variables": "./src/quasar.variables.scss",
-    "./tokens/default": "./src/tokens/_default.scss",
-    "./themes/default": "./src/themes/default.scss",
-    "./themes/fallbacks": "./src/themes/fallbacks.scss",
-    "./fonts/inter.css": "./src/fonts/inter.css",
-    "./fonts/open-sans.css": "./src/fonts/open-sans.css",
-    "./fonts/selawik.css": "./src/fonts/selawik.css",
-    "./fonts/*": "./src/fonts/*"
-  },
   "scripts": {
-    "tokens": "node scripts/build-tokens.mjs",
-    "build": "node scripts/build-tokens.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "stories": "pnpm build && histoire dev",
-    "stories:build": "pnpm build && histoire build",
-    "stories:sb": "pnpm -C examples/storybook storybook",
-    "stories:sb:build": "pnpm -C examples/storybook build-storybook",
-    "catalog:generate": "node scripts/catalog-generate.mjs",
-    "catalog:check": "node scripts/catalog-check.mjs",
-    "catalog:check:complete": "node scripts/catalog-check.mjs --complete",
-    "catalog:test": "node --test tests/catalog/*.test.mjs",
-    "catalog:storybook": "pnpm -C examples/storybook storybook",
-    "catalog:storybook:build": "pnpm -C examples/storybook build-storybook",
-    "catalog:storybook:typecheck": "pnpm -C examples/storybook typecheck",
-    "catalog:browser:test": "pnpm -C examples/storybook exec playwright test --config playwright.proof.config.ts",
-    "gallery:dev": "pnpm -C examples/gallery dev",
-    "gallery:build": "pnpm -C examples/gallery build",
-    "gallery:test": "pnpm -C examples/gallery test:visual",
-    "gallery:screens": "pnpm -C examples/gallery test:screens",
-    "gallery:shadcn-reference:test": "pnpm -C examples/gallery exec playwright test --config playwright.shadcn-reference.config.ts",
+    "tokens": "pnpm -C packages/quasar tokens",
+    "build": "pnpm -C packages/quasar build",
+    "typecheck": "pnpm -C packages/quasar typecheck",
+    "stories": "pnpm -C packages/quasar stories",
+    "stories:build": "pnpm -C packages/quasar stories:build",
+    "stories:sb": "pnpm -C apps/storybook storybook",
+    "stories:sb:build": "pnpm -C apps/storybook build-storybook",
+    "catalog:generate": "pnpm -C packages/quasar catalog:generate",
+    "catalog:check": "pnpm -C packages/quasar catalog:check",
+    "catalog:check:complete": "pnpm -C packages/quasar catalog:check:complete",
+    "catalog:test": "pnpm -C packages/quasar catalog:test",
+    "catalog:storybook": "pnpm -C apps/storybook storybook",
+    "catalog:storybook:build": "pnpm -C apps/storybook build-storybook",
+    "catalog:storybook:typecheck": "pnpm -C apps/storybook typecheck",
+    "catalog:browser:test": "pnpm -C apps/storybook exec playwright test --config playwright.proof.config.ts",
+    "gallery:dev": "pnpm -C apps/gallery dev",
+    "gallery:build": "pnpm -C apps/gallery build",
+    "gallery:test": "pnpm -C apps/gallery test:visual",
+    "gallery:screens": "pnpm -C apps/gallery test:screens",
+    "gallery:shadcn-reference:test": "pnpm -C apps/gallery exec playwright test --config playwright.shadcn-reference.config.ts",
     "shadcn-reference:build": "pnpm -C examples/shadcn-reference build",
     "shadcn-reference:check": "pnpm -C examples/shadcn-reference check:source && pnpm -C examples/shadcn-reference typecheck",
     "shadcn-reference:test": "pnpm shadcn-reference:build && pnpm -C examples/shadcn-reference test:reference",
-    "test:runtime:ssr": "node --test tests/runtime/*.test.mjs",
-    "test:runtime:colorjs": "node scripts/test-runtime-colorjs.mjs",
-    "test:runtime:fill-contrast": "node scripts/test-runtime-fill-contrast.mjs",
-    "test:runtime:grammar:browser": "node tests/runtime/grammar-fixture-browser.mjs",
-    "test:runtime:variants:browser": "node tests/runtime/variant-bundles-browser.mjs",
-    "test:runtime": "pnpm test:runtime:ssr && pnpm test:runtime:colorjs && pnpm test:runtime:fill-contrast && pnpm test:runtime:grammar:browser && pnpm test:runtime:variants:browser",
-    "test:tokens:parity": "node tests/runtime/token-parity-browser.mjs",
-    "pack:dry": "npm pack --dry-run --json",
-    "css:budget": "node scripts/css-budget.mjs",
-    "verify:publish": "pnpm css:budget && pnpm build && pnpm typecheck && pnpm test:runtime && pnpm pack:dry",
-    "prepare": "tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "prepublishOnly": "pnpm verify:publish"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Osmova/quasar-design-system.git"
-  },
-  "keywords": [
-    "quasar",
-    "vue3",
-    "design-system",
-    "theme",
-    "fluent",
-    "one-ui",
-    "apple"
-  ],
-  "author": "Bastien Viglianti",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Osmova/quasar-design-system/issues"
-  },
-  "homepage": "https://github.com/Osmova/quasar-design-system#readme",
-  "peerDependencies": {
-    "@phosphor-icons/vue": "^2.0.0",
-    "@quasar/quasar-ui-qwindow": "^3.0.0",
-    "quasar": "^2.0.0",
-    "vue": "^3.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@phosphor-icons/vue": {
-      "optional": true
-    },
-    "@quasar/quasar-ui-qwindow": {
-      "optional": true
-    }
-  },
-  "devDependencies": {
-    "@fontsource-variable/inter": "^5.3.0",
-    "@fontsource-variable/open-sans": "^5.3.0",
-    "@histoire/plugin-vue": "1.0.0-beta.1",
-    "@phosphor-icons/vue": "^2.2.1",
-    "@quasar/quasar-ui-qwindow": "^3.0.2",
-    "@types/node": "^24.19.1",
-    "@vitejs/plugin-vue": "^6.0.9",
-    "colorjs.io": "0.7.1",
-    "histoire": "1.0.0-beta.1",
-    "postcss": "^8.5.32",
-    "quasar": "^2.35.0",
-    "sass": "^1.105.1",
-    "style-dictionary": "5.8.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.7",
-    "vue": "^3.5.43",
-    "vue-tsc": "^3.3.12"
+    "test:runtime": "pnpm -C packages/quasar test:runtime",
+    "test:runtime:ssr": "pnpm -C packages/quasar test:runtime:ssr",
+    "test:tokens:parity": "pnpm -C packages/quasar test:tokens:parity",
+    "css:budget": "pnpm -C packages/quasar css:budget",
+    "pack:dry": "pnpm -C packages/quasar pack:dry",
+    "verify:publish": "pnpm -C packages/quasar verify:publish"
   },
   "engines": {
     "node": ">=20.19 <27"
-  },
-  "dependencies": {
-    "quasar-extras-svg-icons": "^3.4.0"
   }
 }

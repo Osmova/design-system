@@ -1,5 +1,6 @@
 packages:
-  - '.'
+  - 'packages/*'
+  - 'apps/*'
   - 'examples/*'
 
 # Keep the existing three-day dependency cooldown in local installs and CI.

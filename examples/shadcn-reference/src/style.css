@@ -1,7 +1,7 @@
 /* Private document only. Never import this stylesheet into the QDS gallery. */
 @import "tailwindcss" source(none);
 @import "tw-animate-css";
-@import "../../../src/fonts/inter.css";
+@import "../../../packages/quasar/src/fonts/inter.css";
 @source "./";
 @source "../upstream/apps/v4/registry/new-york-v4/ui";
 

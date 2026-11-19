@@ -32,7 +32,7 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Install browser for mandatory runtime and gallery checks
-        run: pnpm -C examples/gallery exec playwright install --with-deps chromium
+        run: pnpm -C apps/gallery exec playwright install --with-deps chromium
 
       - name: Package build, types, runtime, CSS budgets, and pack dry-run
         run: pnpm verify:publish
@@ -42,7 +42,7 @@ jobs:
 
       - run: pnpm gallery:build
       - name: Verify emitted consumer CSS adoption order
-        run: node examples/gallery/scripts/test-consumer-css-order.mjs
+        run: node apps/gallery/scripts/test-consumer-css-order.mjs
       - run: pnpm stories:build
       - run: pnpm catalog:storybook:typecheck
       - run: pnpm catalog:storybook:build
@@ -63,8 +63,8 @@ jobs:
         run: >-
           python3 .github/scripts/assemble-site.py
           --sha "$RELEASE_SHA" --run-id "$SOURCE_RUN_ID" --repository "$SOURCE_REPOSITORY"
-          --gallery examples/gallery/dist --histoire .histoire/dist
-          --storybook examples/storybook/storybook-static
+          --gallery apps/gallery/dist --histoire packages/quasar/.histoire/dist
+          --storybook apps/storybook/storybook-static
 
       - name: Upload verified production site
         if: github.ref == 'refs/heads/production'
@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: examples/gallery/playwright-report/
+          path: apps/gallery/playwright-report/
           if-no-files-found: ignore
 
   screenshots-reference:
@@ -103,11 +103,11 @@ jobs:
       - run: pnpm gallery:build
 
       - name: Verify emitted consumer CSS adoption order
-        run: node examples/gallery/scripts/test-consumer-css-order.mjs
+        run: node apps/gallery/scripts/test-consumer-css-order.mjs
 
       - name: Check shared pinned Playwright version
         run: |
-          GALLERY_VERSION="$(pnpm -C examples/gallery exec node -p "require('@playwright/test/package.json').version")"
+          GALLERY_VERSION="$(pnpm -C apps/gallery exec node -p "require('@playwright/test/package.json').version")"
           REFERENCE_VERSION="$(pnpm -C examples/shadcn-reference exec node -p "require('@playwright/test/package.json').version")"
           test "$GALLERY_VERSION" = 1.61.0
           test "$REFERENCE_VERSION" = "$GALLERY_VERSION"
@@ -134,10 +134,10 @@ jobs:
         with:
           name: screenshots-reference
           path: |
-            examples/gallery/playwright-report/
-            examples/gallery/test-results/
-            examples/gallery/test-results-reference-metrics/
-            examples/gallery/test-results-reference-screens/
+            apps/gallery/playwright-report/
+            apps/gallery/test-results/
+            apps/gallery/test-results-reference-metrics/
+            apps/gallery/test-results-reference-screens/
             examples/shadcn-reference/playwright-report/
             examples/shadcn-reference/test-results/
             examples/shadcn-reference/dist/

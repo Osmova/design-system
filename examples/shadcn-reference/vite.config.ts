@@ -18,7 +18,7 @@ export default defineConfig({
   },
   server: {
     // Local font files only; this does not load QDS CSS or its runtime.
-    fs: { allow: [local('./'), local('../../src/fonts')] },
+    fs: { allow: [local('./'), local('../../packages/quasar/src/fonts')] },
   },
   build: { outDir: 'dist', emptyOutDir: true },
 })

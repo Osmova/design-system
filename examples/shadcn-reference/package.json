@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1 --port 5181 --strictPort",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "check:source": "node ../../scripts/shadcn-reference-snapshot.mjs --check && node ../../scripts/shadcn-reference-check.mjs",
+    "check:source": "node ../../packages/quasar/scripts/shadcn-reference-snapshot.mjs --check && node ../../packages/quasar/scripts/shadcn-reference-check.mjs",
     "test:reference": "playwright test"
   },
   "dependencies": {

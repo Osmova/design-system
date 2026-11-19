@@ -47,9 +47,9 @@ if __name__ == "__main__":
     parser.add_argument("--sha", required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--repository", required=True)
-    parser.add_argument("--gallery", default="examples/gallery/dist")
-    parser.add_argument("--histoire", default=".histoire/dist")
-    parser.add_argument("--storybook", default="examples/storybook/storybook-static")
+    parser.add_argument("--gallery", default="apps/gallery/dist")
+    parser.add_argument("--histoire", default="packages/quasar/.histoire/dist")
+    parser.add_argument("--storybook", default="apps/storybook/storybook-static")
     parser.add_argument("--output", default="site")
     args = parser.parse_args()
     assemble(Path(args.gallery), Path(args.histoire), Path(args.storybook), Path(args.output),
