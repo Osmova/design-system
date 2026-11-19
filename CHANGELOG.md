@@ -75,6 +75,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   `--qds-color-*` on the body (or `.qds-variant-win`), as for zen and glass.
 - **Zen rebuilt as a soft tactile grammar** (zen only): warm depth model, sage palette, Figtree UI and Fraunces
   display faces (load them with `@osmova/quasar-design-system/fonts/zen.css`), and all zen rules in one partial.
+- **Zen follows component props** (zen only): `unelevated`, `push`, `square`, `outline`, `standout`, fab, group,
+  pagination and skeleton props render as zen variants of themselves; ghost and borderless fields drop the well and keep
+  a thin line; italic display type is limited to h1–h3 and display titles; QWindow gets a zen sheet.
 
 ### Fixed
 
