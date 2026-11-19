@@ -23,6 +23,56 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   selects the new glass variant instead of resolving to the default; import `css/variants/glass` for it. To keep
   the previous look, use `variant: 'win'`; a stored `glass` record is not migrated. `air` and `studio` still
   resolve to `win`.
+- **Win WinUI 3 fidelity** (win variant only; every other variant keeps its paint). Values follow WinUI's
+  `Common_themeresources_any.xaml` and are emitted on `.qds-variant-win`, so they apply wherever the runtime sets
+  the win variant:
+  - Role-filled buttons (`color` standard/unelevated) draw a softer bottom edge: light
+    `--qds-control-stroke-on-accent-bottom` `rgba(0,0,0,.4)` -> `rgba(0,0,0,.2)` (dark unchanged at `.14`).
+  - Button glyphs render at full opacity (`--qds-control-icon-opacity` / `-active` `.72`/`.88` -> `1`; chip icons
+    follow, while the dropdown chevron stays a `.72` secondary hint), and dense buttons keep a 16px glyph
+    (`--qds-button-dense-icon-size` 14px -> 16px).
+  - Button labels use Regular 400 instead of Semibold 600.
+  - Checkbox and radio are 20px (was 16px) with a 12px check glyph; the radio dot is 12px at rest, 14px on hover
+    and 10px pressed. Dense controls stay 16px.
+  - The slider thumb's accent dot is 12px at rest (was 10.8px), 14px on hover and 10px pressed.
+  - Light `--qds-fg-disabled` `#bdbdbd` -> `rgba(0,0,0,.361)` (TextFillColorDisabled). Disabled role-filled
+    standard/unelevated buttons (not QBtnToggle segments) use AccentFillColorDisabled with
+    TextOnAccentFillColorDisabled and no edge, instead of the neutral disabled fill.
+  - Subtle hover/pressed fills follow SubtleFillColorSecondary/Tertiary, so pressed is lighter than hover:
+    light `.04`/`.08` -> `.035`/`.024`, dark `.06`/`.10` -> `.059`/`.039`.
+  - Dialogs follow ContentDialog instead of thick acrylic: a LayerFillColorAlt top layer (light `#fff`, dark
+    `rgba(255,255,255,.051)`) over the `--qds-surface-1` base, a SurfaceStrokeColorDefault border
+    (`rgba(0,0,0,.06)` / `rgba(255,255,255,.12)` -> `rgba(117,117,117,.4)`), and a last `QCardActions` row drawn as a
+    base-coloured footer band with a `--qds-card-stroke` top divider and 24px padding (was 16/24/24px); the body
+    section above it pads 24px (was 8px). Menus, tooltips and QBottomSheet keep acrylic. Dialogs open from a 105%
+    scale (was 96%), like ContentDialog; reduced motion still collapses it.
+  - `--qds-bg-overlay` follows SmokeFillColorDefault: light `rgba(0,0,0,.4)` / dark `.5` -> `rgba(0,0,0,.302)`.
+  - Tabs follow SelectorBar/NavigationView: the active indicator is a centred 16 x 3px pill (was the label width)
+    and the vertical indicator 3 x 16px (was 8px inset); idle labels use `--qds-fg-default` (was `--qds-fg-muted`),
+    hover dims to `--qds-fg-muted`, and hover no longer previews a grey indicator.
+  - QBtnToggle follows the Toolkit Segmented: idle labels use `--qds-fg-default` (was `--qds-fg-muted`) and the
+    selected segment carries a centred 16 x 3px accent pill.
+  - The toggle knob is 12px at rest (was 14px), 14px on hover and 17 x 14px pressed. Dense toggles are unchanged.
+  - `--qds-stroke-divider` follows DividerStrokeColorDefault: light `#e0e0e0` -> `rgba(0,0,0,.058)`, dark `#525252`
+    -> `rgba(255,255,255,.082)`; table rules use it too (was `--qds-stroke-subtle`).
+  - Dark `--qds-text-muted` follows TextFillColorSecondary: `#adadad` -> `#cccccc`.
+  - Keyboard focus follows the WinUI focus visual: a 2px FocusStrokeColorOuter ring (light `rgba(0,0,0,.894)`, dark
+    `#fff`; was the `--qds-stroke-focus` accent) with a 1px gap (`--qds-focus-ring-offset` 2px -> 1px) that reads as
+    the inner ring. Inset rings on filled joined-group segments keep the on-fill ink; forced colours keep `Highlight`.
+  - Flyouts sit at WinUI elevation 32: `--qds-menu-shadow`, `--qds-notification-shadow` and `--qds-elevation-flyout`
+    `--qds-shadow-16` -> `--qds-shadow-28`. The flyout stroke follows SurfaceStrokeColorFlyout
+    (`--qds-material-stroke` light `rgba(0,0,0,.06)` -> `.058`, dark `rgba(255,255,255,.12)` -> `rgba(0,0,0,.2)`).
+  - The Mica backdrop tints with the brand only: the accent top-right wash becomes a bottom-right brand wash.
+    Opaque and reduced-transparency fallbacks stay flat `--qds-surface-1`.
+  - `--qds-font-family` / `--qds-font-family-display` lead with Segoe UI Variable Text / Display, then Segoe UI, then
+    the existing stack; nothing is bundled, so other platforms render as before.
+- **Win uses the Windows 11 accent and status palette** (win variant only). Primary follows the default accent ramp:
+  light `#005FB8` with `#003E92` link text, dark `#60CDFF` with black labels and `#99EBFF` link text. Positive,
+  negative and warning follow Success `#0F7B0F`/`#6CCB5F`, Critical `#C42B1C`/`#FF99A4` and Caution (light
+  `#925600`, one step darker than `#9D5D00` so the pressed fill keeps 4.5:1; dark `#FCE100`), with InfoBar tonal
+  washes. Info follows the Attention accent instead of grey. Secondary and accent are unchanged. The dark Mica wash
+  is fainter (0.18 → 0.07). Because these values live on `.qds-variant-win`, apps that rebrand win override
+  `--qds-color-*` on the body (or `.qds-variant-win`), as for zen and glass.
 - **Zen rebuilt as a soft tactile grammar** (zen only): warm depth model, sage palette, Figtree UI and Fraunces
   display faces (load them with `@osmova/quasar-design-system/fonts/zen.css`), and all zen rules in one partial.
 

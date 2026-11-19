@@ -28,8 +28,8 @@ const LIMITS = { important: 46, doubled: 0, lines: 4600 }
 const ENTRIES = ['src/css/index.scss', 'src/css/index.layered.scss']
 const CORE_CAP = { min: 210000, gzip: 26000 }
 const VARIANT_CAP = { min: 380000, gzip: 46000 }
-// css/all and css/all/layered (every variant, for runtime switching); measured 603993 / 59263 at most.
-const ALL_CAP = { min: 610000, gzip: 60000 }
+// css/all and css/all/layered (every variant, for runtime switching); 622018 / 61263 with glass and win batch 1.
+const ALL_CAP = { min: 640000, gzip: 63000 }
 const EXTENSION_ALLOWANCE = { lines: 80, min: 4096, gzip: 1024 }
 const failures = []
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
