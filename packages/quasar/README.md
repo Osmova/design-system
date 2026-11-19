@@ -1,10 +1,10 @@
-# Osmova Design System
+# Osmova Design System — Quasar
 
-Opinionated Quasar 2 design system inspired by Microsoft Fluent 2, Apple's Human Interface Guidelines, and Samsung One UI.
+> **1.0.0-alpha.** APIs and class names can still change before 1.0.0.
 
-Published as `@osmova/ds-quasar`. It contains only generic visual language — no business logic, models, or app-specific assumptions.
+The Quasar 2 package of the Osmova Design System: tokens, a Quasar skin, and a runtime light/dark/system + variant controller. It contains only generic visual language — no business logic, models, or app-specific assumptions.
 
-Previously published as `@bastvi/quasar-design-system`. Existing releases remain available; migrate the package dependency and import paths to `@osmova/ds-quasar`. The exported API and visual styling are unchanged by the scope migration.
+Published as `@osmova/ds-quasar`. It succeeds the 0.x `quasar-design-system` package, which stays available. 1.0 renames the public `qds` prefix to `ods` in classes, custom properties, data attributes, cascade layers, Sass and TypeScript names, and moves the stored preference to `osmova.ds.theme`; the [CHANGELOG](./CHANGELOG.md) lists the renames and [`scripts/rename-map.json`](https://github.com/Osmova/design-system/blob/master/scripts/rename-map.json) holds the complete map.
 
 [Live gallery](https://qds.osmova.com/) · [Component catalog](https://qds.osmova.com/histoire/)
 

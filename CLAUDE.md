@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`@osmova/ds-quasar` — an opinionated **visual layer** for Quasar 2. Microsoft Fluent 2 is the
+Osmova Design System (1.0.0-alpha). `@osmova/ds-quasar` is an opinionated **visual layer** for Quasar 2. Microsoft Fluent 2 is the
 primary direction, now with tonal/acrylic defaults; the `ink` variant is a single-ink e-ink
 interface (charcoal, black or navy ink on flat paper, roles as fill patterns, one red for errors), and the `one` variant references Samsung One UI
 (neutral grey or true-black pages, rounded blocks, pill controls, a calm blue accent). It provides design tokens, surfaces, shape, motion, typography,
@@ -25,11 +25,18 @@ It is a pure visual product: **no business logic, no entity/model layer, no API/
 permissions, no app routes, no private endpoints.** Prefer semantic token names over app-specific
 selectors. Anything that is not generic, reusable visual language does not belong here.
 
+## Layout
+
+pnpm workspace: `packages/quasar` (the published `@osmova/ds-quasar`), `apps/gallery` (release gate),
+`apps/storybook` (catalog), `examples/shadcn-reference`. Root scripts proxy to them; package paths below
+(`src/`, `tokens/`, `scripts/`, `tests/`) are relative to `packages/quasar`. Changesets run in `alpha` pre mode.
+`scripts/rename-map.json` is the 0.x → 1.0 `qds` → `ods` map (`pnpm rename:check` must report 0).
+
 ## Commands
 
 - `pnpm typecheck` — `vue-tsc --noEmit` against `tsconfig.json`; run it
   after changing any `.ts`/`.vue`.
-- `pnpm gallery:dev` — run the example gallery (`examples/gallery`, a Quasar SPA that consumes the package).
+- `pnpm gallery:dev` — run the example gallery (`apps/gallery`, a Quasar SPA that consumes the package).
 - `pnpm gallery:build` — build the static gallery.
 - `pnpm gallery:test` — Playwright visual gate (the release gate; keep it green).
 - `pnpm test:runtime` — mandatory Node SSR/controller, independent color, and browser-cascade checks.
@@ -71,7 +78,7 @@ ODS CSS *after* Quasar's own CSS**. An optional `./css/layered` export wraps eve
 apps that deliberately layer Quasar. Consumers must first declare `@layer ods-important, quasar, ods;`
 and import native Quasar (and optional native QWindow) CSS into `layer(quasar)`. The layered exports
 configure `css/importance` to route the same important declarations into the earliest top-level
-`ods-important` layer; normal overrides remain in the later `qds` sublayers. The default export stays
+`ods-important` layer; normal overrides remain in the later `ods` sublayers. The default export stays
 unlayered. Do not combine both adoption paths within one Sass compilation.
 Important declarations reverse layer order. The variables-only shadcn helper already emits the seven
 Quasar role bridges unlayered; do not duplicate them in component/base styles or mutate global colors.
