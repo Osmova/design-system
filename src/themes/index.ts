@@ -38,9 +38,9 @@ export function isShadcnBaseColor(value: unknown): value is ShadcnBaseColor {
 }
 
 export const INK_COLORS = [
-  { name: 'navy', label: 'Navy' },
-  { name: 'black', label: 'Black' },
   { name: 'charcoal', label: 'Charcoal' },
+  { name: 'black', label: 'Black' },
+  { name: 'navy', label: 'Navy' },
 ] as const
 
 export type InkColor = (typeof INK_COLORS)[number]['name']
@@ -71,7 +71,7 @@ export const DESIGN_SYSTEM_VARIANTS = {
   ink: {
     name: 'ink',
     label: 'Ink',
-    description: 'One ink on paper, like an e-reader: navy, black or charcoal strokes, inverted selection and patterned roles.',
+    description: 'One ink on paper, like an e-reader: charcoal, black or navy strokes, inverted selection, patterned roles and one red for danger.',
     cssClass: 'qds-variant-ink',
   },
   one: {
