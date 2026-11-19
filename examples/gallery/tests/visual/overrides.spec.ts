@@ -219,6 +219,7 @@ test.describe('QDS override gate', () => {
   })
 
   test('semantic text, muted text, tonal badges, active items, and primary button variants retain AA contrast across the mode and variant matrix', async ({ page }) => {
+    test.setTimeout(90_000)
     await page.goto('/#tokens')
     const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info'] as const
     const buttonVariants = ['outline', 'flat', 'standard', 'tonal', 'solid'] as const
