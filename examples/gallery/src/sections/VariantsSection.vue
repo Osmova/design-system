@@ -283,6 +283,16 @@ const pages = reactive<Record<VariantName, number>>({
   padding: var(--qds-space-xs);
 }
 
+/* Ink has no tonal fills: roles are outlined, and only the alert takes the danger red. */
+.qds-variant-ink .variant-role {
+  box-shadow: inset 0 0 0 1px var(--qds-stroke-strong);
+}
+
+.qds-variant-ink .variant-role--negative {
+  color: var(--qds-fg-negative);
+  box-shadow: inset 0 0 0 1px var(--qds-fg-negative);
+}
+
 .variant-card__progress {
   display: grid;
   gap: var(--qds-space-xs);

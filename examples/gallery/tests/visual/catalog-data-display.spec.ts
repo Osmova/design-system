@@ -152,7 +152,7 @@ test.describe('QDS catalog data display gate', () => {
         await expect(page.locator('[data-test="qds-linear-progress"]')).toBeVisible()
         await expect(page.locator('[data-test="qds-circular-progress"]')).toBeVisible()
         await expect(page.locator('[data-test="qds-expansion-expanded"]')).toBeVisible()
-        expect.soft(await computed(page, '[data-test="qds-btn-group"]', 'border-radius'), `${mode}/${variant} action group follows the button radius`).toBe(await customProperty(page, '--qds-button-radius'))
+        expect.soft(await computed(page, '[data-test="qds-btn-group"]', 'border-radius'), `${mode}/${variant} action group follows the button radius`).toBe(variant === 'ink' ? '8.8px 4.8px 8px 4px / 4.8px 8px 4px 8.8px' : await customProperty(page, '--qds-button-radius'))
         expect.soft(await computed(page, '[data-test="qds-linear-progress"] .q-linear-progress__model', 'background-color'), `${mode}/${variant} linear progress uses the text-safe primary foreground`).toBe(primary)
         expect.soft(await computed(page, '[data-test="qds-circular-progress"]', 'color'), `${mode}/${variant} circular progress retains contrast`).not.toBe('rgba(0, 0, 0, 0)')
         if (variant === 'win') {

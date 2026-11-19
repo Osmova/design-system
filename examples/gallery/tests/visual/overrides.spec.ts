@@ -65,16 +65,18 @@ async function renderedBoundaryContrast(page: Parameters<typeof computed>[0], se
   return contrast(composite(parseColor(border), parsedBackdrop), parsedBackdrop)
 }
 
+// Ink draws hand-cut frames: one deterministic eight-value radius instead of a token.
+const INK_HAND_MD = '12px 5.6px 10.4px 4.8px / 5.6px 11.2px 4.8px 12px'
 const EXPECTED: Record<Mode, Record<Variant, { surface: string; primary: string; controlRadius: string; cardRadius: string }>> = {
   light: {
     win: { surface: '#ffffff', primary: 'rgb(0, 95, 184)', controlRadius: '4px', cardRadius: '8px' },
-    ink: { surface: '#fbf9f5', primary: 'rgb(46, 44, 40)', controlRadius: '10px', cardRadius: '16px' },
+    ink: { surface: '#ebeae6', primary: 'rgb(51, 54, 60)', controlRadius: '6px', cardRadius: INK_HAND_MD },
     one: { surface: '#ffffff', primary: 'rgb(27, 95, 207)', controlRadius: '14px', cardRadius: '24px' },
     term: { surface: '#f8f6f0', primary: 'rgb(252, 196, 13)', controlRadius: '6px', cardRadius: '10px' },
   },
   dark: {
     win: { surface: '#292929', primary: 'rgb(96, 205, 255)', controlRadius: '4px', cardRadius: '8px' },
-    ink: { surface: '#282622', primary: 'rgb(236, 229, 216)', controlRadius: '10px', cardRadius: '16px' },
+    ink: { surface: '#1e2023', primary: 'rgb(228, 226, 221)', controlRadius: '6px', cardRadius: INK_HAND_MD },
     one: { surface: '#1a1a1a', primary: 'rgb(47, 111, 220)', controlRadius: '14px', cardRadius: '24px' },
     term: { surface: '#141412', primary: 'rgb(252, 196, 13)', controlRadius: '6px', cardRadius: '10px' },
   },
@@ -93,7 +95,7 @@ test.describe('QDS override gate', () => {
         expect.soft(await resolvedColor(page, '--qds-color-primary'), 'primary color resolves from source tokens').toBe(expected.primary)
         expect.soft(await customProperty(page, '--qds-radius-control'), 'control radius token tracks the variant').toBe(expected.controlRadius)
         expect.soft(await computed(page, `${panel} .q-card`, 'border-radius'), 'QCard consumes the resolved card radius').toBe(expected.cardRadius)
-        expect.soft(await computed(page, `${panel} .q-field--outlined .q-field__control`, 'border-radius'), 'QField consumes the resolved control geometry').toBe(variant === 'one' ? '18px' : expected.controlRadius)
+        expect.soft(await computed(page, `${panel} .q-field--outlined .q-field__control`, 'border-radius'), 'QField consumes the resolved control geometry').toBe(variant === 'one' ? '18px' : variant === 'ink' ? INK_HAND_MD : expected.controlRadius)
         expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'QCard has a rendered surface').not.toBe('rgba(0, 0, 0, 0)')
         const cardBorderStyle = await computed(page, `${panel} .q-card`, 'border-top-style')
         expect.soft(cardBorderStyle, `${variant} card renders a solid boundary`).toBe('solid')
@@ -108,12 +110,12 @@ test.describe('QDS override gate', () => {
           expect.soft(await computed(page, `${panel} .q-card`, 'border-top-color'), 'Fluent card stroke is the card stroke token').toBe(await resolvedColor(page, '--qds-card-stroke'))
         }
         if (variant === 'ink') {
-          expect.soft(await customProperty(page, '--qds-surface-negative-soft'), 'Ink negative pastel wash token').toBe(mode === 'light' ? '#f4dfe1' : '#4a3239')
+          expect.soft(await customProperty(page, '--qds-surface-negative-soft'), 'Ink has no tinted wash: the soft surface is the paper').toBe(expected.surface)
           expect.soft(await computed(page, `${panel} .q-card`, 'backdrop-filter'), 'Ink content has no blur').toBe('none')
           expect.soft(await computed(page, `${panel} .q-card`, 'box-shadow'), 'Ink content stays flat').toBe('none')
           expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'Ink card is a paper sheet').toBe(await resolvedColor(page, '--qds-surface-0'))
           expect.soft(await computed(page, `${panel} .q-card`, 'border-top-color'), 'Ink card hairline is the card stroke token').toBe(await resolvedColor(page, '--qds-card-stroke'))
-          expect.soft(await computed(page, `${panel} .qds-display`, 'font-family'), 'Ink display type is editorial serif').toMatch(/Iowan Old Style|Palatino|Georgia/)
+          expect.soft(await computed(page, `${panel} .qds-display`, 'font-family'), 'Ink display titles are handwritten').toMatch(/Caveat/)
         }
         if (variant === 'one') {
           expect.soft(await customProperty(page, '--qds-surface-focus-block'), 'One focus-block token differs by mode').toBe(mode === 'light' ? '#efefef' : '#242424')
@@ -188,6 +190,11 @@ test.describe('QDS override gate', () => {
         for (const role of roleStyles) {
           expect.soft(role.fillToken, `${mode} ${variant} ${role.role} fill token resolves`).not.toBe('rgba(0, 0, 0, 0)')
           expect.soft(role.foregroundToken, `${mode} ${variant} ${role.role} foreground token resolves`).not.toBe('rgba(0, 0, 0, 0)')
+          // Ink has no colour fills: only primary is solid; the other roles are paper patterns labelled in their own ink.
+          if (variant === 'ink' && role.role !== 'primary') {
+            expect.soft(role.actionForeground, `${mode} ink ${role.role} label is drawn in the role ink`).toBe(role.fillToken)
+            continue
+          }
           expect.soft(role.actionFill, `${mode} ${variant} ${role.role} solid action uses its fill`).toBe(role.fillToken)
           expect.soft(role.actionForeground, `${mode} ${variant} ${role.role} solid action uses its foreground`).toBe(role.foregroundToken)
           expect.soft(role.contrast, `${mode} ${variant} ${role.role} fill and foreground meet text contrast`).toBeGreaterThanOrEqual(4.5)
@@ -656,7 +663,8 @@ test.describe('QDS override gate', () => {
         expect.soft(contrast(parseColor(await computed(page, link, 'color')), parseColor(await resolvedColor(page, '--qds-surface-0'))), `${cell} prose link contrast`).toBeGreaterThanOrEqual(4.5)
         for (const anchor of await page.locator('[data-test="qds-type-anchors"] a').all()) {
           expect.soft(await anchor.evaluate((el) => getComputedStyle(el).textDecorationLine), `${cell} Quasar anchor components keep no underline`).toBe('none')
-          expect.soft(await anchor.evaluate((el) => getComputedStyle(el).color), `${cell} Quasar anchor components keep their own ink`).not.toBe(await resolvedColor(page, '--qds-fg-brand'))
+          // Ink has a single ink, so the brand foreground and an anchor's own colour coincide there.
+          if (variant !== 'ink') expect.soft(await anchor.evaluate((el) => getComputedStyle(el).color), `${cell} Quasar anchor components keep their own ink`).not.toBe(await resolvedColor(page, '--qds-fg-brand'))
         }
         const focusStroke = await resolvedColor(page, variant === 'win' ? '--_qds-win-focus-outer' : '--qds-stroke-focus')
         for (const target of [link, '[data-test="qds-type-role-button"]']) {

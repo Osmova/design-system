@@ -260,6 +260,11 @@ const materials = [
     rgb(var(--qds-color-primary-dark-rgb));
 }
 
+/* Ink renders scenic wallpaper like any media: greyscale. */
+.qds-variant-ink .materials-backdrop {
+  filter: grayscale(1);
+}
+
 .materials-sample {
   display: grid;
   gap: var(--qds-space-xs);

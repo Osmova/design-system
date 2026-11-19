@@ -1,6 +1,6 @@
 // Computed-paint proof for Ink: real Quasar controls, the real compiled QDS bundle,
 // every selectable ink in light and dark, measured contrast and the e-ink promises
-// (one ink, no blur or tint, inverted selection, print face by default).
+// (one ink plus one danger red, no blur or tint, inverted selection, print face by default).
 // INK_SHOTS=<dir> also writes a review board per ink and scheme there.
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -53,8 +53,8 @@ async function mount(browser, bodyClass, ink, options = {}) {
   await page.addScriptTag({ content: assets.quasar })
   await page.evaluate((roleNames) => {
     const { createApp, h, reactive, nextTick } = Vue
-    const { QBtn, QInput, QTabs, QTab, QMenu, QList, QItem, QItemSection, QItemLabel, QSeparator, QChip } = Quasar
-    const state = reactive({ value: 'Ruled paper', tab: 'notes', side: 'pens', menu: false })
+    const { QBtn, QInput, QTabs, QTab, QMenu, QList, QItem, QItemSection, QItemLabel, QSeparator, QChip, QToggle, QBadge, QBanner } = Quasar
+    const state = reactive({ value: 'Ruled paper', tab: 'notes', side: 'pens', menu: false, on: true, off: false })
     const field = (id, props) => h('div', { id }, h(QInput, { modelValue: state.value, 'onUpdate:modelValue': (v) => { state.value = v }, ...props }))
     const app = createApp({ setup: () => () => [
       h('div', { id: 'display', class: 'text-h4 qds-display' }, 'Field notes'),
@@ -73,6 +73,19 @@ async function mount(browser, bodyClass, ink, options = {}) {
       h('div', { class: 'row' }, [
         ...roleNames.map((role) => h(QChip, { id: `chip-${role}`, label: role, color: role })),
         h(QChip, { id: 'chip-selected', label: 'Selected', selected: true, clickable: true }),
+      ]),
+      h('h6', 'Switches'),
+      h('div', { class: 'row', id: 'switches' }, [
+        ['toggle-on', 'On', { modelValue: true }], ['toggle-off', 'Off', { modelValue: false }],
+        ['toggle-dense-on', 'Dense on', { modelValue: true, dense: true }], ['toggle-dense-off', 'Dense off', { modelValue: false, dense: true }],
+        ['toggle-disabled-on', 'Disabled on', { modelValue: true, disable: true }], ['toggle-disabled-off', 'Disabled off', { modelValue: false, disable: true }],
+      ].map(([id, label, props]) => h(QToggle, { id, label, ...props }))),
+      h('h6', 'Danger'),
+      h('div', { class: 'row', id: 'danger' }, [
+        h(QBtn, { id: 'danger-outline', label: 'Delete', outline: true, color: 'negative' }),
+        h(QBtn, { id: 'danger-flat', label: 'Discard', flat: true, color: 'negative' }),
+        h(QBadge, { id: 'badge-negative', label: '3 failed', color: 'negative' }),
+        h(QBanner, { id: 'banner-negative', class: 'text-negative', dense: true }, () => 'Sync failed'),
       ]),
       h('h6', 'Fields'),
       h('div', { class: 'grid' }, [
@@ -98,6 +111,7 @@ async function mount(browser, bodyClass, ink, options = {}) {
           h(QItem, { id: 'item', clickable: true, active: true }, () => h(QItemSection, {}, () => 'Current page')),
           h(QItem, { id: 'idle-item', clickable: true }, () => h(QItemSection, {}, () => 'Duplicate')),
           h(QItem, { clickable: true }, () => h(QItemSection, {}, () => 'Export as PDF')),
+          h(QItem, { id: 'destructive-item', clickable: true, class: 'text-negative' }, () => h(QItemSection, {}, () => 'Delete page')),
           h(QSeparator, { id: 'separator' }),
           h(QItem, { clickable: true, disable: true }, () => h(QItemSection, {}, () => 'Tear out')),
         ]))),
@@ -155,7 +169,7 @@ const noBlur = (shadow, context) => {
   }
 }
 
-const INKS = ['navy', 'black', 'charcoal']
+const INKS = ['charcoal', 'black', 'navy']
 const shots = process.env.INK_SHOTS
 const browser = await chromium.launch()
 try {
@@ -163,15 +177,19 @@ try {
     const at = `${ink}/${scheme}`
     const page = await mount(browser, bodyClass, ink)
     try {
-      const tokens = await read(page, 'body', ['--qds-text-strong', '--qds-surface-0', 'background-color'])
+      const tokens = await read(page, 'body', ['--qds-text-strong', '--qds-surface-0', '--qds-fg-negative', 'background-color'])
       const inkPaint = hex(tokens['--qds-text-strong'].trim())
       const paper = hex(tokens['--qds-surface-0'].trim())
+      const danger = hex(tokens['--qds-fg-negative'].trim())
       const pageFill = opaque(tokens['background-color'], `${at} page`)
       assert.deepEqual(pageFill.slice(0, 3), paper.slice(0, 3), `${at} page and sheets are the same flat paper`)
       record(at, 'ink on paper', contrast(inkPaint, paper), 7)
+      record(at, 'danger red on paper', contrast(danger, paper), 4.5)
+      assert.ok(danger[0] > danger[1] + 60 && danger[0] > danger[2] + 60, `${at} danger is a red, got ${danger}`)
       await page.evaluate(() => window.ink.set({ menu: true }))
       await page.waitForSelector('.q-menu', { state: 'visible' })
       if (shots) await page.screenshot({ path: `${shots}/ink-${ink}-${scheme}.png`, fullPage: true })
+      if (shots) for (const part of ['switches', 'danger']) await page.locator(`#${part}`).screenshot({ path: `${shots}/${part}-${ink}-${scheme}.png` })
 
       const s = {}
       for (const [name, selector] of [
@@ -179,7 +197,7 @@ try {
         ['field', '#field .q-field__control'], ['fieldNative', '#field input'], ['fieldLabel', '#field .q-field__label'], ['hint', '#field .q-field__bottom'],
         ['tabActive', '#tabs .q-tab--active'], ['tabIdle', '#tabs .q-tab:not(.q-tab--active):not(.disabled)'], ['vtabActive', '#vtabs .q-tab--active'],
         ['tabLabel', '#tabs .q-tab--active .q-tab__label'], ['indicator', '#tabs .q-tab--active .q-tab__indicator'],
-        ['menu', '.q-menu'], ['menuItem', '.q-menu .q-item--active'], ['menuIdle', '.q-menu #idle-item'], ['menuHeader', '.q-menu .q-item__label--header'],
+        ['menu', '.q-menu'], ['menuItem', '.q-menu .q-item--active'], ['destructive', '.q-menu #destructive-item'], ['menuIdle', '.q-menu #idle-item'], ['menuHeader', '.q-menu .q-item__label--header'],
         ['chipSelected', '#chip-selected'], ['display', '#display'], ['heading', '#heading'], ['note', '#note'], ['em', '#em'], ['hand', '#hand'],
       ]) s[name] = await read(page, selector, PAINT)
       for (const [name, selector, pseudo] of [['fieldStroke', '#field .q-field__control', '::before'], ['standardStroke', '#standard .q-field__control', '::before'], ['errorStroke', '#error-field .q-field__control', '::before']]) {
@@ -211,15 +229,17 @@ try {
             assert.deepEqual(opaque(rest['background-color'], `${at} ${role} ${kind}`).slice(0, 3), inkPaint.slice(0, 3), `${at} primary ${kind} is solid ink`)
             record(at, `${role} ${kind} label`, contrast(text, inkPaint), 4.5)
           } else {
-            assert.deepEqual(text.slice(0, 3), inkPaint.slice(0, 3), `${at} ${role} ${kind} label is ink`)
+            const pen = role === 'negative' ? danger : inkPaint
+            assert.deepEqual(text.slice(0, 3), pen.slice(0, 3), `${at} ${role} ${kind} label is ${role === 'negative' ? 'the danger red' : 'ink'}`)
             record(at, `${role} ${kind} label on paper`, contrast(text, paper), 4.5)
             if (PATTERN[role]) {
               assert.match(rest['background-image'], /gradient/, `${at} ${role} ${kind} carries its fill pattern`)
-              record(at, `${role} ${kind} label on pattern line`, contrast(text, mix(inkPaint, paper, PATTERN[role])), 4.5)
+              record(at, `${role} ${kind} label on pattern line`, contrast(text, mix(pen, paper, PATTERN[role])), 4.5)
             }
             const edged = parseFloat(rest['border-top-width']) >= 1 && rgb(rest['border-top-color'])[3] === 1
             const ringed = /inset/.test(rest['box-shadow'])
-            assert.ok(edged || ringed, `${at} ${role} ${kind} keeps an ink edge`)
+            assert.ok(edged || ringed, `${at} ${role} ${kind} keeps an edge`)
+            if (edged) record(at, `${role} ${kind} edge`, contrast(rgb(rest['border-top-color']), paper), 3)
           }
         }
         const selector = `#fill-${role}`
@@ -251,18 +271,60 @@ try {
         assert.ok(parseFloat(width) >= 1, `${at} ${label}: no boundary, width ${width}`)
         record(at, label, contrast(rgb(color), pageFill), 3)
       }
-      assert.equal(s.errorStroke['border-bottom-style'], 'double', `${at} errors are a double stroke, not red`)
+      assert.equal(s.errorStroke['border-bottom-style'], 'double', `${at} errors are a double stroke`)
+      assert.deepEqual(rgb(s.errorStroke['border-bottom-color']).slice(0, 3), danger.slice(0, 3), `${at} error stroke is the danger red`)
       record(at, 'error stroke', contrast(rgb(s.errorStroke['border-bottom-color']), pageFill), 3)
+      const errorText = await read(page, '#error-field .q-field__bottom', ['color'])
+      assert.deepEqual(rgb(errorText.color).slice(0, 3), danger.slice(0, 3), `${at} error message is the danger red`)
+      record(at, 'error message', contrast(rgb(errorText.color), pageFill), 4.5)
+      const destructive = s.destructive
+      assert.deepEqual(rgb(destructive.color).slice(0, 3), danger.slice(0, 3), `${at} destructive menu item is the danger red`)
+      record(at, 'destructive menu item', contrast(rgb(destructive.color), menuFill), 4.5)
+      const banner = await read(page, '#banner-negative', ['border-top-color'])
+      assert.deepEqual(rgb(banner['border-top-color']).slice(0, 3), danger.slice(0, 3), `${at} negative banner keeps ink copy inside a red edge`)
+      record(at, 'negative banner edge', contrast(rgb(banner['border-top-color']), paper), 3)
+      for (const [label, selector] of [['negative outline button', '#danger-outline'], ['negative flat button', '#danger-flat'], ['negative badge', '#badge-negative']]) {
+        const sample = await read(page, selector, ['color', 'border-top-color', 'border-top-width'])
+        assert.deepEqual(rgb(sample.color).slice(0, 3), danger.slice(0, 3), `${at} ${label} text is the danger red`)
+        record(at, `${label} text`, contrast(rgb(sample.color), paper), 4.5)
+        if (parseFloat(sample['border-top-width']) >= 1 && label !== 'negative flat button') record(at, `${label} edge`, contrast(rgb(sample['border-top-color']), paper), 3)
+      }
+
+      // Switches: off is an outlined track with the knob at the start, on is a solid ink track with a paper knob at the end.
+      for (const [id, on, disabled] of [['toggle-on', true, false], ['toggle-off', false, false], ['toggle-dense-on', true, false], ['toggle-dense-off', false, false], ['toggle-disabled-on', true, true], ['toggle-disabled-off', false, true]]) {
+        const track = await read(page, `#${id} .q-toggle__track`, ['background-color', 'border-top-color', 'border-top-style', 'border-top-width'])
+        const knob = await read(page, `#${id} .q-toggle__thumb`, ['background-color', 'border-top-color'], '::after')
+        const geometry = await page.evaluate((target) => {
+          const inner = document.querySelector(`${target} .q-toggle__inner`).getBoundingClientRect()
+          const thumb = document.querySelector(`${target} .q-toggle__thumb`).getBoundingClientRect()
+          const trackBox = document.querySelector(`${target} .q-toggle__track`).getBoundingClientRect()
+          return { start: thumb.left - inner.left, end: inner.right - thumb.right, knob: thumb.height, track: trackBox.height }
+        }, `#${id}`)
+        const pen = disabled ? rgb(track['border-top-color']) : inkPaint
+        assert.ok(on ? geometry.end < geometry.start : geometry.start < geometry.end, `${at} ${id} knob sits at the ${on ? 'end' : 'start'}`)
+        assert.ok(geometry.knob >= geometry.track * 0.6, `${at} ${id} knob fills the track (${geometry.knob} of ${geometry.track})`)
+        if (!disabled) assert.deepEqual(rgb(track['border-top-color']).slice(0, 3), inkPaint.slice(0, 3), `${at} ${id} track is outlined in ink`)
+        record(at, `${id} track edge`, contrast(rgb(track['border-top-color']), paper), 3)
+        if (on) {
+          assert.deepEqual(opaque(track['background-color'], `${at} ${id} track`).slice(0, 3), pen.slice(0, 3), `${at} ${id} track is filled`)
+          record(at, `${id} paper knob on filled track`, contrast(opaque(knob['background-color'], `${at} ${id} knob`), pen), 3)
+        } else {
+          assert.deepEqual(opaque(track['background-color'], `${at} ${id} track`).slice(0, 3), paper.slice(0, 3), `${at} ${id} track is paper`)
+          record(at, `${id} outlined knob`, contrast(rgb(knob['border-top-color']), paper), 3)
+          if (disabled) assert.equal(track['border-top-style'], 'dashed', `${at} ${id} is dashed`)
+        }
+      }
 
       // E-ink physics: flat, hard-edged depth and one ink everywhere.
       for (const [label, sample] of [['button', s.button], ['field', s.field], ['menu', s.menu], ['tab', s.tabActive]]) noBlur(sample['box-shadow'], `${at} ${label}`)
       assert.match(s.menu['box-shadow'], /px/, `${at} menu sits on a hard offset sheet`)
       for (const [label, sample] of Object.entries(s)) {
+        if (label === 'errorStroke' || label === 'destructive') continue
         for (const key of ['color', 'background-color', 'border-top-color']) if (sample[key]) onInkLine(rgb(sample[key]), inkPaint, paper, `${at} ${label} ${key}`)
       }
       for (const role of roles) {
         const sample = await read(page, `#fill-${role}`, ['color', 'background-color', 'border-top-color'])
-        for (const [key, value] of Object.entries(sample)) onInkLine(rgb(value), inkPaint, paper, `${at} ${role} fill ${key}`)
+        for (const [key, value] of Object.entries(sample)) onInkLine(rgb(value), role === 'negative' ? danger : inkPaint, paper, `${at} ${role} fill ${key}`)
       }
 
       // Print face by default; handwriting only on display titles and opt-in classes.
@@ -282,14 +344,14 @@ try {
       record(at, 'button focus ring', contrast(rgb(ring['outline-color']), pageFill), 3)
       await page.focus('#field input')
       await page.waitForSelector('#field .q-field--highlighted')
-      const rule = await read(page, '#field .q-field__control', ['border-bottom-width', 'border-bottom-color', 'opacity'], '::after')
-      assert.equal(rule.opacity, '1', `${at} focused field draws its heavier rule`)
+      const rule = await read(page, '#field .q-field__control', ['border-bottom-width', 'border-bottom-color', 'transform'], '::after')
+      assert.equal(rule.transform, 'matrix(1, 0, 0, 1, 0, 0)', `${at} focused field draws its heavier rule`)
       assert.ok(parseFloat(rule['border-bottom-width']) >= 2, `${at} focus rule width ${rule['border-bottom-width']}`)
       record(at, 'field focus rule', contrast(rgb(rule['border-bottom-color']), pageFill), 3)
     } finally { await page.close() }
   }
 
-  const forced = await mount(browser, 'qds-ui qds-variant-ink qds-theme-light', 'navy', { forcedColors: 'active' })
+  const forced = await mount(browser, 'qds-ui qds-variant-ink qds-theme-light', 'charcoal', { forcedColors: 'active' })
   try {
     await forced.evaluate(() => window.ink.set({ menu: true }))
     await forced.waitForSelector('.q-menu', { state: 'visible' })
@@ -297,7 +359,7 @@ try {
     assert.equal((await read(forced, '#tabs .q-tab--active', ['forced-color-adjust']))['forced-color-adjust'], 'none', 'forced colours keep the inverted selection as Highlight')
     assert.equal((await read(forced, '#button', ['background-image'], '::before'))['background-image'], 'none', 'forced colours drop the pattern layers')
   } finally { await forced.close() }
-  const still = await mount(browser, 'qds-ui qds-variant-ink qds-theme-light', 'navy', { reducedMotion: 'reduce' })
+  const still = await mount(browser, 'qds-ui qds-variant-ink qds-theme-light', 'charcoal', { reducedMotion: 'reduce' })
   try {
     for (const selector of ['#button', '#tabs .q-tab']) {
       assert.equal((await read(still, selector, ['transition-property']))['transition-property'], 'none', `reduced motion stills ${selector}`)
