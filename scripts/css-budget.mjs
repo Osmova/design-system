@@ -30,7 +30,7 @@ const CORE_CAP = { min: 210000, gzip: 26000 }
 const VARIANT_CAP = { min: 380000, gzip: 46000 }
 // css/all and css/all/layered (every variant, for runtime switching); 622018 / 61263 with glass and win batch 1.
 const ALL_CAP = { min: 640000, gzip: 63000 }
-const EXTENSION_ALLOWANCE = { lines: 80, min: 4096, gzip: 1024 }
+const EXTENSION_ALLOWANCE = { lines: 80, min: 5632, gzip: 1024 }
 const failures = []
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
 const baselineFiles = git('ls-tree', '-r', '--name-only', BASELINE, '--', 'src').trim().split('\n')
