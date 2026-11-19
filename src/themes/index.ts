@@ -37,6 +37,18 @@ export function isShadcnBaseColor(value: unknown): value is ShadcnBaseColor {
   return SHADCN_BASE_COLORS.some((color) => color.name === value)
 }
 
+export const INK_COLORS = [
+  { name: 'charcoal', label: 'Charcoal' },
+  { name: 'black', label: 'Black' },
+  { name: 'navy', label: 'Navy' },
+] as const
+
+export type InkColor = (typeof INK_COLORS)[number]['name']
+
+export function isInkColor(value: unknown): value is InkColor {
+  return INK_COLORS.some((color) => color.name === value)
+}
+
 // Optional brand accent over the shadcn base palette ('none' keeps the palette's own primary).
 export const SHADCN_ACCENT_COLORS = [
   { name: 'none', label: 'None' },
@@ -59,7 +71,7 @@ export const DESIGN_SYSTEM_VARIANTS = {
   ink: {
     name: 'ink',
     label: 'Ink',
-    description: 'Paper-neutral editorial surfaces with charcoal type and coordinated pastel role washes.',
+    description: 'One ink on paper, like an e-reader: charcoal, black or navy strokes, inverted selection, patterned roles and one red for danger.',
     cssClass: 'qds-variant-ink',
   },
   one: {

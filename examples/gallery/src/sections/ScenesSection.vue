@@ -22,7 +22,7 @@ const scenes: Scene[] = [
     label: 'Ink',
     tagline: 'Paper and ink',
     wallpaper: '/scenes/qds-wallpaper-ink.svg',
-    detail: 'Paper-neutral surface with charcoal type and coordinated pastel role washes.',
+    detail: 'One ink on flat paper: crisp strokes, inverted selection, patterns instead of tints.',
   },
   {
     variant: 'one',
@@ -258,6 +258,11 @@ const materials = [
     radial-gradient(circle at 60% 90%, rgb(var(--qds-color-negative-rgb)), transparent 46%),
     radial-gradient(circle at 30% 80%, rgb(var(--qds-color-positive-rgb)), transparent 38%),
     rgb(var(--qds-color-primary-dark-rgb));
+}
+
+/* Ink renders scenic wallpaper like any media: greyscale. */
+.qds-variant-ink .materials-backdrop {
+  filter: grayscale(1);
 }
 
 .materials-sample {
