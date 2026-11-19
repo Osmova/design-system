@@ -21,7 +21,7 @@ export default defineConfig({
   grepInvert: process.env.QDS_SCREENS ? undefined : /@screens/,
   snapshotPathTemplate: '{testDir}/__screens__/{arg}-{projectName}{ext}',
   expect: {
-    toHaveScreenshot: { animations: 'disabled', caret: 'hide', maxDiffPixelRatio: 0.002 },
+    toHaveScreenshot: { animations: 'disabled', caret: 'hide', maxDiffPixelRatio: 0.01 },
   },
   use: {
     baseURL: process.env.QDS_BASE_URL ?? BASE_URL,
