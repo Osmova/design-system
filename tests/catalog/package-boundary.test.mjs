@@ -32,11 +32,11 @@ test('age policy stays intact: minimumReleaseAge not weakened', () => {
   assert.match(workspace, /examples\/\*/)
 })
 
-test('storybook dependency decision: exact 10.6.1 trio, no addon-essentials', () => {
+test('storybook dependency decision: exact 10.6.7 pins, no addon-essentials', () => {
   const storybookPkg = JSON.parse(readFileSync(path.join(REPO_ROOT, 'examples', 'storybook', 'package.json'), 'utf8'))
 
-  for (const dep of ['storybook', '@storybook/vue3-vite', '@storybook/addon-docs']) {
-    assert.equal(storybookPkg.devDependencies?.[dep], '10.6.1', `${dep} must be pinned exactly at 10.6.1`)
+  for (const dep of ['storybook', '@storybook/vue3-vite', '@storybook/addon-docs', '@storybook/addon-a11y']) {
+    assert.equal(storybookPkg.devDependencies?.[dep], '10.6.7', `${dep} must be pinned exactly at 10.6.7`)
   }
   const allDeps = { ...storybookPkg.dependencies, ...storybookPkg.devDependencies }
   assert.ok(!('@storybook/addon-essentials' in allDeps), 'addon-essentials is explicitly not used')

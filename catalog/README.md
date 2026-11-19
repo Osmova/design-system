@@ -55,7 +55,7 @@ Unknown native names (including new spinner names) fail classification explicitl
   controller per preview document/app, `persist: false`, `app.onUnmount`-driven dispose; `catalog/preview`
   rejects the `fallbackController` module-global shortcut.
 - Storybook deps live only in the private `examples/storybook` workspace (`storybook`,
-  `@storybook/vue3-vite`, `@storybook/addon-docs` pinned exactly at 10.6.1).
+  `@storybook/vue3-vite`, `@storybook/addon-docs`, `@storybook/addon-a11y` pinned exactly at 10.6.7).
 - Histoire owns theme changes through the shared scaffold. Storybook owns them through
   toolbar globals only (in-canvas theme selectors hidden); both show live actual body state.
 - The four proof variants use Histoire's isolated single-iframe layout. Existing story files
