@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Changed
 
 - **Opt-in variant bundles (breaking)** — `@osmova/quasar-design-system/css` (and `css/layered`) now ships the
-  shared grammar plus the default `win` variant, built to `dist/css` (about 24 KB gzipped, down from 58.5 KB).
+  shared grammar plus the default `win` variant, built to `dist/css` (about 25 KB gzipped, against about 70 KB for every variant together).
   Every other variant is its own complete stylesheet, `css/variants/<name>` and `css/layered/variants/<name>`
   (`ink`, `one`, `term`, `shadcn`, `zen`, `glass`; 26–43 KB gzipped), imported **instead of** `./css`. Each file keeps
   the original rule order minus the other variants' rules, so rendering is identical to the single bundle.
@@ -73,6 +73,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   washes. Info follows the Attention accent instead of grey. Secondary and accent are unchanged. The dark Mica wash
   is fainter (0.18 → 0.07). Because these values live on `.qds-variant-win`, apps that rebrand win override
   `--qds-color-*` on the body (or `.qds-variant-win`), as for zen and glass.
+- **Ink redesigned as a single-ink e-ink interface (breaking for ink).** One ink on flat paper: charcoal by default,
+  or black or navy through the new `inkColor` option (`setInkColor()`, `INK_COLORS`, `InkColor`) or `data-qds-ink`.
+  Dark is the same ink inverted. Colour roles render as solid ink, outline, double stroke or fill patterns (hatching,
+  dots, ruled lines), selection and active states invert, depth is a hard offset sheet, and motion is near-instant.
+  One red per scheme marks negative, error and destructive states (negative fills keep their cross-hatch). Media
+  renders greyscale; `qds-media-color`, `qds-media-color-hover` and `qds-media-color-reveal` opt back into colour.
+  Type is Atkinson Hyperlegible Next, with handwriting (Caveat) only on display titles, `<em>`/`<i>` and the opt-in
+  `.qds-hand` / `.text-hand` classes; load them with `@osmova/quasar-design-system/fonts/ink.css`. Same `ink` id;
+  `feather` still maps to `ink`. Apps that relied on ink's pastel role colours should move to `zen`.
 - **Zen rebuilt as a soft tactile grammar** (zen only): warm depth model, sage palette, Figtree UI and Fraunces
   display faces (load them with `@osmova/quasar-design-system/fonts/zen.css`), and all zen rules in one partial.
 - **Zen follows component props** (zen only): `unelevated`, `push`, `square`, `outline`, `standout`, fab, group,
