@@ -1,7 +1,7 @@
 {
   "name": "@osmova/ds-quasar",
-  "version": "0.10.0",
-  "description": "Opinionated Quasar 2 design system inspired by Fluent 2, Apple, and One UI.",
+  "version": "1.0.0-alpha.0",
+  "description": "Osmova Design System for Quasar 2: tokens, Quasar skin and runtime theme controller.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -88,9 +88,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Osmova/design-system.git"
+    "url": "git+https://github.com/Osmova/design-system.git",
+    "directory": "packages/quasar"
   },
   "keywords": [
+    "osmova",
     "quasar",
     "vue3",
     "design-system",
@@ -104,7 +106,7 @@
   "bugs": {
     "url": "https://github.com/Osmova/design-system/issues"
   },
-  "homepage": "https://github.com/Osmova/design-system#readme",
+  "homepage": "https://github.com/Osmova/design-system/tree/master/packages/quasar#readme",
   "peerDependencies": {
     "@phosphor-icons/vue": "^2.0.0",
     "@quasar/quasar-ui-qwindow": "^3.0.0",

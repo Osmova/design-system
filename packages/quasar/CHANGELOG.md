@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.0.0-alpha.0] — Unreleased
+
+First pre-release of the Osmova Design System 1.0 line. Rendering is unchanged: the built CSS equals 0.10.0 with
+the rename map applied.
+
+### Changed
+
+- **Package renamed (breaking)** — `@osmova/quasar-design-system` is now `@osmova/ds-quasar`, published from
+  `packages/quasar` in the `Osmova/design-system` repository. Import paths keep their subpaths
+  (`@osmova/ds-quasar/css`, `/css/variants/<name>`, `/quasar-variables`, `/fonts/*`, …).
+- **`qds` prefix renamed to `ods` (breaking)** — every public name, driven by `scripts/rename-map.json`:
+  - custom properties `--qds-*` → `--ods-*` (private `--_qds-*` → `--_ods-*`);
+  - classes `.qds-*` → `.ods-*`, including `ods-ui`, `ods-variant-*`, `ods-theme-*`, `ods-tonal`, `ods-solid`,
+    `ods-media-color*` and the `ods-window` blocks;
+  - attributes `data-qds-*` → `data-ods-*` (`dataset.qds*` → `dataset.ods*`);
+  - cascade layers `qds.*` and `qds-important` → `ods.*` and `ods-important`
+    (declare `@layer ods-important, quasar, ods;`);
+  - Sass names (`$qds-*`, `qds-*` mixins) and TypeScript exports: `QDS_TOKENS` → `ODS_TOKENS`,
+    `qdsIconSet` → `odsIconSet`, `QdsWindow` → `OdsWindow` and its `Qds*` types → `Ods*`;
+  - stored preference key `bastvi.quasar-design-system.theme` → `osmova.ds.theme` (earlier preferences are not
+    migrated; pass `storageKey` to keep the old one).
+
 ## [0.10.0] — 2026-11-19
 
 ### Changed

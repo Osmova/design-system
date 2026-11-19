@@ -47,9 +47,9 @@ test('storybook dependency decision: exact 10.6.7 pins, no addon-essentials', ()
   // versioned CHANGELOG heading instead: a bump passes only when it was deliberate
   // enough to be written down.
   const rootPkg = JSON.parse(readFileSync(path.join(REPO_ROOT, 'package.json'), 'utf8'))
-  assert.match(rootPkg.version, /^\d+\.\d+\.\d+(-rc\.\d+)?$/, 'root package version must be a plain release or rc version')
+  assert.match(rootPkg.version, /^\d+\.\d+\.\d+(-(?:alpha|beta|rc)\.\d+)?$/, 'package version must be a plain release or alpha/beta/rc version')
   const changelog = readFileSync(path.join(REPO_ROOT, 'CHANGELOG.md'), 'utf8')
-  const newest = changelog.match(/^## \[(\d+\.\d+\.\d+(?:-rc\.\d+)?)\]/m)
+  const newest = changelog.match(/^## \[?(\d+\.\d+\.\d+(?:-(?:alpha|beta|rc)\.\d+)?)\]?/m)
   assert.ok(newest, 'CHANGELOG must carry at least one versioned heading')
   assert.equal(rootPkg.version, newest[1], 'package version must match the newest versioned CHANGELOG heading')
 })
