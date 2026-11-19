@@ -33,6 +33,8 @@ selectors. Anything that is not generic, reusable visual language does not belon
 - `pnpm gallery:build` — build the static gallery.
 - `pnpm gallery:test` — Playwright visual gate (the release gate; keep it green).
 - `pnpm test:runtime` — mandatory Node SSR/controller, independent color, and browser-cascade checks.
+- `pnpm tokens` — regenerate `src/tokens/generated/` from `tokens/`; `pnpm build` runs it and `pnpm test:runtime` fails on stale output (`tests/runtime/tokens.test.mjs`).
+- `pnpm test:tokens:parity [ref]` — every `--qds-*` value per variant, palette, scheme and media condition must resolve as on `ref` (default `develop`).
 - `pnpm css:budget` — finite source and Sass-compressed/gzip-9 budgets, both main exports and separate optional extensions.
 - `pnpm verify:publish` — budget, build, typecheck, runtime checks, and pack dry-run; never skip runtime checks.
 - `pnpm shadcn-reference:check` / `pnpm shadcn-reference:build` — isolated pinned upstream reference.
@@ -52,9 +54,10 @@ Validate visual work via `typecheck` + visual review in the gallery.
    `quasar.variables.scss` via `@use '@osmova/quasar-design-system/quasar-variables' as *`. Always
    override a Quasar variable here *before* reaching for a direct component selector.
 2. **Design tokens as CSS custom properties** — `--qds-*` vars defined in `src/themes/default.scss`,
-   sourced from Sass maps in `src/tokens/_default.scss` (`$palette`, `$palette-rgb`, surfaces, text,
-   borders, `$space`, `$radius`, `$font`, motion, state opacities, focus ring). This is the single
-   source of truth for design values — never hardcode a second copy of a brand value.
+   sourced from DTCG JSON in `tokens/**/*.tokens.json` (primitives, light/dark semantics, one file per
+   variant). `pnpm tokens` (Style Dictionary) generates the Sass maps in `src/tokens/generated/`; `src/tokens/_default.scss`
+   and `_shadcn.scss` forward them and add only derived values (rgb channels, shadows, aliases). The JSON is the single
+   source of truth for design values — edit it, never the generated files, and never hardcode a second copy.
 3. **Direct component selectors** — `src/css/components/_*.scss`, only for behavior/polish Quasar
    variables can't express. These must be scoped under `.qds-ui` and consume `var(--qds-*)` tokens.
 

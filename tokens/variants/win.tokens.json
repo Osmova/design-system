@@ -1,0 +1,278 @@
+{
+  "$description": "Win variant (WinUI 3) deltas per scheme.",
+  "win": {
+    "focus-ring-offset": {
+      "$type": "dimension",
+      "$value": "1px"
+    },
+    "control-icon-opacity": {
+      "$type": "number",
+      "$value": 1
+    },
+    "control-icon-opacity-active": {
+      "$type": "number",
+      "$value": 1
+    }
+  },
+  "win-light": {
+    "$description": "WinUI 3 values (Common_themeresources_any.xaml) on the win variant class; the accent bottom stroke is softer than WinUI #66000000.",
+    "fg-disabled": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.361)"
+    },
+    "state-hover": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.035)"
+    },
+    "state-pressed": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.024)"
+    },
+    "control-stroke-on-accent-bottom": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.2)"
+    },
+    "accent-fill-disabled": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.216)"
+    },
+    "text-on-accent-disabled": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "bg-overlay": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.302)"
+    },
+    "stroke-divider": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.058)"
+    },
+    "layer-alt": {
+      "$value": "{light-surfaces.0}"
+    },
+    "surface-stroke": {
+      "$type": "color",
+      "$value": "rgba(117, 117, 117, 0.4)"
+    },
+    "material-stroke": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.058)"
+    },
+    "focus-outer": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.894)"
+    },
+    "backdrop-brand": {
+      "$type": "number",
+      "$value": 0.08
+    },
+    "backdrop-accent": {
+      "$type": "number",
+      "$value": 0.05
+    }
+  },
+  "win-dark": {
+    "$description": "text-muted is TextFillColorSecondary (#C5FFFFFF) flattened onto #202020; the light-blue dark accent takes a fainter Mica wash.",
+    "fg-disabled": {
+      "$value": "{dark-semantic.fg-disabled}"
+    },
+    "state-hover": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.059)"
+    },
+    "state-pressed": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.039)"
+    },
+    "control-stroke-on-accent-bottom": {
+      "$value": "{dark-semantic.control-stroke-on-accent-bottom}"
+    },
+    "accent-fill-disabled": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.157)"
+    },
+    "text-on-accent-disabled": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.529)"
+    },
+    "bg-overlay": {
+      "$value": "{win-light.bg-overlay}"
+    },
+    "stroke-divider": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.082)"
+    },
+    "layer-alt": {
+      "$value": "{dark-semantic.card-fill}"
+    },
+    "surface-stroke": {
+      "$value": "{win-light.surface-stroke}"
+    },
+    "material-stroke": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.2)"
+    },
+    "focus-outer": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "text-muted": {
+      "$type": "color",
+      "$value": "#cccccc"
+    },
+    "backdrop-brand": {
+      "$type": "number",
+      "$value": 0.07
+    },
+    "backdrop-accent": {
+      "$type": "number",
+      "$value": 0.04
+    }
+  },
+  "win-font": {
+    "$description": "Segoe UI Variable first where Windows ships it; nothing is bundled.",
+    "$type": "fontFamily",
+    "body": {
+      "$value": [
+        "Segoe UI Variable Text",
+        "Segoe UI Variable",
+        "Segoe UI",
+        "Inter Variable",
+        "Inter",
+        "Open Sans",
+        "SF Pro Text",
+        "Avenir Next",
+        "Noto Sans",
+        "Helvetica Neue",
+        "Arial",
+        "sans-serif"
+      ]
+    },
+    "display": {
+      "$value": [
+        "Segoe UI Variable Display",
+        "Segoe UI Variable",
+        "Segoe UI",
+        "Inter Variable",
+        "Inter",
+        "Open Sans",
+        "SF Pro Display",
+        "Avenir Next",
+        "Noto Sans",
+        "Helvetica Neue",
+        "Arial",
+        "sans-serif"
+      ]
+    }
+  },
+  "win-palette": {
+    "$description": "Windows 11 default accent ramp (SystemAccentColor #0078D4) and status colours; light warning is Caution #9D5D00 one step darker so its pressed fill keeps 4.5:1.",
+    "light": {
+      "primary": {
+        "$type": "color",
+        "$value": "#005fb8"
+      },
+      "primary-light": {
+        "$type": "color",
+        "$value": "#0078d4"
+      },
+      "primary-dark": {
+        "$type": "color",
+        "$value": "#003e92"
+      },
+      "positive": {
+        "$type": "color",
+        "$value": "#0f7b0f"
+      },
+      "negative": {
+        "$type": "color",
+        "$value": "#c42b1c"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "#925600"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "#005fb8"
+      },
+      "on-fill": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "fg-brand": {
+        "$value": "var(--qds-color-primary-dark)"
+      },
+      "fg-info": {
+        "$type": "color",
+        "$value": "#003e92"
+      },
+      "positive-soft": {
+        "$type": "color",
+        "$value": "#dff6dd"
+      },
+      "negative-soft": {
+        "$type": "color",
+        "$value": "#fde7e9"
+      },
+      "warning-soft": {
+        "$type": "color",
+        "$value": "#fff4ce"
+      }
+    },
+    "dark": {
+      "primary": {
+        "$type": "color",
+        "$value": "#60cdff"
+      },
+      "primary-light": {
+        "$type": "color",
+        "$value": "#99ebff"
+      },
+      "primary-dark": {
+        "$type": "color",
+        "$value": "#0078d4"
+      },
+      "positive": {
+        "$type": "color",
+        "$value": "#6ccb5f"
+      },
+      "negative": {
+        "$type": "color",
+        "$value": "#ff99a4"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "#fce100"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "#60cdff"
+      },
+      "on-fill": {
+        "$type": "color",
+        "$value": "#000000"
+      },
+      "fg-brand": {
+        "$value": "var(--qds-color-primary-light)"
+      },
+      "fg-info": {
+        "$type": "color",
+        "$value": "#99ebff"
+      },
+      "positive-soft": {
+        "$type": "color",
+        "$value": "#393d1b"
+      },
+      "negative-soft": {
+        "$type": "color",
+        "$value": "#442726"
+      },
+      "warning-soft": {
+        "$type": "color",
+        "$value": "#433519"
+      }
+    }
+  }
+}

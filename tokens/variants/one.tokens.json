@@ -1,0 +1,465 @@
+{
+  "$description": "One variant.",
+  "variants": {
+    "one": {
+      "$description": "Rounded blocks, pill controls and a calm blue accent.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": [
+          "Inter Variable",
+          "Inter",
+          "Open Sans",
+          "SamsungOne",
+          "Segoe UI",
+          "sans-serif"
+        ]
+      },
+      "font-family-display": {
+        "$type": "fontFamily",
+        "$value": [
+          "Inter Variable",
+          "Inter",
+          "Open Sans",
+          "Samsung Sharp Sans",
+          "Segoe UI",
+          "sans-serif"
+        ]
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "#1b5fcf"
+      },
+      "primary-light": {
+        "$type": "color",
+        "$value": "#5d93ec"
+      },
+      "primary-dark": {
+        "$type": "color",
+        "$value": "#164fae"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "#5a6272"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "#a35a2a"
+      },
+      "positive": {
+        "$type": "color",
+        "$value": "#24735a"
+      },
+      "negative": {
+        "$type": "color",
+        "$value": "#c33a3e"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "#8f6210"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "#28689a"
+      },
+      "light-surface-0": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "light-surface-1": {
+        "$type": "color",
+        "$value": "#f2f2f2"
+      },
+      "light-surface-2": {
+        "$type": "color",
+        "$value": "#e5e5e5"
+      },
+      "light-surface-3": {
+        "$type": "color",
+        "$value": "#dadada"
+      },
+      "light-text": {
+        "$type": "color",
+        "$value": "#1d1d1f"
+      },
+      "light-text-strong": {
+        "$type": "color",
+        "$value": "#0b0b0c"
+      },
+      "light-text-muted": {
+        "$type": "color",
+        "$value": "#5a5a5e"
+      },
+      "light-border": {
+        "$type": "color",
+        "$value": "#c6c6c9"
+      },
+      "light-border-subtle": {
+        "$type": "color",
+        "$value": "#d6d6d9"
+      },
+      "light-field-stroke": {
+        "$type": "color",
+        "$value": "#7a7a7f"
+      },
+      "light-on-fill": {
+        "$type": "color",
+        "primary": {
+          "$value": "#ffffff"
+        },
+        "secondary": {
+          "$value": "#ffffff"
+        },
+        "accent": {
+          "$value": "#ffffff"
+        },
+        "positive": {
+          "$value": "#ffffff"
+        },
+        "negative": {
+          "$value": "#ffffff"
+        },
+        "warning": {
+          "$value": "#ffffff"
+        },
+        "info": {
+          "$value": "#ffffff"
+        }
+      },
+      "shadow-sm": {
+        "$value": "none"
+      },
+      "shadow-md": {
+        "$value": "0 6px 16px rgba(0, 0, 0, 0.08)"
+      },
+      "shadow-lg": {
+        "$value": "0 12px 32px rgba(0, 0, 0, 0.12)"
+      },
+      "radius-control": {
+        "$type": "dimension",
+        "$value": "14px"
+      },
+      "radius-lg": {
+        "$type": "dimension",
+        "$value": "24px"
+      },
+      "space-md": {
+        "$type": "dimension",
+        "$value": "1.125rem"
+      },
+      "motion-fast": {
+        "$value": "0.18s cubic-bezier(0.2, 0, 0, 1)"
+      },
+      "control-size-sm": {
+        "$type": "dimension",
+        "$value": "2.5rem"
+      },
+      "control-size-md": {
+        "$type": "dimension",
+        "$value": "2.75rem"
+      },
+      "control-size-lg": {
+        "$type": "dimension",
+        "$value": "3rem"
+      },
+      "tonal-bg-opacity": {
+        "$type": "number",
+        "$value": 0.12
+      },
+      "card-acrylic-tint-rgb": {
+        "$value": "0, 0, 0"
+      },
+      "card-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-fallback-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-readable-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-readable-surface-mix": {
+        "$value": "100%"
+      },
+      "card-header-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-header-surface-mix": {
+        "$value": "100%"
+      },
+      "card-border-mix": {
+        "$value": "18%"
+      },
+      "card-backdrop-blur": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-backdrop-saturate": {
+        "$type": "number",
+        "$value": 1
+      },
+      "chrome-border-mix": {
+        "$value": "100%"
+      },
+      "chrome-border-soft-mix": {
+        "$value": "60%"
+      },
+      "chrome-surface-mix": {
+        "$value": "100%"
+      },
+      "chrome-surface-strong-mix": {
+        "$value": "100%"
+      },
+      "separator-mix": {
+        "$value": "100%"
+      },
+      "handle-border-mix": {
+        "$value": "42%"
+      },
+      "handle-primary-mix": {
+        "$value": "0%"
+      },
+      "soft-brand": {
+        "$type": "color",
+        "$value": "#e5edfb"
+      },
+      "soft-accent": {
+        "$type": "color",
+        "$value": "#f6ebe2"
+      },
+      "soft-positive": {
+        "$type": "color",
+        "$value": "#e2f0e9"
+      },
+      "soft-warning": {
+        "$type": "color",
+        "$value": "#f4ecda"
+      },
+      "soft-negative": {
+        "$type": "color",
+        "$value": "#f8e4e4"
+      },
+      "soft-info": {
+        "$type": "color",
+        "$value": "#e2ecf4"
+      },
+      "soft-focus-block": {
+        "$type": "color",
+        "$value": "#efefef"
+      },
+      "soft-transient": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "button-padding-inline": {
+        "$type": "dimension",
+        "$value": "1rem"
+      },
+      "button-dense-padding-inline": {
+        "$type": "dimension",
+        "$value": "0.875rem"
+      },
+      "field-label-size": {
+        "$type": "dimension",
+        "$value": "0.8125rem"
+      },
+      "list-item-min-height": {
+        "$type": "dimension",
+        "$value": "3rem"
+      },
+      "menu-item-min-height": {
+        "$type": "dimension",
+        "$value": "2.5rem"
+      },
+      "expansion-item-min-height": {
+        "$type": "dimension",
+        "$value": "3rem"
+      },
+      "touch-list-item-min-height": {
+        "$type": "dimension",
+        "$value": "3.5rem"
+      },
+      "touch-menu-item-min-height": {
+        "$type": "dimension",
+        "$value": "3rem"
+      },
+      "touch-expansion-item-min-height": {
+        "$type": "dimension",
+        "$value": "3.25rem"
+      },
+      "toolbar-dense-min-height": {
+        "$type": "dimension",
+        "$value": "3rem"
+      },
+      "dark-primary": {
+        "$type": "color",
+        "$value": "#2f6fdc"
+      },
+      "dark-primary-light": {
+        "$type": "color",
+        "$value": "#7eaaff"
+      },
+      "dark-primary-dark": {
+        "$type": "color",
+        "$value": "#2559b8"
+      },
+      "dark-secondary": {
+        "$type": "color",
+        "$value": "#5f6878"
+      },
+      "dark-accent": {
+        "$type": "color",
+        "$value": "#a85f2e"
+      },
+      "dark-positive": {
+        "$type": "color",
+        "$value": "#277a5f"
+      },
+      "dark-negative": {
+        "$type": "color",
+        "$value": "#c63f43"
+      },
+      "dark-warning": {
+        "$type": "color",
+        "$value": "#93660f"
+      },
+      "dark-info": {
+        "$type": "color",
+        "$value": "#2c6ea2"
+      },
+      "dark-surface-0": {
+        "$type": "color",
+        "$value": "#1a1a1a"
+      },
+      "dark-surface-1": {
+        "$type": "color",
+        "$value": "#000000"
+      },
+      "dark-surface-2": {
+        "$type": "color",
+        "$value": "#2c2c2c"
+      },
+      "dark-surface-3": {
+        "$type": "color",
+        "$value": "#383838"
+      },
+      "dark-text": {
+        "$type": "color",
+        "$value": "#f1f1f1"
+      },
+      "dark-text-strong": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "dark-text-muted": {
+        "$type": "color",
+        "$value": "#a6a6aa"
+      },
+      "dark-border": {
+        "$type": "color",
+        "$value": "#4c4c50"
+      },
+      "dark-border-subtle": {
+        "$type": "color",
+        "$value": "#333336"
+      },
+      "dark-field-stroke": {
+        "$type": "color",
+        "$value": "#808085"
+      },
+      "dark-on-fill": {
+        "$type": "color",
+        "primary": {
+          "$value": "#ffffff"
+        },
+        "secondary": {
+          "$value": "#ffffff"
+        },
+        "accent": {
+          "$value": "#ffffff"
+        },
+        "positive": {
+          "$value": "#ffffff"
+        },
+        "negative": {
+          "$value": "#ffffff"
+        },
+        "warning": {
+          "$value": "#ffffff"
+        },
+        "info": {
+          "$value": "#ffffff"
+        }
+      },
+      "dark-shadow-sm": {
+        "$value": "none"
+      },
+      "dark-shadow-md": {
+        "$value": "0 10px 24px rgba(0, 0, 0, 0.4)"
+      },
+      "dark-shadow-lg": {
+        "$value": "0 18px 40px rgba(0, 0, 0, 0.5)"
+      },
+      "dark-card-acrylic-tint-rgb": {
+        "$value": "255, 255, 255"
+      },
+      "dark-card-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-fallback-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-readable-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-readable-surface-mix": {
+        "$value": "100%"
+      },
+      "dark-card-header-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-header-surface-mix": {
+        "$value": "100%"
+      },
+      "dark-soft-brand": {
+        "$type": "color",
+        "$value": "#1a2943"
+      },
+      "dark-soft-accent": {
+        "$type": "color",
+        "$value": "#37281e"
+      },
+      "dark-soft-positive": {
+        "$type": "color",
+        "$value": "#1a3128"
+      },
+      "dark-soft-warning": {
+        "$type": "color",
+        "$value": "#332c1a"
+      },
+      "dark-soft-negative": {
+        "$type": "color",
+        "$value": "#3a2123"
+      },
+      "dark-soft-info": {
+        "$type": "color",
+        "$value": "#1a2b39"
+      },
+      "dark-soft-focus-block": {
+        "$type": "color",
+        "$value": "#242424"
+      },
+      "dark-soft-transient": {
+        "$type": "color",
+        "$value": "#262626"
+      }
+    }
+  }
+}
