@@ -23,7 +23,7 @@ const variants: VariantSample[] = [
   {
     name: 'ink',
     label: 'Ink',
-    intent: 'Paper-neutral editorial surfaces with charcoal type and coordinated pastel role washes.',
+    intent: 'One ink on paper, like an e-reader: navy, black or charcoal strokes, inverted selection and patterned roles.',
     sample: 'Editorial spread 07',
   },
   {
@@ -281,6 +281,16 @@ const pages = reactive<Record<VariantName, number>>({
 
 .variant-card__nested {
   padding: var(--qds-space-xs);
+}
+
+/* Ink has no tonal fills: roles are outlined, and only the alert takes the danger red. */
+.qds-variant-ink .variant-role {
+  box-shadow: inset 0 0 0 1px var(--qds-stroke-strong);
+}
+
+.qds-variant-ink .variant-role--negative {
+  color: var(--qds-fg-negative);
+  box-shadow: inset 0 0 0 1px var(--qds-fg-negative);
 }
 
 .variant-card__progress {
