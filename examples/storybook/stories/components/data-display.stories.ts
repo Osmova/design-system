@@ -145,7 +145,7 @@ export const Tree: Story = {
 }
 
 export const Chip: Story = {
-  args: { label: 'Design tokens', color: '', outline: false, square: false, dense: false, clickable: true, removable: true, selected: false, icon: 'star', disable: false },
+  args: { label: 'Design tokens', color: '', outline: false, square: false, dense: false, clickable: false, removable: true, selected: false, icon: 'star', disable: false },
   argTypes: {
     icon: icon(),
     ...controls(ChipApi, { label: true, color: { ...color(), options: ['', ...color().options as string[]] }, outline: true, square: true, dense: true, clickable: true, removable: true, selected: true, disable: true }),

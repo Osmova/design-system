@@ -67,11 +67,11 @@ function notify() {
         <QCard class="qds-story-panel q-pa-lg full-height">
           <div class="text-overline qds-text-muted">QLinearProgress</div>
           <div class="text-h6 qds-story-title q-mb-md">Progress states</div>
-          <QLinearProgress :value="0.68" rounded color="primary" size="12px" />
-          <QLinearProgress :value="0.38" rounded color="secondary" size="8px" class="q-mt-md" />
+          <QLinearProgress :value="0.68" rounded color="primary" size="12px" aria-label="Upload progress" />
+          <QLinearProgress :value="0.38" rounded color="secondary" size="8px" class="q-mt-md" aria-label="Sync progress" />
           <QSeparator class="q-my-md" />
           <div class="row items-center q-gutter-md">
-            <QCircularProgress class="qds-story-progress-track" show-value :value="72" size="3.5rem" color="accent" track-color="transparent" />
+            <QCircularProgress class="qds-story-progress-track" aria-label="Storage used" show-value :value="72" size="3.5rem" color="accent" track-color="transparent" />
             <QSpinner color="primary" size="2rem" />
             <div>
               <div class="text-weight-medium">Circular progress + spinner</div>
@@ -80,7 +80,7 @@ function notify() {
           </div>
           <QSeparator class="q-my-md" />
           <div class="row items-center q-gutter-md">
-            <QKnob v-model="knobValue" class="qds-story-progress-track" show-value size="4.5rem" :thickness="0.18" color="primary" track-color="transparent" />
+            <QKnob v-model="knobValue" aria-label="Brightness" class="qds-story-progress-track" show-value size="4.5rem" :thickness="0.18" color="primary" track-color="transparent" />
             <div class="qds-text-muted">Knob inherits QDS progress color and track tokens.</div>
           </div>
         </QCard>

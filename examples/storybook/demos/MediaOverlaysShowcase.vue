@@ -110,7 +110,7 @@ function openDialog() {
 
   <section class="qds-story-section">
     <h2>QPullToRefresh</h2>
-    <div style="max-height: 180px; overflow: auto">
+    <div style="max-height: 180px; overflow: auto" tabindex="0" aria-label="Refreshable list">
       <QPullToRefresh @refresh="onRefresh">
         <QList bordered separator>
           <QItem v-for="row in 6" :key="row"><QItemSection>Row {{ row }}</QItemSection></QItem>

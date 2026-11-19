@@ -161,7 +161,7 @@ export const Slider: Story = {
 }
 
 export const Range: Story = {
-  args: { min: 0, max: 100, step: 1, color: 'primary', label: false, markers: false, dragRange: true, disable: false },
+  args: { min: 0, max: 100, step: 1, color: 'primary', label: false, markers: false, dragRange: false, disable: false },
   argTypes: controls(RangeApi, { min: true, max: true, step: true, color: color(), label: true, markers: true, dragRange: true, disable: true }),
   render: (args) => ({
     components: { QRange },

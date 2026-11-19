@@ -103,7 +103,7 @@ function loadMore(index: number, done: (stop?: boolean) => void) {
 
   <section class="qds-story-section">
     <h2>QInfiniteScroll</h2>
-    <div style="max-height: 220px; overflow: auto">
+    <div style="max-height: 220px; overflow: auto" tabindex="0" aria-label="Infinite list">
       <QInfiniteScroll :offset="120" @load="loadMore">
         <QList bordered separator>
           <QItem v-for="row in infiniteRows" :key="row">
