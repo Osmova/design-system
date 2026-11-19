@@ -1,0 +1,524 @@
+{
+  "$description": "Zen variant.",
+  "variants": {
+    "zen": {
+      "$description": "Soft tactile reading system; Figtree and Fraunces ship as ./fonts/zen.css.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": [
+          "Figtree Variable",
+          "Figtree",
+          "Inter Variable",
+          "Inter",
+          "Segoe UI",
+          "system-ui",
+          "sans-serif"
+        ]
+      },
+      "font-family-display": {
+        "$type": "fontFamily",
+        "$value": [
+          "Fraunces Variable",
+          "Fraunces",
+          "Iowan Old Style",
+          "Palatino Linotype",
+          "Palatino",
+          "Georgia",
+          "serif"
+        ]
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "#355e4f"
+      },
+      "primary-light": {
+        "$type": "color",
+        "$value": "#5b8273"
+      },
+      "primary-dark": {
+        "$type": "color",
+        "$value": "#284a3d"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "#6a5a48"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "#a2573a"
+      },
+      "positive": {
+        "$type": "color",
+        "$value": "#3d6b3f"
+      },
+      "negative": {
+        "$type": "color",
+        "$value": "#a3364a"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "#865811"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "#3e6585"
+      },
+      "light-surface-0": {
+        "$type": "color",
+        "$value": "#fcfbf7"
+      },
+      "light-surface-1": {
+        "$type": "color",
+        "$value": "#efede4"
+      },
+      "light-surface-2": {
+        "$type": "color",
+        "$value": "#e5e2d6"
+      },
+      "light-surface-3": {
+        "$type": "color",
+        "$value": "#dad6c8"
+      },
+      "light-text": {
+        "$type": "color",
+        "$value": "#2f2c25"
+      },
+      "light-text-strong": {
+        "$type": "color",
+        "$value": "#1d1b16"
+      },
+      "light-text-muted": {
+        "$type": "color",
+        "$value": "#5a564a"
+      },
+      "light-border": {
+        "$type": "color",
+        "$value": "#d2cdbe"
+      },
+      "light-border-subtle": {
+        "$type": "color",
+        "$value": "#e2ded2"
+      },
+      "light-stroke-strong": {
+        "$type": "color",
+        "$value": "#77736a"
+      },
+      "light-fg-disabled": {
+        "$type": "color",
+        "$value": "#78746a"
+      },
+      "light-scrim": {
+        "$type": "color",
+        "$value": "rgba(29, 27, 22, 0.42)"
+      },
+      "light-on-fill": {
+        "$type": "color",
+        "primary": {
+          "$value": "#fcfbf7"
+        },
+        "secondary": {
+          "$value": "#fcfbf7"
+        },
+        "accent": {
+          "$value": "#fcfbf7"
+        },
+        "positive": {
+          "$value": "#fcfbf7"
+        },
+        "negative": {
+          "$value": "#fcfbf7"
+        },
+        "warning": {
+          "$value": "#fcfbf7"
+        },
+        "info": {
+          "$value": "#fcfbf7"
+        }
+      },
+      "shadow-sm": {
+        "$value": "0 1px 2px #4a3c241a,0 2px 5px -1px #4a3c241a"
+      },
+      "shadow-md": {
+        "$value": "0 2px 4px #4a3c240f,0 16px 36px -12px #4a3c2442"
+      },
+      "shadow-lg": {
+        "$value": "0 2px 6px #4a3c240f,0 28px 56px -18px #4a3c2452"
+      },
+      "light-lift-2": {
+        "$value": "0 2px 4px #4a3c2414,0 4px 12px -2px #4a3c241f"
+      },
+      "light-lift-3": {
+        "$value": "0 1px 2px #4a3c240f,0 8px 22px -8px #4a3c242e"
+      },
+      "light-edge": {
+        "$value": "inset 0 1px 0 #ffffffb2"
+      },
+      "light-inset": {
+        "$value": "inset 0 1px 2px #4a3c2424,inset 0 3px 8px -4px #4a3c2433"
+      },
+      "light-press": {
+        "$value": "inset 0 2px 5px #4a3c2433,inset 0 1px 1px #4a3c241a"
+      },
+      "radius-xs": {
+        "$type": "dimension",
+        "$value": "4px"
+      },
+      "radius-sm": {
+        "$type": "dimension",
+        "$value": "7px"
+      },
+      "radius-md": {
+        "$type": "dimension",
+        "$value": "12px"
+      },
+      "radius-control": {
+        "$type": "dimension",
+        "$value": "14px"
+      },
+      "radius-lg": {
+        "$type": "dimension",
+        "$value": "22px"
+      },
+      "radius-xl": {
+        "$type": "dimension",
+        "$value": "30px"
+      },
+      "motion-fast": {
+        "$value": "160ms cubic-bezier(0.2, 0.7, 0.3, 1)"
+      },
+      "motion-spring": {
+        "$value": "240ms cubic-bezier(0.34, 1.36, 0.64, 1)"
+      },
+      "control-size-sm": {
+        "$type": "dimension",
+        "$value": "2rem"
+      },
+      "control-size-md": {
+        "$type": "dimension",
+        "$value": "2.5rem"
+      },
+      "control-size-lg": {
+        "$type": "dimension",
+        "$value": "3rem"
+      },
+      "list-item-min-height": {
+        "$type": "dimension",
+        "$value": "2.75rem"
+      },
+      "menu-item-min-height": {
+        "$type": "dimension",
+        "$value": "2.5rem"
+      },
+      "tonal-bg-opacity": {
+        "$type": "number",
+        "$value": 0.14
+      },
+      "card-acrylic-tint-rgb": {
+        "$value": "53, 94, 79"
+      },
+      "card-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-fallback-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-readable-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-readable-surface-mix": {
+        "$value": "100%"
+      },
+      "card-header-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-header-surface-mix": {
+        "$value": "100%"
+      },
+      "card-border-mix": {
+        "$value": "100%"
+      },
+      "card-backdrop-blur": {
+        "$type": "number",
+        "$value": 0
+      },
+      "card-backdrop-saturate": {
+        "$type": "number",
+        "$value": 1
+      },
+      "chrome-border-mix": {
+        "$value": "100%"
+      },
+      "chrome-border-soft-mix": {
+        "$value": "56%"
+      },
+      "chrome-surface-mix": {
+        "$value": "100%"
+      },
+      "chrome-surface-strong-mix": {
+        "$value": "100%"
+      },
+      "separator-mix": {
+        "$value": "100%"
+      },
+      "handle-border-mix": {
+        "$value": "64%"
+      },
+      "handle-primary-mix": {
+        "$value": "10%"
+      },
+      "soft-brand": {
+        "$type": "color",
+        "$value": "#dee9e2"
+      },
+      "soft-accent": {
+        "$type": "color",
+        "$value": "#f5e3d9"
+      },
+      "soft-positive": {
+        "$type": "color",
+        "$value": "#e2ecdb"
+      },
+      "soft-warning": {
+        "$type": "color",
+        "$value": "#f3e8cf"
+      },
+      "soft-negative": {
+        "$type": "color",
+        "$value": "#f6e0e4"
+      },
+      "soft-info": {
+        "$type": "color",
+        "$value": "#e0e9f1"
+      },
+      "soft-focus-block": {
+        "$type": "color",
+        "$value": "#e6e4d8"
+      },
+      "soft-transient": {
+        "$type": "color",
+        "$value": "#fefdf9"
+      },
+      "dark-primary": {
+        "$type": "color",
+        "$value": "#9fc6b3"
+      },
+      "dark-primary-light": {
+        "$type": "color",
+        "$value": "#bddaca"
+      },
+      "dark-primary-dark": {
+        "$type": "color",
+        "$value": "#86b09c"
+      },
+      "dark-secondary": {
+        "$type": "color",
+        "$value": "#cbbba5"
+      },
+      "dark-accent": {
+        "$type": "color",
+        "$value": "#e8ab8f"
+      },
+      "dark-positive": {
+        "$type": "color",
+        "$value": "#a9d19f"
+      },
+      "dark-negative": {
+        "$type": "color",
+        "$value": "#efa5b0"
+      },
+      "dark-warning": {
+        "$type": "color",
+        "$value": "#e2be7c"
+      },
+      "dark-info": {
+        "$type": "color",
+        "$value": "#a5c3df"
+      },
+      "dark-surface-0": {
+        "$type": "color",
+        "$value": "#2a2c26"
+      },
+      "dark-surface-1": {
+        "$type": "color",
+        "$value": "#1f211c"
+      },
+      "dark-surface-2": {
+        "$type": "color",
+        "$value": "#181a15"
+      },
+      "dark-surface-3": {
+        "$type": "color",
+        "$value": "#35372f"
+      },
+      "dark-text": {
+        "$type": "color",
+        "$value": "#ebe8dd"
+      },
+      "dark-text-strong": {
+        "$type": "color",
+        "$value": "#f9f7ef"
+      },
+      "dark-text-muted": {
+        "$type": "color",
+        "$value": "#b1ad9f"
+      },
+      "dark-border": {
+        "$type": "color",
+        "$value": "#45473e"
+      },
+      "dark-border-subtle": {
+        "$type": "color",
+        "$value": "#33352d"
+      },
+      "dark-stroke-strong": {
+        "$type": "color",
+        "$value": "#8d8b80"
+      },
+      "dark-fg-disabled": {
+        "$type": "color",
+        "$value": "#8a877c"
+      },
+      "dark-scrim": {
+        "$type": "color",
+        "$value": "rgba(8, 9, 7, 0.64)"
+      },
+      "dark-on-fill": {
+        "$type": "color",
+        "primary": {
+          "$value": "#181a15"
+        },
+        "secondary": {
+          "$value": "#181a15"
+        },
+        "accent": {
+          "$value": "#181a15"
+        },
+        "positive": {
+          "$value": "#181a15"
+        },
+        "negative": {
+          "$value": "#181a15"
+        },
+        "warning": {
+          "$value": "#181a15"
+        },
+        "info": {
+          "$value": "#181a15"
+        }
+      },
+      "dark-shadow-sm": {
+        "$value": "0 1px 2px #00000066,0 1px 1px #00000033"
+      },
+      "dark-shadow-md": {
+        "$value": "0 2px 4px #0000004c,0 18px 40px -12px #0000009e"
+      },
+      "dark-shadow-lg": {
+        "$value": "0 2px 6px #0000004c,0 30px 60px -18px #000000b8"
+      },
+      "dark-lift-2": {
+        "$value": "0 2px 4px #0000005c,0 6px 14px -4px #0000006b"
+      },
+      "dark-lift-3": {
+        "$value": "0 1px 2px #0000004c,0 10px 24px -8px #00000080"
+      },
+      "dark-edge": {
+        "$value": "inset 0 1px 0 #ffffff0f"
+      },
+      "dark-inset": {
+        "$value": "inset 0 1px 3px #00000073,inset 0 2px 8px -3px #00000066"
+      },
+      "dark-press": {
+        "$value": "inset 0 2px 6px #0000008c,inset 0 1px 1px #0000004c"
+      },
+      "dark-card-acrylic-tint-rgb": {
+        "$value": "159, 198, 179"
+      },
+      "dark-card-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-fallback-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-readable-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-readable-surface-mix": {
+        "$value": "100%"
+      },
+      "dark-card-header-tonal-opacity": {
+        "$type": "number",
+        "$value": 0
+      },
+      "dark-card-header-surface-mix": {
+        "$value": "100%"
+      },
+      "dark-soft-brand": {
+        "$type": "color",
+        "$value": "#2a3832"
+      },
+      "dark-soft-accent": {
+        "$type": "color",
+        "$value": "#432f28"
+      },
+      "dark-soft-positive": {
+        "$type": "color",
+        "$value": "#2c3a29"
+      },
+      "dark-soft-warning": {
+        "$type": "color",
+        "$value": "#3d3321"
+      },
+      "dark-soft-negative": {
+        "$type": "color",
+        "$value": "#43292f"
+      },
+      "dark-soft-info": {
+        "$type": "color",
+        "$value": "#273342"
+      },
+      "dark-soft-focus-block": {
+        "$type": "color",
+        "$value": "#33352d"
+      },
+      "dark-soft-transient": {
+        "$type": "color",
+        "$value": "#2a2c26"
+      },
+      "toggle-track-width": {
+        "$type": "dimension",
+        "$value": "3rem"
+      },
+      "toggle-track-height": {
+        "$type": "dimension",
+        "$value": "1.75rem"
+      },
+      "toggle-thumb-inset": {
+        "$type": "dimension",
+        "$value": "0.1875rem"
+      },
+      "heading-weight": {
+        "$type": "number",
+        "$value": 380
+      },
+      "h5-weight": {
+        "$type": "number",
+        "$value": 450
+      },
+      "h6-weight": {
+        "$type": "number",
+        "$value": 500
+      },
+      "overline-letter-spacing": {
+        "$type": "dimension",
+        "$value": "0.1em"
+      }
+    }
+  }
+}

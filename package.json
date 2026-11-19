@@ -61,7 +61,8 @@
     "./fonts/*": "./src/fonts/*"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node scripts/build-css.mjs",
+    "tokens": "node scripts/build-tokens.mjs",
+    "build": "node scripts/build-tokens.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "stories": "pnpm build && histoire dev",
     "stories:build": "pnpm build && histoire build",
@@ -87,6 +88,7 @@
     "test:runtime:grammar:browser": "node tests/runtime/grammar-fixture-browser.mjs",
     "test:runtime:variants:browser": "node tests/runtime/variant-bundles-browser.mjs",
     "test:runtime": "pnpm test:runtime:ssr && pnpm test:runtime:colorjs && pnpm test:runtime:fill-contrast && pnpm test:runtime:grammar:browser && pnpm test:runtime:variants:browser",
+    "test:tokens:parity": "node tests/runtime/token-parity-browser.mjs",
     "pack:dry": "npm pack --dry-run --json",
     "css:budget": "node scripts/css-budget.mjs",
     "verify:publish": "pnpm css:budget && pnpm build && pnpm typecheck && pnpm test:runtime && pnpm pack:dry",
@@ -142,6 +144,7 @@
     "postcss": "^8.5.32",
     "quasar": "^2.35.0",
     "sass": "^1.105.1",
+    "style-dictionary": "5.8.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.7",
     "vue": "^3.5.43",

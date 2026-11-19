@@ -16,7 +16,7 @@
 @mixin qds-variant-palette($variant, $prefix: '') {
   @each $color in primary, primary-light, primary-dark, secondary, accent, positive, negative, warning, info {
     --qds-color-#{$color}: #{qds-variant-token($variant, '#{$prefix}#{$color}')};
-    --qds-color-#{$color}-rgb: #{qds-variant-token($variant, '#{$prefix}#{$color}-rgb')};
+    --qds-color-#{$color}-rgb: #{tokens.qds-rgb(qds-variant-token($variant, '#{$prefix}#{$color}'))};
   }
 }
 
@@ -76,7 +76,7 @@
   --qds-fill-hover-mix: #{map.get(tokens.$fill-state, variant-hover-mix)};
   --qds-fill-pressed-mix: #{map.get(tokens.$fill-state, variant-pressed-mix)};
   --qds-fill-state-base: var(--qds-fg-strong);
-  --qds-text-on-fill-pressed-mix: 100%;
+  --qds-text-on-fill-pressed-mix: #{map.get(tokens.$fill-state, variant-on-pressed-mix)};
   --qds-color-primary-hover: var(--qds-color-primary-dark);
   --qds-color-primary-pressed: var(--qds-color-primary-dark);
   @include fallbacks.qds-semantic-tokens(if($dark, tokens.$dark-semantic, tokens.$light-semantic));
@@ -184,8 +184,8 @@
   --qds-mica-alt: var(--qds-surface-1);
   --qds-backdrop: var(--qds-surface-1);
   --qds-toolbar-bg: var(--qds-surface-1);
-  --qds-focus-ring-width: 2px;
-  --qds-focus-ring-offset: 2px;
+  --qds-focus-ring-width: #{qds-variant-token(ink, focus-ring-width)};
+  --qds-focus-ring-offset: #{qds-variant-token(ink, focus-ring-offset)};
   @if $scheme == light {
     // An explicit dark bar on a light page is the inverted ink bar.
     --qds-bar-dark-bg: var(--qds-text-strong);
@@ -261,9 +261,9 @@
   --qds-tab-radius: var(--qds-radius-full);
   --qds-menu-radius: var(--qds-radius-lg);
   --qds-notification-radius: var(--qds-radius-lg);
-  --qds-toggle-track-width: 3rem;
-  --qds-toggle-track-height: 1.75rem;
-  --qds-toggle-thumb-inset: 0.1875rem;
+  @each $name in track-width, track-height, thumb-inset {
+    --qds-toggle-#{$name}: #{qds-variant-token(zen, 'toggle-#{$name}')};
+  }
   --qds-slider-label-bg: var(--qds-text-strong);
   --qds-slider-label-text: var(--qds-surface-0);
   --qds-slider-label-border: var(--qds-text-strong);
@@ -286,14 +286,13 @@
       --qds-radius-#{$step}: #{qds-variant-token(ink, radius-#{$step})};
     }
     --qds-motion-fast: #{qds-variant-token(ink, motion-fast)};
-    --qds-motion-duration-fast: 60ms;
-    --qds-motion-duration-base: 80ms;
-    --qds-motion-duration-medium: 80ms;
-    --qds-motion-duration-slow: 100ms;
-    --qds-motion-ease-out: linear;
-    --qds-motion-ease-in-out: linear;
+    @each $speed in fast, base, medium, slow {
+      --qds-motion-duration-#{$speed}: #{qds-variant-token(ink, 'motion-duration-#{$speed}')};
+    }
+    --qds-motion-ease-out: #{qds-variant-token(ink, motion-ease)};
+    --qds-motion-ease-in-out: #{qds-variant-token(ink, motion-ease)};
     @each $step in h1, h2, h3, h4 {
-      --qds-font-weight-#{$step}: 600;
+      --qds-font-weight-#{$step}: #{qds-variant-token(ink, heading-weight)};
     }
     @include qds-variant-scheme(ink);
     @include fallbacks.qds-material-tokens(solid);
@@ -348,11 +347,11 @@
     --qds-motion-fast: #{qds-variant-token(zen, motion-fast)};
     --_qds-zen-spring: #{qds-variant-token(zen, motion-spring)};
     @each $step in h1, h2, h3, h4 {
-      --qds-font-weight-#{$step}: 380;
+      --qds-font-weight-#{$step}: #{qds-variant-token(zen, heading-weight)};
     }
-    --qds-font-weight-h5: 450;
-    --qds-font-weight-h6: 500;
-    --qds-letter-spacing-overline: 0.1em;
+    --qds-font-weight-h5: #{qds-variant-token(zen, h5-weight)};
+    --qds-font-weight-h6: #{qds-variant-token(zen, h6-weight)};
+    --qds-letter-spacing-overline: #{qds-variant-token(zen, overline-letter-spacing)};
     @include qds-variant-scheme(zen);
     @include fallbacks.qds-material-tokens(solid);
     @include qds-zen-paper(light);
@@ -406,21 +405,21 @@
   --qds-menu-radius: #{qds-variant-token(glass, menu-radius)};
   --qds-menu-shadow: var(--qds-shadow-lg);
   // Capsule geometry, after qds-variant-scheme, which re-emits these three; the knob is itself a capsule.
-  --qds-toggle-track-width: 3.9375rem;
-  --qds-toggle-track-height: 1.75rem;
-  --qds-toggle-thumb-inset: 0.125rem;
+  @each $name in track-width, track-height, thumb-inset {
+    --qds-toggle-#{$name}: #{qds-variant-token(glass, 'toggle-#{$name}')};
+  }
   // Glass diffuses busy content and is edged by a bright top highlight rather than a deep drop shadow.
-  --qds-material-regular-blur: 40px;
-  --qds-material-saturate: 1.8;
+  --qds-material-regular-blur: #{qds-variant-token(glass, material-regular-blur)};
+  --qds-material-saturate: #{qds-variant-token(glass, material-saturate)};
   // The switch and slider knob stays light in both schemes, unlike an on-fill foreground.
   @if $scheme == light {
     --qds-material-regular-bg: color-mix(in srgb, var(--qds-surface-0) 92%, transparent);
-    --qds-material-edge: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --qds-material-edge: #{qds-variant-token(glass, light-material-edge)};
     --_qds-glass-knob: #{qds-variant-token(glass, light-surface-0)};
     --_qds-glass-nested: var(--qds-surface-1);
     --_qds-glass-on-track: currentColor;
   } @else {
-    --qds-material-edge: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    --qds-material-edge: #{qds-variant-token(glass, dark-material-edge)};
     --_qds-glass-knob: #{qds-variant-token(glass, dark-text-strong)};
     --_qds-glass-nested: var(--qds-surface-2);
     // The page stays black, but a well inside a card is the elevated grey, never a black hole.
@@ -462,7 +461,7 @@
   --qds-border-subtle: var(--qds-stroke-strong);
   --qds-material-stroke: var(--qds-stroke-strong);
   --qds-color-primary: #{qds-variant-token(glass, '#{$scheme}-hc-primary')};
-  --qds-color-primary-rgb: #{qds-variant-token(glass, '#{$scheme}-hc-primary-rgb')};
+  --qds-color-primary-rgb: #{tokens.qds-rgb(qds-variant-token(glass, '#{$scheme}-hc-primary'))};
 }
 
 $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-glass, body.qds-ui.body--dark.qds-variant-glass, body.qds-ui.body--dark .qds-variant-glass';
@@ -574,9 +573,9 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
     @include qds-win-values(tokens.$win-light);
     --qds-font-family: #{map.get(tokens.$win-font, body)};
     --qds-font-family-display: #{map.get(tokens.$win-font, display)};
-    --qds-focus-ring-offset: 1px;
-    --qds-control-icon-opacity: 1;
-    --qds-control-icon-opacity-active: 1;
+    @each $token in focus-ring-offset, control-icon-opacity, control-icon-opacity-active {
+      --qds-#{$token}: #{map.get(tokens.$win, $token)};
+    }
   }
 
   #{$dark} {

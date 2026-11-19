@@ -124,14 +124,9 @@
   --qds-field-size-sm: var(--qds-control-size-sm);
   --qds-field-size-md: var(--qds-control-size-md);
   --qds-field-size-lg: var(--qds-control-size-lg);
-  --qds-field-label-size-rest: 0.875rem;
-  --qds-field-label-size-float: 0.75rem;
-  --qds-field-label-gap: 0.25rem;
-  --qds-field-label-column: 8rem;
-  --qds-field-value-inset-block-start: 1.25rem;
-  --qds-field-value-inset-block-end: 0.5rem;
-  --qds-field-value-inset-block-start-dense: 1rem;
-  --qds-field-value-inset-block-end-dense: 0.375rem;
+  @each $name in label-size-rest, label-size-float, label-gap, label-column, value-inset-block-start, value-inset-block-end, value-inset-block-start-dense, value-inset-block-end-dense {
+    --qds-field-#{$name}: #{map.get(tokens.$components, field, $name)};
+  }
   --qds-field-transition: var(--qds-motion-fast);
   --qds-field-label-weight: var(--qds-font-weight-regular);
   --qds-field-shadow: none;
@@ -140,10 +135,10 @@
   --qds-control-halo: 0 0 8px color-mix(in srgb, currentColor #{map.get(map.get(tokens.$components, field), halo-mix)}, transparent);
   --qds-field-description-color: color-mix(in srgb, var(--qds-text-muted) 75%, var(--qds-text));
   --qds-field-help-gap: var(--qds-space-xs);
-  --qds-row-gap: 0.125rem;
+  --qds-row-gap: #{map.get(tokens.$components, row, gap)};
   --qds-row-radius: var(--qds-radius-control);
   --qds-row-inset: var(--qds-space-sm);
-  --qds-progress-stripe: rgba(255, 255, 255, 0.24);
+  --qds-progress-stripe: #{map.get(tokens.$components, progress, stripe)};
   --qds-button-min-height: var(--qds-control-size-md);
   --qds-button-dense-min-height: var(--qds-control-size-sm);
   --qds-button-round-size: var(--qds-control-size-md);
@@ -207,7 +202,7 @@
   --qds-tab-active-rail: var(--qds-color-primary);
   --qds-toggle-track-width: var(--qds-control-size-lg);
   --qds-toggle-track-height: calc(var(--qds-control-size-lg) / 2);
-  --qds-toggle-thumb-inset: 0.1875rem;
+  --qds-toggle-thumb-inset: #{map.get(tokens.$components, toggle, thumb-inset)};
 }
 
 // Neutral root fallbacks for component-scoped tokens so inventory parity holds.
@@ -228,7 +223,7 @@
   --qds-pagination-active-border: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-border-opacity));
   --qds-pagination-active-text: var(--qds-text-strong);
   // Scrollbar
-  --qds-scrollbar-size: 0.625rem;
+  --qds-scrollbar-size: #{map.get(tokens.$components, scrollbar, size)};
   --qds-scrollbar-thumb: var(--qds-handle-color);
   --qds-scrollbar-thumb-hover: color-mix(in srgb, var(--qds-handle-color) 72%, var(--qds-text-muted));
   // Selection controls
@@ -285,8 +280,8 @@
     --qds-text-muted: #{map.get(tokens.$light-text, muted)};
     --qds-text-on-solid: #{map.get(tokens.$dark-text, strong)};
     @include qds-on-fill(tokens.$light-on-fill);
-    --qds-media-scrim: rgba(0, 0, 0, 0.58);
-    --qds-media-scrim-strong: rgba(0, 0, 0, 0.86);
+    --qds-media-scrim: #{map.get(tokens.$effects, media, scrim)};
+    --qds-media-scrim-strong: #{map.get(tokens.$effects, media, scrim-strong)};
     --qds-border: #{map.get(tokens.$borders, light)};
     --qds-border-subtle: #{map.get(tokens.$borders, subtle)};
 
