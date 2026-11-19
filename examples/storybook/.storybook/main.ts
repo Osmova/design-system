@@ -3,23 +3,22 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
-// Repository root: examples/storybook/.storybook -> examples/storybook -> examples -> repo root.
 const repoRoot = path.resolve(here, '../../..')
+const galleryRoot = path.resolve(repoRoot, 'examples/gallery')
 
 const config: StorybookConfig = {
-  stories: ['../stories/**/*.stories.ts'],
+  stories: ['../stories/**/*.mdx', '../stories/**/*.stories.ts'],
   framework: {
     name: '@storybook/vue3-vite',
-    options: {},
+    options: { docgen: false },
   },
-  addons: ['@storybook/addon-docs'],
+  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],
+  staticDirs: [path.resolve(galleryRoot, 'public')],
+  core: { disableTelemetry: true, disableWhatsNewNotifications: true },
   async viteFinal(config) {
-    // SB 10's vue3-vite framework only ships `templateCompilation` (vue runtime
-    // alias). SFC demo compilation needs @vitejs/plugin-vue explicitly.
-    const { default: vuePlugin } = await import('@vitejs/plugin-vue')
+    const { default: vue } = await import('@vitejs/plugin-vue')
+    const { quasar, transformAssetUrls } = await import('@quasar/vite-plugin')
 
-    // Storybook's base preview config may ship resolve.alias as an array or an
-    // object depending on the installed framework — merge without losing them.
     const baseAlias = config.resolve?.alias
     const baseEntries: Array<{ find: string | RegExp; replacement: string }> = Array.isArray(baseAlias)
       ? baseAlias
@@ -27,28 +26,23 @@ const config: StorybookConfig = {
 
     return {
       ...config,
-      plugins: [
-        ...(config.plugins ?? []),
-        vuePlugin(),
-      ],
+      plugins: [...(config.plugins ?? []), vue({ template: { transformAssetUrls } }), quasar()],
       resolve: {
         ...config.resolve,
         alias: [
           ...baseEntries,
-          // The shared catalog lives outside this workspace root on purpose
-          // (one copy of demos/control data for both host adapters).
           { find: '@qds-catalog', replacement: path.resolve(repoRoot, 'catalog') },
+          { find: '@gallery', replacement: path.resolve(galleryRoot, 'src') },
         ],
       },
+      optimizeDeps: {
+        ...config.optimizeDeps,
+        exclude: [...(config.optimizeDeps?.exclude ?? []), '@osmova/quasar-design-system'],
+      },
+      build: { ...config.build, chunkSizeWarningLimit: 4096 },
       server: {
         ...config.server,
-        fs: {
-          ...(config.server?.fs ?? {}),
-          allow: [
-            ...(config.server?.fs?.allow ?? []),
-            repoRoot,
-          ],
-        },
+        fs: { ...(config.server?.fs ?? {}), allow: [...(config.server?.fs?.allow ?? []), repoRoot] },
       },
     }
   },

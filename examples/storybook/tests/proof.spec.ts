@@ -52,7 +52,8 @@ async function theme(page: Page, frame: Frame, host: Host, axis: 'mode' | 'varia
   else {
     const prefix = axis === 'mode' ? 'Design-system color mode' : axis === 'variant' ? 'Design-system variant' : 'Shadcn palette axis'
     await page.getByRole('button', { name: new RegExp(`^${prefix}`) }).click()
-    const title = axis === 'mode' ? value[0].toUpperCase() + value.slice(1) : value
+    const label = value[0].toUpperCase() + value.slice(1)
+    const title = axis === 'shadcn palette' ? `Palette: ${label}` : label
     await page.getByText(title, { exact: true }).last().click()
   }
 }
