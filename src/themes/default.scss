@@ -169,7 +169,7 @@
   @each $token in button-elevated-shadow-hover, elevation-card, elevation-flyout, elevation-dialog {
     --qds-#{$token}: none;
   }
-  @each $token in control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom, material-stroke, menu-border, stroke-subtle, stroke-divider, stroke-error, stroke-focus, card-stroke, card-border {
+  @each $token in control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom, material-stroke, menu-border, stroke-subtle, stroke-divider, stroke-focus, card-stroke, card-border {
     --qds-#{$token}: var(--qds-stroke-strong);
   }
   --qds-bg-overlay: transparent;
@@ -186,11 +186,16 @@
   --qds-toolbar-bg: var(--qds-surface-1);
   --qds-focus-ring-width: 2px;
   --qds-focus-ring-offset: 2px;
+  @if $scheme == light {
+    // An explicit dark bar on a light page is the inverted ink bar.
+    --qds-bar-dark-bg: var(--qds-text-strong);
+    --qds-bar-dark-fg: var(--qds-surface-0);
+  }
   --qds-fg-on-brand: var(--qds-text-on-primary);
   @each $role in brand, primary, secondary, accent, positive, negative, warning, info {
     --qds-fg-#{$role}: var(--qds-text-strong);
   }
-  @include qds-ink-colour('navy', $scheme);
+  @include qds-ink-colour('charcoal', $scheme);
 }
 
 // One ink and one paper per scheme; every derived alias on the same element follows them.
@@ -201,7 +206,7 @@
   $ink-rgb: '#{color.channel($ink, "red", $space: rgb)}, #{color.channel($ink, "green", $space: rgb)}, #{color.channel($ink, "blue", $space: rgb)}';
   --_qds-ink: #{$ink};
   --_qds-paper: #{$paper};
-  @each $color in primary, primary-light, primary-dark, secondary, accent, positive, negative, warning, info {
+  @each $color in primary, primary-light, primary-dark, secondary, accent, positive, warning, info {
     --qds-color-#{$color}: #{$ink};
     --qds-color-#{$color}-rgb: #{$ink-rgb};
   }
@@ -221,6 +226,15 @@
   --qds-fg-disabled: #{map.get($c, '#{$scheme}-disabled')};
   --qds-text-on-solid: #{$paper};
   --qds-card-acrylic-tint-rgb: #{$ink-rgb};
+  // The one red: negative roles, destructive actions and errors.
+  $danger: map.get($c, '#{$scheme}-danger');
+  --qds-color-negative: #{$danger};
+  --qds-color-negative-rgb: #{color.channel($danger, "red", $space: rgb)}, #{color.channel($danger, "green", $space: rgb)}, #{color.channel($danger, "blue", $space: rgb)};
+  --qds-fg-negative: #{$danger};
+  --qds-stroke-error: #{$danger};
+  $inverse: 'light-danger';
+  @if $scheme == light { $inverse: 'dark-danger'; }
+  --_qds-danger-inverse: #{map.get($c, $inverse)};
 }
 
 // Zen's boundary is essential and its depth decorative: control strokes resolve
@@ -294,7 +308,7 @@
   }
 
   // Selected inks are listed before the dark scopes, which outrank them only by order.
-  @each $name in 'black', 'charcoal' {
+  @each $name in 'black', 'navy' {
     .qds-variant-ink[data-qds-ink="#{$name}"] { @include qds-ink-colour($name, light); }
   }
 
@@ -307,7 +321,7 @@
     @include qds-ink-paper(dark);
   }
 
-  @each $name in 'black', 'charcoal' {
+  @each $name in 'black', 'navy' {
     $ink: '.qds-variant-ink[data-qds-ink="#{$name}"]';
     .qds-theme-dark#{$ink},
     .qds-theme-dark #{$ink},
