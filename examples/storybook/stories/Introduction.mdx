@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introduction" />
+
+# Quasar Design System catalog
+
+Every story renders native Quasar 2 components styled by the design system. Nothing here is a wrapper:
+the stories use the same components, props and plugins an application uses.
+
+## Toolbar globals
+
+The toolbar drives the real runtime controller (`configureDesignSystem`), one per preview document.
+
+| Global | Controller call | Values |
+| --- | --- | --- |
+| Variant | `setVariant` | win, ink, one, term, shadcn, zen, glass |
+| Scheme | `setMode` | light, dark, system |
+| Ink | `setInkColor` | charcoal, black, navy (painted by the ink variant) |
+| Palette | `setShadcnBaseColor` | neutral, gray, zinc, stone, slate (painted by the shadcn variant) |
+
+The controller paints `document.body`, so dialogs, menus, tooltips and notifications that Quasar renders in
+body portals repaint together with the story.
+
+## Organisation
+
+- **Foundations**: tokens, type, icons and fonts.
+- **Components**: one page per family. `Showcase` and `Gallery` stories show the family at a glance; the other
+  stories render one component with Controls for the props that change its look.
+- **Patterns**: whole screens shared with the gallery.
+- **Systems**: the variants side by side.
+- **Optional**: the QWindow extension.

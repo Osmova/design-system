@@ -12,13 +12,15 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@qds-catalog/*": ["../../catalog/*"]
+      "@qds-catalog/*": ["../../catalog/*"],
+      "@gallery/*": ["../gallery/src/*"]
     }
   },
   "include": [
     ".storybook/**/*.ts",
     "stories/**/*.ts",
-    "playwright.proof.config.ts",
+    "demos/**/*.vue",
+    "playwright.*.ts",
     "tests/**/*.ts",
     "../../catalog/manifest.json",
     "../../catalog/control.json"

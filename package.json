@@ -66,6 +66,8 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "stories": "pnpm build && histoire dev",
     "stories:build": "pnpm build && histoire build",
+    "stories:sb": "pnpm -C examples/storybook storybook",
+    "stories:sb:build": "pnpm -C examples/storybook build-storybook",
     "catalog:generate": "node scripts/catalog-generate.mjs",
     "catalog:check": "node scripts/catalog-check.mjs",
     "catalog:check:complete": "node scripts/catalog-check.mjs --complete",
