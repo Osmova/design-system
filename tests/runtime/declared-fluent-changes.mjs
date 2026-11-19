@@ -60,6 +60,12 @@ const HEADING_WEIGHT = /body\.qds-ui :where\((h[1-6])(:not\([^)]*\))\)/g
 const HEADING_STEP = /body\.qds-ui :where\((h[1-6])\)\{/g
 const headingChanges = (css) => css.replace(HEADING_FAMILY[0], HEADING_FAMILY[1]).replace(HEADING_WEIGHT, ':where(body.qds-ui) $1:where($2)').replace(HEADING_STEP, ':where(body.qds-ui) $1{')
 
+// F05: the WinUI fidelity rules (buttons, selection, toggle, slider, tabs,
+// dialogs, dividers, disabled and subtle fills) are additions scoped to the
+// win variant class, never edits of a frozen rule, so every other profile
+// keeps its baseline paint. A matching rule may name no other variant.
+export const ADDED_WIN_RULE = /^(?!.*qds-variant-(?!win\b)).*qds-variant-win\b/
+
 export const ADDED_IMPORTANT_RULE = /^@layer qds-important\|[^|]*\.q-field__focusable-action:focus-visible\{outline:[^}]*!important\}$/
 
 export function applyDeclaredFluentChanges(css, { layered = false } = {}) {

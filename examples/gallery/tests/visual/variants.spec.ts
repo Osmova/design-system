@@ -48,7 +48,7 @@ test.describe('QDS variant distinctiveness lab', () => {
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .variant-card__nested', 'box-shadow'), 'Glass content nests without a second drop').toBe('none')
     expect.soft(await glass.evaluate((el) => getComputedStyle(el).getPropertyValue('--_qds-glass-knob').trim()), 'Glass keeps a light switch knob').toBe('#ffffff')
 
-    expect.soft(await resolvedColor(page, '--qds-color-primary'), 'Fluent primary remains calibrated from source tokens').toBe('rgb(15, 108, 189)')
+    expect.soft(await resolvedColor(page, '--qds-color-primary'), 'Win primary follows the Windows 11 accent').toBe('rgb(0, 95, 184)')
   })
 
   // Body-level grammar only shows once the whole page is glass.

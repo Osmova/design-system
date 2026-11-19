@@ -2,6 +2,7 @@
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
+$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
 $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive, .text-negative, .text-warning, .text-info)';
 
 @mixin styles {
@@ -331,6 +332,23 @@ $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive
   .qds-ui .qds-variant-term .q-slider:not(.disabled) .q-slider__thumb { border-color: var(--qds-selection-on, var(--qds-text-on-primary)); }
   .qds-ui.qds-variant-term .q-slider:not(.disabled) .q-slider__selection,
   .qds-ui .qds-variant-term .q-slider:not(.disabled) .q-slider__selection { outline: var(--qds-border-width-control) solid var(--qds-selection-on, var(--qds-text-on-primary)); }
+
+  // WinUI: 20px box with a 12px glyph; 20px ring with a 12/14/10px rest/hover/pressed dot.
+  // Dense keeps its 16px mark, which follows the dense inner size.
+  #{$win} :is(.q-checkbox, .q-radio) { --qds-selection-mark-size: var(--qds-selection-inner-size); }
+  #{$win} .q-checkbox:not(.q-checkbox--dense) .q-checkbox__svg { padding: 0.1875rem; }
+  #{$win} .q-radio:not(.q-radio--dense) .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.333, 1.333, 1); }
+  #{$win} .q-radio:not(.q-radio--dense, .disabled):hover .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.556, 1.556, 1); }
+  #{$win} .q-radio:not(.q-radio--dense, .disabled):active .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.111, 1.111, 1); }
+  // The 20px thumb's accent dot: 10.8px drawn, scaled to 12/14/10px.
+  #{$win} .q-slider .q-slider__thumb-shape { transform: scale(1.111); transition: transform var(--qds-motion-fast); }
+  #{$win} .q-slider:not(.disabled) .q-slider__thumb:hover .q-slider__thumb-shape { transform: scale(1.296); }
+  #{$win} .q-slider.q-slider--active .q-slider__thumb-shape { transform: scale(0.926); }
+  // ToggleSwitch knob: 12px at rest, 14px on hover, 17 x 14px pressed; dense keeps its knob.
+  #{$win} .q-toggle:not(.q-toggle--dense) { --qds-toggle-thumb-inset: var(--qds-space-xs); }
+  #{$win} .q-toggle:not(.q-toggle--dense) .q-toggle__thumb::after { transition: background-color var(--qds-motion-fast), transform var(--qds-motion-fast); }
+  #{$win} .q-toggle:not(.q-toggle--dense, .disabled):hover .q-toggle__thumb::after { transform: scale(1.167); }
+  #{$win} .q-toggle:not(.q-toggle--dense, .disabled):active .q-toggle__thumb::after { transform: scale(1.417, 1.167); }
 
   // A filled capsule; the knob stays light in both schemes.
   #{$glass} .q-toggle { --_qds-glass-knob-width: calc(var(--qds-toggle-thumb-size) * 1.5); }

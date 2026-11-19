@@ -30,7 +30,8 @@ test.describe('control composition', () => {
         await page.goto('./#components')
         await applyTheme(page, mode, variant)
         const inactive = page.locator('[data-test="qds-toggle-color"] > .q-btn:not([aria-pressed="true"])').first()
-        const muted = await resolvedColor(page, '--qds-fg-muted')
+        // The win Segmented keeps idle labels primary; the selected one carries the pill.
+        const muted = await resolvedColor(page, variant === 'win' ? '--qds-fg-default' : '--qds-fg-muted')
         await expect.poll(() => inactive.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
         await expect.poll(() => inactive.evaluate((element) => getComputedStyle(element).color)).toBe(muted)
         const disabled = page.locator('[data-test="qds-toggle-color"] > .q-btn.disabled')
