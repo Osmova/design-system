@@ -48,11 +48,11 @@ function svgData(svg: string): string {
 const artwork = svgData(`
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Local abstract design-system artwork">
     <defs>
-      <linearGradient id="qds-media" x1="0" x2="1" y1="0" y2="1">
+      <linearGradient id="ods-media" x1="0" x2="1" y1="0" y2="1">
         <stop stop-color="#0f6cbd"/><stop offset=".52" stop-color="#2563eb"/><stop offset="1" stop-color="#8b5cf6"/>
       </linearGradient>
     </defs>
-    <rect width="960" height="540" rx="48" fill="url(#qds-media)"/>
+    <rect width="960" height="540" rx="48" fill="url(#ods-media)"/>
     <circle cx="758" cy="130" r="180" fill="#fff" fill-opacity=".18"/>
     <path d="M0 408c142-102 284 94 452-20s330-164 508-54v206H0Z" fill="#fff" fill-opacity=".16"/>
   </svg>
@@ -126,16 +126,16 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="qds-story-stack qds-story-stack--relaxed">
-    <QCard class="qds-story-panel q-pa-lg">
+  <div class="ods-story-stack ods-story-stack--relaxed">
+    <QCard class="ods-story-panel q-pa-lg">
       <div class="row items-center q-col-gutter-md q-mb-md">
         <div class="col">
-          <div class="text-overline qds-text-muted">QStepper · horizontal</div>
-          <div class="text-h6 qds-story-title">Workflow state rail</div>
+          <div class="text-overline ods-text-muted">QStepper · horizontal</div>
+          <div class="text-h6 ods-story-title">Workflow state rail</div>
         </div>
-        <div class="col-auto qds-text-muted text-caption">Inactive · active · done · error</div>
+        <div class="col-auto ods-text-muted text-caption">Inactive · active · done · error</div>
       </div>
-      <div class="qds-story-stepper-wrap">
+      <div class="ods-story-stepper-wrap">
         <QStepper
           v-model="activeStep"
           flat
@@ -144,14 +144,14 @@ onBeforeUnmount(() => {
           color="primary"
           done-color="positive"
           error-color="negative"
-          class="qds-story-stepper"
+          class="ods-story-stepper"
           data-test="qds-story-horizontal-stepper"
         >
           <QStep :name="1" title="Queued" caption="Inactive" :icon="ppPalette">
             A neutral first marker stays available through header navigation.
           </QStep>
           <QStep :name="2" title="Review" caption="Active" :icon="ppFileText">
-            <div class="qds-text-muted">Current content region with recoverable navigation controls.</div>
+            <div class="ods-text-muted">Current content region with recoverable navigation controls.</div>
             <QStepperNavigation class="q-mt-md" data-test="qds-story-stepper-navigation">
               <QBtn color="primary" unelevated no-caps label="Approve" @click="moveToStep(3)">
                 <PhFloppyDisk :size="18" weight="regular" />
@@ -171,11 +171,11 @@ onBeforeUnmount(() => {
 
     <div class="row q-col-gutter-lg">
       <div class="col-12 col-md-7">
-        <QCard class="qds-story-panel q-pa-lg full-height">
+        <QCard class="ods-story-panel q-pa-lg full-height">
           <div class="row items-center q-col-gutter-md q-mb-md">
             <div class="col">
-              <div class="text-overline qds-text-muted">QImg · local data sources</div>
-              <div class="text-h6 qds-story-title">Owned media placeholders</div>
+              <div class="text-overline ods-text-muted">QImg · local data sources</div>
+              <div class="text-h6 ods-story-title">Owned media placeholders</div>
             </div>
             <PhImageSquare class="col-auto" :size="26" weight="duotone" />
           </div>
@@ -184,39 +184,39 @@ onBeforeUnmount(() => {
             alt="Abstract blue and violet design-system artwork"
             :ratio="16 / 9"
             no-spinner
-            class="qds-story-artwork"
+            class="ods-story-artwork"
             data-test="qds-story-image"
           >
-            <div class="absolute-bottom qds-story-media-caption">
+            <div class="absolute-bottom ods-story-media-caption">
               <div class="text-weight-medium">Local data-image surface</div>
               <div class="text-caption">Intentional caption overlay with no remote dependency.</div>
             </div>
           </QImg>
           <div class="row q-col-gutter-md q-mt-sm">
             <div class="col-12 col-sm-6">
-              <div class="qds-story-image-proof">
+              <div class="ods-story-image-proof">
                 <QImg :src="artwork" alt="Local artwork loading preview" :ratio="16 / 9" data-test="qds-story-image-loading">
                   <template #loading>
-                    <div class="qds-story-image-slot column flex-center q-gutter-xs">
+                    <div class="ods-story-image-slot column flex-center q-gutter-xs">
                       <QSpinner color="primary" size="1.5rem" />
                       <span class="text-caption">Loading preview</span>
                     </div>
                   </template>
                 </QImg>
-                <p class="text-caption qds-text-muted q-mt-xs q-mb-none">Native <code>#loading</code> slot proof; data URIs resolve instantly so the state is transient here.</p>
+                <p class="text-caption ods-text-muted q-mt-xs q-mb-none">Native <code>#loading</code> slot proof; data URIs resolve instantly so the state is transient here.</p>
               </div>
             </div>
             <div class="col-12 col-sm-6">
-              <div class="qds-story-image-proof">
+              <div class="ods-story-image-proof">
                 <QImg :src="invalidArtwork" alt="Unavailable local artwork preview" :ratio="16 / 9" data-test="qds-story-image-error">
                   <template #error>
-                    <div class="qds-story-image-slot qds-story-image-slot--error column flex-center q-gutter-xs">
+                    <div class="ods-story-image-slot ods-story-image-slot--error column flex-center q-gutter-xs">
                       <PhWarning :size="25" weight="duotone" />
                       <span class="text-caption">Preview unavailable</span>
                     </div>
                   </template>
                 </QImg>
-                <p class="text-caption qds-text-muted q-mt-xs q-mb-none">Native <code>#error</code> slot; the invalid data URI fails deterministically without a request hook.</p>
+                <p class="text-caption ods-text-muted q-mt-xs q-mb-none">Native <code>#error</code> slot; the invalid data URI fails deterministically without a request hook.</p>
               </div>
             </div>
           </div>
@@ -224,35 +224,35 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="col-12 col-md-5">
-        <QCard class="qds-story-panel q-pa-lg full-height">
-          <div class="text-overline qds-text-muted">QRating</div>
-          <div class="text-h6 qds-story-title q-mb-lg">Rating states</div>
-          <div class="qds-story-rating-row">
+        <QCard class="ods-story-panel q-pa-lg full-height">
+          <div class="text-overline ods-text-muted">QRating</div>
+          <div class="text-h6 ods-story-title q-mb-lg">Rating states</div>
+          <div class="ods-story-rating-row">
             <span>Editable half</span>
             <QRating v-model="editableRating" aria-label="Editable rating" :icon-aria-label="ratingIconAriaLabels" :max="5" :icon="ppStar" :icon-half="ppStarHalfFill" color="primary" size="2rem" />
           </div>
-          <div class="qds-story-rating-row">
+          <div class="ods-story-rating-row">
             <span>Read-only</span>
             <QRating :model-value="4" aria-label="Read-only rating, four of five" :icon-aria-label="ratingIconAriaLabels" readonly :max="5" :icon="ppStar" color="positive" size="2rem" />
           </div>
-          <div class="qds-story-rating-row">
+          <div class="ods-story-rating-row">
             <span>Disabled</span>
             <QRating :model-value="2" aria-label="Disabled rating, two of five" :icon-aria-label="ratingIconAriaLabels" disable :max="5" :icon="ppStar" color="primary" size="2rem" />
           </div>
-          <p class="qds-text-muted q-mt-lg q-mb-none">The editable proof starts at {{ editableRating }} stars; read-only and disabled states remain deterministic.</p>
+          <p class="ods-text-muted q-mt-lg q-mb-none">The editable proof starts at {{ editableRating }} stars; read-only and disabled states remain deterministic.</p>
         </QCard>
       </div>
     </div>
 
     <div class="row q-col-gutter-lg">
       <div class="col-12 col-md-7">
-        <QCard class="qds-story-panel q-pa-lg full-height">
+        <QCard class="ods-story-panel q-pa-lg full-height">
           <div class="row items-center q-col-gutter-md q-mb-md">
             <div class="col">
-              <div class="text-overline qds-text-muted">QCarousel · control + navigation</div>
-              <div class="text-h6 qds-story-title">Local slide navigation</div>
+              <div class="text-overline ods-text-muted">QCarousel · control + navigation</div>
+              <div class="text-h6 ods-story-title">Local slide navigation</div>
             </div>
-            <span class="col-auto qds-text-muted text-caption">{{ carouselSlide }}</span>
+            <span class="col-auto ods-text-muted text-caption">{{ carouselSlide }}</span>
           </div>
           <QCarousel
             v-model="carouselSlide"
@@ -289,7 +289,7 @@ onBeforeUnmount(() => {
                 />
               </QCarouselControl>
               <QCarouselControl position="top-right" :offset="[10, 10]">
-                <div class="qds-story-carousel-controls" role="group" aria-label="Carousel controls">
+                <div class="ods-story-carousel-controls" role="group" aria-label="Carousel controls">
                   <QBtn
                     v-for="(slide, index) in carouselSlides"
                     :key="`${slide.name}-control`"
@@ -315,7 +315,7 @@ onBeforeUnmount(() => {
               :aria-label="`${slide.title}: ${slide.caption}`"
               class="q-pa-none"
             >
-              <div class="absolute-bottom qds-story-media-caption">
+              <div class="absolute-bottom ods-story-media-caption">
                 <div class="text-weight-medium">{{ slide.title }}</div>
                 <div class="text-caption">{{ slide.caption }}</div>
               </div>
@@ -325,9 +325,9 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="col-12 col-md-5">
-        <QCard class="qds-story-panel q-pa-lg full-height">
-          <div class="text-overline qds-text-muted">QTimeline · comfortable + dense</div>
-          <div class="text-h6 qds-story-title q-mb-sm">Side composition</div>
+        <QCard class="ods-story-panel q-pa-lg full-height">
+          <div class="text-overline ods-text-muted">QTimeline · comfortable + dense</div>
+          <div class="text-h6 ods-story-title q-mb-sm">Side composition</div>
           <QTimeline color="primary" layout="comfortable" class="qds-story-timeline" data-test="qds-story-timeline">
             <QTimelineEntry title="Baseline" subtitle="Left" side="left" :icon="ppPalette">
               Token surface ready.
@@ -347,10 +347,10 @@ onBeforeUnmount(() => {
 
     <div class="row q-col-gutter-lg">
       <div class="col-12 col-md-5">
-        <QCard class="qds-story-panel q-pa-lg full-height">
-          <div class="text-overline qds-text-muted">Notify + Loading</div>
-          <div class="text-h6 qds-story-title q-mb-sm">On-demand overlay checks</div>
-          <p class="qds-text-muted q-mb-md">Both plugin overlays are closed initially. Notify dismisses on demand; Loading hides automatically and can be reopened.</p>
+        <QCard class="ods-story-panel q-pa-lg full-height">
+          <div class="text-overline ods-text-muted">Notify + Loading</div>
+          <div class="text-h6 ods-story-title q-mb-sm">On-demand overlay checks</div>
+          <p class="ods-text-muted q-mb-md">Both plugin overlays are closed initially. Notify dismisses on demand; Loading hides automatically and can be reopened.</p>
           <div class="row q-gutter-sm">
             <QBtn color="primary" unelevated no-caps label="Show Notify" data-test="qds-story-notify" @click="showNotification">
               <PhBellRinging :size="18" weight="regular" />
@@ -364,18 +364,18 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="col-12 col-md-7">
-        <QCard class="qds-story-panel q-pa-lg full-height">
+        <QCard class="ods-story-panel q-pa-lg full-height">
           <div class="row items-center justify-between q-col-gutter-sm">
-            <div class="col text-overline qds-text-muted">QEditor · focused + read-only shells</div>
+            <div class="col text-overline ods-text-muted">QEditor · focused + read-only shells</div>
             <div class="col-auto"><QBtn flat color="primary" no-caps label="Focus editable editor" @click="focusEditor" /></div>
           </div>
-          <div class="qds-story-editor-grid q-mt-sm">
+          <div class="ods-story-editor-grid q-mt-sm">
             <div>
-              <div class="text-caption qds-text-muted q-mb-xs">Editable shell</div>
+              <div class="text-caption ods-text-muted q-mb-xs">Editable shell</div>
               <QEditor v-model="editorContent" min-height="7rem" :toolbar="[]" class="qds-story-editor" data-test="qds-story-editor" />
             </div>
             <div>
-              <div class="text-caption qds-text-muted q-mb-xs">Read-only shell</div>
+              <div class="text-caption ods-text-muted q-mb-xs">Read-only shell</div>
               <QEditor v-model="readonlyEditorContent" readonly min-height="7rem" :toolbar="[]" class="qds-story-editor" data-test="qds-story-editor-readonly" />
             </div>
           </div>
@@ -383,23 +383,23 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <QCard class="qds-story-panel q-pa-lg">
+    <QCard class="ods-story-panel q-pa-lg">
       <div class="row items-center q-col-gutter-md q-mb-md">
         <div class="col">
-          <div class="text-overline qds-text-muted">QUploader · local-only shell</div>
-          <div class="text-h6 qds-story-title">No network upload</div>
+          <div class="text-overline ods-text-muted">QUploader · local-only shell</div>
+          <div class="text-h6 ods-story-title">No network upload</div>
         </div>
         <PhCloudArrowUp class="col-auto" :size="26" weight="duotone" />
       </div>
       <QUploader label="Add local files" class="full-width qds-story-uploader" :auto-upload="false" no-thumbnails hide-upload-btn data-test="qds-story-uploader">
         <template #header="scope">
-          <div class="qds-story-uploader-header">
+          <div class="ods-story-uploader-header">
             <QUploaderAddTrigger />
-            <div class="qds-story-uploader-copy">
+            <div class="ods-story-uploader-copy">
               <div class="text-weight-medium">Local file shell</div>
-              <div class="text-caption qds-text-muted">Files may be selected and removed; this story does not submit a request.</div>
+              <div class="text-caption ods-text-muted">Files may be selected and removed; this story does not submit a request.</div>
             </div>
-            <div class="qds-story-uploader-actions">
+            <div class="ods-story-uploader-actions">
               <QBtn dense round flat aria-label="Add local files"><PhImageSquare :size="19" weight="regular" /></QBtn>
               <QBtn dense round flat aria-label="Remove queued files" :disable="scope.files.length === 0" @click="scope.removeQueuedFiles">
                 <PhFloppyDisk :size="19" weight="regular" />
@@ -414,140 +414,140 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.qds-story-panel {
-  background: var(--qds-card-bg);
-  border: var(--qds-border-width-control) solid var(--qds-card-border);
+.ods-story-panel {
+  background: var(--ods-card-bg);
+  border: var(--ods-border-width-control) solid var(--ods-card-border);
 }
 
-.qds-story-title {
-  font-family: var(--qds-font-family-display);
+.ods-story-title {
+  font-family: var(--ods-font-family-display);
 }
 
-.qds-story-stepper-wrap {
+.ods-story-stepper-wrap {
   max-inline-size: 100%;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
 }
 
-.qds-story-image-proof {
+.ods-story-image-proof {
   max-inline-size: 100%;
   overflow: hidden;
 }
 
-.qds-story-stepper {
+.ods-story-stepper {
   min-inline-size: 38rem;
 }
 
-.qds-story-artwork,
+.ods-story-artwork,
 .qds-story-carousel,
-.qds-story-image-proof,
+.ods-story-image-proof,
 .qds-story-editor,
 .qds-story-uploader {
   overflow: hidden;
-  border: var(--qds-border-width-control) solid var(--qds-border-subtle);
-  border-radius: var(--qds-radius-lg);
+  border: var(--ods-border-width-control) solid var(--ods-border-subtle);
+  border-radius: var(--ods-radius-lg);
 }
 
-.qds-story-media-caption {
-  padding: var(--qds-space-md);
+.ods-story-media-caption {
+  padding: var(--ods-space-md);
   color: white;
   background: rgba(0, 0, 0, 0.48);
 }
 
-.qds-story-image-proof {
+.ods-story-image-proof {
   position: relative;
 }
 
-.qds-story-carousel-controls {
+.ods-story-carousel-controls {
   display: flex;
-  gap: var(--qds-space-xs);
+  gap: var(--ods-space-xs);
 }
 
-.qds-story-image-slot {
-  color: var(--qds-text-muted);
+.ods-story-image-slot {
+  color: var(--ods-text-muted);
 }
 
-.qds-story-image-slot--error {
-  color: var(--qds-fg-negative);
-  background: var(--qds-surface-negative-soft);
+.ods-story-image-slot--error {
+  color: var(--ods-fg-negative);
+  background: var(--ods-surface-negative-soft);
 }
 
-.qds-story-editor-grid {
+.ods-story-editor-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--qds-space-md);
+  gap: var(--ods-space-md);
 }
 
 .qds-story-timeline {
   max-inline-size: 100%;
 }
 
-.qds-story-rating-row {
+.ods-story-rating-row {
   display: grid;
   grid-template-columns: minmax(5.5rem, 1fr) auto;
   align-items: center;
-  gap: var(--qds-space-md);
-  padding-block: var(--qds-space-sm);
-  border-bottom: var(--qds-border-width-control) solid var(--qds-separator-color);
+  gap: var(--ods-space-md);
+  padding-block: var(--ods-space-sm);
+  border-bottom: var(--ods-border-width-control) solid var(--ods-separator-color);
 }
 
-.qds-story-rating-row:last-of-type {
+.ods-story-rating-row:last-of-type {
   border-bottom: 0;
 }
 
-.qds-story-uploader-header {
+.ods-story-uploader-header {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--qds-space-md);
+  gap: var(--ods-space-md);
   min-block-size: 4.5rem;
-  padding: var(--qds-space-md);
-  background: var(--qds-surface-1);
-  border-bottom: var(--qds-border-width-control) solid var(--qds-separator-color);
+  padding: var(--ods-space-md);
+  background: var(--ods-surface-1);
+  border-bottom: var(--ods-border-width-control) solid var(--ods-separator-color);
 }
 
-.qds-story-uploader-copy {
+.ods-story-uploader-copy {
   flex: 1 1 14rem;
   min-inline-size: 0;
 }
 
-.qds-story-uploader-actions {
+.ods-story-uploader-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--qds-space-xs);
+  gap: var(--ods-space-xs);
   margin-inline-start: auto;
 }
 
 @media (max-width: 48rem) {
-  .qds-story-uploader-header {
+  .ods-story-uploader-header {
     align-items: flex-start;
   }
 
-  .qds-story-uploader-actions {
+  .ods-story-uploader-actions {
     margin-inline-start: 0;
   }
 }
 
 @media (max-width: 32rem) {
-  .qds-story-stepper {
+  .ods-story-stepper {
     min-inline-size: 0;
   }
 
-  .qds-story-stepper :deep(.q-stepper__tab) {
+  .ods-story-stepper :deep(.q-stepper__tab) {
     min-inline-size: 0;
-    padding-inline: var(--qds-space-xs);
+    padding-inline: var(--ods-space-xs);
   }
 
-  .qds-story-stepper :deep(.q-stepper__label) {
+  .ods-story-stepper :deep(.q-stepper__label) {
     min-inline-size: 0;
   }
 
-  .qds-story-stepper :deep(.q-stepper__title),
-  .qds-story-stepper :deep(.q-stepper__caption) {
+  .ods-story-stepper :deep(.q-stepper__title),
+  .ods-story-stepper :deep(.q-stepper__caption) {
     overflow-wrap: anywhere;
   }
 
-  .qds-story-editor-grid {
+  .ods-story-editor-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -1,24 +1,24 @@
 import { createApp } from 'vue'
 import { BottomSheet, Dialog, Loading, LoadingBar, Notify, Quasar } from 'quasar'
 
-// Keep native → QDS → extension ordering indivisible across MPA shared chunks.
+// Keep native → ODS → extension ordering indivisible across MPA shared chunks.
 import './adoption-default.scss'
 
 // 3. Gallery-only demo helpers (NOT part of the published design-system package).
 import './fonts/plus-jakarta-sans.css'
 import './gallery.css'
 
-// 4. Optional design-system fonts (drive --qds-font-family* faces).
-import '@osmova/quasar-design-system/fonts/inter.css'
-import '@osmova/quasar-design-system/fonts/open-sans.css'
-import '@osmova/quasar-design-system/fonts/selawik.css'
-import '@osmova/quasar-design-system/fonts/zen.css'
-import '@osmova/quasar-design-system/fonts/ink.css'
+// 4. Optional design-system fonts (drive --ods-font-family* faces).
+import '@osmova/ds-quasar/fonts/inter.css'
+import '@osmova/ds-quasar/fonts/open-sans.css'
+import '@osmova/ds-quasar/fonts/selawik.css'
+import '@osmova/ds-quasar/fonts/zen.css'
+import '@osmova/ds-quasar/fonts/ink.css'
 
 import {
   configureDesignSystem,
-  qdsIconSet,
-} from '@osmova/quasar-design-system'
+  odsIconSet,
+} from '@osmova/ds-quasar'
 
 import App from './App.vue'
 import { parseGalleryHash } from './gallery-url'
@@ -36,7 +36,7 @@ app.use(Quasar, {
       skipHijack: true,
     },
   },
-  iconSet: qdsIconSet,
+  iconSet: odsIconSet,
 })
 
 // Initialize the runtime theme controller exactly as an external app would.
@@ -50,6 +50,6 @@ const ds = configureDesignSystem(app, {
 
 // Expose the controller so the Playwright visual gate can drive mode/variant
 // directly (same API an external app uses), instead of clicking switchers.
-;(window as unknown as { __qdsGallery?: typeof ds }).__qdsGallery = ds
+;(window as unknown as { __odsGallery?: typeof ds }).__odsGallery = ds
 
 app.mount('#app')

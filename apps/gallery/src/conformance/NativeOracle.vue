@@ -27,10 +27,10 @@ const visible = (family: string) => !query.has('oracle') || query.get('oracle') 
     <section v-if="visible('menu')" data-oracle="menu"><h2>Menu</h2><q-btn outline no-caps label="Open menu"><q-menu v-model="menu" data-oracle-popup="menu" style="min-width: 224px"><q-list><q-item-label header>My account</q-item-label><q-separator /><q-item clickable><q-item-section>Profile</q-item-section><q-item-section side>⇧⌘P</q-item-section></q-item><q-item disable><q-item-section>Billing</q-item-section></q-item><q-item><q-checkbox v-model="enabled" label="Show status bar" /></q-item><q-separator /><q-item><q-radio v-model="density" val="comfortable" label="Comfortable" /></q-item><q-item><q-radio v-model="density" val="compact" label="Compact" /></q-item><q-separator /><q-item clickable><q-item-section>Log out</q-item-section></q-item></q-list></q-menu></q-btn></section>
     <section v-if="visible('dialog')" data-oracle="dialog">
       <h2>Dialog</h2><q-btn outline no-caps label="Edit profile" @click="dialog = true" />
-      <q-dialog v-model="dialog" aria-labelledby="qds-oracle-dialog-title">
+      <q-dialog v-model="dialog" aria-labelledby="ods-oracle-dialog-title">
         <q-card data-oracle-popup="dialog" style="width: 512px; max-width: calc(100vw - 32px)">
           <q-card-section>
-            <div class="row items-start no-wrap"><h2 id="qds-oracle-dialog-title" class="q-dialog__title q-ma-none col">Edit profile</h2><q-btn flat dense round :icon="ppX" aria-label="Close profile" @click="dialog = false" /></div>
+            <div class="row items-start no-wrap"><h2 id="ods-oracle-dialog-title" class="q-dialog__title q-ma-none col">Edit profile</h2><q-btn flat dense round :icon="ppX" aria-label="Close profile" @click="dialog = false" /></div>
             <p class="q-dialog__message q-mb-none">Make changes to your profile here. Click save when you are done.</p>
           </q-card-section>
           <q-card-section><label>Name<q-input v-model="name" outlined /></label></q-card-section>
@@ -51,7 +51,7 @@ const visible = (family: string) => !query.has('oracle') || query.get('oracle') 
               <q-space /><q-separator /><q-item dense><q-item-section><q-item-label caption>Alex Morgan</q-item-label></q-item-section></q-item>
             </q-list>
           </q-drawer>
-          <q-page-container><q-page class="flex flex-center"><p class="qds-text-muted gt-xs">Workspace content</p></q-page></q-page-container>
+          <q-page-container><q-page class="flex flex-center"><p class="ods-text-muted gt-xs">Workspace content</p></q-page></q-page-container>
         </q-layout>
       </q-card>
     </section>

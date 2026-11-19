@@ -35,7 +35,7 @@ const iconPath = computed(() => {
 </script>
 
 <template>
-  <div class="qds-catalog-demo-button">
+  <div class="ods-catalog-demo-button">
     <QBtnDropdown
       v-if="split"
       :label="label"
@@ -44,7 +44,7 @@ const iconPath = computed(() => {
       :icon="iconPath"
       :disable="disable"
       split
-      class="qds-catalog-demo__control"
+      class="ods-catalog-demo__control"
     >
       <QList>
         <QItem v-close-popup clickable>
@@ -61,7 +61,7 @@ const iconPath = computed(() => {
       type="button"
       unelevated
       color="primary"
-      class="qds-catalog-demo__control"
+      class="ods-catalog-demo__control"
       :label="label"
       :dense="dense"
       :loading="loading"
@@ -72,7 +72,7 @@ const iconPath = computed(() => {
 </template>
 
 <style scoped>
-.qds-catalog-demo-button {
+.ods-catalog-demo-button {
   display: grid;
   justify-items: start;
   gap: 0.25rem;

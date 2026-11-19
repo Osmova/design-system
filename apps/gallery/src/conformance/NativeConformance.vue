@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QFab, QFabAction, QIcon, QInnerLoading, QInput, QItem, QItemSection, QLinearProgress, QList, QMenu, QPopupEdit, QPopupProxy, QRating, QSelect, QSeparator, QTooltip, QUploader } from 'quasar'
-import { QdsWindow, type QdsWindowInstance } from '@osmova/quasar-design-system/qwindow'
-import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/quasar-design-system'
+import { OdsWindow, type OdsWindowInstance } from '@osmova/ds-quasar/qwindow'
+import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/ds-quasar'
 import { ppPlus, ppStar } from 'quasar-extras-svg-icons/phosphor-icons-v2'
 import NativeScheme from './NativeScheme.vue'
 import NativeStates from './NativeStates.vue'
@@ -16,15 +16,15 @@ const dialog = ref(false)
 const menu = ref(false)
 const tooltip = ref(false)
 const windowVisible = ref(true)
-// Only methods exposed by the public QDS wrapper, never the native Vue instance.
-type QdsWindowPublic = Pick<QdsWindowInstance, 'show' | 'hide' | 'float' | 'embed' | 'enterFullscreen' | 'leaveFullscreen' | 'getPosition'>
-const embeddedWindow = ref<QdsWindowPublic | null>(null)
-const floatingWindow = ref<QdsWindowPublic | null>(null)
+// Only methods exposed by the public ODS wrapper, never the native Vue instance.
+type OdsWindowPublic = Pick<OdsWindowInstance, 'show' | 'hide' | 'float' | 'embed' | 'enterFullscreen' | 'leaveFullscreen' | 'getPosition'>
+const embeddedWindow = ref<OdsWindowPublic | null>(null)
+const floatingWindow = ref<OdsWindowPublic | null>(null)
 const floatingVisible = ref(false)
 const floatingFullscreen = ref(false)
 const fullscreenAccepted = ref<boolean | null>(null)
 const fullscreenError = ref('')
-function requestFullscreen(target: QdsWindowPublic | null) {
+function requestFullscreen(target: OdsWindowPublic | null) {
   fullscreenError.value = ''
   fullscreenAccepted.value = target?.enterFullscreen() ?? false
 }
@@ -37,7 +37,7 @@ const nativeTest = {
   get fullscreenError() { return fullscreenError.value },
   get fullscreenState() { return floatingFullscreen.value },
 }
-const testHost = window as unknown as { __qdsNativeTest?: typeof nativeTest }
+const testHost = window as unknown as { __odsNativeTest?: typeof nativeTest }
 const windowMaximized = ref(false)
 const windowMinimized = ref(false)
 const windowFullscreen = ref(false)
@@ -56,7 +56,7 @@ const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warnin
 const image = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect width="32" height="32" fill="gray"/%3E%3C/svg%3E'
 
 onMounted(async () => {
-  testHost.__qdsNativeTest = nativeTest
+  testHost.__odsNativeTest = nativeTest
   document.addEventListener('fullscreenerror', recordFullscreenError)
   window.addEventListener('unhandledrejection', recordRejection)
   await nextTick()
@@ -70,7 +70,7 @@ onMounted(async () => {
 function cleanup() { dismissals.splice(0).forEach(dismiss => dismiss()); $q.loading.hide(); $q.loadingBar.stop(); ajax.value?.stop() }
 onBeforeUnmount(() => {
   cleanup()
-  delete testHost.__qdsNativeTest
+  delete testHost.__odsNativeTest
   document.removeEventListener('fullscreenerror', recordFullscreenError)
   window.removeEventListener('unhandledrejection', recordRejection)
 })
@@ -88,7 +88,7 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
   <main style="padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; min-width: 0" data-conformance>
     <NativeOracle />
     <header style="display: flex; flex-wrap: wrap; gap: 8px">
-      <h1>Native QDS conformance</h1>
+      <h1>Native ODS conformance</h1>
       <q-btn v-for="color in SHADCN_BASE_COLORS" :key="color.name" no-caps :label="color.label" @click="ds.setShadcnBaseColor(color.name)" />
       <q-btn no-caps label="Light" @click="ds.setMode('light')" /><q-btn no-caps label="Dark" @click="ds.setMode('dark')" />
       <q-btn no-caps label="Native RTL" @click="$q.lang.set({ ...$q.lang, rtl: !$q.lang.rtl })" />
@@ -147,18 +147,18 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
       <q-btn no-caps label="Reject embedded fullscreen" data-native="window-reject-fullscreen" @click="requestFullscreen(embeddedWindow)" />
       <q-btn no-caps label="Open floating window" data-native="window-open-floating" @click="floatingVisible = true" />
       <output data-native="window-request-result">{{ fullscreenAccepted === null ? 'No request' : fullscreenAccepted ? 'Request accepted' : 'Request rejected' }}{{ fullscreenError ? `: ${fullscreenError}` : '' }}</output>
-      <QdsWindow v-if="floatingVisible" ref="floatingWindow" v-model="floatingVisible" v-model:fullscreen="floatingFullscreen" title="Floating native window" aria-label="Floating native window" :width="Math.min(480, $q.screen.width - 32)" :height="280" :start-x="16" :start-y="16" no-resize :actions="['fullscreen', 'close']">
+      <OdsWindow v-if="floatingVisible" ref="floatingWindow" v-model="floatingVisible" v-model:fullscreen="floatingFullscreen" title="Floating native window" aria-label="Floating native window" :width="Math.min(480, $q.screen.width - 32)" :height="280" :start-x="16" :start-y="16" no-resize :actions="['fullscreen', 'close']">
         <q-btn no-caps label="Enter actual window fullscreen" data-native="window-enter-fullscreen" @click="requestFullscreen(floatingWindow)" />
         <q-btn no-caps label="Exit actual window fullscreen" data-native="window-exit-fullscreen" @click="floatingWindow?.leaveFullscreen()" />
         <q-btn no-caps label="Close floating fixture" data-native="window-close-floating" @click="floatingWindow?.hide()" />
         <output data-native="window-native-state">{{ floatingFullscreen ? 'Native fullscreen event active' : 'Native fullscreen event inactive' }}</output>
-      </QdsWindow>
+      </OdsWindow>
     </section>
     <section aria-label="Window states" data-native="window-controls">
       <q-btn no-caps label="Window maximize" @click="windowMaximized = !windowMaximized" /><q-btn no-caps label="Window minimize" @click="windowMinimized = !windowMinimized" />
       <q-btn no-caps label="Window fullscreen requested prop" @click="windowFullscreen = !windowFullscreen" /><q-btn no-caps label="Window headless" @click="windowHeadless = !windowHeadless" /><q-btn no-caps label="Window disable" @click="windowDisabled = !windowDisabled" />
       <q-btn no-caps label="Toggle author titlebar paint" @click="customWindowPaint = !customWindowPaint" />
-      <QdsWindow ref="embeddedWindow" v-model="windowVisible" v-model:maximized="windowMaximized" v-model:minimized="windowMinimized" v-model:fullscreen="windowFullscreen" :headless="windowHeadless" :disabled="windowDisabled" embedded dense no-resize title="Native window" :actions="['minimize', 'maximize', 'close']" :titlebar-style="customWindowPaint ? { background: 'rgb(37, 99, 235)' } : undefined"><q-input v-model="value" label="Window field" /><q-btn no-caps label="Window action" /><q-btn v-if="windowFullscreen || windowMaximized" no-caps label="Restore window" @click="windowFullscreen = false; windowMaximized = false" /></QdsWindow>
+      <OdsWindow ref="embeddedWindow" v-model="windowVisible" v-model:maximized="windowMaximized" v-model:minimized="windowMinimized" v-model:fullscreen="windowFullscreen" :headless="windowHeadless" :disabled="windowDisabled" embedded dense no-resize title="Native window" :actions="['minimize', 'maximize', 'close']" :titlebar-style="customWindowPaint ? { background: 'rgb(37, 99, 235)' } : undefined"><q-input v-model="value" label="Window field" /><q-btn no-caps label="Window action" /><q-btn v-if="windowFullscreen || windowMaximized" no-caps label="Restore window" @click="windowFullscreen = false; windowMaximized = false" /></OdsWindow>
     </section>
     <section aria-label="Complete native scheme boundaries" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px">
       <NativeScheme :dark="true" :variant="ds.variant.value" :palette="ds.shadcnBaseColor.value" /><NativeScheme :dark="false" :variant="ds.variant.value" :palette="ds.shadcnBaseColor.value" />

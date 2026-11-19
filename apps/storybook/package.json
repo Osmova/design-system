@@ -1,5 +1,5 @@
 {
-  "name": "@osmova/qds-storybook",
+  "name": "@osmova/ods-storybook",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,7 +11,7 @@
     "test:smoke": "playwright test --config playwright.smoke.config.ts"
   },
   "dependencies": {
-    "@osmova/quasar-design-system": "workspace:*",
+    "@osmova/ds-quasar": "workspace:*",
     "@phosphor-icons/vue": "^2.2.1",
     "@quasar/quasar-ui-qwindow": "^3.0.2",
     "quasar": "^2.35.0",

@@ -36,6 +36,6 @@ export {
   type ShadcnBaseColor,
 } from './themes/index.js'
 
-export { QDS_TOKENS, type QdsToken, type QdsTokenMap } from './tokens/index.js'
+export { ODS_TOKENS, type OdsToken, type OdsTokenMap } from './tokens/index.js'
 
-export { default as qdsIconSet, type QdsIconSet } from './icons/quasar-icon-set.js'
+export { default as odsIconSet, type OdsIconSet } from './icons/quasar-icon-set.js'

@@ -8,7 +8,7 @@
 @use 'variants/glass';
 
 $roles: (
-  primary: (hover: var(--qds-color-primary-hover), pressed: var(--qds-color-primary-pressed)),
+  primary: (hover: var(--ods-color-primary-hover), pressed: var(--ods-color-primary-pressed)),
   secondary: (),
   accent: (),
   positive: (),
@@ -19,9 +19,9 @@ $roles: (
 
 @function role-value($role, $key) {
   $defaults: (
-    hover: color-mix(in srgb, var(--qds-color-#{$role}) var(--qds-fill-hover-mix), var(--qds-fill-state-base)),
-    pressed: color-mix(in srgb, var(--qds-color-#{$role}) var(--qds-fill-pressed-mix), var(--qds-fill-state-base)),
-    fg: var(--qds-fg-#{$role}),
+    hover: color-mix(in srgb, var(--ods-color-#{$role}) var(--ods-fill-hover-mix), var(--ods-fill-state-base)),
+    pressed: color-mix(in srgb, var(--ods-color-#{$role}) var(--ods-fill-pressed-mix), var(--ods-fill-state-base)),
+    fg: var(--ods-fg-#{$role}),
   );
   @return map.get(map.merge($defaults, map.get($roles, $role)), $key);
 }
@@ -29,17 +29,17 @@ $roles: (
 $soft-surfaces: (primary: surface-brand-soft, secondary: bg-layer, accent: surface-accent-soft, positive: surface-positive-soft, negative: surface-negative-soft, warning: surface-warning-soft, info: surface-info-soft);
 
 @function role-soft($role) {
-  @return var(--qds-#{map.get($soft-surfaces, $role)});
+  @return var(--ods-#{map.get($soft-surfaces, $role)});
 }
 
 // Quasar `size` sets an inline font-size; map it onto the sm/md/lg height ramp.
-$height: clamp(var(--qds-button-size-sm), calc(var(--qds-button-min-height) + (1em - 0.875rem) * 2), var(--qds-button-size-lg));
-$padding: clamp(var(--qds-button-dense-padding-inline), calc(var(--qds-button-padding-inline) + 1em - 0.875rem), calc(var(--qds-button-padding-inline) + 0.25rem));
+$height: clamp(var(--ods-button-size-sm), calc(var(--ods-button-min-height) + (1em - 0.875rem) * 2), var(--ods-button-size-lg));
+$padding: clamp(var(--ods-button-dense-padding-inline), calc(var(--ods-button-padding-inline) + 1em - 0.875rem), calc(var(--ods-button-padding-inline) + 0.25rem));
 $not-fab: ':where(:not(.q-btn--fab, .q-btn--fab-mini))';
 $filled: ':is(.q-btn--standard, .q-btn--unelevated, .q-btn--push):where(:not(.q-btn-toggle > .q-btn))';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
-$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
-$shadcn-default: '.q-btn#{$filled}:where(:not([class*="bg-"], .qds-tonal, .qds-button--link, .q-date .q-btn, .q-time .q-btn, .q-pagination .q-btn, .q-btn-toggle .q-btn, .q-editor .q-btn, .q-color-picker .q-btn))';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui,.ods-ui *)';
+$win: '.ods-variant-win:is(.ods-ui,.ods-ui *)';
+$shadcn-default: '.q-btn#{$filled}:where(:not([class*="bg-"], .ods-tonal, .ods-button--link, .q-date .q-btn, .q-time .q-btn, .q-pagination .q-btn, .q-btn-toggle .q-btn, .q-editor .q-btn, .q-color-picker .q-btn))';
 $accent-fills: ();
 $role-texts: ();
 
@@ -57,249 +57,249 @@ $role-texts: ();
 }
 
 @mixin compatibility-styles {
-  .qds-ui .q-btn {
-    border: var(--qds-border-width-control) solid transparent;
-    border-radius: var(--qds-button-radius);
-    background: linear-gradient(var(--qds-button-state, transparent), var(--qds-button-state, transparent)) transparent;
-    font-weight: var(--qds-font-weight-semibold);
-    letter-spacing: var(--qds-control-letter-spacing);
+  .ods-ui .q-btn {
+    border: var(--ods-border-width-control) solid transparent;
+    border-radius: var(--ods-button-radius);
+    background: linear-gradient(var(--ods-button-state, transparent), var(--ods-button-state, transparent)) transparent;
+    font-weight: var(--ods-font-weight-semibold);
+    letter-spacing: var(--ods-control-letter-spacing);
     transition:
-      background-color var(--qds-motion-fast),
-      border-color var(--qds-motion-fast),
-      color var(--qds-motion-fast);
+      background-color var(--ods-motion-fast),
+      border-color var(--ods-motion-fast),
+      color var(--ods-motion-fast);
   }
 
-  .qds-ui .q-btn:where(:not(.q-btn--no-uppercase)) {
-    text-transform: var(--qds-control-text-transform);
+  .ods-ui .q-btn:where(:not(.q-btn--no-uppercase)) {
+    text-transform: var(--ods-control-text-transform);
   }
 
-  .qds-ui .q-btn#{$not-fab} {
+  .ods-ui .q-btn#{$not-fab} {
     min-height: $height;
     padding: 0 $padding;
   }
 
-  .qds-ui .q-btn--dense#{$not-fab} {
-    min-height: var(--qds-button-dense-min-height);
-    padding-inline: var(--qds-button-dense-padding-inline);
+  .ods-ui .q-btn--dense#{$not-fab} {
+    min-height: var(--ods-button-dense-min-height);
+    padding-inline: var(--ods-button-dense-padding-inline);
   }
 
-  .qds-ui .q-btn--round {
+  .ods-ui .q-btn--round {
     border-radius: 50%;
   }
 
-  .qds-ui .q-btn--round#{$not-fab} {
+  .ods-ui .q-btn--round#{$not-fab} {
     min-width: $height;
     padding: 0;
   }
 
-  .qds-ui .q-btn--round.q-btn--dense#{$not-fab} {
-    min-width: var(--qds-button-dense-min-height);
+  .ods-ui .q-btn--round.q-btn--dense#{$not-fab} {
+    min-width: var(--ods-button-dense-min-height);
   }
 
-  .qds-ui .q-btn--rounded {
-    border-radius: var(--qds-radius-full);
+  .ods-ui .q-btn--rounded {
+    border-radius: var(--ods-radius-full);
   }
 
-  .qds-ui .q-btn--square {
+  .ods-ui .q-btn--square {
     border-radius: 0;
   }
 
-  .qds-ui .q-btn::before,
-  .qds-ui .q-btn .q-focus-helper {
+  .ods-ui .q-btn::before,
+  .ods-ui .q-btn .q-focus-helper {
     display: none;
   }
 
-  .qds-ui .q-btn:not(.disabled):hover {
-    --qds-button-state: var(--qds-state-hover);
+  .ods-ui .q-btn:not(.disabled):hover {
+    --ods-button-state: var(--ods-state-hover);
   }
 
-  .qds-ui .q-btn:not(.disabled):active {
-    --qds-button-state: var(--qds-state-pressed);
+  .ods-ui .q-btn:not(.disabled):active {
+    --ods-button-state: var(--ods-state-pressed);
   }
 
   // QBtn carries Quasar's `no-outline` utility.
-  .qds-ui .q-btn:focus-visible {
-    @include importance.declarations { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus) !important; }
-    outline-offset: var(--qds-focus-ring-offset);
+  .ods-ui .q-btn:focus-visible {
+    @include importance.declarations { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus) !important; }
+    outline-offset: var(--ods-focus-ring-offset);
   }
 
-  .qds-ui .q-btn .q-btn__content {
+  .ods-ui .q-btn .q-btn__content {
     align-items: center;
-    gap: var(--qds-button-icon-gap);
+    gap: var(--ods-button-icon-gap);
     font-size: clamp(0.75rem, 1em, 1rem);
-    line-height: var(--qds-control-content-line-height);
+    line-height: var(--ods-control-content-line-height);
   }
 
-  .qds-ui .q-btn--dense .q-btn__content {
-    gap: var(--qds-button-dense-icon-gap);
-    font-size: var(--qds-button-dense-font-size);
+  .ods-ui .q-btn--dense .q-btn__content {
+    gap: var(--ods-button-dense-icon-gap);
+    font-size: var(--ods-button-dense-font-size);
   }
 
-  .qds-ui .q-btn .q-btn__content > .q-icon {
-    width: var(--qds-button-icon-size);
-    min-width: var(--qds-button-icon-size);
-    height: var(--qds-button-icon-size);
+  .ods-ui .q-btn .q-btn__content > .q-icon {
+    width: var(--ods-button-icon-size);
+    min-width: var(--ods-button-icon-size);
+    height: var(--ods-button-icon-size);
     margin: 0;
-    font-size: var(--qds-button-icon-size);
-    opacity: var(--qds-control-icon-opacity);
+    font-size: var(--ods-button-icon-size);
+    opacity: var(--ods-control-icon-opacity);
   }
 
-  .qds-ui .q-btn--dense .q-btn__content > .q-icon {
-    width: var(--qds-button-dense-icon-size);
-    min-width: var(--qds-button-dense-icon-size);
-    height: var(--qds-button-dense-icon-size);
-    font-size: var(--qds-button-dense-icon-size);
+  .ods-ui .q-btn--dense .q-btn__content > .q-icon {
+    width: var(--ods-button-dense-icon-size);
+    min-width: var(--ods-button-dense-icon-size);
+    height: var(--ods-button-dense-icon-size);
+    font-size: var(--ods-button-dense-icon-size);
   }
 
-  .qds-ui .q-btn:is(:hover, :focus-visible, [aria-expanded='true']) .q-btn__content > .q-icon {
-    opacity: var(--qds-control-icon-opacity-active);
+  .ods-ui .q-btn:is(:hover, :focus-visible, [aria-expanded='true']) .q-btn__content > .q-icon {
+    opacity: var(--ods-control-icon-opacity-active);
   }
 
-  .qds-ui .q-btn#{$filled} {
-    --qds-button-fill: var(--qds-control-fill-default);
-    color: var(--qds-fg-default);
-    background: var(--qds-button-fill);
+  .ods-ui .q-btn#{$filled} {
+    --ods-button-fill: var(--ods-control-fill-default);
+    color: var(--ods-fg-default);
+    background: var(--ods-button-fill);
     @include materials.elevation-border;
   }
 
-  .qds-ui .q-btn#{$filled}:not(.disabled):hover {
-    --qds-button-fill: var(--qds-control-fill-hover);
+  .ods-ui .q-btn#{$filled}:not(.disabled):hover {
+    --ods-button-fill: var(--ods-control-fill-hover);
   }
 
-  .qds-ui .q-btn#{$filled}:not(.disabled):active {
-    --qds-button-fill: var(--qds-control-fill-pressed);
-    color: var(--qds-fg-muted);
+  .ods-ui .q-btn#{$filled}:not(.disabled):active {
+    --ods-button-fill: var(--ods-control-fill-pressed);
+    color: var(--ods-fg-muted);
   }
 
-  .qds-ui .q-btn--outline {
-    border-color: var(--qds-stroke-default);
+  .ods-ui .q-btn--outline {
+    border-color: var(--ods-stroke-default);
   }
 
-  .qds-ui .q-btn--outline::before {
+  .ods-ui .q-btn--outline::before {
     border: 0;
   }
 
-  .qds-ui .q-btn:is(.q-btn--fab, .q-btn--fab-mini) {
-    --qds-button-icon-size: var(--qds-control-icon-size-lg);
-    border-radius: var(--qds-radius-lg);
-    box-shadow: var(--qds-shadow-4);
+  .ods-ui .q-btn:is(.q-btn--fab, .q-btn--fab-mini) {
+    --ods-button-icon-size: var(--ods-control-icon-size-lg);
+    border-radius: var(--ods-radius-lg);
+    box-shadow: var(--ods-shadow-4);
   }
 
-  .qds-ui .q-btn--fab {
-    min-width: var(--qds-fab-size);
-    min-height: var(--qds-fab-size);
-    padding: 0 var(--qds-space-md);
+  .ods-ui .q-btn--fab {
+    min-width: var(--ods-fab-size);
+    min-height: var(--ods-fab-size);
+    padding: 0 var(--ods-space-md);
   }
 
-  .qds-ui .q-btn--fab-mini {
-    min-width: var(--qds-fab-mini-size);
-    min-height: var(--qds-fab-mini-size);
-    padding: 0 var(--qds-space-sm);
+  .ods-ui .q-btn--fab-mini {
+    min-width: var(--ods-fab-mini-size);
+    min-height: var(--ods-fab-mini-size);
+    padding: 0 var(--ods-space-sm);
   }
 
-  .qds-ui .q-btn.qds-active {
-    color: var(--qds-fg-brand);
-    background-color: var(--qds-state-selected);
+  .ods-ui .q-btn.ods-active {
+    color: var(--ods-fg-brand);
+    background-color: var(--ods-state-selected);
   }
 
   @each $role, $_ in $roles {
-    .qds-ui .q-btn.text-#{$role} {
+    .ods-ui .q-btn.text-#{$role} {
       @include importance.declarations { color: role-value($role, fg) !important; }
     }
 
-    .qds-ui .q-btn--outline.text-#{$role} {
+    .ods-ui .q-btn--outline.text-#{$role} {
       border-color: color-mix(in srgb, currentColor 60%, transparent);
     }
 
-    // States swap --qds-button-fill/-on-fill so only the base rule needs !important against Quasar's bg-*/text-*.
-    $solid-selector: '.qds-ui .q-btn.bg-#{$role}:not(.qds-tonal)';
+    // States swap --ods-button-fill/-on-fill so only the base rule needs !important against Quasar's bg-*/text-*.
+    $solid-selector: '.ods-ui .q-btn.bg-#{$role}:not(.ods-tonal)';
     @if $role == primary { $solid-selector: '#{$solid-selector}, #{$shadcn} #{$shadcn-default}'; }
     #{$solid-selector} {
-      --qds-button-fill: var(--qds-color-#{$role});
-      --qds-button-on-fill: var(--qds-text-on-#{$role});
-      @include importance.declarations { color: var(--qds-button-on-fill) !important; background-color: var(--qds-button-fill) !important; }
+      --ods-button-fill: var(--ods-color-#{$role});
+      --ods-button-on-fill: var(--ods-text-on-#{$role});
+      @include importance.declarations { color: var(--ods-button-on-fill) !important; background-color: var(--ods-button-fill) !important; }
       border-color: transparent;
     }
 
-    .qds-ui .q-btn.bg-#{$role}:not(.qds-tonal, .disabled):hover {
-      --qds-button-fill: #{role-value($role, hover)};
+    .ods-ui .q-btn.bg-#{$role}:not(.ods-tonal, .disabled):hover {
+      --ods-button-fill: #{role-value($role, hover)};
     }
 
-    .qds-ui .q-btn.bg-#{$role}:not(.qds-tonal, .disabled):active {
-      --qds-button-fill: #{role-value($role, pressed)};
-      --qds-button-on-fill: color-mix(in srgb, var(--qds-text-on-#{$role}) var(--qds-text-on-fill-pressed-mix), transparent);
+    .ods-ui .q-btn.bg-#{$role}:not(.ods-tonal, .disabled):active {
+      --ods-button-fill: #{role-value($role, pressed)};
+      --ods-button-on-fill: color-mix(in srgb, var(--ods-text-on-#{$role}) var(--ods-text-on-fill-pressed-mix), transparent);
     }
 
-    .qds-ui .q-btn.bg-#{$role}.qds-tonal {
-      --qds-button-fill: #{role-soft($role)};
-      @include importance.declarations { color: role-value($role, fg) !important; background-color: var(--qds-button-fill) !important; }
+    .ods-ui .q-btn.bg-#{$role}.ods-tonal {
+      --ods-button-fill: #{role-soft($role)};
+      @include importance.declarations { color: role-value($role, fg) !important; background-color: var(--ods-button-fill) !important; }
       border-color: transparent;
     }
 
-    .qds-ui .q-btn.bg-#{$role}.qds-tonal:not(.disabled):hover {
-      --qds-button-fill: color-mix(in srgb, #{role-soft($role)}, var(--qds-color-#{$role}) 10%);
+    .ods-ui .q-btn.bg-#{$role}.ods-tonal:not(.disabled):hover {
+      --ods-button-fill: color-mix(in srgb, #{role-soft($role)}, var(--ods-color-#{$role}) 10%);
     }
 
-    .qds-ui .q-btn.bg-#{$role}.qds-tonal:not(.disabled):active {
-      --qds-button-fill: color-mix(in srgb, #{role-soft($role)}, var(--qds-color-#{$role}) 18%);
+    .ods-ui .q-btn.bg-#{$role}.ods-tonal:not(.disabled):active {
+      --ods-button-fill: color-mix(in srgb, #{role-soft($role)}, var(--ods-color-#{$role}) 18%);
     }
   }
 
   // WinUI CalendarView selections stay flat accent fills.
-  .qds-ui .q-btn:is(#{$accent-fills}):not(.qds-tonal):where(:not(:is(.q-date__calendar-item, .q-date__months-item, .q-date__years-item) > .q-btn)) {
-    @include materials.elevation-border($top: var(--qds-control-stroke-on-accent-top), $side: var(--qds-control-stroke-on-accent-top), $bottom: var(--qds-control-stroke-on-accent-bottom));
+  .ods-ui .q-btn:is(#{$accent-fills}):not(.ods-tonal):where(:not(:is(.q-date__calendar-item, .q-date__months-item, .q-date__years-item) > .q-btn)) {
+    @include materials.elevation-border($top: var(--ods-control-stroke-on-accent-top), $side: var(--ods-control-stroke-on-accent-top), $bottom: var(--ods-control-stroke-on-accent-bottom));
   }
 
   // Term role fills carry a rule in their on-fill ink so amber keys stay bounded on cream.
-  .qds-ui .qds-variant-term .q-btn:is(#{$accent-fills}):not(.qds-tonal, .disabled),
-  .qds-ui.qds-variant-term .q-btn:is(#{$accent-fills}):not(.qds-tonal, .disabled) { border-color: var(--qds-button-on-fill); }
-  .qds-ui .qds-variant-term .q-btn--outline:is(#{$role-texts}),
-  .qds-ui.qds-variant-term .q-btn--outline:is(#{$role-texts}) { border-color: currentColor; }
+  .ods-ui .ods-variant-term .q-btn:is(#{$accent-fills}):not(.ods-tonal, .disabled),
+  .ods-ui.ods-variant-term .q-btn:is(#{$accent-fills}):not(.ods-tonal, .disabled) { border-color: var(--ods-button-on-fill); }
+  .ods-ui .ods-variant-term .q-btn--outline:is(#{$role-texts}),
+  .ods-ui.ods-variant-term .q-btn--outline:is(#{$role-texts}) { border-color: currentColor; }
 
   // Fluent disabled: neutral fill, stroke and foreground instead of Quasar's opacity dimming.
-  .qds-ui .q-btn.q-btn-item.disabled {
-    @include importance.declarations { color: var(--qds-button-disabled-fg, var(--qds-fg-disabled)) !important; opacity: var(--qds-button-disabled-opacity, 1) !important; }
+  .ods-ui .q-btn.q-btn-item.disabled {
+    @include importance.declarations { color: var(--ods-button-disabled-fg, var(--ods-fg-disabled)) !important; opacity: var(--ods-button-disabled-opacity, 1) !important; }
   }
 
-  .qds-ui .q-btn.q-btn-item.disabled#{$filled} {
-    --qds-button-fill: var(--qds-button-disabled-fill, var(--qds-control-fill-disabled));
-    @include importance.declarations { background-color: var(--qds-button-fill) !important; }
-    border-color: var(--qds-button-disabled-stroke, var(--qds-stroke-subtle));
+  .ods-ui .q-btn.q-btn-item.disabled#{$filled} {
+    --ods-button-fill: var(--ods-button-disabled-fill, var(--ods-control-fill-disabled));
+    @include importance.declarations { background-color: var(--ods-button-fill) !important; }
+    border-color: var(--ods-button-disabled-stroke, var(--ods-stroke-subtle));
   }
 
-  .qds-ui .q-btn.q-btn-item.disabled.q-btn--outline:where(:not(.q-btn-toggle > .q-btn)) {
-    border-color: var(--qds-stroke-subtle);
+  .ods-ui .q-btn.q-btn-item.disabled.q-btn--outline:where(:not(.q-btn-toggle > .q-btn)) {
+    border-color: var(--ods-stroke-subtle);
   }
 
-  .qds-ui .q-btn-dropdown .q-btn-dropdown__arrow {
-    width: var(--qds-button-icon-size);
-    min-width: var(--qds-button-icon-size);
-    margin-inline-start: var(--qds-space-xs);
-    font-size: var(--qds-button-icon-size);
-    opacity: var(--qds-control-icon-opacity);
-    transition: transform var(--qds-motion-fast);
+  .ods-ui .q-btn-dropdown .q-btn-dropdown__arrow {
+    width: var(--ods-button-icon-size);
+    min-width: var(--ods-button-icon-size);
+    margin-inline-start: var(--ods-space-xs);
+    font-size: var(--ods-button-icon-size);
+    opacity: var(--ods-control-icon-opacity);
+    transition: transform var(--ods-motion-fast);
   }
 
-  .qds-ui .q-btn-dropdown:is([aria-expanded='true'], .q-btn-dropdown--showing) .q-btn-dropdown__arrow {
+  .ods-ui .q-btn-dropdown:is([aria-expanded='true'], .q-btn-dropdown--showing) .q-btn-dropdown__arrow {
     transform: rotate(180deg);
   }
 
-  .qds-ui .q-btn-dropdown--split .q-btn-dropdown__arrow-container {
-    border-inline-start: var(--qds-border-width-control) solid color-mix(in srgb, currentColor 24%, transparent);
+  .ods-ui .q-btn-dropdown--split .q-btn-dropdown__arrow-container {
+    border-inline-start: var(--ods-border-width-control) solid color-mix(in srgb, currentColor 24%, transparent);
   }
 
-  .qds-ui .qds-variant-term .q-btn--flat,
-  .qds-ui.qds-variant-term .q-btn--flat {
-    color: color-mix(in srgb, var(--qds-color-primary) 40%, var(--qds-text-strong));
+  .ods-ui .ods-variant-term .q-btn--flat,
+  .ods-ui.ods-variant-term .q-btn--flat {
+    color: color-mix(in srgb, var(--ods-color-primary) 40%, var(--ods-text-strong));
   }
 
-  .qds-ui .qds-variant-one .q-btn:where(:not(.q-btn--fab, .q-btn--fab-mini, .q-btn--round, .q-btn--dense)),
-  .qds-ui.qds-variant-one .q-btn:where(:not(.q-btn--fab, .q-btn--fab-mini, .q-btn--round, .q-btn--dense)) {
-    padding-inline: max(var(--qds-button-padding-inline), var(--qds-space-md));
+  .ods-ui .ods-variant-one .q-btn:where(:not(.q-btn--fab, .q-btn--fab-mini, .q-btn--round, .q-btn--dense)),
+  .ods-ui.ods-variant-one .q-btn:where(:not(.q-btn--fab, .q-btn--fab-mini, .q-btn--round, .q-btn--dense)) {
+    padding-inline: max(var(--ods-button-padding-inline), var(--ods-space-md));
   }
 
   @media (forced-colors: active) {
-    .qds-ui .q-btn:is(.q-btn--standard, .q-btn--unelevated, .q-btn--push, .q-btn--outline) {
+    .ods-ui .q-btn:is(.q-btn--standard, .q-btn--unelevated, .q-btn--push, .q-btn--outline) {
       border-color: ButtonText;
     }
   }
@@ -307,54 +307,54 @@ $role-texts: ();
   // WinUI Button/AccentButton labels are Regular; disabled accent fills keep the
   // AccentFillColorDisabled + TextOnAccentFillColorDisabled pair, without an edge.
   // Same (0,2,0) weight as the base rule so later partials' weights still win.
-  .qds-ui:where(.qds-variant-win, .qds-variant-win *) .q-btn { font-weight: var(--qds-font-weight-regular); }
-  #{$win} .q-btn#{$filled}:is(#{$accent-fills}):not(.qds-tonal) {
-    --qds-button-disabled-fill: var(--_qds-win-accent-fill-disabled);
-    --qds-button-disabled-fg: var(--_qds-win-text-on-accent-disabled);
-    --qds-button-disabled-stroke: transparent;
+  .ods-ui:where(.ods-variant-win, .ods-variant-win *) .q-btn { font-weight: var(--ods-font-weight-regular); }
+  #{$win} .q-btn#{$filled}:is(#{$accent-fills}):not(.ods-tonal) {
+    --ods-button-disabled-fill: var(--_ods-win-accent-fill-disabled);
+    --ods-button-disabled-fg: var(--_ods-win-text-on-accent-disabled);
+    --ods-button-disabled-stroke: transparent;
   }
   // The dropdown chevron stays a secondary hint glyph (WinUI TextFillColorSecondary-like).
   #{$win} .q-btn-dropdown .q-btn-dropdown__arrow { opacity: #{map.get(tokens.$control, icon-opacity)}; }
 
   #{$shadcn} .q-btn {
-    --qds-button-disabled-opacity: 0.5;
-    --qds-button-disabled-fg: var(--qds-button-on-fill, var(--qds-fg-default));
+    --ods-button-disabled-opacity: 0.5;
+    --ods-button-disabled-fg: var(--ods-button-on-fill, var(--ods-fg-default));
   }
-  #{$shadcn} .q-btn:where(:not([class*='text-weight-'])) { font-weight: var(--qds-font-weight-medium); }
+  #{$shadcn} .q-btn:where(:not([class*='text-weight-'])) { font-weight: var(--ods-font-weight-medium); }
   @each $weight, $fallback in (thin: 100, light: 300, regular: 400, medium: 500, bold: 700, bolder: 900) {
-    #{$shadcn} :is(.q-btn, .q-avatar, .q-badge, .q-chip).text-weight-#{$weight} { font-weight: var(--qds-font-weight-#{$weight}, #{$fallback}); }
+    #{$shadcn} :is(.q-btn, .q-avatar, .q-badge, .q-chip).text-weight-#{$weight} { font-weight: var(--ods-font-weight-#{$weight}, #{$fallback}); }
   }
   #{$shadcn} .q-btn:where(:not(.text-uppercase, .text-lowercase, .text-capitalize)) { text-transform: none; }
   @each $case in uppercase, lowercase, capitalize { #{$shadcn} .q-btn.text-#{$case} { text-transform: $case; } }
-  #{$shadcn} .q-btn.text-bold { font-weight: var(--qds-font-weight-bold); }
+  #{$shadcn} .q-btn.text-bold { font-weight: var(--ods-font-weight-bold); }
   #{$shadcn} .q-btn .q-btn__content { font-size: inherit; }
   #{$shadcn} #{$shadcn-default} {
-    --qds-button-disabled-fill: var(--qds-color-primary);
-    --qds-button-disabled-stroke: transparent;
+    --ods-button-disabled-fill: var(--ods-color-primary);
+    --ods-button-disabled-stroke: transparent;
     border-color: transparent;
   }
-  #{$shadcn} #{$shadcn-default}:not(.disabled):hover { --qds-button-fill: var(--qds-color-primary-hover); }
-  #{$shadcn} #{$shadcn-default}:not(.disabled):active { --qds-button-fill: var(--qds-color-primary-pressed); color: var(--qds-button-on-fill); }
-  #{$shadcn} .q-btn#{$filled} { box-shadow: var(--qds-button-elevated-shadow); }
-  #{$shadcn} .q-btn--push { box-shadow: inset 0 calc(-1 * var(--qds-border-width-control)) 0 currentColor; }
-  #{$shadcn} .q-btn--push:not(.disabled):active { transform: translateY(var(--qds-border-width-control)); }
-  #{$shadcn} .q-btn--outline { border-color: var(--qds-control-stroke-strong); box-shadow: inset 0 0 0 100vmax var(--qds-button-outline-fill, var(--qds-control-fill-default)); }
-  #{$shadcn} .q-btn--outline:not(.disabled):hover { --qds-button-outline-fill: var(--qds-control-fill-hover); }
-  #{$shadcn} .q-btn--outline:not(.disabled):active { --qds-button-outline-fill: var(--qds-control-fill-pressed); }
-  #{$shadcn} .q-btn:is(.q-btn--flat, .q-btn--outline):not(.disabled):is(:hover, :active) { --qds-button-state: transparent; }
-  #{$shadcn} .q-btn--flat:not(.disabled):hover { background-color: var(--qds-control-fill-hover); }
-  #{$shadcn} .q-btn--flat:not(.disabled):active { background-color: var(--qds-control-fill-pressed); }
-  #{$shadcn} .q-btn.qds-button--link { color: var(--qds-fg-primary); background: transparent; border-color: transparent; box-shadow: none; text-underline-offset: var(--qds-space-xs); }
-  #{$shadcn} .q-btn.qds-button--link:hover { text-decoration: underline; }
-  #{$shadcn} .q-btn .q-btn__progress-indicator { background: var(--qds-button-progress-fill, var(--qds-color-primary-pressed)); opacity: 1; }
-  #{$shadcn} .q-btn:is(#{$accent-fills}):not(.qds-tonal) {
-      --qds-button-disabled-fill: var(--_qds-fill);
-      --qds-button-disabled-stroke: transparent;
-      --qds-button-progress-fill: var(--_qds-pressed);
-      --qds-text-on-fill-pressed-mix: var(--_qds-pressed-mix);
+  #{$shadcn} #{$shadcn-default}:not(.disabled):hover { --ods-button-fill: var(--ods-color-primary-hover); }
+  #{$shadcn} #{$shadcn-default}:not(.disabled):active { --ods-button-fill: var(--ods-color-primary-pressed); color: var(--ods-button-on-fill); }
+  #{$shadcn} .q-btn#{$filled} { box-shadow: var(--ods-button-elevated-shadow); }
+  #{$shadcn} .q-btn--push { box-shadow: inset 0 calc(-1 * var(--ods-border-width-control)) 0 currentColor; }
+  #{$shadcn} .q-btn--push:not(.disabled):active { transform: translateY(var(--ods-border-width-control)); }
+  #{$shadcn} .q-btn--outline { border-color: var(--ods-control-stroke-strong); box-shadow: inset 0 0 0 100vmax var(--ods-button-outline-fill, var(--ods-control-fill-default)); }
+  #{$shadcn} .q-btn--outline:not(.disabled):hover { --ods-button-outline-fill: var(--ods-control-fill-hover); }
+  #{$shadcn} .q-btn--outline:not(.disabled):active { --ods-button-outline-fill: var(--ods-control-fill-pressed); }
+  #{$shadcn} .q-btn:is(.q-btn--flat, .q-btn--outline):not(.disabled):is(:hover, :active) { --ods-button-state: transparent; }
+  #{$shadcn} .q-btn--flat:not(.disabled):hover { background-color: var(--ods-control-fill-hover); }
+  #{$shadcn} .q-btn--flat:not(.disabled):active { background-color: var(--ods-control-fill-pressed); }
+  #{$shadcn} .q-btn.ods-button--link { color: var(--ods-fg-primary); background: transparent; border-color: transparent; box-shadow: none; text-underline-offset: var(--ods-space-xs); }
+  #{$shadcn} .q-btn.ods-button--link:hover { text-decoration: underline; }
+  #{$shadcn} .q-btn .q-btn__progress-indicator { background: var(--ods-button-progress-fill, var(--ods-color-primary-pressed)); opacity: 1; }
+  #{$shadcn} .q-btn:is(#{$accent-fills}):not(.ods-tonal) {
+      --ods-button-disabled-fill: var(--_ods-fill);
+      --ods-button-disabled-stroke: transparent;
+      --ods-button-progress-fill: var(--_ods-pressed);
+      --ods-text-on-fill-pressed-mix: var(--_ods-pressed-mix);
       border-color: transparent;
   }
-  #{$shadcn} .q-btn:is(#{$accent-fills}):not(.qds-tonal, .disabled):hover { --qds-button-fill: var(--_qds-hover); }
-  #{$shadcn} .q-btn:is(#{$accent-fills}):not(.qds-tonal, .disabled):active { --qds-button-fill: var(--_qds-pressed); --qds-button-on-fill: var(--_qds-on); }
-  @media (forced-colors: active) { #{$shadcn} .q-btn { --qds-button-disabled-stroke: ButtonText; border-color: ButtonText; box-shadow: none; } }
+  #{$shadcn} .q-btn:is(#{$accent-fills}):not(.ods-tonal, .disabled):hover { --ods-button-fill: var(--_ods-hover); }
+  #{$shadcn} .q-btn:is(#{$accent-fills}):not(.ods-tonal, .disabled):active { --ods-button-fill: var(--_ods-pressed); --ods-button-on-fill: var(--_ods-on); }
+  @media (forced-colors: active) { #{$shadcn} .q-btn { --ods-button-disabled-stroke: ButtonText; border-color: ButtonText; box-shadow: none; } }
 }

@@ -1,6 +1,6 @@
 # Shadcn adaptation notice
 
-The shadcn palette values and New York-inspired geometry in Quasar Design System are adapted from [unovue/shadcn-vue](https://github.com/unovue/shadcn-vue), pinned to commit `b251d9fd92aa496495e127137a7734704fb34a29`.
+The shadcn palette values and New York-inspired geometry in Osmova Design System are adapted from [unovue/shadcn-vue](https://github.com/unovue/shadcn-vue), pinned to commit `b251d9fd92aa496495e127137a7734704fb34a29`.
 
 Upstream source paths at that commit:
 
@@ -10,7 +10,7 @@ Upstream source paths at that commit:
 
 The adaptation maps these values to native Quasar semantic tokens and styling rather than requiring the upstream component framework. It includes sRGB conversion and quantization, contrast calibration of text/focus and role-state colors, explicit aliases for missing legacy sidebar slots, and native Quasar component geometry adaptations. The isolated reference application is development-only and is not shipped in the package.
 
-The following upstream copyright and MIT license apply to the adapted upstream material. This notice is distributed with that material; it does not replace the package's root license for original Quasar Design System work.
+The following upstream copyright and MIT license apply to the adapted upstream material. This notice is distributed with that material; it does not replace the package's root license for original Osmova Design System work.
 
 ```text
 MIT License

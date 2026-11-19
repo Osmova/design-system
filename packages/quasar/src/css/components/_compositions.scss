@@ -1,120 +1,120 @@
-$one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
-$subpage-tabs: ':is(.qds-subpage-tabs.q-tabs, .qds-subpage-tabs .q-tabs)';
+$one: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui, .ods-ui *)';
+$subpage-tabs: ':is(.ods-subpage-tabs.q-tabs, .ods-subpage-tabs .q-tabs)';
 $tile-roles: (alert: negative, warning: warning, positive: positive);
 
 @mixin styles {
   // Multi-line rows align to the title line; single-line rows stay centred.
-  .qds-ui .q-item.qds-menu-row:has(> .q-item__section--main > :nth-child(2)) { align-items: flex-start; padding-block: 0.375rem; }
+  .ods-ui .q-item.ods-menu-row:has(> .q-item__section--main > :nth-child(2)) { align-items: flex-start; padding-block: 0.375rem; }
 
-  .qds-ui .qds-menu-row .qds-menu-row__icon { min-inline-size: var(--qds-control-icon-size-lg); padding-inline-end: 0.75rem; color: inherit; }
+  .ods-ui .ods-menu-row .ods-menu-row__icon { min-inline-size: var(--ods-control-icon-size-lg); padding-inline-end: 0.75rem; color: inherit; }
 
-  .qds-ui .qds-menu-row .qds-menu-row__caption {
+  .ods-ui .ods-menu-row .ods-menu-row__caption {
     margin-block-start: 0;
-    color: var(--qds-fg-muted);
-    font-size: var(--qds-font-size-caption);
+    color: var(--ods-fg-muted);
+    font-size: var(--ods-font-size-caption);
     letter-spacing: normal;
   }
 
-  .qds-ui .qds-menu-row .qds-menu-row__description {
+  .ods-ui .ods-menu-row .ods-menu-row__description {
     max-inline-size: 20rem;
     margin-block-start: 0.125rem;
-    color: var(--qds-fg-muted);
-    font-size: var(--qds-font-size-body2);
+    color: var(--ods-fg-muted);
+    font-size: var(--ods-font-size-body2);
     white-space: normal;
   }
 
   // The divider is an inset hairline so the active indicator paints over it.
-  .qds-ui #{$subpage-tabs} { box-shadow: inset 0 calc(-1 * var(--qds-border-width-control)) 0 var(--qds-stroke-divider); }
-  .qds-ui #{$subpage-tabs} .q-tabs__content { justify-content: flex-start; }
-  .qds-ui :is(.qds-subpage-tabs .q-tab-panels, .qds-subpage-tabs + .q-tab-panels) > .q-panel > .q-tab-panel { padding: var(--qds-space-lg) 0 0; }
+  .ods-ui #{$subpage-tabs} { box-shadow: inset 0 calc(-1 * var(--ods-border-width-control)) 0 var(--ods-stroke-divider); }
+  .ods-ui #{$subpage-tabs} .q-tabs__content { justify-content: flex-start; }
+  .ods-ui :is(.ods-subpage-tabs .q-tab-panels, .ods-subpage-tabs + .q-tab-panels) > .q-panel > .q-tab-panel { padding: var(--ods-space-lg) 0 0; }
   #{$one} #{$subpage-tabs} { box-shadow: none; }
 
-  .qds-ui .q-btn-toggle.qds-table-segmented { vertical-align: middle; }
-  .qds-ui .q-table td:has(.qds-table-segmented) { padding-block: 0; }
+  .ods-ui .q-btn-toggle.ods-table-segmented { vertical-align: middle; }
+  .ods-ui .q-table td:has(.ods-table-segmented) { padding-block: 0; }
 
-  .qds-ui .qds-table-segmented > .q-btn.q-btn-item {
-    min-block-size: calc(var(--qds-control-size-sm) - 0.25rem);
-    padding-inline: var(--qds-space-sm);
-    font-size: var(--qds-button-dense-font-size);
+  .ods-ui .ods-table-segmented > .q-btn.q-btn-item {
+    min-block-size: calc(var(--ods-control-size-sm) - 0.25rem);
+    padding-inline: var(--ods-space-sm);
+    font-size: var(--ods-button-dense-font-size);
   }
 
-  .qds-ui .qds-tile-grid {
+  .ods-ui .ods-tile-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--qds-tile-min-width)), 1fr));
-    gap: var(--qds-space-sm);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ods-tile-min-width)), 1fr));
+    gap: var(--ods-space-sm);
   }
 
   // Parts are placed by area, so any of them can be omitted without leaving gaps.
-  .qds-ui .qds-tile {
+  .ods-ui .ods-tile {
     position: relative;
     display: grid;
-    container: qds-tile / inline-size;
+    container: ods-tile / inline-size;
     grid-template: 'icon label label' auto 'value value spark' auto 'meta meta meta' 1fr 'trend trend trend' auto / auto max-content minmax(0, 1fr);
     align-content: start;
     align-items: center;
     min-inline-size: 0;
-    padding: var(--qds-space-md);
+    padding: var(--ods-space-md);
   }
 
-  .qds-ui .qds-tile__icon {
+  .ods-ui .ods-tile__icon {
     display: inline-grid;
     grid-area: icon;
     place-items: center;
     inline-size: 2rem;
     block-size: 2rem;
-    margin-inline-end: var(--qds-space-sm);
-    color: var(--qds-fg-brand);
-    background: var(--qds-surface-brand-soft);
-    border-radius: var(--qds-radius-control);
-    font-size: var(--qds-control-icon-size-lg);
+    margin-inline-end: var(--ods-space-sm);
+    color: var(--ods-fg-brand);
+    background: var(--ods-surface-brand-soft);
+    border-radius: var(--ods-radius-control);
+    font-size: var(--ods-control-icon-size-lg);
   }
 
-  .qds-ui .qds-tile__label {
+  .ods-ui .ods-tile__label {
     grid-area: label;
-    color: var(--qds-fg-muted);
-    font-size: var(--qds-font-size-body2);
-    line-height: var(--qds-line-height-body2);
+    color: var(--ods-fg-muted);
+    font-size: var(--ods-font-size-body2);
+    line-height: var(--ods-line-height-body2);
   }
 
-  .qds-ui .qds-tile__value {
+  .ods-ui .ods-tile__value {
     grid-area: value;
-    margin-block-start: var(--qds-space-sm);
-    color: var(--qds-fg-strong);
-    font-size: var(--qds-font-size-h4);
-    font-weight: var(--qds-font-weight-semibold);
-    line-height: var(--qds-line-height-h4);
+    margin-block-start: var(--ods-space-sm);
+    color: var(--ods-fg-strong);
+    font-size: var(--ods-font-size-h4);
+    font-weight: var(--ods-font-weight-semibold);
+    line-height: var(--ods-line-height-h4);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
 
-  .qds-ui .qds-tile__meta {
+  .ods-ui .ods-tile__meta {
     display: flex;
     grid-area: meta;
     align-self: start;
     align-items: center;
-    gap: var(--qds-space-xs);
-    margin-block-start: var(--qds-space-xs);
-    color: var(--qds-fg-muted);
-    font-size: var(--qds-font-size-caption);
-    line-height: var(--qds-line-height-caption);
+    gap: var(--ods-space-xs);
+    margin-block-start: var(--ods-space-xs);
+    color: var(--ods-fg-muted);
+    font-size: var(--ods-font-size-caption);
+    line-height: var(--ods-line-height-caption);
   }
 
-  .qds-ui .qds-tile__meta > .q-icon { font-size: var(--qds-control-icon-size-sm); }
+  .ods-ui .ods-tile__meta > .q-icon { font-size: var(--ods-control-icon-size-sm); }
 
-  .qds-ui .qds-tile__spark {
+  .ods-ui .ods-tile__spark {
     grid-area: spark;
     align-self: end;
     justify-self: end;
     inline-size: 100%;
     min-inline-size: 3rem;
     max-inline-size: 5rem;
-    block-size: var(--qds-tile-spark-height);
-    padding-inline-start: var(--qds-space-sm);
-    color: var(--qds-fg-brand);
+    block-size: var(--ods-tile-spark-height);
+    padding-inline-start: var(--ods-space-sm);
+    color: var(--ods-fg-brand);
   }
 
-  .qds-ui .qds-tile__spark > svg {
+  .ods-ui .ods-tile__spark > svg {
     display: block;
     inline-size: 100%;
     block-size: 100%;
@@ -126,36 +126,36 @@ $tile-roles: (alert: negative, warning: warning, positive: positive);
     stroke-linejoin: round;
   }
 
-  .qds-ui .qds-tile__spark > svg * { vector-effect: non-scaling-stroke; }
+  .ods-ui .ods-tile__spark > svg * { vector-effect: non-scaling-stroke; }
 
   // Narrow tiles give the sparkline its own full-width row.
-  @container qds-tile (max-width: 10rem) {
-    .qds-ui .qds-tile__label { min-block-size: calc(2 * var(--qds-line-height-body2)); }
-    .qds-ui .qds-tile__spark { grid-area: trend; justify-self: stretch; max-inline-size: none; margin-block-start: var(--qds-space-sm); padding-inline-start: 0; }
+  @container ods-tile (max-width: 10rem) {
+    .ods-ui .ods-tile__label { min-block-size: calc(2 * var(--ods-line-height-body2)); }
+    .ods-ui .ods-tile__spark { grid-area: trend; justify-self: stretch; max-inline-size: none; margin-block-start: var(--ods-space-sm); padding-inline-start: 0; }
   }
 
   @each $modifier, $role in $tile-roles {
-    .qds-ui .qds-tile.qds-tile--#{$modifier} { outline: var(--qds-border-width-control) solid color-mix(in srgb, var(--qds-color-#{$role}) 56%, transparent); outline-offset: calc(-1 * var(--qds-border-width-control)); }
-    .qds-ui .qds-tile--#{$modifier} > :is(.qds-tile__meta, .qds-tile__spark) { color: var(--qds-fg-#{$role}); }
-    .qds-ui .qds-tile--#{$modifier} > .qds-tile__icon { color: var(--qds-fg-#{$role}); background: var(--qds-surface-#{$role}-soft); }
+    .ods-ui .ods-tile.ods-tile--#{$modifier} { outline: var(--ods-border-width-control) solid color-mix(in srgb, var(--ods-color-#{$role}) 56%, transparent); outline-offset: calc(-1 * var(--ods-border-width-control)); }
+    .ods-ui .ods-tile--#{$modifier} > :is(.ods-tile__meta, .ods-tile__spark) { color: var(--ods-fg-#{$role}); }
+    .ods-ui .ods-tile--#{$modifier} > .ods-tile__icon { color: var(--ods-fg-#{$role}); background: var(--ods-surface-#{$role}-soft); }
   }
 
   @media (forced-colors: active) {
-    .qds-ui .qds-table-segmented > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) { outline: var(--qds-focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--qds-focus-ring-width)); }
+    .ods-ui .ods-table-segmented > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .ods-active) { outline: var(--ods-focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--ods-focus-ring-width)); }
   }
 
   #{$shadcn} #{$subpage-tabs} { box-shadow: none; }
-  #{$shadcn} .qds-menu-row .qds-menu-row__icon { min-inline-size: var(--qds-control-icon-size-md); }
-  #{$shadcn} .qds-tile-grid { gap: var(--qds-space-lg); }
-  #{$shadcn} .qds-tile { padding: var(--qds-space-lg); }
-  #{$shadcn} .qds-tile__icon { inline-size: var(--qds-control-icon-size-md); block-size: var(--qds-control-icon-size-md); color: var(--qds-fg-muted); background: transparent; border-radius: 0; font-size: var(--qds-control-icon-size-md); }
-  #{$shadcn} .qds-tile__label { color: var(--qds-fg-default); font-weight: var(--qds-font-weight-body-strong); }
-  #{$shadcn} .qds-tile__spark { color: var(--qds-fg-default); }
-  #{$shadcn} .qds-table-segmented { border-radius: var(--qds-radius-control); }
-  #{$shadcn} .qds-table-segmented > .q-btn.q-btn-item { font-size: var(--qds-font-size-body); border-radius: var(--qds-radius-sm); }
+  #{$shadcn} .ods-menu-row .ods-menu-row__icon { min-inline-size: var(--ods-control-icon-size-md); }
+  #{$shadcn} .ods-tile-grid { gap: var(--ods-space-lg); }
+  #{$shadcn} .ods-tile { padding: var(--ods-space-lg); }
+  #{$shadcn} .ods-tile__icon { inline-size: var(--ods-control-icon-size-md); block-size: var(--ods-control-icon-size-md); color: var(--ods-fg-muted); background: transparent; border-radius: 0; font-size: var(--ods-control-icon-size-md); }
+  #{$shadcn} .ods-tile__label { color: var(--ods-fg-default); font-weight: var(--ods-font-weight-body-strong); }
+  #{$shadcn} .ods-tile__spark { color: var(--ods-fg-default); }
+  #{$shadcn} .ods-table-segmented { border-radius: var(--ods-radius-control); }
+  #{$shadcn} .ods-table-segmented > .q-btn.q-btn-item { font-size: var(--ods-font-size-body); border-radius: var(--ods-radius-sm); }
   @each $modifier, $role in $tile-roles {
-    #{$shadcn} .qds-tile.qds-tile--#{$modifier} { outline: none; border-color: var(--qds-fg-#{$role}); }
-    #{$shadcn} .qds-tile--#{$modifier} > :is(.qds-tile__meta, .qds-tile__spark) { color: var(--qds-fg-#{$role}); }
-    #{$shadcn} .qds-tile--#{$modifier} > .qds-tile__icon { color: var(--qds-fg-#{$role}); background: transparent; }
+    #{$shadcn} .ods-tile.ods-tile--#{$modifier} { outline: none; border-color: var(--ods-fg-#{$role}); }
+    #{$shadcn} .ods-tile--#{$modifier} > :is(.ods-tile__meta, .ods-tile__spark) { color: var(--ods-fg-#{$role}); }
+    #{$shadcn} .ods-tile--#{$modifier} > .ods-tile__icon { color: var(--ods-fg-#{$role}); background: transparent; }
   }
 }

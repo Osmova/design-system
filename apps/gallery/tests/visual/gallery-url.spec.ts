@@ -2,8 +2,8 @@ import { expect, test, type Page } from '@playwright/test'
 import { CANONICAL_VARIANTS, gotoGalleryPage, type Variant } from './helpers'
 
 async function expectState(page: Page, tab: string, variant: Variant) {
-  await expect(page.locator('body')).toHaveAttribute('data-qds-variant', variant)
-  await expect(page.locator('body')).toHaveClass(new RegExp(`qds-variant-${variant}`))
+  await expect(page.locator('body')).toHaveAttribute('data-ods-variant', variant)
+  await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
   await expect(page.locator(`.gallery-tabs .q-tab--active`)).toHaveText(new RegExp(`^${tab}$`, 'i'))
   // Quasar consumes the panel's name prop rather than rendering a name attribute.
   const panel = page.locator('.gallery-panels > .q-panel:visible > .q-tab-panel')
@@ -17,7 +17,7 @@ async function navigateHash(page: Page, hash: string) {
 
 async function setVariant(page: Page, variant: Variant) {
   await page.evaluate(value => {
-    (window as unknown as { __qdsGallery: { setVariant(value: Variant): void } }).__qdsGallery.setVariant(value)
+    (window as unknown as { __odsGallery: { setVariant(value: Variant): void } }).__odsGallery.setVariant(value)
   }, variant)
 }
 
@@ -25,12 +25,12 @@ for (const variant of CANONICAL_VARIANTS) {
   test(`shared ${variant} URL configures before mount, reloads and opens independently`, async ({ page, browser, baseURL }) => {
     await page.addInitScript(() => {
       let controller: unknown
-      Object.defineProperty(window, '__qdsGallery', {
+      Object.defineProperty(window, '__odsGallery', {
         get: () => controller,
         set: value => {
           controller = value
           ;(window as unknown as { bootstrapEvidence: unknown }).bootstrapEvidence = {
-            variant: document.body.getAttribute('data-qds-variant'),
+            variant: document.body.getAttribute('data-ods-variant'),
             mounted: Boolean(document.querySelector('#app')?.children.length),
           }
         },
@@ -83,7 +83,7 @@ test('same-page hash navigation and back/forward apply variant without feedback 
   await page.goto('/#compare?variant=ink')
   await expectState(page, 'compare', 'ink')
   await page.evaluate(() => {
-    const ds = (window as unknown as { __qdsGallery: { setMode(value: string): void; setShadcnBaseColor(value: string): void } }).__qdsGallery
+    const ds = (window as unknown as { __odsGallery: { setMode(value: string): void; setShadcnBaseColor(value: string): void } }).__odsGallery
     ds.setMode('dark')
     ds.setShadcnBaseColor('slate')
     const original = history.replaceState.bind(history)
@@ -96,8 +96,8 @@ test('same-page hash navigation and back/forward apply variant without feedback 
   const length = await page.evaluate(() => history.length)
   await navigateHash(page, '#compare?variant=shadcn')
   await expectState(page, 'compare', 'shadcn')
-  await expect(page.locator('body')).toHaveAttribute('data-qds-shadcn-base-color', 'slate')
-  await expect(page.locator('body')).toHaveAttribute('data-qds-mode', 'dark')
+  await expect(page.locator('body')).toHaveAttribute('data-ods-shadcn-base-color', 'slate')
+  await expect(page.locator('body')).toHaveAttribute('data-ods-mode', 'dark')
   await navigateHash(page, '#forms?variant=one')
   await expectState(page, 'forms', 'one')
   await page.goBack()
@@ -106,8 +106,8 @@ test('same-page hash navigation and back/forward apply variant without feedback 
   await expectState(page, 'compare', 'ink')
   await page.goForward()
   await expectState(page, 'compare', 'shadcn')
-  await expect(page.locator('body')).toHaveAttribute('data-qds-shadcn-base-color', 'slate')
-  await expect(page.locator('body')).toHaveAttribute('data-qds-mode', 'dark')
+  await expect(page.locator('body')).toHaveAttribute('data-ods-shadcn-base-color', 'slate')
+  await expect(page.locator('body')).toHaveAttribute('data-ods-mode', 'dark')
   expect(await page.evaluate(() => ({ writes: (window as unknown as { urlWrites: number }).urlWrites, length: history.length })))
     .toEqual({ writes: 0, length: length + 2 })
 })

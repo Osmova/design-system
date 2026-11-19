@@ -110,7 +110,7 @@ export const Skeleton: Story = {
     components: { QSkeleton },
     setup: () => ({ args }),
     template: `
-      <div class="qds-story-stack" style="max-width: 24rem">
+      <div class="ods-story-stack" style="max-width: 24rem">
         <QSkeleton v-bind="args" />
         <QSkeleton type="text" :animation="args.animation" />
         <QSkeleton type="text" width="60%" :animation="args.animation" />
@@ -125,7 +125,7 @@ export const InnerLoading: Story = {
     components: { QInnerLoading },
     setup: () => ({ args }),
     template: `
-      <div class="qds-story-demo" style="position: relative; max-width: 24rem; min-height: 9rem">
+      <div class="ods-story-demo" style="position: relative; max-width: 24rem; min-height: 9rem">
         <p>Quarterly summary is being recalculated.</p>
         <QInnerLoading v-bind="args" />
       </div>`,

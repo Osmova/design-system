@@ -64,20 +64,20 @@ function openDialog() {
 </script>
 
 <template>
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QForm</h2>
-    <QForm class="qds-story-stack" @submit.prevent>
+    <QForm class="ods-story-stack" @submit.prevent>
       <QInput v-model="workspace" outlined label="Workspace name" hint="Shown in invitations." />
-      <div class="qds-story-row">
+      <div class="ods-story-row">
         <QBtn no-caps type="submit" color="primary" label="Save" />
         <QBtn no-caps flat type="reset" label="Reset" />
       </div>
     </QForm>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QTooltip &amp; QPopupProxy</h2>
-    <div class="qds-story-row">
+    <div class="ods-story-row">
       <QBtn no-caps label="Hover me">
         <QTooltip>Transient hint on a solid surface</QTooltip>
       </QBtn>
@@ -92,7 +92,7 @@ function openDialog() {
     </div>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QSlideItem</h2>
     <QList bordered separator>
       <QSlideItem left-color="positive" right-color="negative" @left="onSlide('left', $event.reset)" @right="onSlide('right', $event.reset)">
@@ -108,38 +108,38 @@ function openDialog() {
     </QList>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QPullToRefresh</h2>
     <div style="max-height: 180px; overflow: auto" tabindex="0" aria-label="Refreshable list">
       <QPullToRefresh @refresh="onRefresh">
         <QList bordered separator>
           <QItem v-for="row in 6" :key="row"><QItemSection>Row {{ row }}</QItemSection></QItem>
         </QList>
-        <div class="qds-story-pane">Refreshed {{ refreshes }} time(s)</div>
+        <div class="ods-story-pane">Refreshed {{ refreshes }} time(s)</div>
       </QPullToRefresh>
     </div>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QParallax</h2>
     <QParallax :height="180" :speed="0.5">
       <template #media>
-        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--qds-color-primary), var(--qds-color-accent))" />
+        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--ods-color-primary), var(--ods-color-accent))" />
       </template>
-      <h3 style="color: var(--qds-text-on-solid)">Scrim-backed caption</h3>
+      <h3 style="color: var(--ods-text-on-solid)">Scrim-backed caption</h3>
     </QParallax>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QVideo</h2>
     <QVideo ratio="16/9" src="about:blank" title="Placeholder frame" style="max-width: 420px" />
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QPageSticky</h2>
     <QLayout view="hHh lpR fFf" container style="height: 160px">
       <QPageContainer>
-        <QPage class="qds-story-pane">
+        <QPage class="ods-story-pane">
           Sticky affordances need a layout host.
           <QPageSticky position="bottom-right" :offset="[12, 12]">
             <QBtn fab color="primary" aria-label="Add"><PhPlus :size="20" weight="bold" /></QBtn>
@@ -149,9 +149,9 @@ function openDialog() {
     </QLayout>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>BottomSheet &amp; Dialog plugins</h2>
-    <div class="qds-story-row">
+    <div class="ods-story-row">
       <QBtn no-caps label="Bottom sheet" @click="openBottomSheet" />
       <QBtn no-caps label="Dialog" @click="openDialog" />
     </div>

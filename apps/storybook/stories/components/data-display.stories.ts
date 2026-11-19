@@ -154,7 +154,7 @@ export const Chip: Story = {
     components: { QChip },
     setup: () => ({ props: computed(() => ({ ...args, color: args.color || undefined, icon: args.icon || undefined, textColor: args.color && !args.outline ? 'white' : undefined })) }),
     template: `
-      <div class="qds-story-row">
+      <div class="ods-story-row">
         <QChip v-bind="props" />
         <QChip :dense="props.dense" :outline="props.outline" label="Neutral" />
         <QChip :dense="props.dense" :outline="props.outline" color="positive" text-color="white" label="Positive" />
@@ -169,7 +169,7 @@ export const Badge: Story = {
     components: { QBadge, QIcon },
     setup: () => ({ args, icons: ICONS }),
     template: `
-      <div class="qds-story-row">
+      <div class="ods-story-row">
         <QBadge v-bind="args" />
         <span style="position: relative; display: inline-flex; padding: 0.5rem">
           <QIcon :name="icons.bell" size="md" aria-label="Notifications" />
@@ -220,7 +220,7 @@ export const VirtualScroll: Story = {
     components: { QItem, QItemSection, QSeparator, QVirtualScroll },
     setup: () => ({ args, items: computed(() => Array.from({ length: Number(args.rows) }, (_, index) => `Row ${index + 1}`)) }),
     template: `
-      <QVirtualScroll :items="items" style="max-height: 16rem; max-width: 24rem" class="qds-story-demo" tabindex="0" aria-label="Rows" v-slot="{ item, index }">
+      <QVirtualScroll :items="items" style="max-height: 16rem; max-width: 24rem" class="ods-story-demo" tabindex="0" aria-label="Rows" v-slot="{ item, index }">
         <QItem :key="index" :dense="args.dense"><QItemSection>{{ item }}</QItemSection></QItem>
         <QSeparator v-if="args.separator" :key="'s' + index" />
       </QVirtualScroll>`,

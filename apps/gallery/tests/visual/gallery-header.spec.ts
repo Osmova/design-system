@@ -35,8 +35,8 @@ test('native Theme menu supports keyboard selection, dismissal and isolated stat
   await expect(menu).toBeHidden()
   await expectThemeMenuClosed(page)
   await expect(page.getByRole('button', { name: 'Theme: Dark', exact: true })).toBeFocused()
-  await expect(page.locator('body')).toHaveAttribute('data-qds-mode', 'dark')
-  await expect(page.locator('body')).toHaveAttribute('data-qds-variant', 'shadcn')
+  await expect(page.locator('body')).toHaveAttribute('data-ods-mode', 'dark')
+  await expect(page.locator('body')).toHaveAttribute('data-ods-variant', 'shadcn')
   expect(page.url()).toBe(url)
 
   for (const mode of ['Light', 'System']) {
@@ -65,7 +65,7 @@ test('native Theme menu supports keyboard selection, dismissal and isolated stat
   await page.getByRole('combobox', { name: 'Shadcn base palette', exact: true }).click()
   await page.getByRole('option', { name: 'Slate', exact: true }).click()
   await page.keyboard.press('Escape')
-  await expect(page.locator('body')).toHaveAttribute('data-qds-shadcn-base-color', 'slate')
+  await expect(page.locator('body')).toHaveAttribute('data-ods-shadcn-base-color', 'slate')
   expect(page.url()).toBe(url)
 })
 
@@ -85,8 +85,8 @@ test('wordmark renders in the loaded Plus Jakarta Sans face with weight contrast
       size: parseFloat(style.fontSize),
       markWeight: parseInt(getComputedStyle(mark).fontWeight, 10),
       subWeight: parseInt(getComputedStyle(sub).fontWeight, 10),
-      loaded: document.fonts.check('640 18px "Plus Jakarta Sans"', 'Quasar Design System'),
-      interLoaded: document.fonts.check('600 18px "Inter Variable"', 'Quasar Design System'),
+      loaded: document.fonts.check('640 18px "Plus Jakarta Sans"', 'Osmova Design System'),
+      interLoaded: document.fonts.check('600 18px "Inter Variable"', 'Osmova Design System'),
       body: getComputedStyle(document.body).fontFamily,
       button: getComputedStyle(button).fontFamily,
     }
@@ -151,7 +151,7 @@ for (const variant of CANONICAL_VARIANTS) {
       await applyTheme(page, mode === 'system' ? 'light' : mode, variant)
       if (mode === 'system') {
         await page.evaluate(() => {
-          (window as unknown as { __qdsGallery: { setMode(value: 'system'): void } }).__qdsGallery.setMode('system')
+          (window as unknown as { __odsGallery: { setMode(value: 'system'): void } }).__odsGallery.setMode('system')
         })
         await waitForThemePaint(page)
       }

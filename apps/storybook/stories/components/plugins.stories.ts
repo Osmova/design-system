@@ -170,7 +170,7 @@ export const LoadingBarPlugin: Story = {
       }
     },
     template: `
-      <div class="qds-story-row">
+      <div class="ods-story-row">
         <QBtn color="primary" label="Start" unelevated no-caps @click="start" />
         <QBtn color="primary" label="Stop" outline no-caps @click="stop" />
       </div>`,

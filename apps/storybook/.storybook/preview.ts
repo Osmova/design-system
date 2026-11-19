@@ -5,24 +5,24 @@ import {
   configureDesignSystem,
   DESIGN_SYSTEM_VARIANTS,
   INK_COLORS,
-  qdsIconSet,
+  odsIconSet,
   SHADCN_BASE_COLORS,
   type DesignSystemController,
   type DesignSystemMode,
   type InkColor,
   type ShadcnBaseColor,
-} from '@osmova/quasar-design-system'
+} from '@osmova/ds-quasar'
 import { ownPreviewController } from '../../../packages/quasar/catalog/preview/index'
 
 // Same consumer order as the gallery: native, design system, extension, then fonts and demo helpers.
 import '@gallery/adoption-default.scss'
 import '@gallery/fonts/plus-jakarta-sans.css'
 import '@gallery/gallery.css'
-import '@osmova/quasar-design-system/fonts/inter.css'
-import '@osmova/quasar-design-system/fonts/open-sans.css'
-import '@osmova/quasar-design-system/fonts/selawik.css'
-import '@osmova/quasar-design-system/fonts/zen.css'
-import '@osmova/quasar-design-system/fonts/ink.css'
+import '@osmova/ds-quasar/fonts/inter.css'
+import '@osmova/ds-quasar/fonts/open-sans.css'
+import '@osmova/ds-quasar/fonts/selawik.css'
+import '@osmova/ds-quasar/fonts/zen.css'
+import '@osmova/ds-quasar/fonts/ink.css'
 import '../demos/showcase.scss'
 
 export interface ThemeGlobals {
@@ -32,7 +32,7 @@ export interface ThemeGlobals {
   palette: ShadcnBaseColor
 }
 
-const VARIANTS = Object.values(DESIGN_SYSTEM_VARIANTS).filter((variant) => variant.cssClass === `qds-variant-${variant.name}`)
+const VARIANTS = Object.values(DESIGN_SYSTEM_VARIANTS).filter((variant) => variant.cssClass === `ods-variant-${variant.name}`)
 
 const initialGlobals: ThemeGlobals = { scheme: 'light', variant: 'win', ink: 'charcoal', palette: 'neutral' }
 let wanted: ThemeGlobals = { ...initialGlobals }
@@ -47,7 +47,7 @@ function paint(controller: DesignSystemController, globals: ThemeGlobals): void 
 
 setup((app) => {
   app.use(Quasar, {
-    iconSet: qdsIconSet,
+    iconSet: odsIconSet,
     plugins: { BottomSheet, Dialog, Loading, LoadingBar, Notify },
     directives: { ClosePopup },
     config: { loadingBar: { color: 'primary', size: '4px', skipHijack: true } },

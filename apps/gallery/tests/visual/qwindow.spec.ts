@@ -2,14 +2,14 @@ import { expect, test, type Page } from '@playwright/test'
 import { expectGalleryPage, resolvedColor } from './helpers'
 
 async function forceTheme(page: Page, mode: 'light' | 'dark' = 'light', variant: 'win' | 'ink' | 'one' | 'term' = 'win') {
-  await page.waitForFunction(() => Boolean((window as unknown as { __qdsGallery?: unknown }).__qdsGallery))
+  await page.waitForFunction(() => Boolean((window as unknown as { __odsGallery?: unknown }).__odsGallery))
   await page.evaluate(({ mode, variant }) => {
-    const ds = (window as unknown as { __qdsGallery: { setMode: (mode: 'light' | 'dark') => void; setVariant: (variant: 'win' | 'ink' | 'one' | 'term') => void } }).__qdsGallery
+    const ds = (window as unknown as { __odsGallery: { setMode: (mode: 'light' | 'dark') => void; setVariant: (variant: 'win' | 'ink' | 'one' | 'term') => void } }).__odsGallery
     ds.setMode(mode)
     ds.setVariant(variant)
   }, { mode, variant })
-  await expect(page.locator('body')).toHaveClass(new RegExp(`qds-variant-${variant}`))
-  await expect(page.locator('body')).toHaveClass(new RegExp(mode === 'dark' ? 'qds-theme-dark' : 'qds-theme-light'))
+  await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
+  await expect(page.locator('body')).toHaveClass(new RegExp(mode === 'dark' ? 'ods-theme-dark' : 'ods-theme-light'))
 }
 
 async function resolvedBackground(page: Page, value: string) {
@@ -35,45 +35,45 @@ async function resolvedLength(page: Page, value: string) {
   }, value)
 }
 
-test.describe('QDS optional QWindow extension', () => {
+test.describe('ODS optional QWindow extension', () => {
   test('mounts centered, token-sized QWindow chrome with a neutral close action at rest', async ({ page }) => {
     await page.goto('/#window')
     await forceTheme(page)
 
     await expectGalleryPage(page, 'Window')
 
-    const windowShell = page.locator('.qds-window').filter({ hasText: 'QDS window shell' })
+    const windowShell = page.locator('.ods-window').filter({ hasText: 'ODS window shell' })
     await expect(windowShell).toBeVisible()
-    await expect(windowShell).toHaveClass(/qds-window/)
-    await expect(windowShell).toHaveClass(/qds-window--embedded/)
+    await expect(windowShell).toHaveClass(/ods-window/)
+    await expect(windowShell).toHaveClass(/ods-window--embedded/)
 
-    await expect(windowShell.locator('.qds-window__titlebar')).toBeVisible()
-    await expect(windowShell.locator('.qds-window__title')).toContainText('QDS window shell')
-    await expect(windowShell.locator('.qds-window__actions')).toBeVisible()
-    await expect(windowShell.locator('.qds-window__action--close')).toBeVisible()
+    await expect(windowShell.locator('.ods-window__titlebar')).toBeVisible()
+    await expect(windowShell.locator('.ods-window__title')).toContainText('ODS window shell')
+    await expect(windowShell.locator('.ods-window__actions')).toBeVisible()
+    await expect(windowShell.locator('.ods-window__action--close')).toBeVisible()
 
     const styles = await windowShell.evaluate((el) => {
       const shell = getComputedStyle(el as Element)
       const windowElement = el as HTMLElement
-      const titlebar = getComputedStyle(windowElement.querySelector('.qds-window__titlebar') as Element)
-      const title = getComputedStyle(windowElement.querySelector('.qds-window__title') as Element)
-      const actionElement = windowElement.querySelector('.qds-window__action') as HTMLElement
+      const titlebar = getComputedStyle(windowElement.querySelector('.ods-window__titlebar') as Element)
+      const title = getComputedStyle(windowElement.querySelector('.ods-window__title') as Element)
+      const actionElement = windowElement.querySelector('.ods-window__action') as HTMLElement
       const actionContent = actionElement.querySelector('.q-btn__content') as HTMLElement
       const action = getComputedStyle(actionElement)
       const actionContentStyles = getComputedStyle(actionContent)
-      const titlebarElement = windowElement.querySelector('.qds-window__titlebar') as HTMLElement
+      const titlebarElement = windowElement.querySelector('.ods-window__titlebar') as HTMLElement
       const titlebarRect = titlebarElement.getBoundingClientRect()
       const actionRect = actionElement.getBoundingClientRect()
       const actionContentRect = actionContent.getBoundingClientRect()
-      const chrome = getComputedStyle(windowElement.querySelector('.qds-window__chrome') as Element)
+      const chrome = getComputedStyle(windowElement.querySelector('.ods-window__chrome') as Element)
       const actionSvg = actionElement.querySelector('svg')
       const actionSvgRect = actionSvg?.getBoundingClientRect()
       titlebarElement.style.height = '3rem'
       const consumerTitlebarHeight = getComputedStyle(titlebarElement).height
       titlebarElement.style.height = ''
-      windowElement.classList.add('qds-window--disabled')
+      windowElement.classList.add('ods-window--disabled')
       const disabledOpacity = getComputedStyle(windowElement).opacity
-      windowElement.classList.remove('qds-window--disabled')
+      windowElement.classList.remove('ods-window--disabled')
       return {
         background: shell.backgroundColor,
         borderRadius: shell.borderRadius,
@@ -98,59 +98,59 @@ test.describe('QDS optional QWindow extension', () => {
         actionMinHeight: action.minHeight,
         actionBackground: action.backgroundColor,
         actionColor: action.color,
-        compactActionSize: getComputedStyle(document.body).getPropertyValue('--qds-compact-action-size').trim(),
-        compactActionIconSize: getComputedStyle(document.body).getPropertyValue('--qds-compact-action-icon-size').trim(),
+        compactActionSize: getComputedStyle(document.body).getPropertyValue('--ods-compact-action-size').trim(),
+        compactActionIconSize: getComputedStyle(document.body).getPropertyValue('--ods-compact-action-icon-size').trim(),
         disabledOpacity,
       }
     })
 
-    const compactActionSize = await resolvedLength(page, 'var(--qds-compact-action-size)')
-    const compactActionIconSize = await resolvedLength(page, 'var(--qds-compact-action-icon-size)')
+    const compactActionSize = await resolvedLength(page, 'var(--ods-compact-action-size)')
+    const compactActionIconSize = await resolvedLength(page, 'var(--ods-compact-action-icon-size)')
     const neutralBackground = await resolvedBackground(page, 'transparent')
-    const neutralColor = await resolvedColor(page, '--qds-text-muted')
+    const neutralColor = await resolvedColor(page, '--ods-text-muted')
 
-    expect.soft(styles.background, 'QDS QWindow shell receives tokenized surface').not.toBe('rgba(0, 0, 0, 0)')
-    expect.soft(parseFloat(styles.borderRadius), 'QDS QWindow shell receives tokenized radius').toBeGreaterThan(0)
-    expect.soft(styles.titlebarBackground, 'QDS QWindow titlebar receives tokenized toolbar surface').not.toBe('rgba(0, 0, 0, 0)')
-    expect.soft(parseFloat(styles.titlebarMinHeight), 'QDS QWindow titlebar has rendered geometry').toBeGreaterThan(0)
-    expect.soft(styles.titlebarHeight, 'QDS titlebar provides symmetric vertical breathing room around compact actions').toBeGreaterThan(styles.actionHeight)
-    expect.soft(styles.actionWidth, 'QDS QWindow actions consume the compact action-size token').toBe(compactActionSize)
-    expect.soft(styles.actionHeight, 'QDS QWindow actions consume the compact action-size token').toBe(compactActionSize)
-    expect.soft(styles.actionCenterOffset, 'QDS QWindow actions are vertically centered in the titlebar').toBeLessThanOrEqual(0.5)
-    expect.soft(styles.actionContentCenterOffset, 'QDS QWindow action glyphs are centered in their hit target').toBeLessThanOrEqual(0.5)
-    expect.soft(styles.chromePaddingLeft, 'QDS QWindow chrome uses symmetric horizontal titlebar gaps').toBe(styles.chromePaddingRight)
-    expect.soft(styles.consumerTitlebarHeight, 'QDS QWindow preserves consumer titlebarStyle geometry').toBe('48px')
+    expect.soft(styles.background, 'ODS QWindow shell receives tokenized surface').not.toBe('rgba(0, 0, 0, 0)')
+    expect.soft(parseFloat(styles.borderRadius), 'ODS QWindow shell receives tokenized radius').toBeGreaterThan(0)
+    expect.soft(styles.titlebarBackground, 'ODS QWindow titlebar receives tokenized toolbar surface').not.toBe('rgba(0, 0, 0, 0)')
+    expect.soft(parseFloat(styles.titlebarMinHeight), 'ODS QWindow titlebar has rendered geometry').toBeGreaterThan(0)
+    expect.soft(styles.titlebarHeight, 'ODS titlebar provides symmetric vertical breathing room around compact actions').toBeGreaterThan(styles.actionHeight)
+    expect.soft(styles.actionWidth, 'ODS QWindow actions consume the compact action-size token').toBe(compactActionSize)
+    expect.soft(styles.actionHeight, 'ODS QWindow actions consume the compact action-size token').toBe(compactActionSize)
+    expect.soft(styles.actionCenterOffset, 'ODS QWindow actions are vertically centered in the titlebar').toBeLessThanOrEqual(0.5)
+    expect.soft(styles.actionContentCenterOffset, 'ODS QWindow action glyphs are centered in their hit target').toBeLessThanOrEqual(0.5)
+    expect.soft(styles.chromePaddingLeft, 'ODS QWindow chrome uses symmetric horizontal titlebar gaps').toBe(styles.chromePaddingRight)
+    expect.soft(styles.consumerTitlebarHeight, 'ODS QWindow preserves consumer titlebarStyle geometry').toBe('48px')
     // Display aliases body by default, so a distinct probe stack proves the title reads the display token.
-    const probedTitleFamily = await windowShell.locator('.qds-window__title').evaluate((title) => {
-      document.body.style.setProperty('--qds-font-family-display', "'QDS Display Probe', serif")
+    const probedTitleFamily = await windowShell.locator('.ods-window__title').evaluate((title) => {
+      document.body.style.setProperty('--ods-font-family-display', "'ODS Display Probe', serif")
       const family = getComputedStyle(title).fontFamily
-      document.body.style.removeProperty('--qds-font-family-display')
+      document.body.style.removeProperty('--ods-font-family-display')
       return family
     })
-    expect.soft(probedTitleFamily, 'QDS QWindow title uses the display font token').toBe('"QDS Display Probe", serif')
-    expect.soft(styles.titleFontSize, 'QDS QWindow title uses compact control typography').toBe('14px')
-    expect.soft(styles.titleFontWeight, 'QDS QWindow title keeps semibold emphasis').toBe('600')
-    expect.soft(parseFloat(styles.actionFontSize), 'QDS QWindow action glyphs use the compact icon-size token').toBe(compactActionIconSize)
-    expect.soft(styles.actionHasSvg, 'QDS QWindow close action renders a Phosphor SVG icon').toBe(true)
-    expect.soft(styles.actionTextContent, 'QDS QWindow close action does not render a Unicode text glyph').toBe('')
-    expect.soft(styles.actionSvgWidth, 'QDS QWindow close SVG icon has rendered geometry').toBeGreaterThan(0)
-    expect.soft(styles.actionSvgHeight, 'QDS QWindow close SVG icon has rendered geometry').toBeGreaterThan(0)
-    expect.soft(parseFloat(styles.actionMinWidth), 'QDS QWindow actions use the compact action-size token').toBe(compactActionSize)
-    expect.soft(parseFloat(styles.actionMinHeight), 'QDS QWindow actions use the compact action-size token').toBe(compactActionSize)
-    expect.soft(styles.actionBackground, 'QDS QWindow close action remains neutral at rest').toBe(neutralBackground)
-    expect.soft(styles.actionColor, 'QDS QWindow close action remains neutral at rest').toBe(neutralColor)
-    expect.soft(styles.disabledOpacity, 'QDS QWindow disabled state uses the public opacity token').toBe('0.5')
+    expect.soft(probedTitleFamily, 'ODS QWindow title uses the display font token').toBe('"ODS Display Probe", serif')
+    expect.soft(styles.titleFontSize, 'ODS QWindow title uses compact control typography').toBe('14px')
+    expect.soft(styles.titleFontWeight, 'ODS QWindow title keeps semibold emphasis').toBe('600')
+    expect.soft(parseFloat(styles.actionFontSize), 'ODS QWindow action glyphs use the compact icon-size token').toBe(compactActionIconSize)
+    expect.soft(styles.actionHasSvg, 'ODS QWindow close action renders a Phosphor SVG icon').toBe(true)
+    expect.soft(styles.actionTextContent, 'ODS QWindow close action does not render a Unicode text glyph').toBe('')
+    expect.soft(styles.actionSvgWidth, 'ODS QWindow close SVG icon has rendered geometry').toBeGreaterThan(0)
+    expect.soft(styles.actionSvgHeight, 'ODS QWindow close SVG icon has rendered geometry').toBeGreaterThan(0)
+    expect.soft(parseFloat(styles.actionMinWidth), 'ODS QWindow actions use the compact action-size token').toBe(compactActionSize)
+    expect.soft(parseFloat(styles.actionMinHeight), 'ODS QWindow actions use the compact action-size token').toBe(compactActionSize)
+    expect.soft(styles.actionBackground, 'ODS QWindow close action remains neutral at rest').toBe(neutralBackground)
+    expect.soft(styles.actionColor, 'ODS QWindow close action remains neutral at rest').toBe(neutralColor)
+    expect.soft(styles.disabledOpacity, 'ODS QWindow disabled state uses the public opacity token').toBe('0.5')
 
     const activeStyles = await windowShell.evaluate((el) => {
       const shell = el as HTMLElement
-      const closeAction = shell.querySelector('.qds-window__action--close') as HTMLElement
-      shell.classList.add('qds-window--active', 'qds-window--floating')
+      const closeAction = shell.querySelector('.ods-window__action--close') as HTMLElement
+      shell.classList.add('ods-window--active', 'ods-window--floating')
       const shellStyles = getComputedStyle(shell)
       const closeStyles = getComputedStyle(closeAction)
       const shellBoxShadow = shellStyles.boxShadow
       const closeBackground = closeStyles.backgroundColor
       const closeColor = closeStyles.color
-      shell.classList.remove('qds-window--active', 'qds-window--floating')
+      shell.classList.remove('ods-window--active', 'ods-window--floating')
       return { shellBoxShadow, closeBackground, closeColor }
     })
     expect.soft(activeStyles.shellBoxShadow, 'Active floating QWindow emphasis uses shell elevation, not destructive color').not.toBe('none')
@@ -162,12 +162,12 @@ test.describe('QDS optional QWindow extension', () => {
   test('long body content scrolls inside the window instead of growing past it', async ({ page }) => {
     await page.goto('/#window')
     await forceTheme(page)
-    const windowShell = page.locator('.qds-window').filter({ hasText: 'QDS window shell' })
+    const windowShell = page.locator('.ods-window').filter({ hasText: 'ODS window shell' })
     await expect(windowShell).toBeVisible()
 
     const metrics = await windowShell.evaluate((el) => {
       const native = el.querySelector('.q-window__body') as HTMLElement
-      const body = el.querySelector('.qds-window__body') as HTMLElement
+      const body = el.querySelector('.ods-window__body') as HTMLElement
       const filler = document.createElement('div')
       filler.style.height = `${native.clientHeight * 3}px`
       body.append(filler)
@@ -181,14 +181,14 @@ test.describe('QDS optional QWindow extension', () => {
 
   test('Ink windows keep the focus-block surface and One windows sit on the transient surface', async ({ page }) => {
     await page.goto('/#window')
-    const windowShell = page.locator('.qds-window').filter({ hasText: 'QDS window shell' })
+    const windowShell = page.locator('.ods-window').filter({ hasText: 'ODS window shell' })
     for (const mode of ['light', 'dark'] as const) {
-      for (const [variant, token] of [['ink', '--qds-surface-focus-block'], ['one', '--qds-surface-transient']] as const) {
+      for (const [variant, token] of [['ink', '--ods-surface-focus-block'], ['one', '--ods-surface-transient']] as const) {
         await forceTheme(page, mode, variant)
         expect.soft(await windowShell.evaluate((el) => getComputedStyle(el).backgroundColor), `${mode}/${variant} window background`).toBe(await resolvedColor(page, token))
       }
       await forceTheme(page, mode, 'ink')
-      expect.soft(await windowShell.locator('.qds-window__titlebar').evaluate((el) => getComputedStyle(el).backgroundColor), `${mode}/ink window titlebar background`).toBe(await resolvedColor(page, '--qds-surface-focus-block'))
+      expect.soft(await windowShell.locator('.ods-window__titlebar').evaluate((el) => getComputedStyle(el).backgroundColor), `${mode}/ink window titlebar background`).toBe(await resolvedColor(page, '--ods-surface-focus-block'))
     }
   })
 
@@ -196,8 +196,8 @@ test.describe('QDS optional QWindow extension', () => {
     await page.goto('/#window')
     await page.emulateMedia({ reducedMotion: 'reduce' })
 
-    const windowShell = page.locator('.qds-window').filter({ hasText: 'QDS window shell' })
-    const closeAction = windowShell.locator('.qds-window__action--close')
+    const windowShell = page.locator('.ods-window').filter({ hasText: 'ODS window shell' })
+    const closeAction = windowShell.locator('.ods-window__action--close')
     await expect(closeAction).toHaveClass(/(?:^|\s)q-btn(?:\s|$)/)
 
     for (const [mode, variant] of [['light', 'win'], ['dark', 'win'], ['dark', 'term']] as const) {
@@ -209,9 +209,9 @@ test.describe('QDS optional QWindow extension', () => {
         return { hovered: el.matches(':hover'), color: styles.color, background: styles.backgroundColor }
       })
       const negativeSoft = await page.locator('body').evaluate((body) => {
-        return getComputedStyle(body).getPropertyValue('--qds-surface-negative-soft').trim()
+        return getComputedStyle(body).getPropertyValue('--ods-surface-negative-soft').trim()
       })
-      const negative = await resolvedColor(page, '--qds-color-negative')
+      const negative = await resolvedColor(page, '--ods-color-negative')
       const negativeSoftBackground = await resolvedBackground(page, negativeSoft)
       await expect.poll(async () => closeAction.evaluate((el) => getComputedStyle(el).color)).toBe(negative)
       await expect.poll(async () => closeAction.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(negativeSoftBackground)

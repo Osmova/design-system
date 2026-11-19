@@ -1,487 +1,487 @@
 @use 'sass:map';
 @use '../tokens/default' as tokens;
 
-@mixin qds-on-fill($foregrounds) {
+@mixin ods-on-fill($foregrounds) {
   @each $role, $foreground in $foregrounds {
-    --qds-text-on-#{$role}: #{$foreground};
+    --ods-text-on-#{$role}: #{$foreground};
   }
 }
 
-@mixin qds-role-fg($foregrounds) {
+@mixin ods-role-fg($foregrounds) {
   @each $role, $foreground in $foregrounds {
-    --qds-fg-#{$role}: #{$foreground};
+    --ods-fg-#{$role}: #{$foreground};
   }
 }
 
-@mixin qds-soft-surfaces($surfaces) {
-  --qds-surface-brand-soft: #{map.get($surfaces, brand)};
-  --qds-surface-accent-soft: #{map.get($surfaces, accent)};
-  --qds-surface-positive-soft: #{map.get($surfaces, positive)};
-  --qds-surface-warning-soft: #{map.get($surfaces, warning)};
-  --qds-surface-negative-soft: #{map.get($surfaces, negative)};
-  --qds-surface-info-soft: #{map.get($surfaces, info)};
-  --qds-surface-focus-block: #{map.get($surfaces, focus-block)};
-  --qds-surface-transient: #{map.get($surfaces, transient)};
+@mixin ods-soft-surfaces($surfaces) {
+  --ods-surface-brand-soft: #{map.get($surfaces, brand)};
+  --ods-surface-accent-soft: #{map.get($surfaces, accent)};
+  --ods-surface-positive-soft: #{map.get($surfaces, positive)};
+  --ods-surface-warning-soft: #{map.get($surfaces, warning)};
+  --ods-surface-negative-soft: #{map.get($surfaces, negative)};
+  --ods-surface-info-soft: #{map.get($surfaces, info)};
+  --ods-surface-focus-block: #{map.get($surfaces, focus-block)};
+  --ods-surface-transient: #{map.get($surfaces, transient)};
 }
 
-@mixin qds-semantic-tokens($scheme) {
-  // Foreground aliases — track --qds-text-* which variants override
-  --qds-fg-default: var(--qds-text);
-  --qds-fg-strong: var(--qds-text-strong);
-  --qds-fg-muted: var(--qds-text-muted);
-  --qds-fg-disabled: #{map.get($scheme, fg-disabled)};
-  --qds-fg-on-brand: #{map.get($scheme, fg-on-brand)};
-  --qds-fg-brand: #{map.get($scheme, fg-brand)};
-  // Background aliases — track --qds-surface-* which variants override
-  --qds-bg-canvas: var(--qds-surface-0);
-  --qds-bg-surface-1: var(--qds-surface-1);
-  --qds-bg-surface-2: var(--qds-surface-2);
-  --qds-bg-layer: var(--qds-surface-3);
-  --qds-bg-flyout: var(--qds-surface-0);
-  --qds-bg-overlay: #{map.get($scheme, bg-overlay)};
-  --qds-bg-card: var(--qds-surface-0);
-  --qds-bg-card-hover: var(--qds-surface-1);
-  // Stroke aliases — track --qds-border-* which variants override
-  --qds-stroke-default: var(--qds-border);
-  --qds-stroke-subtle: var(--qds-border-subtle);
-  --qds-stroke-strong: #{map.get($scheme, stroke-strong)};
-  --qds-stroke-focus: #{map.get($scheme, stroke-focus)};
-  --qds-stroke-error: var(--qds-color-negative);
-  --qds-stroke-divider: var(--qds-border-subtle);
+@mixin ods-semantic-tokens($scheme) {
+  // Foreground aliases — track --ods-text-* which variants override
+  --ods-fg-default: var(--ods-text);
+  --ods-fg-strong: var(--ods-text-strong);
+  --ods-fg-muted: var(--ods-text-muted);
+  --ods-fg-disabled: #{map.get($scheme, fg-disabled)};
+  --ods-fg-on-brand: #{map.get($scheme, fg-on-brand)};
+  --ods-fg-brand: #{map.get($scheme, fg-brand)};
+  // Background aliases — track --ods-surface-* which variants override
+  --ods-bg-canvas: var(--ods-surface-0);
+  --ods-bg-surface-1: var(--ods-surface-1);
+  --ods-bg-surface-2: var(--ods-surface-2);
+  --ods-bg-layer: var(--ods-surface-3);
+  --ods-bg-flyout: var(--ods-surface-0);
+  --ods-bg-overlay: #{map.get($scheme, bg-overlay)};
+  --ods-bg-card: var(--ods-surface-0);
+  --ods-bg-card-hover: var(--ods-surface-1);
+  // Stroke aliases — track --ods-border-* which variants override
+  --ods-stroke-default: var(--ods-border);
+  --ods-stroke-subtle: var(--ods-border-subtle);
+  --ods-stroke-strong: #{map.get($scheme, stroke-strong)};
+  --ods-stroke-focus: #{map.get($scheme, stroke-focus)};
+  --ods-stroke-error: var(--ods-color-negative);
+  --ods-stroke-divider: var(--ods-border-subtle);
   // State layers — these are new, not aliased
-  --qds-state-hover: #{map.get($scheme, state-hover)};
-  --qds-state-pressed: #{map.get($scheme, state-pressed)};
-  --qds-state-selected: #{map.get($scheme, state-selected)};
-  --qds-state-disabled: #{map.get($scheme, state-disabled)};
-  --qds-state-focus-indicator: #{map.get($scheme, state-focus-indicator)};
+  --ods-state-hover: #{map.get($scheme, state-hover)};
+  --ods-state-pressed: #{map.get($scheme, state-pressed)};
+  --ods-state-selected: #{map.get($scheme, state-selected)};
+  --ods-state-disabled: #{map.get($scheme, state-disabled)};
+  --ods-state-focus-indicator: #{map.get($scheme, state-focus-indicator)};
   // Win11 control and card layers
   @each $token in control-fill-default, control-fill-hover, control-fill-pressed, control-fill-disabled, control-fill-input-active, control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom, control-stroke-on-accent-top, control-stroke-on-accent-bottom, card-fill, card-stroke {
-    --qds-#{$token}: #{map.get($scheme, $token)};
+    --ods-#{$token}: #{map.get($scheme, $token)};
   }
-  --qds-segmented-track-bg: #{map.get($scheme, segmented-track-bg)};
-  --qds-segmented-thumb-bg: #{map.get($scheme, segmented-thumb-bg)};
-  --qds-bar-dark-bg: #{map.get($scheme, bar-dark-bg)};
-  --qds-bar-dark-fg: #{map.get($scheme, bar-dark-fg)};
+  --ods-segmented-track-bg: #{map.get($scheme, segmented-track-bg)};
+  --ods-segmented-thumb-bg: #{map.get($scheme, segmented-thumb-bg)};
+  --ods-bar-dark-bg: #{map.get($scheme, bar-dark-bg)};
+  --ods-bar-dark-fg: #{map.get($scheme, bar-dark-fg)};
 }
 
-@mixin qds-typography-tokens {
+@mixin ods-typography-tokens {
   @each $name, $style in tokens.$typography {
-    --qds-font-size-#{$name}: #{map.get($style, size)};
-    --qds-line-height-#{$name}: #{map.get($style, line-height)};
-    --qds-font-weight-#{$name}: #{map.get(map.get(tokens.$font, weight), map.get($style, weight))};
+    --ods-font-size-#{$name}: #{map.get($style, size)};
+    --ods-line-height-#{$name}: #{map.get($style, line-height)};
+    --ods-font-weight-#{$name}: #{map.get(map.get(tokens.$font, weight), map.get($style, weight))};
     @if map.has-key($style, letter-spacing) {
-      --qds-letter-spacing-#{$name}: #{map.get($style, letter-spacing)};
+      --ods-letter-spacing-#{$name}: #{map.get($style, letter-spacing)};
     }
   }
 }
 
-@mixin qds-shadow-steps($scheme) {
+@mixin ods-shadow-steps($scheme) {
   @each $step, $geometry in tokens.$shadow-steps {
-    --qds-shadow-#{$step}: #{tokens.qds-shadow($step, $scheme)};
+    --ods-shadow-#{$step}: #{tokens.ods-shadow($step, $scheme)};
   }
 }
 
-@mixin qds-elevation-tokens {
-  --qds-elevation-card: var(--qds-shadow-sm);
-  --qds-elevation-flyout: var(--qds-shadow-md);
-  --qds-elevation-dialog: var(--qds-shadow-lg);
+@mixin ods-elevation-tokens {
+  --ods-elevation-card: var(--ods-shadow-sm);
+  --ods-elevation-flyout: var(--ods-shadow-md);
+  --ods-elevation-dialog: var(--ods-shadow-lg);
 }
 
-@mixin qds-derived-tokens {
-  --qds-elevation-1: var(--qds-shadow-sm);
-  --qds-elevation-2: var(--qds-shadow-md);
-  --qds-elevation-3: var(--qds-shadow-lg);
-  --qds-interactive-bg: var(--qds-surface-0);
-  --qds-interactive-bg-hover: var(--qds-surface-1);
-  --qds-interactive-bg-active: var(--qds-surface-2);
-  --qds-interactive-border: var(--qds-border-subtle);
-  --qds-interactive-border-strong: var(--qds-border);
-  --qds-interactive-text: var(--qds-text);
-  --qds-interactive-text-muted: var(--qds-text-muted);
+@mixin ods-derived-tokens {
+  --ods-elevation-1: var(--ods-shadow-sm);
+  --ods-elevation-2: var(--ods-shadow-md);
+  --ods-elevation-3: var(--ods-shadow-lg);
+  --ods-interactive-bg: var(--ods-surface-0);
+  --ods-interactive-bg-hover: var(--ods-surface-1);
+  --ods-interactive-bg-active: var(--ods-surface-2);
+  --ods-interactive-border: var(--ods-border-subtle);
+  --ods-interactive-border-strong: var(--ods-border);
+  --ods-interactive-text: var(--ods-text);
+  --ods-interactive-text-muted: var(--ods-text-muted);
   // This is the generic fallback for variants without explicit role washes.
   // Fluent light/dark and the editorial variants replace it with tuned values.
-  --qds-surface-brand-soft: rgba(var(--qds-color-primary-rgb), 0.12);
-  --qds-surface-accent-soft: rgba(var(--qds-color-accent-rgb), 0.14);
-  --qds-surface-positive-soft: rgba(var(--qds-color-positive-rgb), 0.14);
-  --qds-surface-warning-soft: rgba(var(--qds-color-warning-rgb), 0.14);
-  --qds-surface-negative-soft: rgba(var(--qds-color-negative-rgb), 0.14);
-  --qds-surface-info-soft: rgba(var(--qds-color-info-rgb), 0.14);
-  --qds-surface-focus-block: rgba(var(--qds-color-primary-rgb), 0.18);
-  --qds-surface-transient: color-mix(in srgb, var(--qds-surface-0) 92%, var(--qds-color-primary));
-  --qds-fill-hover-mix: #{map.get(tokens.$fill-state, hover-mix)};
-  --qds-fill-pressed-mix: #{map.get(tokens.$fill-state, pressed-mix)};
-  --qds-fill-state-base: var(--qds-surface-0);
-  --qds-text-on-fill-pressed-mix: #{map.get(tokens.$fill-state, on-pressed-mix)};
-  --qds-color-primary-hover: color-mix(in srgb, var(--qds-color-primary) var(--qds-fill-hover-mix), var(--qds-fill-state-base));
-  --qds-color-primary-pressed: color-mix(in srgb, var(--qds-color-primary) var(--qds-fill-pressed-mix), var(--qds-fill-state-base));
-  --qds-fg-primary: var(--qds-fg-brand);
+  --ods-surface-brand-soft: rgba(var(--ods-color-primary-rgb), 0.12);
+  --ods-surface-accent-soft: rgba(var(--ods-color-accent-rgb), 0.14);
+  --ods-surface-positive-soft: rgba(var(--ods-color-positive-rgb), 0.14);
+  --ods-surface-warning-soft: rgba(var(--ods-color-warning-rgb), 0.14);
+  --ods-surface-negative-soft: rgba(var(--ods-color-negative-rgb), 0.14);
+  --ods-surface-info-soft: rgba(var(--ods-color-info-rgb), 0.14);
+  --ods-surface-focus-block: rgba(var(--ods-color-primary-rgb), 0.18);
+  --ods-surface-transient: color-mix(in srgb, var(--ods-surface-0) 92%, var(--ods-color-primary));
+  --ods-fill-hover-mix: #{map.get(tokens.$fill-state, hover-mix)};
+  --ods-fill-pressed-mix: #{map.get(tokens.$fill-state, pressed-mix)};
+  --ods-fill-state-base: var(--ods-surface-0);
+  --ods-text-on-fill-pressed-mix: #{map.get(tokens.$fill-state, on-pressed-mix)};
+  --ods-color-primary-hover: color-mix(in srgb, var(--ods-color-primary) var(--ods-fill-hover-mix), var(--ods-fill-state-base));
+  --ods-color-primary-pressed: color-mix(in srgb, var(--ods-color-primary) var(--ods-fill-pressed-mix), var(--ods-fill-state-base));
+  --ods-fg-primary: var(--ods-fg-brand);
   @each $role in secondary, accent, positive, negative, warning, info {
-    --qds-fg-#{$role}: color-mix(in srgb, var(--qds-color-#{$role}) 50%, var(--qds-text-strong));
+    --ods-fg-#{$role}: color-mix(in srgb, var(--ods-color-#{$role}) 50%, var(--ods-text-strong));
   }
-  --qds-button-size-sm: var(--qds-control-size-sm);
-  --qds-button-size-md: var(--qds-control-size-md);
-  --qds-button-size-lg: var(--qds-control-size-lg);
-  --qds-field-size-sm: var(--qds-control-size-sm);
-  --qds-field-size-md: var(--qds-control-size-md);
-  --qds-field-size-lg: var(--qds-control-size-lg);
+  --ods-button-size-sm: var(--ods-control-size-sm);
+  --ods-button-size-md: var(--ods-control-size-md);
+  --ods-button-size-lg: var(--ods-control-size-lg);
+  --ods-field-size-sm: var(--ods-control-size-sm);
+  --ods-field-size-md: var(--ods-control-size-md);
+  --ods-field-size-lg: var(--ods-control-size-lg);
   @each $name in label-size-rest, label-size-float, label-gap, label-column, value-inset-block-start, value-inset-block-end, value-inset-block-start-dense, value-inset-block-end-dense {
-    --qds-field-#{$name}: #{map.get(tokens.$components, field, $name)};
+    --ods-field-#{$name}: #{map.get(tokens.$components, field, $name)};
   }
-  --qds-field-transition: var(--qds-motion-fast);
-  --qds-field-label-weight: var(--qds-font-weight-regular);
-  --qds-field-shadow: none;
-  --qds-field-focus-stroke: color-mix(in srgb, currentColor #{map.get(map.get(tokens.$components, field), focus-stroke-mix)}, var(--qds-control-stroke-default));
-  --qds-field-focus-halo: none;
-  --qds-control-halo: 0 0 8px color-mix(in srgb, currentColor #{map.get(map.get(tokens.$components, field), halo-mix)}, transparent);
-  --qds-field-description-color: color-mix(in srgb, var(--qds-text-muted) 75%, var(--qds-text));
-  --qds-field-help-gap: var(--qds-space-xs);
-  --qds-row-gap: #{map.get(tokens.$components, row, gap)};
-  --qds-row-radius: var(--qds-radius-control);
-  --qds-row-inset: var(--qds-space-sm);
-  --qds-progress-stripe: #{map.get(tokens.$components, progress, stripe)};
-  --qds-button-min-height: var(--qds-control-size-md);
-  --qds-button-dense-min-height: var(--qds-control-size-sm);
-  --qds-button-round-size: var(--qds-control-size-md);
-  --qds-compact-action-size: var(--qds-control-size-md);
-  --qds-compact-action-icon-size: var(--qds-control-icon-size-md);
-  --qds-control-icon-color: var(--qds-text-muted);
-  --qds-button-icon-size: var(--qds-control-icon-size-md);
-  --qds-button-dense-icon-size: var(--qds-control-icon-size-sm);
-  --qds-field-icon-size: var(--qds-control-icon-size-md);
-  --qds-field-dense-icon-size: var(--qds-control-icon-size-sm);
-  --qds-chip-icon-size: var(--qds-control-icon-size-md);
-  --qds-chip-dense-icon-size: var(--qds-control-icon-size-sm);
-  --qds-button-icon-gap: var(--qds-inline-icon-gap);
-  --qds-button-dense-icon-gap: var(--qds-inline-icon-dense-gap);
-  --qds-button-radius: var(--qds-radius-control);
-  --qds-chip-icon-gap: var(--qds-inline-icon-gap);
-  --qds-chip-dense-icon-gap: var(--qds-inline-icon-dense-gap);
-  --qds-chip-radius: var(--qds-radius-full);
-  --qds-badge-icon-gap: var(--qds-inline-icon-gap);
-  --qds-badge-dense-icon-gap: var(--qds-inline-icon-dense-gap);
-  --qds-badge-radius: var(--qds-radius-full);
-  --qds-card-bg: linear-gradient(135deg, rgba(var(--qds-card-acrylic-tint-rgb), var(--qds-card-tonal-opacity)), transparent 72%), var(--qds-surface-glass);
-  --qds-card-bg-fallback: linear-gradient(135deg, rgba(var(--qds-card-acrylic-tint-rgb), var(--qds-card-fallback-tonal-opacity)), transparent 72%), var(--qds-surface-0);
-  --qds-card-bg-readable: linear-gradient(135deg, rgba(var(--qds-card-acrylic-tint-rgb), var(--qds-card-readable-tonal-opacity)), transparent 72%), color-mix(in srgb, var(--qds-surface-0) var(--qds-card-readable-surface-mix), var(--qds-surface-glass));
-  --qds-card-bg-opaque: linear-gradient(135deg, rgba(var(--qds-card-acrylic-tint-rgb), var(--qds-card-readable-tonal-opacity)), transparent 72%), var(--qds-surface-0);
-  --qds-card-border: color-mix(in srgb, var(--qds-border) var(--qds-card-border-mix), transparent);
-  --qds-card-border-strong: color-mix(in srgb, var(--qds-border) 44%, transparent);
-  --qds-card-header-bg: linear-gradient(135deg, rgba(var(--qds-card-acrylic-tint-rgb), var(--qds-card-header-tonal-opacity)), transparent 76%), color-mix(in srgb, var(--qds-surface-0) var(--qds-card-header-surface-mix), var(--qds-surface-glass));
-  --qds-card-header-bg-opaque: linear-gradient(135deg, rgba(var(--qds-card-acrylic-tint-rgb), var(--qds-card-header-tonal-opacity)), transparent 76%), var(--qds-surface-0);
-  --qds-card-header-border: var(--qds-separator-color);
-  --qds-card-radius: var(--qds-radius-lg);
-  --qds-card-shadow: var(--qds-card-shadow-value, none);
-  --qds-chrome-border: color-mix(in srgb, var(--qds-border-subtle) var(--qds-chrome-border-mix, 46%), transparent);
-  --qds-chrome-border-soft: color-mix(in srgb, var(--qds-border-subtle) var(--qds-chrome-border-soft-mix, 24%), transparent);
-  --qds-chrome-surface: color-mix(in srgb, var(--qds-surface-1) var(--qds-chrome-surface-mix, 86%), transparent);
-  --qds-chrome-surface-strong: color-mix(in srgb, var(--qds-surface-0) var(--qds-chrome-surface-strong-mix, 92%), transparent);
-  --qds-chrome-shadow: var(--qds-chrome-shadow-value, none);
-  --qds-media-frame-shadow: var(--qds-media-frame-shadow-value, var(--qds-card-shadow));
-  --qds-separator-color: color-mix(in srgb, var(--qds-border-subtle) var(--qds-separator-mix, 34%), transparent);
-  --qds-handle-color: color-mix(in srgb, var(--qds-border) var(--qds-handle-border-mix, 58%), var(--qds-color-primary) var(--qds-handle-primary-mix, 10%));
-  --qds-menu-bg: var(--qds-material-regular-bg);
-  --qds-menu-border: var(--qds-border-subtle);
-  --qds-menu-item-min-height: var(--qds-menu-item-min-height-value, 2rem);
-  --qds-menu-radius: max(var(--qds-radius-md), var(--qds-radius-control));
-  --qds-menu-shadow: var(--qds-shadow-md);
-  --qds-notification-radius: var(--qds-radius-md);
-  --qds-notification-shadow: var(--qds-shadow-md);
-  --qds-list-item-min-height: var(--qds-list-item-min-height-value, 2.25rem);
-  --qds-expansion-item-min-height: var(--qds-expansion-item-min-height-value, 2.75rem);
-  --qds-table-header-height: var(--qds-table-header-height-value, 2.5rem);
-  --qds-table-row-height: var(--qds-table-row-height-value, 2.5rem);
-  --qds-toolbar-bg: var(--qds-mica-alt);
-  --qds-field-label-bg: var(--qds-bg-canvas);
-  --qds-slider-label-bg: var(--qds-surface-0);
-  --qds-slider-label-text: var(--qds-text-strong);
-  --qds-slider-label-border: var(--qds-border-subtle);
-  --qds-tab-radius: var(--qds-radius-control);
-  --qds-tab-hover-bg: color-mix(in srgb, var(--qds-surface-2) 88%, var(--qds-color-primary) 12%);
-  --qds-tab-active-bg: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-bg-opacity));
-  --qds-tab-active-text: color-mix(in srgb, var(--qds-color-primary) var(--qds-tonal-text-mix), var(--qds-text-strong));
-  --qds-tab-active-rail: var(--qds-color-primary);
-  --qds-toggle-track-width: var(--qds-control-size-lg);
-  --qds-toggle-track-height: calc(var(--qds-control-size-lg) / 2);
-  --qds-toggle-thumb-inset: #{map.get(tokens.$components, toggle, thumb-inset)};
+  --ods-field-transition: var(--ods-motion-fast);
+  --ods-field-label-weight: var(--ods-font-weight-regular);
+  --ods-field-shadow: none;
+  --ods-field-focus-stroke: color-mix(in srgb, currentColor #{map.get(map.get(tokens.$components, field), focus-stroke-mix)}, var(--ods-control-stroke-default));
+  --ods-field-focus-halo: none;
+  --ods-control-halo: 0 0 8px color-mix(in srgb, currentColor #{map.get(map.get(tokens.$components, field), halo-mix)}, transparent);
+  --ods-field-description-color: color-mix(in srgb, var(--ods-text-muted) 75%, var(--ods-text));
+  --ods-field-help-gap: var(--ods-space-xs);
+  --ods-row-gap: #{map.get(tokens.$components, row, gap)};
+  --ods-row-radius: var(--ods-radius-control);
+  --ods-row-inset: var(--ods-space-sm);
+  --ods-progress-stripe: #{map.get(tokens.$components, progress, stripe)};
+  --ods-button-min-height: var(--ods-control-size-md);
+  --ods-button-dense-min-height: var(--ods-control-size-sm);
+  --ods-button-round-size: var(--ods-control-size-md);
+  --ods-compact-action-size: var(--ods-control-size-md);
+  --ods-compact-action-icon-size: var(--ods-control-icon-size-md);
+  --ods-control-icon-color: var(--ods-text-muted);
+  --ods-button-icon-size: var(--ods-control-icon-size-md);
+  --ods-button-dense-icon-size: var(--ods-control-icon-size-sm);
+  --ods-field-icon-size: var(--ods-control-icon-size-md);
+  --ods-field-dense-icon-size: var(--ods-control-icon-size-sm);
+  --ods-chip-icon-size: var(--ods-control-icon-size-md);
+  --ods-chip-dense-icon-size: var(--ods-control-icon-size-sm);
+  --ods-button-icon-gap: var(--ods-inline-icon-gap);
+  --ods-button-dense-icon-gap: var(--ods-inline-icon-dense-gap);
+  --ods-button-radius: var(--ods-radius-control);
+  --ods-chip-icon-gap: var(--ods-inline-icon-gap);
+  --ods-chip-dense-icon-gap: var(--ods-inline-icon-dense-gap);
+  --ods-chip-radius: var(--ods-radius-full);
+  --ods-badge-icon-gap: var(--ods-inline-icon-gap);
+  --ods-badge-dense-icon-gap: var(--ods-inline-icon-dense-gap);
+  --ods-badge-radius: var(--ods-radius-full);
+  --ods-card-bg: linear-gradient(135deg, rgba(var(--ods-card-acrylic-tint-rgb), var(--ods-card-tonal-opacity)), transparent 72%), var(--ods-surface-glass);
+  --ods-card-bg-fallback: linear-gradient(135deg, rgba(var(--ods-card-acrylic-tint-rgb), var(--ods-card-fallback-tonal-opacity)), transparent 72%), var(--ods-surface-0);
+  --ods-card-bg-readable: linear-gradient(135deg, rgba(var(--ods-card-acrylic-tint-rgb), var(--ods-card-readable-tonal-opacity)), transparent 72%), color-mix(in srgb, var(--ods-surface-0) var(--ods-card-readable-surface-mix), var(--ods-surface-glass));
+  --ods-card-bg-opaque: linear-gradient(135deg, rgba(var(--ods-card-acrylic-tint-rgb), var(--ods-card-readable-tonal-opacity)), transparent 72%), var(--ods-surface-0);
+  --ods-card-border: color-mix(in srgb, var(--ods-border) var(--ods-card-border-mix), transparent);
+  --ods-card-border-strong: color-mix(in srgb, var(--ods-border) 44%, transparent);
+  --ods-card-header-bg: linear-gradient(135deg, rgba(var(--ods-card-acrylic-tint-rgb), var(--ods-card-header-tonal-opacity)), transparent 76%), color-mix(in srgb, var(--ods-surface-0) var(--ods-card-header-surface-mix), var(--ods-surface-glass));
+  --ods-card-header-bg-opaque: linear-gradient(135deg, rgba(var(--ods-card-acrylic-tint-rgb), var(--ods-card-header-tonal-opacity)), transparent 76%), var(--ods-surface-0);
+  --ods-card-header-border: var(--ods-separator-color);
+  --ods-card-radius: var(--ods-radius-lg);
+  --ods-card-shadow: var(--ods-card-shadow-value, none);
+  --ods-chrome-border: color-mix(in srgb, var(--ods-border-subtle) var(--ods-chrome-border-mix, 46%), transparent);
+  --ods-chrome-border-soft: color-mix(in srgb, var(--ods-border-subtle) var(--ods-chrome-border-soft-mix, 24%), transparent);
+  --ods-chrome-surface: color-mix(in srgb, var(--ods-surface-1) var(--ods-chrome-surface-mix, 86%), transparent);
+  --ods-chrome-surface-strong: color-mix(in srgb, var(--ods-surface-0) var(--ods-chrome-surface-strong-mix, 92%), transparent);
+  --ods-chrome-shadow: var(--ods-chrome-shadow-value, none);
+  --ods-media-frame-shadow: var(--ods-media-frame-shadow-value, var(--ods-card-shadow));
+  --ods-separator-color: color-mix(in srgb, var(--ods-border-subtle) var(--ods-separator-mix, 34%), transparent);
+  --ods-handle-color: color-mix(in srgb, var(--ods-border) var(--ods-handle-border-mix, 58%), var(--ods-color-primary) var(--ods-handle-primary-mix, 10%));
+  --ods-menu-bg: var(--ods-material-regular-bg);
+  --ods-menu-border: var(--ods-border-subtle);
+  --ods-menu-item-min-height: var(--ods-menu-item-min-height-value, 2rem);
+  --ods-menu-radius: max(var(--ods-radius-md), var(--ods-radius-control));
+  --ods-menu-shadow: var(--ods-shadow-md);
+  --ods-notification-radius: var(--ods-radius-md);
+  --ods-notification-shadow: var(--ods-shadow-md);
+  --ods-list-item-min-height: var(--ods-list-item-min-height-value, 2.25rem);
+  --ods-expansion-item-min-height: var(--ods-expansion-item-min-height-value, 2.75rem);
+  --ods-table-header-height: var(--ods-table-header-height-value, 2.5rem);
+  --ods-table-row-height: var(--ods-table-row-height-value, 2.5rem);
+  --ods-toolbar-bg: var(--ods-mica-alt);
+  --ods-field-label-bg: var(--ods-bg-canvas);
+  --ods-slider-label-bg: var(--ods-surface-0);
+  --ods-slider-label-text: var(--ods-text-strong);
+  --ods-slider-label-border: var(--ods-border-subtle);
+  --ods-tab-radius: var(--ods-radius-control);
+  --ods-tab-hover-bg: color-mix(in srgb, var(--ods-surface-2) 88%, var(--ods-color-primary) 12%);
+  --ods-tab-active-bg: rgba(var(--ods-color-primary-rgb), var(--ods-tonal-bg-opacity));
+  --ods-tab-active-text: color-mix(in srgb, var(--ods-color-primary) var(--ods-tonal-text-mix), var(--ods-text-strong));
+  --ods-tab-active-rail: var(--ods-color-primary);
+  --ods-toggle-track-width: var(--ods-control-size-lg);
+  --ods-toggle-track-height: calc(var(--ods-control-size-lg) / 2);
+  --ods-toggle-thumb-inset: #{map.get(tokens.$components, toggle, thumb-inset)};
 }
 
 // Neutral root fallbacks for component-scoped tokens so inventory parity holds.
 // Component overrides in src/css/components/* re-assign these at element scope;
 // these values are the generic :root defaults only.
-@mixin qds-component-fallbacks {
+@mixin ods-component-fallbacks {
   // Banner
-  --qds-banner-accent: var(--qds-color-primary);
-  --qds-banner-accent-rgb: var(--qds-color-primary-rgb);
-  --qds-banner-text: var(--qds-text);
+  --ods-banner-accent: var(--ods-color-primary);
+  --ods-banner-accent-rgb: var(--ods-color-primary-rgb);
+  --ods-banner-text: var(--ods-text);
   // Notification
-  --qds-notify-accent: var(--qds-color-primary);
-  --qds-notify-accent-rgb: var(--qds-color-primary-rgb);
-  --qds-notify-bg: var(--qds-surface-transient);
-  --qds-notify-text: var(--qds-text);
+  --ods-notify-accent: var(--ods-color-primary);
+  --ods-notify-accent-rgb: var(--ods-color-primary-rgb);
+  --ods-notify-bg: var(--ods-surface-transient);
+  --ods-notify-text: var(--ods-text);
   // Pagination
-  --qds-pagination-active-bg: var(--qds-surface-brand-soft);
-  --qds-pagination-active-border: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-border-opacity));
-  --qds-pagination-active-text: var(--qds-text-strong);
+  --ods-pagination-active-bg: var(--ods-surface-brand-soft);
+  --ods-pagination-active-border: rgba(var(--ods-color-primary-rgb), var(--ods-tonal-border-opacity));
+  --ods-pagination-active-text: var(--ods-text-strong);
   // Scrollbar
-  --qds-scrollbar-size: #{map.get(tokens.$components, scrollbar, size)};
-  --qds-scrollbar-thumb: var(--qds-handle-color);
-  --qds-scrollbar-thumb-hover: color-mix(in srgb, var(--qds-handle-color) 72%, var(--qds-text-muted));
+  --ods-scrollbar-size: #{map.get(tokens.$components, scrollbar, size)};
+  --ods-scrollbar-thumb: var(--ods-handle-color);
+  --ods-scrollbar-thumb-hover: color-mix(in srgb, var(--ods-handle-color) 72%, var(--ods-text-muted));
   // Selection controls
-  --qds-selection-inner-size: var(--qds-icon-size-lg);
-  --qds-selection-mark-size: var(--qds-icon-size-md);
-  --qds-selection-mark-offset: calc((var(--qds-selection-inner-size) - var(--qds-selection-mark-size)) / 2);
+  --ods-selection-inner-size: var(--ods-icon-size-lg);
+  --ods-selection-mark-size: var(--ods-icon-size-md);
+  --ods-selection-mark-offset: calc((var(--ods-selection-inner-size) - var(--ods-selection-mark-size)) / 2);
   // Stepper
-  --qds-stepper-rail: var(--qds-separator-color);
-  --qds-stepper-rail-active: var(--qds-color-primary);
+  --ods-stepper-rail: var(--ods-separator-color);
+  --ods-stepper-rail-active: var(--ods-color-primary);
   // Table
-  --qds-table-header-bg: var(--qds-surface-1);
-  --qds-table-header-text: var(--qds-text-muted);
-  --qds-table-row-hover-bg: var(--qds-surface-brand-soft);
-  --qds-table-selected-bg: var(--qds-surface-focus-block);
-  --qds-table-sort-icon: var(--qds-color-primary);
+  --ods-table-header-bg: var(--ods-surface-1);
+  --ods-table-header-text: var(--ods-text-muted);
+  --ods-table-row-hover-bg: var(--ods-surface-brand-soft);
+  --ods-table-selected-bg: var(--ods-surface-focus-block);
+  --ods-table-sort-icon: var(--ods-color-primary);
   // Timeline
-  --qds-timeline-rail: var(--qds-separator-color);
+  --ods-timeline-rail: var(--ods-separator-color);
   // Chat
-  --qds-chat-bubble-bg: var(--qds-surface-1);
-  --qds-chat-bubble-fg: var(--qds-text);
+  --ods-chat-bubble-bg: var(--ods-surface-1);
+  --ods-chat-bubble-fg: var(--ods-text);
 }
 
 // Guaranteed base-token layer for swapped/missing themes and Quasar deltas.
-@layer qds.tokens {
+@layer ods.tokens {
   :root {
-    --qds-color-primary: #{map.get(tokens.$palette, primary)};
-    --qds-color-primary-light: #{map.get(tokens.$palette, primary-light)};
-    --qds-color-primary-dark: #{map.get(tokens.$palette, primary-dark)};
-    --qds-color-secondary: #{map.get(tokens.$palette, secondary)};
-    --qds-color-accent: #{map.get(tokens.$palette, accent)};
-    --qds-color-positive: #{map.get(tokens.$palette, positive)};
-    --qds-color-negative: #{map.get(tokens.$palette, negative)};
-    --qds-color-warning: #{map.get(tokens.$palette, warning)};
-    --qds-color-info: #{map.get(tokens.$palette, info)};
+    --ods-color-primary: #{map.get(tokens.$palette, primary)};
+    --ods-color-primary-light: #{map.get(tokens.$palette, primary-light)};
+    --ods-color-primary-dark: #{map.get(tokens.$palette, primary-dark)};
+    --ods-color-secondary: #{map.get(tokens.$palette, secondary)};
+    --ods-color-accent: #{map.get(tokens.$palette, accent)};
+    --ods-color-positive: #{map.get(tokens.$palette, positive)};
+    --ods-color-negative: #{map.get(tokens.$palette, negative)};
+    --ods-color-warning: #{map.get(tokens.$palette, warning)};
+    --ods-color-info: #{map.get(tokens.$palette, info)};
 
-    --qds-color-primary-rgb: #{map.get(tokens.$palette-rgb, primary)};
-    --qds-color-primary-light-rgb: #{map.get(tokens.$palette-rgb, primary-light)};
-    --qds-color-primary-dark-rgb: #{map.get(tokens.$palette-rgb, primary-dark)};
-    --qds-color-secondary-rgb: #{map.get(tokens.$palette-rgb, secondary)};
-    --qds-color-accent-rgb: #{map.get(tokens.$palette-rgb, accent)};
-    --qds-color-positive-rgb: #{map.get(tokens.$palette-rgb, positive)};
-    --qds-color-negative-rgb: #{map.get(tokens.$palette-rgb, negative)};
-    --qds-color-warning-rgb: #{map.get(tokens.$palette-rgb, warning)};
-    --qds-color-info-rgb: #{map.get(tokens.$palette-rgb, info)};
+    --ods-color-primary-rgb: #{map.get(tokens.$palette-rgb, primary)};
+    --ods-color-primary-light-rgb: #{map.get(tokens.$palette-rgb, primary-light)};
+    --ods-color-primary-dark-rgb: #{map.get(tokens.$palette-rgb, primary-dark)};
+    --ods-color-secondary-rgb: #{map.get(tokens.$palette-rgb, secondary)};
+    --ods-color-accent-rgb: #{map.get(tokens.$palette-rgb, accent)};
+    --ods-color-positive-rgb: #{map.get(tokens.$palette-rgb, positive)};
+    --ods-color-negative-rgb: #{map.get(tokens.$palette-rgb, negative)};
+    --ods-color-warning-rgb: #{map.get(tokens.$palette-rgb, warning)};
+    --ods-color-info-rgb: #{map.get(tokens.$palette-rgb, info)};
 
-    --qds-surface-0: #{map.get(tokens.$light-surfaces, 0)};
-    --qds-surface-1: #{map.get(tokens.$light-surfaces, 1)};
-    --qds-surface-2: #{map.get(tokens.$light-surfaces, 2)};
-    --qds-surface-3: #{map.get(tokens.$light-surfaces, 3)};
-    --qds-surface-glass: #{map.get(tokens.$light-surfaces, glass)};
+    --ods-surface-0: #{map.get(tokens.$light-surfaces, 0)};
+    --ods-surface-1: #{map.get(tokens.$light-surfaces, 1)};
+    --ods-surface-2: #{map.get(tokens.$light-surfaces, 2)};
+    --ods-surface-3: #{map.get(tokens.$light-surfaces, 3)};
+    --ods-surface-glass: #{map.get(tokens.$light-surfaces, glass)};
 
-    --qds-text: #{map.get(tokens.$light-text, default)};
-    --qds-text-strong: #{map.get(tokens.$light-text, strong)};
-    --qds-text-muted: #{map.get(tokens.$light-text, muted)};
-    --qds-text-on-solid: #{map.get(tokens.$dark-text, strong)};
-    @include qds-on-fill(tokens.$light-on-fill);
-    --qds-media-scrim: #{map.get(tokens.$effects, media, scrim)};
-    --qds-media-scrim-strong: #{map.get(tokens.$effects, media, scrim-strong)};
-    --qds-border: #{map.get(tokens.$borders, light)};
-    --qds-border-subtle: #{map.get(tokens.$borders, subtle)};
+    --ods-text: #{map.get(tokens.$light-text, default)};
+    --ods-text-strong: #{map.get(tokens.$light-text, strong)};
+    --ods-text-muted: #{map.get(tokens.$light-text, muted)};
+    --ods-text-on-solid: #{map.get(tokens.$dark-text, strong)};
+    @include ods-on-fill(tokens.$light-on-fill);
+    --ods-media-scrim: #{map.get(tokens.$effects, media, scrim)};
+    --ods-media-scrim-strong: #{map.get(tokens.$effects, media, scrim-strong)};
+    --ods-border: #{map.get(tokens.$borders, light)};
+    --ods-border-subtle: #{map.get(tokens.$borders, subtle)};
 
-    --qds-space-xs: #{map.get(tokens.$space, xs)};
-    --qds-space-sm: #{map.get(tokens.$space, sm)};
-    --qds-space-md: #{map.get(tokens.$space, md)};
-    --qds-space-lg: #{map.get(tokens.$space, lg)};
-    --qds-space-xl: #{map.get(tokens.$space, xl)};
+    --ods-space-xs: #{map.get(tokens.$space, xs)};
+    --ods-space-sm: #{map.get(tokens.$space, sm)};
+    --ods-space-md: #{map.get(tokens.$space, md)};
+    --ods-space-lg: #{map.get(tokens.$space, lg)};
+    --ods-space-xl: #{map.get(tokens.$space, xl)};
 
-    --qds-radius-xs: #{map.get(tokens.$radius, xs)};
-    --qds-radius-sm: #{map.get(tokens.$radius, sm)};
-    --qds-radius-md: #{map.get(tokens.$radius, md)};
-    --qds-radius-lg: #{map.get(tokens.$radius, lg)};
-    --qds-radius-xl: #{map.get(tokens.$radius, xl)};
-    --qds-radius-full: #{map.get(tokens.$radius, full)};
-    --qds-radius-control: #{map.get(tokens.$radius, control)};
+    --ods-radius-xs: #{map.get(tokens.$radius, xs)};
+    --ods-radius-sm: #{map.get(tokens.$radius, sm)};
+    --ods-radius-md: #{map.get(tokens.$radius, md)};
+    --ods-radius-lg: #{map.get(tokens.$radius, lg)};
+    --ods-radius-xl: #{map.get(tokens.$radius, xl)};
+    --ods-radius-full: #{map.get(tokens.$radius, full)};
+    --ods-radius-control: #{map.get(tokens.$radius, control)};
 
-    @include qds-shadow-steps(light);
-    --qds-shadow-sm: #{map.get(tokens.$shadow, sm)};
-    --qds-shadow-md: #{map.get(tokens.$shadow, md)};
-    --qds-shadow-lg: #{map.get(tokens.$shadow, lg)};
+    @include ods-shadow-steps(light);
+    --ods-shadow-sm: #{map.get(tokens.$shadow, sm)};
+    --ods-shadow-md: #{map.get(tokens.$shadow, md)};
+    --ods-shadow-lg: #{map.get(tokens.$shadow, lg)};
 
-    --qds-font-family: #{map.get(tokens.$font, body)};
-    --qds-font-family-display: #{map.get(tokens.$font, display)};
+    --ods-font-family: #{map.get(tokens.$font, body)};
+    --ods-font-family-display: #{map.get(tokens.$font, display)};
     @if map.get(tokens.$font, accent) != null {
-      --qds-font-family-accent: #{map.get(tokens.$font, accent)};
+      --ods-font-family-accent: #{map.get(tokens.$font, accent)};
     } @else {
-      --qds-font-family-accent: #{map.get(tokens.$font, display)};
+      --ods-font-family-accent: #{map.get(tokens.$font, display)};
     }
-    --qds-font-weight-regular: #{map.get(map.get(tokens.$font, weight), regular)};
-    --qds-font-weight-medium: #{map.get(map.get(tokens.$font, weight), medium)};
-    --qds-font-weight-semibold: #{map.get(map.get(tokens.$font, weight), semibold)};
-    --qds-font-weight-bold: #{map.get(map.get(tokens.$font, weight), bold)};
+    --ods-font-weight-regular: #{map.get(map.get(tokens.$font, weight), regular)};
+    --ods-font-weight-medium: #{map.get(map.get(tokens.$font, weight), medium)};
+    --ods-font-weight-semibold: #{map.get(map.get(tokens.$font, weight), semibold)};
+    --ods-font-weight-bold: #{map.get(map.get(tokens.$font, weight), bold)};
 
-    --qds-motion-fast: #{map.get(tokens.$motion, fast)};
-    --qds-motion-base: #{map.get(tokens.$motion, base)};
-    --qds-motion-duration-fast: #{map.get(tokens.$motion, duration-fast)};
-    --qds-motion-duration-medium: #{map.get(tokens.$motion, duration-medium)};
-    --qds-motion-duration-base: #{map.get(tokens.$motion, duration-base)};
-    --qds-motion-duration-slow: #{map.get(tokens.$motion, duration-slow)};
-    --qds-motion-ease-out: #{map.get(tokens.$motion, ease-out)};
-    --qds-motion-ease-in-out: #{map.get(tokens.$motion, ease-in-out)};
+    --ods-motion-fast: #{map.get(tokens.$motion, fast)};
+    --ods-motion-base: #{map.get(tokens.$motion, base)};
+    --ods-motion-duration-fast: #{map.get(tokens.$motion, duration-fast)};
+    --ods-motion-duration-medium: #{map.get(tokens.$motion, duration-medium)};
+    --ods-motion-duration-base: #{map.get(tokens.$motion, duration-base)};
+    --ods-motion-duration-slow: #{map.get(tokens.$motion, duration-slow)};
+    --ods-motion-ease-out: #{map.get(tokens.$motion, ease-out)};
+    --ods-motion-ease-in-out: #{map.get(tokens.$motion, ease-in-out)};
 
-    --qds-focus-ring-width: #{map.get(tokens.$focus-ring, width)};
-    --qds-focus-ring-offset: #{map.get(tokens.$focus-ring, offset)};
-    --qds-focus-ring-opacity: #{map.get(tokens.$focus-ring, opacity)};
+    --ods-focus-ring-width: #{map.get(tokens.$focus-ring, width)};
+    --ods-focus-ring-offset: #{map.get(tokens.$focus-ring, offset)};
+    --ods-focus-ring-opacity: #{map.get(tokens.$focus-ring, opacity)};
 
-    --qds-state-hover-opacity: #{map.get(tokens.$state-opacity, hover)};
-    --qds-state-focus-opacity: #{map.get(tokens.$state-opacity, focus)};
-    --qds-state-press-opacity: #{map.get(tokens.$state-opacity, press)};
-    --qds-disabled-opacity: #{map.get(tokens.$state-opacity, disabled)};
-    --qds-tonal-bg-opacity: #{map.get(tokens.$state-opacity, tonal-bg)};
-    --qds-tonal-hover-opacity: #{map.get(tokens.$state-opacity, tonal-hover)};
-    --qds-tonal-border-opacity: #{map.get(tokens.$state-opacity, tonal-border)};
-    --qds-tonal-text-mix: #{map.get(tokens.$state-opacity, tonal-text-mix)};
+    --ods-state-hover-opacity: #{map.get(tokens.$state-opacity, hover)};
+    --ods-state-focus-opacity: #{map.get(tokens.$state-opacity, focus)};
+    --ods-state-press-opacity: #{map.get(tokens.$state-opacity, press)};
+    --ods-disabled-opacity: #{map.get(tokens.$state-opacity, disabled)};
+    --ods-tonal-bg-opacity: #{map.get(tokens.$state-opacity, tonal-bg)};
+    --ods-tonal-hover-opacity: #{map.get(tokens.$state-opacity, tonal-hover)};
+    --ods-tonal-border-opacity: #{map.get(tokens.$state-opacity, tonal-border)};
+    --ods-tonal-text-mix: #{map.get(tokens.$state-opacity, tonal-text-mix)};
 
-    --qds-border-width-control: #{map.get(tokens.$border-width, control)};
+    --ods-border-width-control: #{map.get(tokens.$border-width, control)};
 
-    --qds-control-size-sm: #{map.get(tokens.$control, size-sm)};
-    --qds-control-size-md: #{map.get(tokens.$control, size-md)};
-    --qds-control-size-lg: #{map.get(tokens.$control, size-lg)};
-    --qds-control-font-size-sm: #{map.get(tokens.$control, font-size-sm)};
+    --ods-control-size-sm: #{map.get(tokens.$control, size-sm)};
+    --ods-control-size-md: #{map.get(tokens.$control, size-md)};
+    --ods-control-size-lg: #{map.get(tokens.$control, size-lg)};
+    --ods-control-font-size-sm: #{map.get(tokens.$control, font-size-sm)};
     @each $step, $size in tokens.$icon-size {
-      --qds-icon-size-#{$step}: #{$size};
+      --ods-icon-size-#{$step}: #{$size};
     }
-    --qds-control-icon-size-sm: var(--qds-icon-size-sm);
-    --qds-control-icon-size-md: var(--qds-icon-size-md);
-    --qds-control-icon-size-lg: var(--qds-icon-size-lg);
-    --qds-control-icon-opacity: #{map.get(tokens.$control, icon-opacity)};
-    --qds-control-icon-opacity-active: #{map.get(tokens.$control, icon-opacity-active)};
-    --qds-control-letter-spacing: #{map.get(tokens.$control, letter-spacing)};
-    --qds-control-text-transform: #{map.get(tokens.$control, text-transform)};
-    --qds-control-content-line-height: #{map.get(tokens.$control, content-line-height)};
+    --ods-control-icon-size-sm: var(--ods-icon-size-sm);
+    --ods-control-icon-size-md: var(--ods-icon-size-md);
+    --ods-control-icon-size-lg: var(--ods-icon-size-lg);
+    --ods-control-icon-opacity: #{map.get(tokens.$control, icon-opacity)};
+    --ods-control-icon-opacity-active: #{map.get(tokens.$control, icon-opacity-active)};
+    --ods-control-letter-spacing: #{map.get(tokens.$control, letter-spacing)};
+    --ods-control-text-transform: #{map.get(tokens.$control, text-transform)};
+    --ods-control-content-line-height: #{map.get(tokens.$control, content-line-height)};
 
-    --qds-inline-icon-gap: #{map.get(tokens.$inline, icon-gap)};
-    --qds-inline-icon-dense-gap: #{map.get(tokens.$inline, dense-icon-gap)};
+    --ods-inline-icon-gap: #{map.get(tokens.$inline, icon-gap)};
+    --ods-inline-icon-dense-gap: #{map.get(tokens.$inline, dense-icon-gap)};
 
-    --qds-button-padding-inline: #{map.get(map.get(tokens.$components, button), padding-inline)};
-    --qds-button-dense-padding-inline: #{map.get(map.get(tokens.$components, button), dense-padding-inline)};
-    --qds-button-dense-radius: #{map.get(map.get(tokens.$components, button), dense-radius)};
-    --qds-button-dense-font-size: #{map.get(map.get(tokens.$components, button), dense-font-size)};
-    --qds-fab-size: #{map.get(map.get(tokens.$components, button), fab-size)};
-    --qds-fab-mini-size: #{map.get(map.get(tokens.$components, button), fab-mini-size)};
-    --qds-button-elevated-shadow: #{map.get(map.get(tokens.$components, button), elevated-shadow)};
-    --qds-button-elevated-shadow-hover: #{map.get(map.get(tokens.$components, button), elevated-shadow-hover)};
+    --ods-button-padding-inline: #{map.get(map.get(tokens.$components, button), padding-inline)};
+    --ods-button-dense-padding-inline: #{map.get(map.get(tokens.$components, button), dense-padding-inline)};
+    --ods-button-dense-radius: #{map.get(map.get(tokens.$components, button), dense-radius)};
+    --ods-button-dense-font-size: #{map.get(map.get(tokens.$components, button), dense-font-size)};
+    --ods-fab-size: #{map.get(map.get(tokens.$components, button), fab-size)};
+    --ods-fab-mini-size: #{map.get(map.get(tokens.$components, button), fab-mini-size)};
+    --ods-button-elevated-shadow: #{map.get(map.get(tokens.$components, button), elevated-shadow)};
+    --ods-button-elevated-shadow-hover: #{map.get(map.get(tokens.$components, button), elevated-shadow-hover)};
 
-    --qds-card-acrylic-tint-rgb: #{map.get(map.get(tokens.$components, card), acrylic-tint-rgb)};
-    --qds-card-tonal-opacity: #{map.get(map.get(tokens.$components, card), tonal-opacity)};
-    --qds-card-fallback-tonal-opacity: #{map.get(map.get(tokens.$components, card), fallback-tonal-opacity)};
-    --qds-card-readable-tonal-opacity: #{map.get(map.get(tokens.$components, card), readable-tonal-opacity)};
-    --qds-card-readable-surface-mix: #{map.get(map.get(tokens.$components, card), readable-surface-mix)};
-    --qds-card-header-tonal-opacity: #{map.get(map.get(tokens.$components, card), header-tonal-opacity)};
-    --qds-card-header-surface-mix: #{map.get(map.get(tokens.$components, card), header-surface-mix)};
-    --qds-card-border-mix: #{map.get(map.get(tokens.$components, card), border-mix)};
-    --qds-card-backdrop-blur: #{map.get(map.get(tokens.$components, card), backdrop-blur)};
-    --qds-card-backdrop-saturate: #{map.get(map.get(tokens.$components, card), backdrop-saturate)};
-    --qds-chrome-shadow-value: none;
+    --ods-card-acrylic-tint-rgb: #{map.get(map.get(tokens.$components, card), acrylic-tint-rgb)};
+    --ods-card-tonal-opacity: #{map.get(map.get(tokens.$components, card), tonal-opacity)};
+    --ods-card-fallback-tonal-opacity: #{map.get(map.get(tokens.$components, card), fallback-tonal-opacity)};
+    --ods-card-readable-tonal-opacity: #{map.get(map.get(tokens.$components, card), readable-tonal-opacity)};
+    --ods-card-readable-surface-mix: #{map.get(map.get(tokens.$components, card), readable-surface-mix)};
+    --ods-card-header-tonal-opacity: #{map.get(map.get(tokens.$components, card), header-tonal-opacity)};
+    --ods-card-header-surface-mix: #{map.get(map.get(tokens.$components, card), header-surface-mix)};
+    --ods-card-border-mix: #{map.get(map.get(tokens.$components, card), border-mix)};
+    --ods-card-backdrop-blur: #{map.get(map.get(tokens.$components, card), backdrop-blur)};
+    --ods-card-backdrop-saturate: #{map.get(map.get(tokens.$components, card), backdrop-saturate)};
+    --ods-chrome-shadow-value: none;
     // Consumer hooks: `initial` falls back until an app sets them on :root.
-    --qds-card-shadow-value: initial;
-    --qds-media-frame-shadow-value: initial;
-    --qds-chrome-border-mix: #{map.get(tokens.$chrome, border-mix)};
-    --qds-chrome-border-soft-mix: #{map.get(tokens.$chrome, border-soft-mix)};
-    --qds-chrome-surface-mix: #{map.get(tokens.$chrome, surface-mix)};
-    --qds-chrome-surface-strong-mix: #{map.get(tokens.$chrome, surface-strong-mix)};
-    --qds-separator-mix: #{map.get(tokens.$chrome, separator-mix)};
-    --qds-handle-border-mix: #{map.get(tokens.$chrome, handle-border-mix)};
-    --qds-handle-primary-mix: #{map.get(tokens.$chrome, handle-primary-mix)};
+    --ods-card-shadow-value: initial;
+    --ods-media-frame-shadow-value: initial;
+    --ods-chrome-border-mix: #{map.get(tokens.$chrome, border-mix)};
+    --ods-chrome-border-soft-mix: #{map.get(tokens.$chrome, border-soft-mix)};
+    --ods-chrome-surface-mix: #{map.get(tokens.$chrome, surface-mix)};
+    --ods-chrome-surface-strong-mix: #{map.get(tokens.$chrome, surface-strong-mix)};
+    --ods-separator-mix: #{map.get(tokens.$chrome, separator-mix)};
+    --ods-handle-border-mix: #{map.get(tokens.$chrome, handle-border-mix)};
+    --ods-handle-primary-mix: #{map.get(tokens.$chrome, handle-primary-mix)};
 
-    --qds-badge-min-height: #{map.get(map.get(tokens.$components, badge), min-height)};
-    --qds-badge-padding: #{map.get(map.get(tokens.$components, badge), padding)};
-    --qds-avatar-initials-scale: #{map.get(map.get(tokens.$components, avatar), initials-scale)};
-    --qds-spinner-static-arc: #{map.get(map.get(tokens.$components, spinner), static-arc)};
-    --qds-spinner-static-offset: #{map.get(map.get(tokens.$components, spinner), static-offset)};
-    --qds-chip-min-height: #{map.get(map.get(tokens.$components, chip), min-height)};
-    --qds-chip-padding: #{map.get(map.get(tokens.$components, chip), padding)};
-    --qds-chip-dense-min-height: #{map.get(map.get(tokens.$components, chip), dense-min-height)};
-    --qds-chip-dense-padding: #{map.get(map.get(tokens.$components, chip), dense-padding)};
+    --ods-badge-min-height: #{map.get(map.get(tokens.$components, badge), min-height)};
+    --ods-badge-padding: #{map.get(map.get(tokens.$components, badge), padding)};
+    --ods-avatar-initials-scale: #{map.get(map.get(tokens.$components, avatar), initials-scale)};
+    --ods-spinner-static-arc: #{map.get(map.get(tokens.$components, spinner), static-arc)};
+    --ods-spinner-static-offset: #{map.get(map.get(tokens.$components, spinner), static-offset)};
+    --ods-chip-min-height: #{map.get(map.get(tokens.$components, chip), min-height)};
+    --ods-chip-padding: #{map.get(map.get(tokens.$components, chip), padding)};
+    --ods-chip-dense-min-height: #{map.get(map.get(tokens.$components, chip), dense-min-height)};
+    --ods-chip-dense-padding: #{map.get(map.get(tokens.$components, chip), dense-padding)};
 
-    --qds-field-padding-inline: #{map.get(map.get(tokens.$components, field), padding-inline)};
-    --qds-field-label-size: #{map.get(map.get(tokens.$components, field), label-size)};
-    --qds-field-focus-border-width: #{map.get(map.get(tokens.$components, field), focus-border-width)};
-    --qds-field-min-height: #{map.get(map.get(tokens.$components, field), min-height)};
-    --qds-field-dense-min-height: #{map.get(map.get(tokens.$components, field), dense-min-height)};
-    --qds-tab-min-height: #{map.get(map.get(tokens.$components, tab), min-height)};
-    --qds-toolbar-dense-min-height: #{map.get(map.get(tokens.$components, toolbar), dense-min-height)};
+    --ods-field-padding-inline: #{map.get(map.get(tokens.$components, field), padding-inline)};
+    --ods-field-label-size: #{map.get(map.get(tokens.$components, field), label-size)};
+    --ods-field-focus-border-width: #{map.get(map.get(tokens.$components, field), focus-border-width)};
+    --ods-field-min-height: #{map.get(map.get(tokens.$components, field), min-height)};
+    --ods-field-dense-min-height: #{map.get(map.get(tokens.$components, field), dense-min-height)};
+    --ods-tab-min-height: #{map.get(map.get(tokens.$components, tab), min-height)};
+    --ods-toolbar-dense-min-height: #{map.get(map.get(tokens.$components, toolbar), dense-min-height)};
 
     // compositions
-    --qds-tile-min-width: #{map.get(map.get(tokens.$components, tile), min-width)};
-    --qds-tile-spark-height: #{map.get(map.get(tokens.$components, tile), spark-height)};
+    --ods-tile-min-width: #{map.get(map.get(tokens.$components, tile), min-width)};
+    --ods-tile-spark-height: #{map.get(map.get(tokens.$components, tile), spark-height)};
 
-    --qds-glass-blur: #{map.get(map.get(tokens.$effects, glass), blur)};
-    --qds-glass-saturate: #{map.get(map.get(tokens.$effects, glass), saturate)};
-    --qds-glass-border-mix: #{map.get(map.get(tokens.$effects, glass), border-mix)};
+    --ods-glass-blur: #{map.get(map.get(tokens.$effects, glass), blur)};
+    --ods-glass-saturate: #{map.get(map.get(tokens.$effects, glass), saturate)};
+    --ods-glass-border-mix: #{map.get(map.get(tokens.$effects, glass), border-mix)};
 
-    @include qds-derived-tokens;
-    @include qds-soft-surfaces(tokens.$light-soft-surfaces);
-    @include qds-semantic-tokens(tokens.$light-semantic);
-    @include qds-role-fg(tokens.$light-role-fg);
-    @include qds-typography-tokens;
-    @include qds-elevation-tokens;
-    @include qds-component-fallbacks;
+    @include ods-derived-tokens;
+    @include ods-soft-surfaces(tokens.$light-soft-surfaces);
+    @include ods-semantic-tokens(tokens.$light-semantic);
+    @include ods-role-fg(tokens.$light-role-fg);
+    @include ods-typography-tokens;
+    @include ods-elevation-tokens;
+    @include ods-component-fallbacks;
   }
 }
 
 // materials
-@mixin qds-opaque-control-layers {
-  --qds-control-fill-default: var(--qds-surface-0);
-  --qds-control-fill-hover: var(--qds-surface-1);
-  --qds-control-fill-pressed: var(--qds-surface-2);
-  --qds-control-fill-disabled: var(--qds-surface-2);
-  --qds-control-fill-input-active: var(--qds-surface-0);
-  --qds-card-fill: var(--qds-surface-0);
-  --qds-card-stroke: var(--qds-stroke-subtle);
-  --qds-control-stroke-on-accent-top: transparent;
-  --qds-control-stroke-on-accent-bottom: transparent;
-  --qds-control-halo: none;
+@mixin ods-opaque-control-layers {
+  --ods-control-fill-default: var(--ods-surface-0);
+  --ods-control-fill-hover: var(--ods-surface-1);
+  --ods-control-fill-pressed: var(--ods-surface-2);
+  --ods-control-fill-disabled: var(--ods-surface-2);
+  --ods-control-fill-input-active: var(--ods-surface-0);
+  --ods-card-fill: var(--ods-surface-0);
+  --ods-card-stroke: var(--ods-stroke-subtle);
+  --ods-control-stroke-on-accent-top: transparent;
+  --ods-control-stroke-on-accent-bottom: transparent;
+  --ods-control-halo: none;
 }
 
-@mixin qds-acrylic($scheme, $level) {
+@mixin ods-acrylic($scheme, $level) {
   $values: map.get(tokens.$materials, $scheme);
-  --qds-material-#{$level}-bg: color-mix(in srgb, var(--qds-surface-#{map.get($values, surface)}) #{map.get($values, $level)}, transparent);
-  --qds-material-#{$level}-filter: blur(var(--qds-material-#{$level}-blur)) saturate(var(--qds-material-saturate));
+  --ods-material-#{$level}-bg: color-mix(in srgb, var(--ods-surface-#{map.get($values, surface)}) #{map.get($values, $level)}, transparent);
+  --ods-material-#{$level}-filter: blur(var(--ods-material-#{$level}-blur)) saturate(var(--ods-material-saturate));
 }
 
-@mixin qds-material-tokens($scheme) {
+@mixin ods-material-tokens($scheme) {
   @if $scheme == solid {
     @each $level in thin, regular, thick {
-      --qds-material-#{$level}-bg: var(--qds-surface-0);
-      --qds-material-#{$level}-filter: none;
+      --ods-material-#{$level}-bg: var(--ods-surface-0);
+      --ods-material-#{$level}-filter: none;
     }
-    --qds-material-edge: inset 0 0 0 0 transparent;
-    --qds-mica-alt: var(--qds-surface-1);
-    --qds-backdrop: var(--qds-surface-1);
-    @include qds-opaque-control-layers;
+    --ods-material-edge: inset 0 0 0 0 transparent;
+    --ods-mica-alt: var(--ods-surface-1);
+    --ods-backdrop: var(--ods-surface-1);
+    @include ods-opaque-control-layers;
   } @else {
     $values: map.get(tokens.$materials, $scheme);
     @each $level in thin, regular, thick {
-      @include qds-acrylic($scheme, $level);
+      @include ods-acrylic($scheme, $level);
     }
-    --qds-material-stroke: #{map.get($values, stroke)};
-    --qds-material-edge: inset 0 1px 0 #{map.get($values, edge)};
-    --qds-mica-alt: color-mix(in srgb, var(--qds-color-primary) #{map.get($values, mica-tint)}, var(--qds-surface-1));
-    --qds-backdrop: radial-gradient(ellipse 64rem 36rem at 0% 0%, rgba(var(--qds-color-primary-rgb), #{map.get($values, backdrop-brand)}), transparent 72%), radial-gradient(ellipse 48rem 32rem at 100% 0%, rgba(var(--qds-color-accent-rgb), #{map.get($values, backdrop-accent)}), transparent 72%), var(--qds-surface-1);
+    --ods-material-stroke: #{map.get($values, stroke)};
+    --ods-material-edge: inset 0 1px 0 #{map.get($values, edge)};
+    --ods-mica-alt: color-mix(in srgb, var(--ods-color-primary) #{map.get($values, mica-tint)}, var(--ods-surface-1));
+    --ods-backdrop: radial-gradient(ellipse 64rem 36rem at 0% 0%, rgba(var(--ods-color-primary-rgb), #{map.get($values, backdrop-brand)}), transparent 72%), radial-gradient(ellipse 48rem 32rem at 100% 0%, rgba(var(--ods-color-accent-rgb), #{map.get($values, backdrop-accent)}), transparent 72%), var(--ods-surface-1);
   }
 }
 
-@layer qds.tokens {
+@layer ods.tokens {
   :root {
     @each $level, $blur in map.get(tokens.$materials, blur) {
-      --qds-material-#{$level}-blur: #{$blur};
+      --ods-material-#{$level}-blur: #{$blur};
     }
-    --qds-material-saturate: #{map.get(tokens.$materials, saturate)};
-    @include qds-material-tokens(light);
+    --ods-material-saturate: #{map.get(tokens.$materials, saturate)};
+    @include ods-material-tokens(light);
   }
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    :root { @include qds-material-tokens(solid); }
+    :root { @include ods-material-tokens(solid); }
   }
 
   @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
-    :root { @include qds-material-tokens(solid); }
+    :root { @include ods-material-tokens(solid); }
   }
 }

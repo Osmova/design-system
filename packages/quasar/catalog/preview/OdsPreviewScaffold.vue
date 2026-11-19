@@ -36,7 +36,7 @@ const scopeRevision = ref(0)
 let scopeObserver: MutationObserver | undefined
 onMounted(() => {
   scopeObserver = new MutationObserver(() => { scopeRevision.value++ })
-  scopeObserver.observe(document.body, { attributes: true, attributeFilter: ['class', 'data-qds-mode', 'data-qds-resolved', 'data-qds-variant', 'data-qds-shadcn-base-color'] })
+  scopeObserver.observe(document.body, { attributes: true, attributeFilter: ['class', 'data-ods-mode', 'data-ods-resolved', 'data-ods-variant', 'data-ods-shadcn-base-color'] })
   scopeRevision.value++
 })
 onUnmounted(() => scopeObserver?.disconnect())
@@ -48,11 +48,11 @@ const scopeStateLabel = computed(() => {
 
   const root = document.body
   const bits = [
-    'data-qds-mode=' + (root.dataset.qdsMode ?? '∅'),
-    'data-qds-resolved=' + (root.dataset.qdsResolved ?? '∅'),
-    'data-qds-variant=' + (root.dataset.qdsVariant ?? '∅'),
+    'data-ods-mode=' + (root.dataset.odsMode ?? '∅'),
+    'data-ods-resolved=' + (root.dataset.odsResolved ?? '∅'),
+    'data-ods-variant=' + (root.dataset.odsVariant ?? '∅'),
   ]
-  const classes = ['qds-ui', 'qds-theme-light', 'qds-theme-dark'].filter((cls) => root.classList.contains(cls))
+  const classes = ['ods-ui', 'ods-theme-light', 'ods-theme-dark'].filter((cls) => root.classList.contains(cls))
   bits.push('classes=' + (classes.length > 0 ? classes.join(' ') : '∅'))
   return bits.join(' · ')
 })
@@ -87,13 +87,13 @@ function paletteLabelFor(name: string): string {
 </script>
 
 <template>
-  <section class="qds-catalog-proof" :data-case-id="props.caseId">
-    <header class="qds-catalog-proof__header">
-      <div class="qds-catalog-proof__titles">
-        <span class="qds-catalog-proof__title">{{ props.title }}</span>
-        <span class="qds-catalog-proof__case">{{ props.caseId }}</span>
+  <section class="ods-catalog-proof" :data-case-id="props.caseId">
+    <header class="ods-catalog-proof__header">
+      <div class="ods-catalog-proof__titles">
+        <span class="ods-catalog-proof__title">{{ props.title }}</span>
+        <span class="ods-catalog-proof__case">{{ props.caseId }}</span>
       </div>
-      <div v-if="controller" class="qds-catalog-proof__readout">
+      <div v-if="controller" class="ods-catalog-proof__readout">
         <span>mode: {{ modeLabel }} ({{ resolvedModeLabel }})</span>
         <span>variant: {{ variantLabel }} [{{ variantClassLabel }}]</span>
         <span v-if="variantLabel === 'shadcn'">
@@ -101,7 +101,7 @@ function paletteLabelFor(name: string): string {
         </span>
         <span>body: {{ scopeStateLabel }}</span>
       </div>
-      <div v-if="controller && props.themeControls !== false" class="qds-catalog-proof__theme-controls">
+      <div v-if="controller && props.themeControls !== false" class="ods-catalog-proof__theme-controls">
         <label>mode
           <select aria-label="mode" :value="modeLabel" @change="setMode">
             <option v-for="name in modeNames" :key="name" :value="name">{{ name }}</option>
@@ -118,19 +118,19 @@ function paletteLabelFor(name: string): string {
           </select>
         </label>
       </div>
-      <p v-if="!controller" class="qds-catalog-proof__blocked" role="alert">
+      <p v-if="!controller" class="ods-catalog-proof__blocked" role="alert">
         Controller blocker: {{ resolution.reason }}
       </p>
     </header>
 
-    <div class="qds-catalog-proof__demo">
+    <div class="ods-catalog-proof__demo">
       <slot />
     </div>
   </section>
 </template>
 
 <style scoped>
-.qds-catalog-proof {
+.ods-catalog-proof {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   box-sizing: border-box;
@@ -140,14 +140,14 @@ function paletteLabelFor(name: string): string {
   gap: 0.75rem;
 }
 
-.qds-catalog-proof__header,
-.qds-catalog-proof__demo {
+.ods-catalog-proof__header,
+.ods-catalog-proof__demo {
   box-sizing: border-box;
   min-width: 0;
   grid-template-columns: minmax(0, 1fr);
 }
 
-.qds-catalog-proof__header {
+.ods-catalog-proof__header {
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 0.8125rem;
   display: grid;
@@ -157,30 +157,30 @@ function paletteLabelFor(name: string): string {
   border-radius: 6px;
 }
 
-.qds-catalog-proof__titles {
+.ods-catalog-proof__titles {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.5rem;
 }
 
-.qds-catalog-proof__titles > span,
-.qds-catalog-proof__readout > span {
+.ods-catalog-proof__titles > span,
+.ods-catalog-proof__readout > span {
   min-width: 0;
   max-width: 100%;
   overflow-wrap: anywhere;
 }
 
-.qds-catalog-proof__title {
+.ods-catalog-proof__title {
   font-weight: 600;
 }
 
-.qds-catalog-proof__case {
+.ods-catalog-proof__case {
   font-family: ui-monospace, monospace;
   opacity: 0.75;
 }
 
-.qds-catalog-proof__readout {
+.ods-catalog-proof__readout {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
@@ -188,23 +188,23 @@ function paletteLabelFor(name: string): string {
   opacity: 0.8;
 }
 
-.qds-catalog-proof__theme-controls {
+.ods-catalog-proof__theme-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
 }
 
-.qds-catalog-proof__theme-controls select {
+.ods-catalog-proof__theme-controls select {
   font: inherit;
   min-width: 5.5rem;
 }
 
-.qds-catalog-proof__blocked {
+.ods-catalog-proof__blocked {
   margin: 0;
   color: #a4262c;
 }
 
-.qds-catalog-proof__demo {
+.ods-catalog-proof__demo {
   position: relative;
   display: grid;
   gap: 0.5rem;

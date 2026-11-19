@@ -23,6 +23,16 @@
       "replace": "Osmova Design System"
     },
     {
+      "kind": "runtime-label",
+      "find": "bastvi-quasar-design-system",
+      "replace": "osmova-design-system"
+    },
+    {
+      "kind": "runtime-label",
+      "find": "[quasar-design-system]",
+      "replace": "[osmova-design-system]"
+    },
+    {
       "kind": "private-custom-property",
       "pattern": "--_qds-",
       "replace": "--_ods-"

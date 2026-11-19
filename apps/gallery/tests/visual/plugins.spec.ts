@@ -11,17 +11,17 @@ type Variant = 'win' | 'ink' | 'one' | 'term' | 'zen'
 const componentStylesDirectory = new URL('../../../../packages/quasar/src/css/components/', import.meta.url)
 
 async function applyTheme(page: Page, mode: Mode, variant: Variant) {
-  await page.waitForFunction(() => '__qdsGallery' in window)
+  await page.waitForFunction(() => '__odsGallery' in window)
   await page.evaluate(
     ({ mode, variant }) => {
-      const ds = (window as unknown as { __qdsGallery: any }).__qdsGallery
+      const ds = (window as unknown as { __odsGallery: any }).__odsGallery
       ds.setMode(mode)
       ds.setVariant(variant)
     },
     { mode, variant },
   )
-  await expect(page.locator('body')).toHaveClass(new RegExp(`qds-variant-${variant}`))
-  await expect(page.locator('body')).toHaveClass(new RegExp(mode === 'dark' ? 'qds-theme-dark' : 'qds-theme-light'))
+  await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
+  await expect(page.locator('body')).toHaveClass(new RegExp(mode === 'dark' ? 'ods-theme-dark' : 'ods-theme-light'))
 }
 
 async function computed(page: Page, selector: string, prop: string): Promise<string> {
@@ -113,7 +113,7 @@ function pluginStatus(page: Page) {
 
 async function cleanupPluginSurfaces(page: Page) {
   await page.evaluate(() => {
-    const hooks = (window as typeof window & { __qdsPluginsTest?: { cleanup: () => void } }).__qdsPluginsTest
+    const hooks = (window as typeof window & { __odsPluginsTest?: { cleanup: () => void } }).__odsPluginsTest
     hooks?.cleanup()
   })
   await page.keyboard.press('Escape')
@@ -121,14 +121,14 @@ async function cleanupPluginSurfaces(page: Page) {
 
 async function hideLoadingWithTestHook(page: Page) {
   await page.evaluate(() => {
-    const hooks = (window as typeof window & { __qdsPluginsTest?: { hideLoading: () => void } }).__qdsPluginsTest
+    const hooks = (window as typeof window & { __odsPluginsTest?: { hideLoading: () => void } }).__odsPluginsTest
     hooks?.hideLoading()
   })
 }
 
 async function hideNewerLoadingGroupWithTestHook(page: Page) {
   await page.evaluate(() => {
-    const hooks = (window as typeof window & { __qdsPluginsTest?: { hideNewerLoadingGroup: () => void } }).__qdsPluginsTest
+    const hooks = (window as typeof window & { __odsPluginsTest?: { hideNewerLoadingGroup: () => void } }).__odsPluginsTest
     hooks?.hideNewerLoadingGroup()
   })
 }
@@ -144,7 +144,7 @@ async function expectNoResidualGlobalSurfaces(page: Page) {
   await expect(page.locator('.q-loading-bar[role="progressbar"]')).toHaveCount(0)
 }
 
-test.describe('QDS plugin/global UI surfaces', () => {
+test.describe('ODS plugin/global UI surfaces', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/#plugins')
     await applyTheme(page, 'light', 'win')
@@ -161,24 +161,24 @@ test.describe('QDS plugin/global UI surfaces', () => {
     await page.getByRole('button', { name: 'Open list BottomSheet' }).click()
     await expect(page.locator('.q-bottom-sheet.q-bottom-sheet--list')).toBeVisible()
     expect.soft(await computed(page, '.q-bottom-sheet', 'background-color'), 'BottomSheet list surface').not.toBe('rgba(0, 0, 0, 0)')
-    expect.soft(await computed(page, '.q-bottom-sheet', 'background-color'), 'BottomSheet list uses the thick material').toBe(await resolvedColor(page, '--qds-material-thick-bg'))
-    expect.soft(await computed(page, '.q-bottom-sheet', 'box-shadow'), 'BottomSheet list carries the material edge and dialog shadow').toContain(await resolvedShadow(page, '--qds-shadow-lg'))
+    expect.soft(await computed(page, '.q-bottom-sheet', 'background-color'), 'BottomSheet list uses the thick material').toBe(await resolvedColor(page, '--ods-material-thick-bg'))
+    expect.soft(await computed(page, '.q-bottom-sheet', 'box-shadow'), 'BottomSheet list carries the material edge and dialog shadow').toContain(await resolvedShadow(page, '--ods-shadow-lg'))
     expect.soft(await computed(page, '.q-bottom-sheet', 'backdrop-filter'), 'BottomSheet list blurs its backdrop').toContain('blur')
-    expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-color'), 'BottomSheet list carries the dialog material stroke').toBe(await resolvedColor(page, '--qds-material-stroke'))
+    expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-color'), 'BottomSheet list carries the dialog material stroke').toBe(await resolvedColor(page, '--ods-material-stroke'))
     await page.getByText('Pin surface').click()
     await expect(pluginStatus(page)).toContainText('BottomSheet list action: Pin surface')
     await expectNoResidualGlobalSurfaces(page)
 
     await page.getByRole('button', { name: 'Open grid BottomSheet' }).click()
     await expect(page.locator('.q-bottom-sheet.q-bottom-sheet--grid')).toBeVisible()
-    expect.soft(await computed(page, '.q-bottom-sheet--grid .q-bottom-sheet__item', 'border-radius'), 'BottomSheet grid item radius').toBe(await customProperty(page, '--qds-radius-control'))
+    expect.soft(await computed(page, '.q-bottom-sheet--grid .q-bottom-sheet__item', 'border-radius'), 'BottomSheet grid item radius').toBe(await customProperty(page, '--ods-radius-control'))
     expect.soft(await computed(page, '.q-bottom-sheet--grid .q-bottom-sheet__item', 'color'), 'BottomSheet grid item text').not.toBe('rgba(0, 0, 0, 0)')
     await page.locator('.q-bottom-sheet').getByText('Tokens').click()
     await expect(pluginStatus(page)).toContainText('BottomSheet grid action: Tokens')
     await expectNoResidualGlobalSurfaces(page)
   })
 
-  test('Dialog and Notify plugin surfaces inherit existing QDS overlay styling and clean up', async ({ page }) => {
+  test('Dialog and Notify plugin surfaces inherit existing ODS overlay styling and clean up', async ({ page }) => {
     await page.getByRole('button', { name: 'Open plugin dialog' }).click()
     await expect(page.locator('.q-dialog').first()).toBeVisible()
     expect.soft(await computed(page, '.q-dialog__backdrop', 'background-color'), 'Dialog plugin scrim').not.toBe('rgba(0, 0, 0, 0)')
@@ -227,7 +227,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
     await expect(page.locator('.q-notification.qds-notify-progress .q-notification__spinner')).toBeVisible()
     await expect(page.locator('.q-notification.qds-notify-progress .q-notification__progress')).toBeVisible()
     expect.soft(await computed(page, '.q-notification.qds-notify-progress .q-notification__progress', 'height'), 'Notify progress height').toBe('3px')
-    expect.soft(await computed(page, '.q-notification.qds-notify-progress .q-notification__progress', 'background-color'), 'Notify progress role fill').toBe(await tokenColor(page, '--qds-color-info'))
+    expect.soft(await computed(page, '.q-notification.qds-notify-progress .q-notification__progress', 'background-color'), 'Notify progress role fill').toBe(await tokenColor(page, '--ods-color-info'))
     await page.getByRole('button', { name: 'Keep open' }).click()
     await expect(pluginStatus(page)).toContainText('Notify progress kept open')
     await page.getByRole('button', { name: 'Dismiss' }).click()
@@ -237,7 +237,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
     await expect(page.locator('.q-notification.qds-notify-grouped')).toBeVisible()
     await expect(page.locator('.q-notification.qds-notify-grouped .q-notification__badge')).toHaveText('2')
     await waitForNotifyTransition(page, '.q-notification.qds-notify-grouped')
-    expect.soft(await computed(page, '.q-notification.qds-notify-grouped .q-notification__badge', 'background-color'), 'Grouped Notify badge role fill').toBe(await tokenColor(page, '--qds-color-warning'))
+    expect.soft(await computed(page, '.q-notification.qds-notify-grouped .q-notification__badge', 'background-color'), 'Grouped Notify badge role fill').toBe(await tokenColor(page, '--ods-color-warning'))
     const groupedGeometry = await groupedNotificationGeometry(page)
     expect(groupedGeometry, 'Grouped Notify exposes a stable badge and action rail').not.toBeNull()
     expect(groupedGeometry!.overflow, 'Grouped Notify allows Quasar’s external badge geometry').toBe('visible')
@@ -269,7 +269,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
         const notification = page.locator(`.q-notification.qds-notify-semantic--${type}`)
         await expect(notification).toBeVisible()
         await expect(notification).toHaveClass(new RegExp(`bg-${type}`))
-        expect.soft(await pseudoBackground(page, `.q-notification.qds-notify-semantic--${type}`), `${variant}/${type} Notify accent rail`).toBe(await tokenColor(page, `--qds-color-${type}`))
+        expect.soft(await pseudoBackground(page, `.q-notification.qds-notify-semantic--${type}`), `${variant}/${type} Notify accent rail`).toBe(await tokenColor(page, `--ods-color-${type}`))
         expect.soft(await computed(page, `.q-notification.qds-notify-semantic--${type}`, 'background-color'), `${variant}/${type} Notify surface`).not.toBe('rgba(0, 0, 0, 0)')
         await page.getByRole('button', { name: 'Dismiss' }).click({ force: true })
         await expectNoResidualGlobalSurfaces(page)
@@ -284,7 +284,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
       await page.locator(`[data-test="qds-notify-${proof.type}-trigger"]`).click()
       const notification = page.locator(`.q-notification.qds-notify-semantic--${proof.type}`)
       await expect(notification).toBeVisible()
-      expect.soft(await pseudoBackground(page, `.q-notification.qds-notify-semantic--${proof.type}`), `${proof.mode}/${proof.variant}/${proof.type} Notify accent rail`).toBe(await tokenColor(page, `--qds-color-${proof.type}`))
+      expect.soft(await pseudoBackground(page, `.q-notification.qds-notify-semantic--${proof.type}`), `${proof.mode}/${proof.variant}/${proof.type} Notify accent rail`).toBe(await tokenColor(page, `--ods-color-${proof.type}`))
       expect.soft(await computed(page, `.q-notification.qds-notify-semantic--${proof.type}`, 'background-color'), `${proof.mode}/${proof.variant}/${proof.type} Notify surface`).not.toBe('rgba(0, 0, 0, 0)')
       await expectNoMaterialLigatures(page, `.q-notification.qds-notify-semantic--${proof.type}`)
       await page.getByRole('button', { name: 'Dismiss' }).click({ force: true })
@@ -378,17 +378,17 @@ test.describe('QDS plugin/global UI surfaces', () => {
       await expect(page.locator('.q-bottom-sheet.q-bottom-sheet--list')).toBeVisible()
       expect.soft(await computed(page, '.q-bottom-sheet', 'backdrop-filter'), `Zen ${mode} BottomSheet carries no acrylic`).toBe('none')
       expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-width'), `Zen ${mode} BottomSheet edge`).toBe('1px')
-      expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-color'), `Zen ${mode} BottomSheet edge color`).toBe(await resolvedColor(page, '--qds-stroke-strong'))
-      expect.soft(await computed(page, '.q-bottom-sheet', 'background-color'), `Zen ${mode} BottomSheet surface`).toBe(await resolvedColor(page, '--qds-surface-0'))
+      expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-color'), `Zen ${mode} BottomSheet edge color`).toBe(await resolvedColor(page, '--ods-stroke-strong'))
+      expect.soft(await computed(page, '.q-bottom-sheet', 'background-color'), `Zen ${mode} BottomSheet surface`).toBe(await resolvedColor(page, '--ods-surface-0'))
       await page.getByText('Pin surface').click()
       await expectNoResidualGlobalSurfaces(page)
 
       await page.getByRole('button', { name: 'Show loading overlay' }).click()
-      await expect(page.locator('.q-loading.qds-plugin-loading .q-loading__box')).toBeVisible()
+      await expect(page.locator('.q-loading.ods-plugin-loading .q-loading__box')).toBeVisible()
       expect.soft(await computed(page, '.q-loading__box', 'backdrop-filter'), `Zen ${mode} Loading box carries no acrylic`).toBe('none')
       expect.soft(await computed(page, '.q-loading__box', 'border-top-width'), `Zen ${mode} Loading box edge`).toBe('1px')
-      expect.soft(await computed(page, '.q-loading__box', 'border-top-color'), `Zen ${mode} Loading box edge color`).toBe(await resolvedColor(page, '--qds-stroke-strong'))
-      expect.soft(await computed(page, '.q-loading__box', 'background-color'), `Zen ${mode} Loading box surface`).toBe(await resolvedColor(page, '--qds-surface-0'))
+      expect.soft(await computed(page, '.q-loading__box', 'border-top-color'), `Zen ${mode} Loading box edge color`).toBe(await resolvedColor(page, '--ods-stroke-strong'))
+      expect.soft(await computed(page, '.q-loading__box', 'background-color'), `Zen ${mode} Loading box surface`).toBe(await resolvedColor(page, '--ods-surface-0'))
       await hideLoadingWithTestHook(page)
       await expect(page.locator('.q-loading')).toHaveCount(0)
       await expectNoResidualGlobalSurfaces(page)
@@ -402,10 +402,10 @@ test.describe('QDS plugin/global UI surfaces', () => {
     expect.soft(await computed(page, '.qds-plugin-inner-loading', 'border-radius'), 'QInnerLoading retains its component geometry').not.toBe('0px')
 
     await page.getByRole('button', { name: 'Show loading overlay' }).click()
-    const loading = page.locator('.q-loading.qds-plugin-loading')
+    const loading = page.locator('.q-loading.ods-plugin-loading')
     await expect(loading).toBeVisible()
-    await expect(loading).toHaveClass(/qds-plugin-loading/)
-    await expect(loading.locator('.q-loading__box')).toHaveClass(/qds-plugin-loading-box/)
+    await expect(loading).toHaveClass(/ods-plugin-loading/)
+    await expect(loading.locator('.q-loading__box')).toHaveClass(/ods-plugin-loading-box/)
     await expect(loading.locator('.q-loading__spinner')).toHaveAttribute('viewBox', '0 0 100 100')
     await expect(loading.locator('.q-loading__message')).toHaveText('Rendering a custom Quasar spinner…')
     await expect(loading.locator('.q-loading__backdrop')).toHaveClass(/bg-positive/)
@@ -415,24 +415,24 @@ test.describe('QDS plugin/global UI surfaces', () => {
     expect.soft(await computed(page, '.q-loading__backdrop', 'backdrop-filter'), 'Loading scrim stays unblurred').toBe('none')
     expect.soft(await computed(page, '.q-loading__box', 'background-color'), 'Loading box surface').not.toBe('rgba(0, 0, 0, 0)')
     expect.soft(await computed(page, '.q-loading__box', 'box-shadow'), 'Loading box shadow').not.toBe('none')
-    expect.soft(await computed(page, '.q-loading__spinner', 'color'), 'Loading spinner stays visibly colored after QDS styling').not.toBe('rgba(0, 0, 0, 0)')
+    expect.soft(await computed(page, '.q-loading__spinner', 'color'), 'Loading spinner stays visibly colored after ODS styling').not.toBe('rgba(0, 0, 0, 0)')
     expect.soft(await computed(page, '.q-loading__message', 'color'), 'Loading message uses muted text').not.toBe('rgba(0, 0, 0, 0)')
     await hideLoadingWithTestHook(page)
     await expect(page.locator('.q-loading')).toHaveCount(0)
     await expectNoResidualGlobalSurfaces(page)
 
     await page.locator('[data-test="qds-loading-grouped-trigger"]').click()
-    await expect(page.locator('.q-loading.qds-plugin-loading-group--newer')).toBeVisible()
+    await expect(page.locator('.q-loading.ods-plugin-loading-group--newer')).toBeVisible()
     await expect(page.locator('.q-loading')).toContainText('Loading newer group')
     await hideNewerLoadingGroupWithTestHook(page)
-    await expect(page.locator('.q-loading.qds-plugin-loading-group--base')).toBeVisible()
+    await expect(page.locator('.q-loading.ods-plugin-loading-group--base')).toBeVisible()
     await expect(page.locator('.q-loading')).toContainText('Loading base group')
     await hideLoadingWithTestHook(page)
     await expectNoResidualGlobalSurfaces(page)
 
     await page.getByRole('button', { name: 'Start loading bar' }).click()
     await expect(page.locator('.q-loading-bar[role="progressbar"]').first()).toBeVisible()
-    expect.soft(await computed(page, '.q-loading-bar[role="progressbar"]', 'background-color'), 'LoadingBar token color').toBe(await resolvedColor(page, '--qds-color-primary'))
+    expect.soft(await computed(page, '.q-loading-bar[role="progressbar"]', 'background-color'), 'LoadingBar token color').toBe(await resolvedColor(page, '--ods-color-primary'))
     await page.getByRole('button', { name: 'Stop loading bar' }).click()
     await expect(page.locator('.q-loading-bar[role="progressbar"]')).toHaveCount(0, { timeout: 1500 })
     await expectNoResidualGlobalSurfaces(page)
@@ -456,8 +456,8 @@ test.describe('QDS plugin/global UI surfaces', () => {
       }
     }
     const loadingData = stylesByPartial.find(([name]) => name === '_loading-data.scss')?.[1]
-    expect(loadingData, 'QInnerLoading remains a loading/data component surface').toMatch(/\.qds-ui \.q-inner-loading\s*\{/)
-    expect(loadingData, 'QAjaxBar and LoadingBar remain loading/data global progress surfaces').toMatch(/\.qds-ui :is\([^)]*\.q-loading-bar[^)]*\)\s*\{/)
+    expect(loadingData, 'QInnerLoading remains a loading/data component surface').toMatch(/\.ods-ui \.q-inner-loading\s*\{/)
+    expect(loadingData, 'QAjaxBar and LoadingBar remain loading/data global progress surfaces').toMatch(/\.ods-ui :is\([^)]*\.q-loading-bar[^)]*\)\s*\{/)
     for (const [name, styles] of stylesByPartial) {
       if (name !== '_loading-data.scss') {
         expect(styles, `${name} must not restyle QInnerLoading or LoadingBar`).not.toMatch(/\.q-(?:inner-loading|loading-bar)\b/)
@@ -478,7 +478,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
         expect.soft(boundary.stroke !== 'rgba(0, 0, 0, 0)' || boundary.shadow !== 'none', `${mode}/${variant} overlay has a visible boundary (stroke or shadow)`).toBe(true)
         expect.soft(await computed(page, '.q-notification', 'background-color'), `${mode}/${variant} overlay has a surfaced background`).not.toBe('rgba(0, 0, 0, 0)')
         if (variant === 'win') {
-          expect.soft(boundary.shadow, `${mode}/Fluent transient overlay is lifted by the WinUI flyout shadow`).toBe(await resolvedShadow(page, '--qds-shadow-28'))
+          expect.soft(boundary.shadow, `${mode}/Fluent transient overlay is lifted by the WinUI flyout shadow`).toBe(await resolvedShadow(page, '--ods-shadow-28'))
           expect.soft(boundary.stroke, `${mode}/Fluent toast relies on shadow, not a stroke`).toBe('rgba(0, 0, 0, 0)')
         }
         if (variant === 'ink') {
@@ -488,14 +488,14 @@ test.describe('QDS plugin/global UI surfaces', () => {
         if (variant === 'one') {
           const largeRadius = await page.locator('body').evaluate((element) => {
             const probe = document.createElement('span')
-            probe.style.borderTopLeftRadius = 'var(--qds-radius-lg)'
+            probe.style.borderTopLeftRadius = 'var(--ods-radius-lg)'
             element.append(probe)
             const radius = getComputedStyle(probe).borderTopLeftRadius
             probe.remove()
             return radius
           })
-          expect.soft(boundary.shadow, `${mode}/One toast keeps the flyout shadow`).toBe(await resolvedShadow(page, '--qds-shadow-md'))
-          expect.soft(await computed(page, '.q-notification', 'background-color'), `${mode}/One info toast sits on the info soft wash`).toBe(await resolvedColor(page, '--qds-surface-info-soft'))
+          expect.soft(boundary.shadow, `${mode}/One toast keeps the flyout shadow`).toBe(await resolvedShadow(page, '--ods-shadow-md'))
+          expect.soft(await computed(page, '.q-notification', 'background-color'), `${mode}/One info toast sits on the info soft wash`).toBe(await resolvedColor(page, '--ods-surface-info-soft'))
           expect.soft(await computed(page, '.q-notification', 'border-top-left-radius'), `${mode}/One toast uses the large radius`).toBe(largeRadius)
         }
         await page.getByRole('button', { name: 'Dismiss' }).click()

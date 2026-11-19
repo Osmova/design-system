@@ -1,8 +1,8 @@
-QDS Storybook (private catalog workspace)
+ODS Storybook (private catalog workspace)
 =========================================
 
 Development-only Storybook 10 catalog for the design system. Not shipped with
-`@osmova/quasar-design-system`; its dependencies live in this workspace only.
+`@osmova/ds-quasar`; its dependencies live in this workspace only.
 
 Commands (from this directory, or the root `pnpm stories:sb` / `pnpm stories:sb:build`):
 
@@ -16,7 +16,7 @@ Commands (from this directory, or the root `pnpm stories:sb` / `pnpm stories:sb:
   controller. Needs Python 3 and Playwright Chromium (`pnpm exec playwright install chromium`).
 
 Setup mirrors the gallery: `@quasar/vite-plugin`, the gallery's single adoption stylesheet (native
-Quasar, design system, QWindow extension), the optional fonts and `qdsIconSet`.
+Quasar, design system, QWindow extension), the optional fonts and `odsIconSet`.
 
 Toolbar globals drive the real controller from the compiled package entrypoint. `setup()` creates one
 controller per preview app (`configureDesignSystem(app, { persist: false })`), destroyed when that app

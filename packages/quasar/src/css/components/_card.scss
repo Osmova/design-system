@@ -1,158 +1,158 @@
 @use '../materials';
 @use '../../themes/shadcn';
 
-$one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
-$term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
+$one: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one)';
+$term: ':is(.ods-ui.ods-variant-term, .ods-ui .ods-variant-term)';
 
-$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
-$framed: '.q-card--bordered, .qds-card--readable, .qds-card--contrast, .qds-card--opaque, .qds-card--solid';
+$glass: '.ods-variant-glass:is(.ods-ui,.ods-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui, .ods-ui *)';
+$framed: '.q-card--bordered, .ods-card--readable, .ods-card--contrast, .ods-card--opaque, .ods-card--solid';
 $local-dark: ':is(.q-card--dark, .q-table--dark, .q-tree--dark, .q-stepper--dark, .q-list--dark, .q-menu--dark, .q-uploader--dark, .q-date--dark, .q-time--dark)';
-$explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
+$explicit-dark: '.ods-ui.ods-theme-light #{$local-dark}';
 
 @mixin styles {
   // A `dark` prop on a light page re-points the semantic aliases at an inverted surface.
   #{$explicit-dark} {
-    --qds-fg-default: var(--qds-surface-0);
-    --qds-fg-strong: var(--qds-surface-0);
-    --qds-fg-muted: color-mix(in srgb, var(--qds-surface-0) 72%, var(--qds-text-muted));
-    --qds-fg-disabled: color-mix(in srgb, var(--qds-surface-0) 40%, var(--qds-text-strong));
-    --qds-fg-brand: var(--qds-fg-primary);
-    --qds-bg-canvas: var(--qds-text-strong);
-    --qds-bg-card: var(--qds-text-strong);
-    --qds-bg-flyout: var(--qds-text-strong);
-    --qds-menu-bg: var(--qds-text-strong);
-    --qds-material-thin-bg: var(--qds-text-strong);
-    --qds-material-regular-bg: var(--qds-text-strong);
-    --qds-material-thick-bg: var(--qds-text-strong);
-    --qds-material-thin-filter: none;
-    --qds-material-regular-filter: none;
-    --qds-material-thick-filter: none;
-    --qds-material-edge: inset 0 0 0 0 transparent;
-    --qds-material-stroke: var(--qds-stroke-subtle);
-    --qds-bg-card-hover: color-mix(in srgb, var(--qds-surface-0) 6%, var(--qds-text-strong));
-    --qds-bg-surface-1: color-mix(in srgb, var(--qds-surface-0) 6%, var(--qds-text-strong));
-    --qds-bg-surface-2: color-mix(in srgb, var(--qds-surface-0) 10%, var(--qds-text-strong));
-    --qds-bg-layer: color-mix(in srgb, var(--qds-surface-0) 16%, var(--qds-text-strong));
-    --qds-control-fill-default: var(--qds-text-strong);
-    --qds-control-fill-hover: color-mix(in srgb, var(--qds-surface-0) 6%, var(--qds-text-strong));
-    --qds-control-fill-pressed: color-mix(in srgb, var(--qds-surface-0) 10%, var(--qds-text-strong));
-    --qds-control-fill-disabled: color-mix(in srgb, var(--qds-surface-0) 10%, var(--qds-text-strong));
-    --qds-control-stroke-default: color-mix(in srgb, var(--qds-surface-0) 8%, transparent);
-    --qds-control-stroke-top: color-mix(in srgb, var(--qds-surface-0) 10%, transparent);
-    --qds-control-stroke-bottom: var(--qds-control-stroke-default);
-    --qds-control-stroke-secondary: color-mix(in srgb, var(--qds-surface-0) 14%, transparent);
-    --qds-control-stroke-strong: color-mix(in srgb, var(--qds-surface-0) 54%, transparent);
-    --qds-control-stroke-on-accent-top: color-mix(in srgb, var(--qds-surface-0) 14%, transparent);
-    --qds-control-stroke-on-accent-bottom: color-mix(in srgb, var(--qds-text-strong) 40%, transparent);
-    --qds-control-fill-input-active: color-mix(in srgb, var(--qds-surface-0) 4%, var(--qds-text-strong));
-    --qds-card-fill: var(--qds-text-strong);
-    --qds-card-stroke: var(--qds-stroke-subtle);
-    --qds-field-label-bg: var(--qds-text-strong);
-    --qds-stroke-default: color-mix(in srgb, var(--qds-surface-0) 36%, transparent);
-    --qds-stroke-subtle: color-mix(in srgb, var(--qds-surface-0) 16%, transparent);
-    --qds-stroke-divider: color-mix(in srgb, var(--qds-surface-0) 16%, transparent);
-    --qds-stroke-strong: color-mix(in srgb, var(--qds-surface-0) 64%, transparent);
-    --qds-stroke-focus: var(--qds-fg-primary);
-    --qds-tab-active-rail: var(--qds-fg-primary);
-    --qds-state-hover: color-mix(in srgb, var(--qds-surface-0) 8%, transparent);
-    --qds-state-pressed: color-mix(in srgb, var(--qds-surface-0) 12%, transparent);
-    --qds-state-selected: color-mix(in srgb, var(--qds-fg-primary) 24%, transparent);
-    --qds-surface-brand-soft: color-mix(in srgb, var(--qds-color-primary) 36%, var(--qds-text-strong));
+    --ods-fg-default: var(--ods-surface-0);
+    --ods-fg-strong: var(--ods-surface-0);
+    --ods-fg-muted: color-mix(in srgb, var(--ods-surface-0) 72%, var(--ods-text-muted));
+    --ods-fg-disabled: color-mix(in srgb, var(--ods-surface-0) 40%, var(--ods-text-strong));
+    --ods-fg-brand: var(--ods-fg-primary);
+    --ods-bg-canvas: var(--ods-text-strong);
+    --ods-bg-card: var(--ods-text-strong);
+    --ods-bg-flyout: var(--ods-text-strong);
+    --ods-menu-bg: var(--ods-text-strong);
+    --ods-material-thin-bg: var(--ods-text-strong);
+    --ods-material-regular-bg: var(--ods-text-strong);
+    --ods-material-thick-bg: var(--ods-text-strong);
+    --ods-material-thin-filter: none;
+    --ods-material-regular-filter: none;
+    --ods-material-thick-filter: none;
+    --ods-material-edge: inset 0 0 0 0 transparent;
+    --ods-material-stroke: var(--ods-stroke-subtle);
+    --ods-bg-card-hover: color-mix(in srgb, var(--ods-surface-0) 6%, var(--ods-text-strong));
+    --ods-bg-surface-1: color-mix(in srgb, var(--ods-surface-0) 6%, var(--ods-text-strong));
+    --ods-bg-surface-2: color-mix(in srgb, var(--ods-surface-0) 10%, var(--ods-text-strong));
+    --ods-bg-layer: color-mix(in srgb, var(--ods-surface-0) 16%, var(--ods-text-strong));
+    --ods-control-fill-default: var(--ods-text-strong);
+    --ods-control-fill-hover: color-mix(in srgb, var(--ods-surface-0) 6%, var(--ods-text-strong));
+    --ods-control-fill-pressed: color-mix(in srgb, var(--ods-surface-0) 10%, var(--ods-text-strong));
+    --ods-control-fill-disabled: color-mix(in srgb, var(--ods-surface-0) 10%, var(--ods-text-strong));
+    --ods-control-stroke-default: color-mix(in srgb, var(--ods-surface-0) 8%, transparent);
+    --ods-control-stroke-top: color-mix(in srgb, var(--ods-surface-0) 10%, transparent);
+    --ods-control-stroke-bottom: var(--ods-control-stroke-default);
+    --ods-control-stroke-secondary: color-mix(in srgb, var(--ods-surface-0) 14%, transparent);
+    --ods-control-stroke-strong: color-mix(in srgb, var(--ods-surface-0) 54%, transparent);
+    --ods-control-stroke-on-accent-top: color-mix(in srgb, var(--ods-surface-0) 14%, transparent);
+    --ods-control-stroke-on-accent-bottom: color-mix(in srgb, var(--ods-text-strong) 40%, transparent);
+    --ods-control-fill-input-active: color-mix(in srgb, var(--ods-surface-0) 4%, var(--ods-text-strong));
+    --ods-card-fill: var(--ods-text-strong);
+    --ods-card-stroke: var(--ods-stroke-subtle);
+    --ods-field-label-bg: var(--ods-text-strong);
+    --ods-stroke-default: color-mix(in srgb, var(--ods-surface-0) 36%, transparent);
+    --ods-stroke-subtle: color-mix(in srgb, var(--ods-surface-0) 16%, transparent);
+    --ods-stroke-divider: color-mix(in srgb, var(--ods-surface-0) 16%, transparent);
+    --ods-stroke-strong: color-mix(in srgb, var(--ods-surface-0) 64%, transparent);
+    --ods-stroke-focus: var(--ods-fg-primary);
+    --ods-tab-active-rail: var(--ods-fg-primary);
+    --ods-state-hover: color-mix(in srgb, var(--ods-surface-0) 8%, transparent);
+    --ods-state-pressed: color-mix(in srgb, var(--ods-surface-0) 12%, transparent);
+    --ods-state-selected: color-mix(in srgb, var(--ods-fg-primary) 24%, transparent);
+    --ods-surface-brand-soft: color-mix(in srgb, var(--ods-color-primary) 36%, var(--ods-text-strong));
     // Surfaces outside the alias set, so nested chrome flips with the card.
-    --qds-toolbar-bg: var(--qds-bg-card);
-    --qds-mica-alt: var(--qds-bg-card);
-    --qds-segmented-track-bg: var(--qds-bg-surface-2);
-    --qds-segmented-thumb-bg: var(--qds-control-fill-default);
-    --qds-surface-focus-block: var(--qds-bg-surface-2);
+    --ods-toolbar-bg: var(--ods-bg-card);
+    --ods-mica-alt: var(--ods-bg-card);
+    --ods-segmented-track-bg: var(--ods-bg-surface-2);
+    --ods-segmented-thumb-bg: var(--ods-control-fill-default);
+    --ods-surface-focus-block: var(--ods-bg-surface-2);
 
     @each $role in primary, secondary, accent, positive, negative, warning, info {
-      --qds-fg-#{$role}: color-mix(in srgb, var(--qds-color-#{$role}) 50%, var(--qds-surface-0));
+      --ods-fg-#{$role}: color-mix(in srgb, var(--ods-color-#{$role}) 50%, var(--ods-surface-0));
     }
     @each $role in accent, positive, negative, warning, info {
-      --qds-surface-#{$role}-soft: color-mix(in srgb, var(--qds-color-#{$role}) 28%, var(--qds-text-strong));
+      --ods-surface-#{$role}-soft: color-mix(in srgb, var(--ods-color-#{$role}) 28%, var(--ods-text-strong));
     }
 
-    color: var(--qds-fg-default);
+    color: var(--ods-fg-default);
   }
-  #{$explicit-dark} .qds-text-muted { color: var(--qds-fg-muted); }
-  #{$explicit-dark} .qds-text-strong { color: var(--qds-fg-strong); }
+  #{$explicit-dark} .ods-text-muted { color: var(--ods-fg-muted); }
+  #{$explicit-dark} .ods-text-strong { color: var(--ods-fg-strong); }
 
   // One palette/material closure after native inversion, with no geometry copies.
   @include shadcn.local-scopes(':is(.q-card--dark, .q-table--dark, .q-tree--dark, .q-stepper--dark, .q-list--dark, .q-menu--dark, .q-uploader--dark, .q-date--dark, .q-time--dark, .q-bar--dark, .q-drawer--dark, .q-tab-panels--dark, .q-timeline--dark, .q-editor--dark)', dark, $shadcn);
   // QBar is the native family with an explicit observable light class.
   @include shadcn.local-scopes('.q-bar--light', light, $shadcn);
 
-  .qds-ui :is(.q-card, .qds-card, .qds-tile) {
-    color: var(--qds-fg-default);
-    background: var(--qds-card-fill);
-    border: var(--qds-border-width-control) solid var(--qds-card-stroke);
-    border-radius: var(--qds-card-radius);
-    box-shadow: var(--qds-card-shadow);
+  .ods-ui :is(.q-card, .ods-card, .ods-tile) {
+    color: var(--ods-fg-default);
+    background: var(--ods-card-fill);
+    border: var(--ods-border-width-control) solid var(--ods-card-stroke);
+    border-radius: var(--ods-card-radius);
+    box-shadow: var(--ods-card-shadow);
   }
 
-  .qds-ui .q-card--bordered,
-  .qds-ui :is(.q-card, .qds-card):is(.qds-card--readable, .qds-card--contrast, .qds-card--opaque, .qds-card--solid) { border: var(--qds-border-width-control) solid var(--qds-stroke-default); }
-  .qds-ui :is(.q-card, .qds-card).qds-card--transient { background: var(--qds-surface-transient); box-shadow: var(--qds-shadow-md); }
-  .qds-ui :is(.q-card.cursor-pointer, a.q-card, .q-card[tabindex='0']):hover { background: var(--qds-bg-card-hover); }
-  .qds-ui .q-card > .q-card__section:is(.qds-card__header, .qds-card-header) { padding: var(--qds-space-md); border-block-end: var(--qds-border-width-control) solid var(--qds-stroke-divider); }
-  .qds-ui .q-card > .q-card__section:is(.qds-card__header--accent, .qds-card-header--accent) { color: var(--qds-fg-strong); background: var(--qds-surface-brand-soft); }
-  .qds-ui :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile) { background: var(--qds-bg-surface-1); box-shadow: none; }
-  .qds-ui :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile):where(:not(#{$framed})) { border: 0; }
-  .qds-ui .q-dialog__inner--maximized > .q-card { background: var(--qds-bg-card); }
+  .ods-ui .q-card--bordered,
+  .ods-ui :is(.q-card, .ods-card):is(.ods-card--readable, .ods-card--contrast, .ods-card--opaque, .ods-card--solid) { border: var(--ods-border-width-control) solid var(--ods-stroke-default); }
+  .ods-ui :is(.q-card, .ods-card).ods-card--transient { background: var(--ods-surface-transient); box-shadow: var(--ods-shadow-md); }
+  .ods-ui :is(.q-card.cursor-pointer, a.q-card, .q-card[tabindex='0']):hover { background: var(--ods-bg-card-hover); }
+  .ods-ui .q-card > .q-card__section:is(.ods-card__header, .ods-card-header) { padding: var(--ods-space-md); border-block-end: var(--ods-border-width-control) solid var(--ods-stroke-divider); }
+  .ods-ui .q-card > .q-card__section:is(.ods-card__header--accent, .ods-card-header--accent) { color: var(--ods-fg-strong); background: var(--ods-surface-brand-soft); }
+  .ods-ui :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile) { background: var(--ods-bg-surface-1); box-shadow: none; }
+  .ods-ui :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile):where(:not(#{$framed})) { border: 0; }
+  .ods-ui .q-dialog__inner--maximized > .q-card { background: var(--ods-bg-card); }
 
-  .qds-ui .qds-material {
-    border: var(--qds-border-width-control) solid var(--qds-material-stroke);
-    box-shadow: var(--qds-material-edge), var(--qds-card-shadow);
+  .ods-ui .ods-material {
+    border: var(--ods-border-width-control) solid var(--ods-material-stroke);
+    box-shadow: var(--ods-material-edge), var(--ods-card-shadow);
     @include materials.material(regular);
   }
 
   @each $level in thin, thick {
-    .qds-ui .qds-material.qds-material--#{$level} { @include materials.material($level); }
+    .ods-ui .ods-material.ods-material--#{$level} { @include materials.material($level); }
   }
 
-  #{$one} .q-card > .q-card__section:is(.qds-card__header, .qds-card-header) { border-block-end-color: transparent; }
-  #{$one} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-carousel) { --qds-card-fill: var(--qds-surface-focus-block); --qds-control-fill-default: var(--qds-surface-0); }
-  #{$one} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile):where(:not(.qds-material, .qds-card--transient)) { background: var(--qds-card-fill); }
-  #{$term} :is(.q-card, .qds-card, .qds-tile):where(:not(.qds-material, .qds-card--transient)) { background: var(--qds-card-fill); }
-  #{$term} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile):where(:not(.qds-material, .qds-card--transient)) { background: var(--qds-bg-surface-1); }
-  #{$term} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile):where(:not(#{$framed})) { border: var(--qds-border-width-control) solid var(--qds-card-stroke); }
+  #{$one} .q-card > .q-card__section:is(.ods-card__header, .ods-card-header) { border-block-end-color: transparent; }
+  #{$one} :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile, .ods-settings-card, .q-carousel) { --ods-card-fill: var(--ods-surface-focus-block); --ods-control-fill-default: var(--ods-surface-0); }
+  #{$one} :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile):where(:not(.ods-material, .ods-card--transient)) { background: var(--ods-card-fill); }
+  #{$term} :is(.q-card, .ods-card, .ods-tile):where(:not(.ods-material, .ods-card--transient)) { background: var(--ods-card-fill); }
+  #{$term} :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile):where(:not(.ods-material, .ods-card--transient)) { background: var(--ods-bg-surface-1); }
+  #{$term} :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile):where(:not(#{$framed})) { border: var(--ods-border-width-control) solid var(--ods-card-stroke); }
 
   // Content stays opaque under the glass layer; a nested block is concentric with its card.
-  #{$glass} :is(.q-card, .qds-card, .qds-tile) { border-color: var(--qds-border-subtle); box-shadow: var(--qds-shadow-sm); }
-  #{$glass} .q-card > :is(.q-card__section--vert, .q-card__actions) { padding: var(--_qds-glass-pad); }
-  #{$glass} .q-card > .q-card__section:is(.qds-card__header, .qds-card-header) { border-block-end-color: transparent; }
-  #{$glass} .q-card > .q-card__actions { justify-content: flex-end; gap: var(--qds-space-sm); padding-block-start: 0; }
+  #{$glass} :is(.q-card, .ods-card, .ods-tile) { border-color: var(--ods-border-subtle); box-shadow: var(--ods-shadow-sm); }
+  #{$glass} .q-card > :is(.q-card__section--vert, .q-card__actions) { padding: var(--_ods-glass-pad); }
+  #{$glass} .q-card > .q-card__section:is(.ods-card__header, .ods-card-header) { border-block-end-color: transparent; }
+  #{$glass} .q-card > .q-card__actions { justify-content: flex-end; gap: var(--ods-space-sm); padding-block-start: 0; }
   #{$glass} .q-card > .q-card__actions .q-btn + .q-btn { margin-inline-start: 0; }
-  #{$glass} :is(.q-card, .qds-card) .qds-settings-card { --qds-card-fill: var(--_qds-glass-nested); }
-  #{$glass} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile) { background: var(--_qds-glass-nested); border-radius: calc(var(--qds-card-radius) - var(--_qds-glass-pad)); box-shadow: none; }
+  #{$glass} :is(.q-card, .ods-card) .ods-settings-card { --ods-card-fill: var(--_ods-glass-nested); }
+  #{$glass} :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile) { background: var(--_ods-glass-nested); border-radius: calc(var(--ods-card-radius) - var(--_ods-glass-pad)); box-shadow: none; }
   #{$glass} .q-card.q-card--flat { box-shadow: none; }
   #{$glass} .q-card.q-card--square { border-radius: 0; }
   // Glass's own tokens resolved on the light root, so a dark block re-points them at its inverted surfaces.
-  .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} {
-    --qds-stroke-strong: color-mix(in srgb, var(--qds-surface-0) 48%, var(--qds-text-strong));
+  .ods-ui.ods-theme-light.ods-variant-glass #{$local-dark} {
+    --ods-stroke-strong: color-mix(in srgb, var(--ods-surface-0) 48%, var(--ods-text-strong));
     @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, control-stroke-strong {
-      --qds-#{$token}: var(--qds-stroke-strong);
+      --ods-#{$token}: var(--ods-stroke-strong);
     }
-    --qds-segmented-track-bg: var(--qds-bg-surface-2);
-    --qds-segmented-thumb-bg: var(--qds-bg-layer);
-    --_qds-glass-nested: var(--qds-bg-surface-2);
-    --_qds-glass-on-track: color-mix(in srgb, currentColor 85%, var(--qds-surface-0));
+    --ods-segmented-track-bg: var(--ods-bg-surface-2);
+    --ods-segmented-thumb-bg: var(--ods-bg-layer);
+    --_ods-glass-nested: var(--ods-bg-surface-2);
+    --_ods-glass-on-track: color-mix(in srgb, currentColor 85%, var(--ods-surface-0));
   }
-  @media (prefers-contrast: more) { .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} { --qds-material-stroke: var(--qds-stroke-strong); } }
+  @media (prefers-contrast: more) { .ods-ui.ods-theme-light.ods-variant-glass #{$local-dark} { --ods-material-stroke: var(--ods-stroke-strong); } }
 
 
-  #{$shadcn} :is(.q-card, .qds-card, .qds-tile) { color: var(--qds-shadcn-card-foreground); }
-  #{$shadcn} .q-card > .q-card__section--vert { padding: var(--qds-space-lg); }
-  #{$shadcn} .q-card > .q-card__section--vert:where(:not(.qds-card__header, .qds-card-header)) + .q-card__section--vert { padding-block-start: 0; }
-  #{$shadcn} .q-card > .q-card__section:is(.qds-card__header, .qds-card-header) { padding: var(--qds-space-lg); }
-  #{$shadcn} .q-card > .q-card__section:is(.qds-card__header--accent, .qds-card-header--accent) { color: var(--qds-fg-default); background: var(--qds-state-selected); }
-  #{$shadcn} .q-card > .q-card__actions { padding: var(--qds-space-sm) var(--qds-space-lg) var(--qds-space-lg); gap: var(--qds-space-sm); }
-  #{$shadcn} .q-card > .q-card__actions--vert { padding: var(--qds-space-lg); }
+  #{$shadcn} :is(.q-card, .ods-card, .ods-tile) { color: var(--ods-shadcn-card-foreground); }
+  #{$shadcn} .q-card > .q-card__section--vert { padding: var(--ods-space-lg); }
+  #{$shadcn} .q-card > .q-card__section--vert:where(:not(.ods-card__header, .ods-card-header)) + .q-card__section--vert { padding-block-start: 0; }
+  #{$shadcn} .q-card > .q-card__section:is(.ods-card__header, .ods-card-header) { padding: var(--ods-space-lg); }
+  #{$shadcn} .q-card > .q-card__section:is(.ods-card__header--accent, .ods-card-header--accent) { color: var(--ods-fg-default); background: var(--ods-state-selected); }
+  #{$shadcn} .q-card > .q-card__actions { padding: var(--ods-space-sm) var(--ods-space-lg) var(--ods-space-lg); gap: var(--ods-space-sm); }
+  #{$shadcn} .q-card > .q-card__actions--vert { padding: var(--ods-space-lg); }
   #{$shadcn} .q-card > .q-card__actions .q-btn + .q-btn { margin-inline-start: 0; }
-  #{$shadcn} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile) { background: var(--qds-card-fill); border: var(--qds-border-width-control) solid var(--qds-card-stroke); box-shadow: var(--qds-shadow-sm); }
-  #{$shadcn} :is(.q-card, .qds-card) :is(.q-card, .qds-card).qds-card--transient { background: var(--qds-surface-transient); box-shadow: var(--qds-shadow-md); }
+  #{$shadcn} :is(.q-card, .ods-card) :is(.q-card, .ods-card, .ods-tile) { background: var(--ods-card-fill); border: var(--ods-border-width-control) solid var(--ods-card-stroke); box-shadow: var(--ods-shadow-sm); }
+  #{$shadcn} :is(.q-card, .ods-card) :is(.q-card, .ods-card).ods-card--transient { background: var(--ods-surface-transient); box-shadow: var(--ods-shadow-md); }
   #{$shadcn} .q-card.q-card--flat { box-shadow: none; }
   #{$shadcn} .q-card.q-card--square { border-radius: 0; }
-  #{$shadcn} .q-card:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); }
+  #{$shadcn} .q-card:focus-visible { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus); outline-offset: var(--ods-focus-ring-offset); }
 }

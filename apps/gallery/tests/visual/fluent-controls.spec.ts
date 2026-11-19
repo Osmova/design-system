@@ -115,7 +115,7 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
     await applyTheme(page, 'light', 'win')
 
     const defaultField = page.locator('[data-test="qds-control-input"] > .q-field')
-    await expect(defaultField).not.toHaveClass(/qds-field--(float|stacked-animated|start)/)
+    await expect(defaultField).not.toHaveClass(/ods-field--(float|stacked-animated|start)/)
     const defaultMetrics = await defaultField.evaluate((field) => {
       const control = field.querySelector('.q-field__control')!.getBoundingClientRect()
       const label = field.querySelector('.q-field__label')!.getBoundingClientRect()
@@ -133,7 +133,7 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
     expect(defaultMetrics.controlHeight, 'default control uses the md control height (40px on touch)').toBe(await coarsePointer(page) ? 40 : 32)
 
     const floatField = page.locator('[data-test="qds-field-float"] > .q-field')
-    await expect(floatField).toHaveClass(/qds-field--float/)
+    await expect(floatField).toHaveClass(/ods-field--float/)
     const floatMetrics = await floatField.evaluate((field) => {
       const control = field.querySelector('.q-field__control')!.getBoundingClientRect()
       const label = field.querySelector('.q-field__label')!.getBoundingClientRect()
@@ -158,12 +158,12 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
         labelAboveValue: label.bottom <= valueTop + 0.5,
       }
     })
-    expect(floatedMetrics.labelOnTopStroke, 'floated opt-in outlined label sits on the top stroke (masked by --qds-field-label-bg)').toBe(true)
+    expect(floatedMetrics.labelOnTopStroke, 'floated opt-in outlined label sits on the top stroke (masked by --ods-field-label-bg)').toBe(true)
     expect(floatedMetrics.labelAboveValue, 'floated opt-in label clears the value text').toBe(true)
 
-    await expect(page.locator('[data-test="qds-field-stacked-animated"] > .q-field')).toHaveClass(/qds-field--stacked-animated/)
+    await expect(page.locator('[data-test="qds-field-stacked-animated"] > .q-field')).toHaveClass(/ods-field--stacked-animated/)
 
-    const startFields = page.locator('[data-test="qds-field-start-form"] .qds-field--start')
+    const startFields = page.locator('[data-test="qds-field-start-form"] .ods-field--start')
     const startMetrics = await startFields.evaluateAll((fields) => fields.map((field) => {
       const label = field.querySelector('.q-field__label')!.getBoundingClientRect()
       const control = field.querySelector('.q-field__control')!.getBoundingClientRect()
@@ -181,7 +181,7 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
       await applyTheme(page, 'light', 'win')
 
       const layout = await page.evaluate(() => {
-        const field = document.querySelector('[data-test="qds-field-start-form"] .qds-field--start')!
+        const field = document.querySelector('[data-test="qds-field-start-form"] .ods-field--start')!
         const label = field.querySelector('.q-field__label')!.getBoundingClientRect()
         const control = field.querySelector('.q-field__control')!.getBoundingClientRect()
         return {
@@ -217,15 +217,15 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
       expect.soft(standalone.gap, `${mode} standalone label clears the outline instead of cutting it`).toBeGreaterThanOrEqual(0)
       expect.soft(standalone.background, `${mode} label outside the stroke needs no mask`).toBe('rgba(0, 0, 0, 0)')
 
-      const tokenBg = await customProperty(page, '--qds-field-label-bg')
-      expect.soft(tokenBg, `${mode} --qds-field-label-bg resolves to a non-empty value`).not.toBe('')
+      const tokenBg = await customProperty(page, '--ods-field-label-bg')
+      expect.soft(tokenBg, `${mode} --ods-field-label-bg resolves to a non-empty value`).not.toBe('')
 
-      const floated = page.locator('[data-test="qds-field-float-value"] > .q-field--outlined.qds-field--float.q-field--float')
+      const floated = page.locator('[data-test="qds-field-float-value"] > .q-field--outlined.ods-field--float.q-field--float')
       await expect(floated).toBeVisible()
-      const expectedBg = await resolvedColor(page, '--qds-field-label-bg')
+      const expectedBg = await resolvedColor(page, '--ods-field-label-bg')
       await expect.poll(
         () => floated.locator('.q-field__label').evaluate((element) => getComputedStyle(element).backgroundColor),
-        { message: `${mode} floated outlined label matches the resolved --qds-field-label-bg token`, timeout: 2000 },
+        { message: `${mode} floated outlined label matches the resolved --ods-field-label-bg token`, timeout: 2000 },
       ).toBe(expectedBg)
     })
   }
@@ -242,17 +242,17 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
     expect.soft((await bounds(chip)).height, 'QChip consumes the chip minimum height').toBeGreaterThanOrEqual(chipMinimum)
     expect.soft((await bounds(badge)).height, 'QBadge remains the compact status treatment').toBeLessThan((await bounds(chip)).height)
     expect.soft(chipMinimum, 'chip token is larger than the compact badge token').toBeGreaterThan(badgeMinimum)
-    expect.soft(await customProperty(page, '--qds-chip-min-height')).toBe('1.75rem')
-    expect.soft(await customProperty(page, '--qds-chip-dense-min-height')).toBe('1.5rem')
-    expect.soft(await customProperty(page, '--qds-chip-dense-padding')).toBe('0 .5rem')
-    expect.soft(await customProperty(page, '--qds-badge-min-height')).toBe('1.25rem')
+    expect.soft(await customProperty(page, '--ods-chip-min-height')).toBe('1.75rem')
+    expect.soft(await customProperty(page, '--ods-chip-dense-min-height')).toBe('1.5rem')
+    expect.soft(await customProperty(page, '--ods-chip-dense-padding')).toBe('0 .5rem')
+    expect.soft(await customProperty(page, '--ods-badge-min-height')).toBe('1.25rem')
     expect.soft(await computed(page, '.q-tab-panel .q-chip', 'padding-top'), 'QChip pill centres content without block padding').toBe('0px')
     expect.soft(await computed(page, '.q-tab-panel .q-chip', 'padding-left'), 'QChip consumes the 0.75rem inline token padding').toBe('12px')
-    const denseChipMinimum = Number.parseFloat(await customProperty(page, '--qds-chip-dense-min-height'))
+    const denseChipMinimum = Number.parseFloat(await customProperty(page, '--ods-chip-dense-min-height'))
     expect.soft(denseChipMinimum * 16, 'dense chip token sits between normal chip and badge').toBeGreaterThan(badgeMinimum)
     expect.soft(denseChipMinimum * 16, 'dense chip token is smaller than normal chip').toBeLessThan(chipMinimum)
-    expect.soft(await computed(page, '[data-test="qds-control-standard-button"]', 'border-top-color'), 'filled accent button carries the WinUI elevation top edge').toBe(await resolvedColor(page, '--qds-control-stroke-on-accent-top'))
-    expect.soft(await computed(page, '[data-test="qds-control-standard-button"]', 'background-color'), 'standard color button is a solid primary fill').toBe(await resolvedColor(page, '--qds-color-primary'))
+    expect.soft(await computed(page, '[data-test="qds-control-standard-button"]', 'border-top-color'), 'filled accent button carries the WinUI elevation top edge').toBe(await resolvedColor(page, '--ods-control-stroke-on-accent-top'))
+    expect.soft(await computed(page, '[data-test="qds-control-standard-button"]', 'background-color'), 'standard color button is a solid primary fill').toBe(await resolvedColor(page, '--ods-color-primary'))
     expect.soft(await computed(page, '[data-test="qds-control-outline-button"]', 'border-top-width'), 'outline button keeps its explicit border').toBe('1px')
   })
 
@@ -262,10 +262,10 @@ test.describe('Fluent control geometry and Phosphor icon contract', () => {
       await applyTheme(page, mode, 'win')
 
       // WinUI draws keyboard focus in the high-contrast outer ring colour, not the accent.
-      const focusColor = await resolvedColor(page, '--_qds-win-focus-outer')
+      const focusColor = await resolvedColor(page, '--_ods-win-focus-outer')
       const ringWidth = await page.locator('body').evaluate((element) => {
         const probe = document.createElement('span')
-        probe.style.outline = 'var(--qds-focus-ring-width) solid'
+        probe.style.outline = 'var(--ods-focus-ring-width) solid'
         element.append(probe)
         const width = Number.parseFloat(getComputedStyle(probe).outlineWidth)
         probe.remove()

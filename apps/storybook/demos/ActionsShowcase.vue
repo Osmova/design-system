@@ -40,19 +40,19 @@ const densityOptions = [
 </script>
 
 <template>
-  <div class="qds-actions-layout">
-    <QCard class="qds-story-panel q-pa-lg">
-      <div class="text-overline qds-text-muted">Interaction inventory</div>
-      <h2 class="qds-story-heading q-my-sm">Buttons, groups and FAB</h2>
-      <p class="qds-text-muted q-mb-none">
+  <div class="ods-actions-layout">
+    <QCard class="ods-story-panel q-pa-lg">
+      <div class="text-overline ods-text-muted">Interaction inventory</div>
+      <h2 class="ods-story-heading q-my-sm">Buttons, groups and FAB</h2>
+      <p class="ods-text-muted q-mb-none">
         Review action hierarchy, segmented choices, and a contained floating action state.
       </p>
     </QCard>
 
-    <QCard class="qds-story-panel q-pa-lg">
-      <div class="qds-story-grid">
-        <div class="qds-story-demo">
-          <div class="qds-story-label">QBtnDropdown</div>
+    <QCard class="ods-story-panel q-pa-lg">
+      <div class="ods-story-grid">
+        <div class="ods-story-demo">
+          <div class="ods-story-label">QBtnDropdown</div>
           <QBtnDropdown unelevated color="primary" label="Actions" no-caps>
             <QList dense style="min-width: 180px">
               <QItem v-close-popup clickable>
@@ -68,8 +68,8 @@ const densityOptions = [
           </QBtnDropdown>
         </div>
 
-        <div class="qds-story-demo">
-          <div class="qds-story-label">QBtnGroup</div>
+        <div class="ods-story-demo">
+          <div class="ods-story-label">QBtnGroup</div>
           <QBtnGroup unelevated spread>
             <QBtn color="primary" label="One" no-caps />
             <QBtn color="primary" label="Two" no-caps />
@@ -77,19 +77,19 @@ const densityOptions = [
           </QBtnGroup>
         </div>
 
-        <div class="qds-story-demo">
-          <div class="qds-story-label">QBtnToggle</div>
+        <div class="ods-story-demo">
+          <div class="ods-story-label">QBtnToggle</div>
           <QBtnToggle v-model="cadence" unelevated no-caps toggle-color="primary" :options="cadenceOptions" />
         </div>
 
-        <div class="qds-story-demo">
-          <div class="qds-story-label">Segmented density</div>
+        <div class="ods-story-demo">
+          <div class="ods-story-label">Segmented density</div>
           <QBtnToggle v-model="density" dense unelevated no-caps toggle-color="secondary" :options="densityOptions" />
         </div>
 
-        <div class="qds-story-demo qds-story-demo--wide">
-          <div class="qds-story-label">QFab open state</div>
-          <div class="qds-story-fab-stage">
+        <div class="ods-story-demo ods-story-demo--wide">
+          <div class="ods-story-label">QFab open state</div>
+          <div class="ods-story-fab-stage">
             <QFab v-model="fabOpen" color="accent" direction="up" label="Create" no-caps>
               <QFabAction color="primary" label="Draft">
                 <PhPencilSimple :size="18" weight="regular" />
@@ -101,9 +101,9 @@ const densityOptions = [
           </div>
         </div>
 
-        <div class="qds-story-demo qds-story-demo--wide">
-          <div class="qds-story-label">Icon + tonal actions</div>
-          <div class="qds-actions-icon-row">
+        <div class="ods-story-demo ods-story-demo--wide">
+          <div class="ods-story-label">Icon + tonal actions</div>
+          <div class="ods-actions-icon-row">
             <QBtn unelevated color="primary" no-caps>
               <PhSparkle :size="18" weight="regular" />
               Compose
@@ -130,36 +130,36 @@ const densityOptions = [
 </template>
 
 <style scoped>
-.qds-actions-layout {
+.ods-actions-layout {
   display: grid;
-  gap: var(--qds-space-md);
+  gap: var(--ods-space-md);
 }
 
-.qds-story-grid {
+.ods-story-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--qds-space-md);
+  gap: var(--ods-space-md);
 }
 
-.qds-story-demo--wide {
+.ods-story-demo--wide {
   grid-column: 1 / -1;
 }
 
-.qds-story-fab-stage {
+.ods-story-fab-stage {
   display: flex;
   min-height: 12rem;
   align-items: end;
-  padding: 6rem var(--qds-space-sm) var(--qds-space-sm);
+  padding: 6rem var(--ods-space-sm) var(--ods-space-sm);
 }
 
-.qds-actions-icon-row {
+.ods-actions-icon-row {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--qds-space-sm);
+  gap: var(--ods-space-sm);
 }
 
 @media (max-width: 42rem) {
-  .qds-story-grid {
+  .ods-story-grid {
     grid-template-columns: 1fr;
   }
 }

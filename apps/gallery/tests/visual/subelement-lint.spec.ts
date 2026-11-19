@@ -1,11 +1,11 @@
 import { expect, test, type Page } from '@playwright/test'
-import { qdsIconSet } from '../../../../packages/quasar/src/icons/quasar-icon-set'
+import { odsIconSet } from '../../../../packages/quasar/src/icons/quasar-icon-set'
 import { FAMILIES, type Section } from './atlas-families'
 import { applyTheme, LEGACY_VARIANTS, resolvedColor, type LegacyVariant, type Mode } from './helpers'
 
 const MODES: Mode[] = ['light', 'dark']
 const RAW_FILLS = ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
-const SURFACE_TOKENS = ['--qds-surface-0', '--qds-surface-1', '--qds-surface-2', '--qds-bg-layer', '--qds-chat-bubble-bg']
+const SURFACE_TOKENS = ['--ods-surface-0', '--ods-surface-1', '--ods-surface-2', '--ods-bg-layer', '--ods-chat-bubble-bg']
 const MATERIAL_GLYPHS = '[class*="material-icons"], [class*="material-symbols"]'
 const byHook = (hook: string) => `[data-test="${hook}"]`
 
@@ -71,13 +71,13 @@ test.describe('sub-element lint', () => {
         for (const entry of connectors) {
           expect.soft(entry.display === 'none' || entry.content === 'none', `${tree} ${entry.owner}${entry.pseudo} hides the L-connector`).toBe(true)
         }
-        // The only guide QDS draws is a filled straight line, never a bordered elbow.
+        // The only guide ODS draws is a filled straight line, never a bordered elbow.
         for (const entry of await pseudos(page, `${tree} .q-tree__children`, '::before')) {
           expect.soft(entry.borders, `${tree} indent guide has no connector borders`).toBe(0)
         }
       }
 
-      const [paths, viewBox] = qdsIconSet.tree.icon.split('|')
+      const [paths, viewBox] = odsIconSet.tree.icon.split('|')
       const caretPath = paths.split('&&')[0].split('@@')[0]
       const arrows = await page.locator(trees.map((tree) => `${tree} .q-tree__arrow`).join(', ')).evaluateAll((elements) =>
         elements.map((element) => ({
@@ -103,7 +103,7 @@ test.describe('sub-element lint', () => {
 
     test(`icon and selection size tokens resolve (${mode}/${variant})`, async ({ page }) => {
       await openSection(page, 'catalog', mode, variant)
-      const sizes = await page.locator('.qds-ui').first().evaluate((root) => {
+      const sizes = await page.locator('.ods-ui').first().evaluate((root) => {
         const probe = document.createElement('span')
         probe.style.display = 'block'
         root.append(probe)
@@ -112,9 +112,9 @@ test.describe('sub-element lint', () => {
           return getComputedStyle(probe).width
         }
         const result = {
-          md: measure('var(--qds-icon-size-md)'),
-          controlMd: measure('var(--qds-control-icon-size-md)'),
-          selection: measure('var(--qds-selection-inner-size)'),
+          md: measure('var(--ods-icon-size-md)'),
+          controlMd: measure('var(--ods-control-icon-size-md)'),
+          selection: measure('var(--ods-selection-inner-size)'),
         }
         probe.remove()
         return result

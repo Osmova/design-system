@@ -1,27 +1,27 @@
-$term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
+$term: ':is(.ods-ui.ods-variant-term, .ods-ui .ods-variant-term)';
 
-$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
+$glass: '.ods-variant-glass:is(.ods-ui,.ods-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui, .ods-ui *)';
 
 @mixin styles {
-  .qds-ui :is(.q-header, .q-footer, .q-toolbar) { color: var(--qds-fg-default); background: var(--qds-toolbar-bg); }
-  .qds-ui .q-header { border-bottom: var(--qds-border-width-control) solid var(--qds-stroke-subtle); }
-  .qds-ui :is(.q-header, .q-footer) .q-layout__shadow::after { box-shadow: none; }
-  .qds-ui :is(.q-header, .q-footer) .q-toolbar { background: transparent; }
-  .qds-ui .q-toolbar { min-height: 3rem; padding-inline: var(--qds-space-sm); }
-  .qds-ui .q-toolbar.q-toolbar--dense { min-height: var(--qds-toolbar-dense-min-height); }
+  .ods-ui :is(.q-header, .q-footer, .q-toolbar) { color: var(--ods-fg-default); background: var(--ods-toolbar-bg); }
+  .ods-ui .q-header { border-bottom: var(--ods-border-width-control) solid var(--ods-stroke-subtle); }
+  .ods-ui :is(.q-header, .q-footer) .q-layout__shadow::after { box-shadow: none; }
+  .ods-ui :is(.q-header, .q-footer) .q-toolbar { background: transparent; }
+  .ods-ui .q-toolbar { min-height: 3rem; padding-inline: var(--ods-space-sm); }
+  .ods-ui .q-toolbar.q-toolbar--dense { min-height: var(--ods-toolbar-dense-min-height); }
 
-  .qds-ui .q-toolbar__title {
-    padding-inline: var(--qds-space-sm);
-    font-size: var(--qds-font-size-subtitle);
-    font-weight: var(--qds-font-weight-semibold);
+  .ods-ui .q-toolbar__title {
+    padding-inline: var(--ods-space-sm);
+    font-size: var(--ods-font-size-subtitle);
+    font-weight: var(--ods-font-weight-semibold);
     letter-spacing: 0;
   }
 
-  .qds-ui .q-toolbar.qds-toolbar--wrap { flex-wrap: wrap; row-gap: var(--qds-space-xs); padding-block: var(--qds-space-xs); }
-  .qds-ui .q-toolbar.qds-toolbar--wrap .q-toolbar__title { flex-basis: 100%; }
+  .ods-ui .q-toolbar.ods-toolbar--wrap { flex-wrap: wrap; row-gap: var(--ods-space-xs); padding-block: var(--ods-space-xs); }
+  .ods-ui .q-toolbar.ods-toolbar--wrap .q-toolbar__title { flex-basis: 100%; }
 
-  .qds-ui .q-toolbar__title.qds-toolbar-title--truncate {
+  .ods-ui .q-toolbar__title.ods-toolbar-title--truncate {
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
@@ -29,54 +29,54 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
     white-space: nowrap;
   }
 
-  .qds-ui .q-bar {
+  .ods-ui .q-bar {
     height: 2.25rem;
-    padding-inline: var(--qds-space-sm);
-    color: var(--qds-fg-default);
-    background: var(--qds-bg-surface-1);
-    border-radius: var(--qds-radius-control);
+    padding-inline: var(--ods-space-sm);
+    color: var(--ods-fg-default);
+    background: var(--ods-bg-surface-1);
+    border-radius: var(--ods-radius-control);
   }
 
-  .qds-ui .q-bar.q-bar--dense { height: 1.75rem; font-size: var(--qds-font-size-body2); }
-  .qds-ui .q-bar.q-bar--dark { color: var(--qds-bar-dark-fg); background: var(--qds-bar-dark-bg); }
-  .qds-ui .q-separator { background: var(--qds-stroke-divider); }
+  .ods-ui .q-bar.q-bar--dense { height: 1.75rem; font-size: var(--ods-font-size-body2); }
+  .ods-ui .q-bar.q-bar--dark { color: var(--ods-bar-dark-fg); background: var(--ods-bar-dark-bg); }
+  .ods-ui .q-separator { background: var(--ods-stroke-divider); }
 
-  #{$term} .q-bar:not(.q-bar--dark) { background: var(--qds-bg-card); }
-  #{$term} .q-bar:not(.q-bar--dark) { border: var(--qds-border-width-control) solid var(--qds-border-subtle); }
+  #{$term} .q-bar:not(.q-bar--dark) { background: var(--ods-bg-card); }
+  #{$term} .q-bar:not(.q-bar--dark) { border: var(--ods-border-width-control) solid var(--ods-border-subtle); }
 
   // Bars carry no fill or rule at rest; once content scrolls under them a uniform glass bar with a divider appears.
-  #{$glass} :is(.q-header, .q-footer) { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); border-color: var(--_qds-glass-bar-line); box-shadow: none; }
+  #{$glass} :is(.q-header, .q-footer) { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); border-color: var(--_ods-glass-bar-line); box-shadow: none; }
   #{$glass} :is(.q-header, .q-footer)::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: var(--qds-material-regular-bg);
-    backdrop-filter: var(--qds-material-regular-filter);
-    -webkit-backdrop-filter: var(--qds-material-regular-filter);
-    box-shadow: inset 0 -1px 0 var(--qds-border-subtle);
+    background: var(--ods-material-regular-bg);
+    backdrop-filter: var(--ods-material-regular-filter);
+    -webkit-backdrop-filter: var(--ods-material-regular-filter);
+    box-shadow: inset 0 -1px 0 var(--ods-border-subtle);
   }
   #{$glass} .q-header { padding-top: env(safe-area-inset-top); }
-  #{$glass} .q-footer { padding-bottom: env(safe-area-inset-bottom); border-top: var(--qds-border-width-control) solid var(--_qds-glass-bar-line); }
+  #{$glass} .q-footer { padding-bottom: env(safe-area-inset-bottom); border-top: var(--ods-border-width-control) solid var(--_ods-glass-bar-line); }
   #{$glass} .q-footer::before { transform: scaleY(-1); }
   // The edge appears only once content scrolls under the bar.
   @supports (animation-timeline: scroll()) {
-    #{$glass} .q-header::before { animation: qds-variant-glass-edge linear both; animation-timeline: scroll(root); animation-range: 0 2rem; }
-    @keyframes qds-variant-glass-edge { from { opacity: 0; } }
+    #{$glass} .q-header::before { animation: ods-variant-glass-edge linear both; animation-timeline: scroll(root); animation-range: 0 2rem; }
+    @keyframes ods-variant-glass-edge { from { opacity: 0; } }
   }
-  #{$glass} .q-toolbar { gap: var(--qds-space-xs); padding-inline: var(--qds-space-md); }
-  #{$glass} .q-toolbar__title { padding-inline: 0; font-weight: var(--qds-font-weight-bold); letter-spacing: -0.01em; }
-  #{$glass} .q-bar:not(.q-bar--dark) { background: var(--qds-bg-surface-1); border-radius: var(--qds-radius-control); }
-  #{$glass} .q-separator { background: var(--qds-border-subtle); }
+  #{$glass} .q-toolbar { gap: var(--ods-space-xs); padding-inline: var(--ods-space-md); }
+  #{$glass} .q-toolbar__title { padding-inline: 0; font-weight: var(--ods-font-weight-bold); letter-spacing: -0.01em; }
+  #{$glass} .q-bar:not(.q-bar--dark) { background: var(--ods-bg-surface-1); border-radius: var(--ods-radius-control); }
+  #{$glass} .q-separator { background: var(--ods-border-subtle); }
 
 
 
-  #{$shadcn} :is(.q-header, .q-footer) { border-color: var(--qds-stroke-divider); box-shadow: none; }
-  #{$shadcn} .q-toolbar { gap: var(--qds-space-sm); padding-inline: var(--qds-space-md); }
-  #{$shadcn} .q-toolbar__title { padding-inline: 0; font-size: var(--qds-font-size-body); font-weight: var(--qds-font-weight-body-strong); }
-  #{$shadcn} .q-bar { color: var(--qds-fg-default); background: var(--qds-bg-surface-2); border-radius: var(--qds-radius-control); font-size: var(--qds-font-size-body); }
-  #{$shadcn} .q-bar.q-bar--dark { color: var(--qds-fg-default); background: var(--qds-bg-surface-2); }
-  #{$shadcn} .q-bar > .q-icon { font-size: var(--qds-control-icon-size-md); }
-  #{$shadcn} .q-separator { background: var(--qds-stroke-divider); }
+  #{$shadcn} :is(.q-header, .q-footer) { border-color: var(--ods-stroke-divider); box-shadow: none; }
+  #{$shadcn} .q-toolbar { gap: var(--ods-space-sm); padding-inline: var(--ods-space-md); }
+  #{$shadcn} .q-toolbar__title { padding-inline: 0; font-size: var(--ods-font-size-body); font-weight: var(--ods-font-weight-body-strong); }
+  #{$shadcn} .q-bar { color: var(--ods-fg-default); background: var(--ods-bg-surface-2); border-radius: var(--ods-radius-control); font-size: var(--ods-font-size-body); }
+  #{$shadcn} .q-bar.q-bar--dark { color: var(--ods-fg-default); background: var(--ods-bg-surface-2); }
+  #{$shadcn} .q-bar > .q-icon { font-size: var(--ods-control-icon-size-md); }
+  #{$shadcn} .q-separator { background: var(--ods-stroke-divider); }
 }

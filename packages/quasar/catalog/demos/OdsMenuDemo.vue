@@ -50,13 +50,13 @@ defineExpose({ open, checked, anchorRef, onMenuHide, toggleItem })
 </script>
 
 <template>
-  <div class="qds-catalog-demo-menu">
+  <div class="ods-catalog-demo-menu">
     <QBtn
       ref="anchorRef"
       type="button"
       unelevated
       color="primary"
-      class="qds-catalog-demo__control qds-catalog-demo-menu__anchor"
+      class="ods-catalog-demo__control ods-catalog-demo-menu__anchor"
       :label="open ? 'Close menu' : 'Open menu'"
       :dense="dense"
     >
@@ -105,7 +105,7 @@ defineExpose({ open, checked, anchorRef, onMenuHide, toggleItem })
 </template>
 
 <style scoped>
-.qds-catalog-demo-menu {
+.ods-catalog-demo-menu {
   display: grid;
   justify-items: start;
   gap: 0.25rem;

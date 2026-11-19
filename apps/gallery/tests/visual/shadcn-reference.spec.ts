@@ -3,7 +3,7 @@ import { SHADCN_PALETTES, applyShadcn } from './helpers'
 import { paint, settle } from './shadcn-browser'
 import { assertRadiusGeometryContracts, usedCornerRadii } from './shadcn-reference-radius'
 assertRadiusGeometryContracts()
-const referenceUrl = process.env.QDS_SHADCN_REFERENCE_URL ?? 'http://127.0.0.1:4320/'
+const referenceUrl = process.env.ODS_SHADCN_REFERENCE_URL ?? 'http://127.0.0.1:4320/'
 const families = ['button', 'input', 'selection', 'tabs', 'badge', 'card', 'table', 'menu', 'dialog', 'sidebar']
 const counterparts: Record<string, { native: string; upstream: string; heightBound?: number; radiusBound: number }> = {
   button: { native: '[data-oracle="button"] [data-case="default"]', upstream: '[data-family="button"] [data-case="default"]', heightBound: 8, radiusBound: 2 },
@@ -35,7 +35,7 @@ for (const palette of SHADCN_PALETTES) for (const mode of ['light', 'dark'] as c
       await ref.goto(`${referenceUrl}?palette=${palette}&mode=${mode}&capture=1&family=button`)
       await expect(ref.locator('html')).toHaveAttribute('data-reference-ready', 'true')
       expect(await ref.evaluate(() => (window as unknown as { __shadcnReference: { commit: string } }).__shadcnReference.commit)).toBe('b251d9fd92aa496495e127137a7734704fb34a29')
-      await expect(ref.locator('.qds-ui')).toHaveCount(0)
+      await expect(ref.locator('.ods-ui')).toHaveCount(0)
       await page.goto('/conformance.html?oracle=button')
       await applyShadcn(page, mode, palette)
       await settle(page)

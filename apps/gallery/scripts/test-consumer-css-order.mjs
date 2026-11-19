@@ -17,24 +17,24 @@ for (const [entry, contract] of Object.entries(manifest)) {
   }))
   const layered = entry === 'conformance-layered.html'
   const adoptionCount = layered ? 3 : 1
-  assert.equal(assets.filter(({ css }) => css.includes('--qds-color-primary:')).length, 1, `${entry}: one token emitter`)
+  assert.equal(assets.filter(({ css }) => css.includes('--ods-color-primary:')).length, 1, `${entry}: one token emitter`)
   if (layered) {
-    assert(assets[0].css.includes('@layer qds-important,quasar,qds'))
+    assert(assets[0].css.includes('@layer ods-important,quasar,ods'))
     assert(assets[0].css.includes('@layer quasar{'))
-    assert(assets[1].css.includes('@layer qds.quasar{'))
-    assert(assets[2].css.includes('@layer qds.quasar{'))
+    assert(assets[1].css.includes('@layer ods.quasar{'))
+    assert(assets[2].css.includes('@layer ods.quasar{'))
     assert(!assets.some(({ href }) => href.includes('adoption-default')))
   } else {
     const css = assets[0].css
     assert(!css.includes('@layer quasar{'), `${entry}: native CSS remains unlayered`)
-    assert(!css.includes('@layer qds.quasar{'), `${entry}: QDS components remain unlayered`)
+    assert(!css.includes('@layer ods.quasar{'), `${entry}: ODS components remain unlayered`)
     const native = css.indexOf('.q-breadcrumbs')
-    const qds = css.indexOf('.qds-ui .q-breadcrumbs')
-    const extension = css.indexOf('.qds-ui .qds-window')
-    assert(native >= 0 && qds > native && extension > qds, `${entry}: native → QDS → window extension`)
+    const qds = css.indexOf('.ods-ui .q-breadcrumbs')
+    const extension = css.indexOf('.ods-ui .ods-window')
+    assert(native >= 0 && qds > native && extension > qds, `${entry}: native → ODS → window extension`)
   }
   for (const { css } of assets.slice(adoptionCount)) {
-    assert(!css.includes('--qds-color-primary:'), `${entry}: author chunk cannot contain adoption tokens`)
+    assert(!css.includes('--ods-color-primary:'), `${entry}: author chunk cannot contain adoption tokens`)
   }
   evidence[entry] = {
     htmlSha256: sha256(html),
@@ -46,7 +46,7 @@ for (const [entry, contract] of Object.entries(manifest)) {
 }
 
 // Optional direct browser bounds, against the same production URLs used by CI.
-if (process.env.QDS_BASE_URL) {
+if (process.env.ODS_BASE_URL) {
   const { chromium } = await import('@playwright/test')
   const browser = await chromium.launch({ headless: true })
   try {
@@ -54,16 +54,16 @@ if (process.env.QDS_BASE_URL) {
     for (const width of [1280, 390]) {
       const page = await browser.newPage({ viewport: { width, height: 844 } })
       for (const mode of ['light', 'dark']) {
-        await page.goto(`${process.env.QDS_BASE_URL}#forms`)
-        await page.waitForFunction(() => window.__qdsGallery)
+        await page.goto(`${process.env.ODS_BASE_URL}#forms`)
+        await page.waitForFunction(() => window.__odsGallery)
         await page.evaluate((mode) => {
-          window.__qdsGallery.setVariant('fluent')
-          window.__qdsGallery.setMode(mode)
+          window.__odsGallery.setVariant('fluent')
+          window.__odsGallery.setMode(mode)
         }, mode)
         await page.evaluate(() => document.fonts.ready)
         const title = await page.locator('[data-test="qds-forms-settings-title"]').evaluate((el) => getComputedStyle(el).fontSize)
         assert.equal(title, '28px')
-        await page.goto(`${process.env.QDS_BASE_URL}#catalog`)
+        await page.goto(`${process.env.ODS_BASE_URL}#catalog`)
         await page.locator('[data-test="qds-catalog-color"]').waitFor()
         const pickers = await page.locator('.catalog-picker').evaluateAll((els) => els.map((el) => ({
           test: el.getAttribute('data-test'), width: el.getBoundingClientRect().width,
@@ -86,7 +86,7 @@ if (process.env.QDS_BASE_URL) {
     }
     for (const entry of Object.keys(manifest)) {
       const page = await browser.newPage()
-      await page.goto(new URL(entry, process.env.QDS_BASE_URL).href)
+      await page.goto(new URL(entry, process.env.ODS_BASE_URL).href)
       const links = await page.locator('link[rel="stylesheet"]').evaluateAll((els) => els.map((el) => el.getAttribute('href')))
       assert.deepEqual(links, evidence[entry].assets.map(({ href }) => href))
       await page.close()

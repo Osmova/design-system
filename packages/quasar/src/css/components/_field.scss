@@ -3,7 +3,7 @@
 
 @use 'variants/glass';
 
-$one-field: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one) :is(.q-field--outlined, .q-field--filled)';
+$one-field: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one) :is(.q-field--outlined, .q-field--filled)';
 
 // Compatibility owns label bands, focus bars and every old-profile override.
 @mixin styles($grammar: compatibility) {
@@ -14,364 +14,364 @@ $one-field: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one) :is(.q-field
 }
 
 @mixin compatibility-styles {
-  .qds-ui .q-field {
-    --qds-field-height: var(--qds-field-size-md);
-    --qds-field-band: calc(var(--qds-line-height-body1) + var(--qds-field-label-gap));
-    --qds-field-label-font: var(--qds-field-label-size-rest);
-    --qds-field-icon: var(--qds-field-icon-size);
-    --qds-field-gap: var(--qds-space-sm);
-    --qds-field-radius: var(--qds-radius-control);
-    --qds-field-stroke: var(--qds-control-stroke-default);
-    --qds-field-fill: var(--qds-bg-surface-2);
-    font-size: var(--qds-font-size-body1);
-    line-height: var(--qds-line-height-body1);
-    color: var(--qds-fg-default);
+  .ods-ui .q-field {
+    --ods-field-height: var(--ods-field-size-md);
+    --ods-field-band: calc(var(--ods-line-height-body1) + var(--ods-field-label-gap));
+    --ods-field-label-font: var(--ods-field-label-size-rest);
+    --ods-field-icon: var(--ods-field-icon-size);
+    --ods-field-gap: var(--ods-space-sm);
+    --ods-field-radius: var(--ods-radius-control);
+    --ods-field-stroke: var(--ods-control-stroke-default);
+    --ods-field-fill: var(--ods-bg-surface-2);
+    font-size: var(--ods-font-size-body1);
+    line-height: var(--ods-line-height-body1);
+    color: var(--ods-fg-default);
   }
 
-  .qds-ui .q-field--dense {
-    --qds-field-height: var(--qds-field-size-sm);
-    --qds-field-band: calc(var(--qds-line-height-caption) + var(--qds-field-label-gap));
-    --qds-field-label-font: var(--qds-field-label-size-float);
-    --qds-field-icon: var(--qds-field-dense-icon-size);
-    --qds-field-gap: var(--qds-space-xs);
-    font-size: var(--qds-font-size-caption);
-    line-height: var(--qds-line-height-caption);
+  .ods-ui .q-field--dense {
+    --ods-field-height: var(--ods-field-size-sm);
+    --ods-field-band: calc(var(--ods-line-height-caption) + var(--ods-field-label-gap));
+    --ods-field-label-font: var(--ods-field-label-size-float);
+    --ods-field-icon: var(--ods-field-dense-icon-size);
+    --ods-field-gap: var(--ods-space-xs);
+    font-size: var(--ods-font-size-caption);
+    line-height: var(--ods-line-height-caption);
   }
 
-  .qds-ui .qds-field--lg { --qds-field-height: var(--qds-field-size-lg); }
-  .qds-ui .q-field--standard,
-  .qds-ui .q-field--borderless { --qds-field-radius: 0; }
-  .qds-ui .q-field--rounded { --qds-field-radius: var(--qds-radius-full); }
+  .ods-ui .ods-field--lg { --ods-field-height: var(--ods-field-size-lg); }
+  .ods-ui .q-field--standard,
+  .ods-ui .q-field--borderless { --ods-field-radius: 0; }
+  .ods-ui .q-field--rounded { --ods-field-radius: var(--ods-radius-full); }
 
-  .qds-ui.qds-variant-one .q-field,
-  .qds-ui .qds-variant-one .q-field { --qds-field-fill: var(--qds-control-fill-default); --qds-field-stroke: var(--qds-control-stroke-strong); }
+  .ods-ui.ods-variant-one .q-field,
+  .ods-ui .ods-variant-one .q-field { --ods-field-fill: var(--ods-control-fill-default); --ods-field-stroke: var(--ods-control-stroke-strong); }
 
-  .qds-ui.qds-variant-one :is(.q-field--outlined, .q-field--filled),
-  .qds-ui .qds-variant-one :is(.q-field--outlined, .q-field--filled) { --qds-field-radius: calc(var(--qds-radius-control) + 0.25rem); }
+  .ods-ui.ods-variant-one :is(.q-field--outlined, .q-field--filled),
+  .ods-ui .ods-variant-one :is(.q-field--outlined, .q-field--filled) { --ods-field-radius: calc(var(--ods-radius-control) + 0.25rem); }
 
   // Label above the control: the root reserves the band, the label sits in it.
-  .qds-ui .q-field--labeled { padding-top: var(--qds-field-band); }
+  .ods-ui .q-field--labeled { padding-top: var(--ods-field-band); }
 
-  .qds-ui .q-field .q-field__control {
-    height: var(--qds-field-height);
-    min-height: var(--qds-field-height);
-    color: var(--qds-stroke-focus);
-    border-radius: var(--qds-field-radius);
+  .ods-ui .q-field .q-field__control {
+    height: var(--ods-field-height);
+    min-height: var(--ods-field-height);
+    color: var(--ods-stroke-focus);
+    border-radius: var(--ods-field-radius);
   }
 
-  .qds-ui .q-field--auto-height .q-field__control,
-  .qds-ui .q-textarea .q-field__control { height: auto; }
+  .ods-ui .q-field--auto-height .q-field__control,
+  .ods-ui .q-textarea .q-field__control { height: auto; }
 
-  .qds-ui .q-field--outlined .q-field__control,
-  .qds-ui .q-field--filled .q-field__control,
-  .qds-ui .q-field--standout .q-field__control { padding-inline: var(--qds-field-padding-inline); }
+  .ods-ui .q-field--outlined .q-field__control,
+  .ods-ui .q-field--filled .q-field__control,
+  .ods-ui .q-field--standout .q-field__control { padding-inline: var(--ods-field-padding-inline); }
 
-  .qds-ui .q-field--rounded .q-field__control { padding-inline: calc(var(--qds-field-padding-inline) + var(--qds-space-xs)); }
+  .ods-ui .q-field--rounded .q-field__control { padding-inline: calc(var(--ods-field-padding-inline) + var(--ods-space-xs)); }
 
-  .qds-ui.qds-variant-one :is(.q-field--outlined, .q-field--filled) .q-field__control,
-  .qds-ui .qds-variant-one :is(.q-field--outlined, .q-field--filled) .q-field__control { padding-inline: max(var(--qds-field-padding-inline), var(--qds-space-md)); }
+  .ods-ui.ods-variant-one :is(.q-field--outlined, .q-field--filled) .q-field__control,
+  .ods-ui .ods-variant-one :is(.q-field--outlined, .q-field--filled) .q-field__control { padding-inline: max(var(--ods-field-padding-inline), var(--ods-space-md)); }
 
   // One fields draw the full perimeter instead of the focus bar.
-  #{$one-field} .q-field__control::before { border-width: var(--qds-border-width-control); }
+  #{$one-field} .q-field__control::before { border-width: var(--ods-border-width-control); }
   #{$one-field} .q-field__control::after { display: none; }
-  #{$one-field}:is(.q-field--highlighted, .q-field--error, .qds-field--positive, .qds-field--warning) .q-field__control::before { border-width: var(--qds-field-focus-border-width); }
-  #{$one-field}.q-field--highlighted:not(.q-field--error, .qds-field--positive, .qds-field--warning) .q-field__control::before { border-color: var(--qds-stroke-focus); }
+  #{$one-field}:is(.q-field--highlighted, .q-field--error, .ods-field--positive, .ods-field--warning) .q-field__control::before { border-width: var(--ods-field-focus-border-width); }
+  #{$one-field}.q-field--highlighted:not(.q-field--error, .ods-field--positive, .ods-field--warning) .q-field__control::before { border-color: var(--ods-stroke-focus); }
 
-  .qds-ui .q-field .q-field__control-container,
-  .qds-ui .q-field--dense.q-field--labeled .q-field__control-container { padding-block: 0; }
+  .ods-ui .q-field .q-field__control-container,
+  .ods-ui .q-field--dense.q-field--labeled .q-field__control-container { padding-block: 0; }
 
-  .qds-ui .q-field--labeled .q-field__control-container { position: static; }
-  .qds-ui .q-field .q-field__control-container:has(> .q-field__shadow) { position: relative; }
+  .ods-ui .q-field--labeled .q-field__control-container { position: static; }
+  .ods-ui .q-field .q-field__control-container:has(> .q-field__shadow) { position: relative; }
 
-  .qds-ui .q-field .q-field__native,
-  .qds-ui .q-field .q-field__prefix,
-  .qds-ui .q-field .q-field__suffix {
+  .ods-ui .q-field .q-field__native,
+  .ods-ui .q-field .q-field__prefix,
+  .ods-ui .q-field .q-field__suffix {
     min-height: 0;
     padding-block: 0;
     font: inherit;
     letter-spacing: normal;
-    color: var(--qds-fg-default);
+    color: var(--ods-fg-default);
     opacity: 1;
   }
 
-  .qds-ui .q-field .q-field__prefix,
-  .qds-ui .q-field .q-field__suffix { color: var(--qds-fg-muted); }
+  .ods-ui .q-field .q-field__prefix,
+  .ods-ui .q-field .q-field__suffix { color: var(--ods-fg-muted); }
 
-  .qds-ui .q-field .q-field__native::placeholder,
-  .qds-ui .q-field .q-field__input::placeholder {
-    color: var(--qds-fg-muted);
+  .ods-ui .q-field .q-field__native::placeholder,
+  .ods-ui .q-field .q-field__input::placeholder {
+    color: var(--ods-fg-muted);
     opacity: 1;
   }
 
-  .qds-ui .q-field--auto-height .q-field__native,
-  .qds-ui .q-field--auto-height.q-field--dense .q-field__native {
-    min-height: var(--qds-field-height);
+  .ods-ui .q-field--auto-height .q-field__native,
+  .ods-ui .q-field--auto-height.q-field--dense .q-field__native {
+    min-height: var(--ods-field-height);
     padding-block: 0.125rem;
-    gap: var(--qds-space-xs);
+    gap: var(--ods-space-xs);
   }
 
-  .qds-ui .q-textarea .q-field__native,
-  .qds-ui .q-textarea.q-field--dense.q-field--labeled .q-field__native {
-    min-height: var(--qds-field-height);
-    padding-block: calc((var(--qds-field-height) - 1lh) / 2);
+  .ods-ui .q-textarea .q-field__native,
+  .ods-ui .q-textarea.q-field--dense.q-field--labeled .q-field__native {
+    min-height: var(--ods-field-height);
+    padding-block: calc((var(--ods-field-height) - 1lh) / 2);
   }
 
-  .qds-ui .q-field__native .q-chip {
-    min-height: min(1.5rem, calc(var(--qds-field-height) - 0.25rem));
+  .ods-ui .q-field__native .q-chip {
+    min-height: min(1.5rem, calc(var(--ods-field-height) - 0.25rem));
     margin: 0;
-    font-size: var(--qds-font-size-caption);
+    font-size: var(--ods-font-size-caption);
   }
 
-  .qds-ui .q-field--labeled .q-field__label {
-    top: calc(-1 * var(--qds-field-band));
+  .ods-ui .q-field--labeled .q-field__label {
+    top: calc(-1 * var(--ods-field-band));
     inset-inline: 0 auto;
     max-width: 100%;
     transform: none;
-    font-size: var(--qds-field-label-font);
-    font-weight: var(--qds-field-label-weight);
+    font-size: var(--ods-field-label-font);
+    font-weight: var(--ods-field-label-weight);
     line-height: inherit;
     letter-spacing: normal;
-    color: var(--qds-fg-default);
-    transition: color var(--qds-field-transition);
+    color: var(--ods-fg-default);
+    transition: color var(--ods-field-transition);
   }
 
-  .qds-ui :is(.q-field:has(:is(input, textarea)[required], [aria-required="true"]), .qds-field--required) .q-field__label::after,
-  .qds-ui .qds-form-field--required .qds-form-field__label::after {
+  .ods-ui :is(.q-field:has(:is(input, textarea)[required], [aria-required="true"]), .ods-field--required) .q-field__label::after,
+  .ods-ui .ods-form-field--required .ods-form-field__label::after {
     content: "*";
     content: "*" / "";
     padding-inline-start: 0.125rem;
-    color: var(--qds-fg-negative);
+    color: var(--ods-fg-negative);
   }
 
-  .qds-ui .q-field--labeled .q-field__label:has(> .qds-field__hint) {
+  .ods-ui .q-field--labeled .q-field__label:has(> .ods-field__hint) {
     display: flex;
     align-items: baseline;
-    gap: var(--qds-space-sm);
+    gap: var(--ods-space-sm);
     inset-inline-end: 0;
   }
 
-  .qds-ui :is(.qds-field__hint, .qds-form-field__hint) {
+  .ods-ui :is(.ods-field__hint, .ods-form-field__hint) {
     order: 1;
     margin-inline-start: auto;
-    font-size: var(--qds-font-size-caption);
-    font-weight: var(--qds-font-weight-regular);
-    color: var(--qds-field-description-color);
+    font-size: var(--ods-font-size-caption);
+    font-weight: var(--ods-font-weight-regular);
+    color: var(--ods-field-description-color);
   }
 
-  .qds-ui .q-field .q-field__marginal {
-    height: var(--qds-field-height);
-    font-size: var(--qds-field-icon);
-    color: var(--qds-fg-muted);
+  .ods-ui .q-field .q-field__marginal {
+    height: var(--ods-field-height);
+    font-size: var(--ods-field-icon);
+    color: var(--ods-fg-muted);
   }
 
-  .qds-ui .q-field .q-field__before,
-  .qds-ui .q-field .q-field__prepend { padding-inline: 0 var(--qds-field-gap); }
-  .qds-ui .q-field .q-field__after,
-  .qds-ui .q-field .q-field__append { padding-inline: var(--qds-field-gap) 0; }
-  .qds-ui .q-field .q-field__append + .q-field__append { padding-inline-start: var(--qds-space-xs); }
+  .ods-ui .q-field .q-field__before,
+  .ods-ui .q-field .q-field__prepend { padding-inline: 0 var(--ods-field-gap); }
+  .ods-ui .q-field .q-field__after,
+  .ods-ui .q-field .q-field__append { padding-inline: var(--ods-field-gap) 0; }
+  .ods-ui .q-field .q-field__append + .q-field__append { padding-inline-start: var(--ods-space-xs); }
 
-  .qds-ui .q-field :is(.q-field__prepend, .q-field__append) .q-btn:is(.q-btn--round, .q-btn--dense) {
-    min-width: calc(var(--qds-field-icon) + var(--qds-space-xs));
-    min-height: calc(var(--qds-field-icon) + var(--qds-space-xs));
+  .ods-ui .q-field :is(.q-field__prepend, .q-field__append) .q-btn:is(.q-btn--round, .q-btn--dense) {
+    min-width: calc(var(--ods-field-icon) + var(--ods-space-xs));
+    min-height: calc(var(--ods-field-icon) + var(--ods-space-xs));
     padding: 0;
   }
 
-  .qds-ui .q-field .q-field__marginal :is(.q-icon, svg) {
-    width: var(--qds-field-icon);
-    min-width: var(--qds-field-icon);
-    height: var(--qds-field-icon);
-    font-size: var(--qds-field-icon);
-    color: var(--qds-fg-muted);
+  .ods-ui .q-field .q-field__marginal :is(.q-icon, svg) {
+    width: var(--ods-field-icon);
+    min-width: var(--ods-field-icon);
+    height: var(--ods-field-icon);
+    font-size: var(--ods-field-icon);
+    color: var(--ods-fg-muted);
   }
 
-  .qds-ui .q-field--error .q-field__marginal :is(.q-icon, svg) { color: var(--qds-stroke-error); }
+  .ods-ui .q-field--error .q-field__marginal :is(.q-icon, svg) { color: var(--ods-stroke-error); }
 
   // ::before draws the stroke box; ::after is the Fluent focus bar scaling in from the centre.
-  .qds-ui .q-field .q-field__control::before {
-    border: 0 solid var(--qds-field-stroke);
-    border-bottom-color: var(--qds-control-stroke-strong);
+  .ods-ui .q-field .q-field__control::before {
+    border: 0 solid var(--ods-field-stroke);
+    border-bottom-color: var(--ods-control-stroke-strong);
     background: none;
     opacity: 1;
-    transition: border-color var(--qds-field-transition);
+    transition: border-color var(--ods-field-transition);
   }
 
-  .qds-ui .q-field--filled.q-field--highlighted .q-field__control::before { background: none; }
+  .ods-ui .q-field--filled.q-field--highlighted .q-field__control::before { background: none; }
 
-  .qds-ui .q-field .q-field__control::after {
+  .ods-ui .q-field .q-field__control::after {
     inset: 0;
     height: auto;
     border: 0;
-    border-bottom: var(--qds-field-focus-border-width) solid currentColor;
+    border-bottom: var(--ods-field-focus-border-width) solid currentColor;
     border-radius: inherit;
     background: none;
-    clip-path: inset(calc(100% - var(--qds-field-focus-border-width)) 0 0);
+    clip-path: inset(calc(100% - var(--ods-field-focus-border-width)) 0 0);
     transform: scaleX(0);
-    transition: transform var(--qds-motion-duration-fast) var(--qds-motion-ease-in-out);
+    transition: transform var(--ods-motion-duration-fast) var(--ods-motion-ease-in-out);
   }
 
-  .qds-ui .q-field--highlighted .q-field__control::after {
+  .ods-ui .q-field--highlighted .q-field__control::after {
     transform: scaleX(1);
-    transition-duration: var(--qds-motion-duration-base);
-    transition-timing-function: var(--qds-motion-ease-out);
+    transition-duration: var(--ods-motion-duration-base);
+    transition-timing-function: var(--ods-motion-ease-out);
   }
 
-  .qds-ui .q-field--outlined .q-field__control {
-    background: var(--qds-control-fill-default);
-    box-shadow: var(--qds-field-shadow);
-    transition: background-color var(--qds-field-transition), box-shadow var(--qds-field-transition);
+  .ods-ui .q-field--outlined .q-field__control {
+    background: var(--ods-control-fill-default);
+    box-shadow: var(--ods-field-shadow);
+    transition: background-color var(--ods-field-transition), box-shadow var(--ods-field-transition);
   }
 
-  .qds-ui .q-field--outlined .q-field__control::before { border-width: var(--qds-border-width-control); }
+  .ods-ui .q-field--outlined .q-field__control::before { border-width: var(--ods-border-width-control); }
 
-  .qds-ui .q-field--outlined .q-field__control:hover { background: var(--qds-control-fill-hover); }
+  .ods-ui .q-field--outlined .q-field__control:hover { background: var(--ods-control-fill-hover); }
 
-  .qds-ui .q-field--filled .q-field__control::before,
-  .qds-ui .q-field--standard .q-field__control::before { border-bottom-width: var(--qds-border-width-control); }
+  .ods-ui .q-field--filled .q-field__control::before,
+  .ods-ui .q-field--standard .q-field__control::before { border-bottom-width: var(--ods-border-width-control); }
 
-  .qds-ui .q-field--filled .q-field__control,
-  .qds-ui .q-field--standout .q-field__control {
-    background: var(--qds-field-fill);
-    box-shadow: var(--qds-field-shadow);
-    transition: background-color var(--qds-field-transition), box-shadow var(--qds-field-transition);
+  .ods-ui .q-field--filled .q-field__control,
+  .ods-ui .q-field--standout .q-field__control {
+    background: var(--ods-field-fill);
+    box-shadow: var(--ods-field-shadow);
+    transition: background-color var(--ods-field-transition), box-shadow var(--ods-field-transition);
   }
 
-  .qds-ui .q-field--filled .q-field__control:hover,
-  .qds-ui .q-field--standout .q-field__control:hover { background: color-mix(in srgb, var(--qds-field-fill) 92%, var(--qds-fg-default)); }
+  .ods-ui .q-field--filled .q-field__control:hover,
+  .ods-ui .q-field--standout .q-field__control:hover { background: color-mix(in srgb, var(--ods-field-fill) 92%, var(--ods-fg-default)); }
 
-  .qds-ui .q-field--standout.q-field--highlighted .q-field__control { box-shadow: var(--qds-shadow-2); }
+  .ods-ui .q-field--standout.q-field--highlighted .q-field__control { box-shadow: var(--ods-shadow-2); }
 
-  .qds-ui .q-field--standout.q-field--highlighted :is(.q-field__native, .q-field__prefix, .q-field__suffix, .q-field__input, .q-field__prepend, .q-field__append) { color: var(--qds-fg-default); }
+  .ods-ui .q-field--standout.q-field--highlighted :is(.q-field__native, .q-field__prefix, .q-field__suffix, .q-field__input, .q-field__prepend, .q-field__append) { color: var(--ods-fg-default); }
 
-  .qds-ui :is(.q-field--outlined, .q-field--filled).q-field--highlighted .q-field__control { box-shadow: var(--qds-field-focus-halo); }
-  .qds-ui :is(.q-field--outlined, .q-field--filled, .q-field--standout).q-field--focused .q-field__control { background: var(--qds-control-fill-input-active); }
-  .qds-ui .q-field--outlined.q-field--highlighted .q-field__control::before { border-color: var(--qds-field-focus-stroke); }
+  .ods-ui :is(.q-field--outlined, .q-field--filled).q-field--highlighted .q-field__control { box-shadow: var(--ods-field-focus-halo); }
+  .ods-ui :is(.q-field--outlined, .q-field--filled, .q-field--standout).q-field--focused .q-field__control { background: var(--ods-control-fill-input-active); }
+  .ods-ui .q-field--outlined.q-field--highlighted .q-field__control::before { border-color: var(--ods-field-focus-stroke); }
 
-  .qds-ui .qds-field--ghost {
-    --qds-field-shadow: none;
-    --qds-field-radius: var(--qds-radius-control);
+  .ods-ui .ods-field--ghost {
+    --ods-field-shadow: none;
+    --ods-field-radius: var(--ods-radius-control);
   }
 
-  .qds-ui .qds-field--ghost .q-field__control {
-    padding-inline: var(--qds-field-padding-inline);
+  .ods-ui .ods-field--ghost .q-field__control {
+    padding-inline: var(--ods-field-padding-inline);
     background: transparent;
-    transition: background-color var(--qds-field-transition), box-shadow var(--qds-field-transition);
+    transition: background-color var(--ods-field-transition), box-shadow var(--ods-field-transition);
   }
 
-  .qds-ui .qds-field--ghost .q-field__control:hover { background: var(--qds-state-hover); }
-  .qds-ui .qds-field--ghost.q-field--focused .q-field__control { background: var(--qds-control-fill-input-active); }
+  .ods-ui .ods-field--ghost .q-field__control:hover { background: var(--ods-state-hover); }
+  .ods-ui .ods-field--ghost.q-field--focused .q-field__control { background: var(--ods-control-fill-input-active); }
 
-  .qds-ui .qds-field--ghost .q-field__control::before,
-  .qds-ui .qds-field--ghost .q-field__control:hover::before,
-  .qds-ui .qds-field--ghost.q-field--highlighted .q-field__control::before { border-color: transparent; }
+  .ods-ui .ods-field--ghost .q-field__control::before,
+  .ods-ui .ods-field--ghost .q-field__control:hover::before,
+  .ods-ui .ods-field--ghost.q-field--highlighted .q-field__control::before { border-color: transparent; }
 
-  .qds-ui .q-field--readonly .q-field__control::before,
-  .qds-ui .q-field--readonly .q-field__control:hover::before {
+  .ods-ui .q-field--readonly .q-field__control::before,
+  .ods-ui .q-field--readonly .q-field__control:hover::before {
     border-style: dashed;
-    border-color: var(--qds-stroke-default);
+    border-color: var(--ods-stroke-default);
   }
 
-  .qds-ui .q-field--error .q-field__control::before,
-  .qds-ui .q-field--error .q-field__control:hover::before,
-  .qds-ui .q-field--error.q-field--highlighted .q-field__control::before { border-color: var(--qds-stroke-error); }
-  .qds-ui .q-field--error .q-field__control::after { border-bottom-color: var(--qds-stroke-error); transform: scaleX(1); }
+  .ods-ui .q-field--error .q-field__control::before,
+  .ods-ui .q-field--error .q-field__control:hover::before,
+  .ods-ui .q-field--error.q-field--highlighted .q-field__control::before { border-color: var(--ods-stroke-error); }
+  .ods-ui .q-field--error .q-field__control::after { border-bottom-color: var(--ods-stroke-error); transform: scaleX(1); }
 
-  .qds-ui .qds-field--positive { --qds-field-tone: var(--qds-color-positive); --qds-field-tone-fg: var(--qds-fg-positive); }
-  .qds-ui .qds-field--warning { --qds-field-tone: var(--qds-color-warning); --qds-field-tone-fg: var(--qds-fg-warning); }
-  .qds-ui :is(.qds-field--positive, .qds-field--warning) .q-field__control { color: var(--qds-field-tone); }
-  :is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term) :is(.qds-field--positive, .qds-field--warning) { --qds-field-tone: var(--qds-field-tone-fg); }
-  :is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one) :is(.qds-field--positive, .qds-field--warning) { --qds-field-tone: var(--qds-field-tone-fg); }
+  .ods-ui .ods-field--positive { --ods-field-tone: var(--ods-color-positive); --ods-field-tone-fg: var(--ods-fg-positive); }
+  .ods-ui .ods-field--warning { --ods-field-tone: var(--ods-color-warning); --ods-field-tone-fg: var(--ods-fg-warning); }
+  .ods-ui :is(.ods-field--positive, .ods-field--warning) .q-field__control { color: var(--ods-field-tone); }
+  :is(.ods-ui.ods-variant-term, .ods-ui .ods-variant-term) :is(.ods-field--positive, .ods-field--warning) { --ods-field-tone: var(--ods-field-tone-fg); }
+  :is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one) :is(.ods-field--positive, .ods-field--warning) { --ods-field-tone: var(--ods-field-tone-fg); }
 
-  .qds-ui :is(.qds-field--positive, .qds-field--warning) .q-field__control::before,
-  .qds-ui :is(.qds-field--positive, .qds-field--warning) .q-field__control:hover::before,
-  .qds-ui :is(.qds-field--positive, .qds-field--warning).q-field--highlighted .q-field__control::before { border-color: var(--qds-field-tone); }
+  .ods-ui :is(.ods-field--positive, .ods-field--warning) .q-field__control::before,
+  .ods-ui :is(.ods-field--positive, .ods-field--warning) .q-field__control:hover::before,
+  .ods-ui :is(.ods-field--positive, .ods-field--warning).q-field--highlighted .q-field__control::before { border-color: var(--ods-field-tone); }
 
-  .qds-ui :is(.qds-field--positive, .qds-field--warning) .q-field__control::after { transform: scaleX(1); }
-  .qds-ui :is(.qds-field--positive, .qds-field--warning) :is(.q-field__bottom, .q-field__append :is(.q-icon, svg)) { color: var(--qds-field-tone-fg); }
+  .ods-ui :is(.ods-field--positive, .ods-field--warning) .q-field__control::after { transform: scaleX(1); }
+  .ods-ui :is(.ods-field--positive, .ods-field--warning) :is(.q-field__bottom, .q-field__append :is(.q-icon, svg)) { color: var(--ods-field-tone-fg); }
 
-  .qds-ui .q-field--disabled.q-field--outlined .q-field__control { background: var(--qds-control-fill-disabled); }
+  .ods-ui .q-field--disabled.q-field--outlined .q-field__control { background: var(--ods-control-fill-disabled); }
 
-  .qds-ui .q-field--disabled .q-field__control::before { border-color: var(--qds-control-stroke-default); }
+  .ods-ui .q-field--disabled .q-field__control::before { border-color: var(--ods-control-stroke-default); }
 
-  .qds-ui .q-field .q-field__bottom {
+  .ods-ui .q-field .q-field__bottom {
     min-height: 1.25rem;
-    padding: var(--qds-field-label-gap) 0 0;
-    font-size: var(--qds-font-size-caption);
-    line-height: var(--qds-line-height-caption);
-    color: var(--qds-fg-muted);
+    padding: var(--ods-field-label-gap) 0 0;
+    font-size: var(--ods-font-size-caption);
+    line-height: var(--ods-line-height-caption);
+    color: var(--ods-fg-muted);
   }
 
-  .qds-ui .q-field .q-field__messages { line-height: inherit; }
-  .qds-ui .q-field--error .q-field__bottom { color: var(--qds-fg-negative); }
-  .qds-ui .q-field--error .q-field__label { animation: none; }
+  .ods-ui .q-field .q-field__messages { line-height: inherit; }
+  .ods-ui .q-field--error .q-field__bottom { color: var(--ods-fg-negative); }
+  .ods-ui .q-field--error .q-field__label { animation: none; }
 
   // Opt-in floating label: centred at rest, floated onto the border (outlined) or into a top band.
-  .qds-ui .qds-field--float,
-  .qds-ui .qds-field--stacked-animated {
-    --qds-field-height: var(--qds-field-min-height);
-    --qds-field-float-top: var(--qds-space-xs);
-    --qds-field-float-shift: 0%;
-    --qds-field-value-inset: var(--qds-field-value-inset-block-start) var(--qds-field-value-inset-block-end);
+  .ods-ui .ods-field--float,
+  .ods-ui .ods-field--stacked-animated {
+    --ods-field-height: var(--ods-field-min-height);
+    --ods-field-float-top: var(--ods-space-xs);
+    --ods-field-float-shift: 0%;
+    --ods-field-value-inset: var(--ods-field-value-inset-block-start) var(--ods-field-value-inset-block-end);
     padding-top: 0;
   }
 
-  .qds-ui .qds-field--float.q-field--dense,
-  .qds-ui .qds-field--stacked-animated.q-field--dense {
-    --qds-field-height: var(--qds-field-dense-min-height);
-    --qds-field-value-inset: var(--qds-field-value-inset-block-start-dense) var(--qds-field-value-inset-block-end-dense);
+  .ods-ui .ods-field--float.q-field--dense,
+  .ods-ui .ods-field--stacked-animated.q-field--dense {
+    --ods-field-height: var(--ods-field-dense-min-height);
+    --ods-field-value-inset: var(--ods-field-value-inset-block-start-dense) var(--ods-field-value-inset-block-end-dense);
   }
 
-  .qds-ui .qds-field--float.q-field--outlined {
-    --qds-field-float-top: 0%;
-    --qds-field-float-shift: -50%;
-    --qds-field-value-inset: 0;
-    --qds-field-label-mask: var(--qds-field-label-bg);
+  .ods-ui .ods-field--float.q-field--outlined {
+    --ods-field-float-top: 0%;
+    --ods-field-float-shift: -50%;
+    --ods-field-value-inset: 0;
+    --ods-field-label-mask: var(--ods-field-label-bg);
   }
 
-  .qds-ui .qds-field--float .q-field__control-container,
-  .qds-ui .qds-field--stacked-animated .q-field__control-container { position: relative; }
+  .ods-ui .ods-field--float .q-field__control-container,
+  .ods-ui .ods-field--stacked-animated .q-field__control-container { position: relative; }
 
-  .qds-ui .qds-field--float .q-field__label,
-  .qds-ui .qds-field--stacked-animated .q-field__label {
+  .ods-ui .ods-field--float .q-field__label,
+  .ods-ui .ods-field--stacked-animated .q-field__label {
     top: 50%;
     transform: translateY(-50%);
-    font-size: var(--qds-field-label-size-rest);
+    font-size: var(--ods-field-label-size-rest);
     line-height: 1.2;
-    font-weight: var(--qds-font-weight-regular);
-    color: var(--qds-fg-muted);
+    font-weight: var(--ods-font-weight-regular);
+    color: var(--ods-fg-muted);
     transition:
-      top var(--qds-field-transition),
-      transform var(--qds-field-transition),
-      font-size var(--qds-field-transition),
-      color var(--qds-field-transition),
-      background-color var(--qds-field-transition);
+      top var(--ods-field-transition),
+      transform var(--ods-field-transition),
+      font-size var(--ods-field-transition),
+      color var(--ods-field-transition),
+      background-color var(--ods-field-transition);
   }
 
-  .qds-ui :is(.qds-field--float, .qds-field--stacked-animated).q-field--float .q-field__label {
-    top: var(--qds-field-float-top);
-    max-width: calc(100% - var(--qds-space-md));
-    padding-inline: var(--qds-space-xs);
-    margin-inline-start: calc(-1 * var(--qds-space-xs));
-    transform: translateY(var(--qds-field-float-shift));
-    font-size: var(--qds-field-label-size-float);
-    background: var(--qds-field-label-mask, transparent);
-    border-radius: var(--qds-radius-xs);
+  .ods-ui :is(.ods-field--float, .ods-field--stacked-animated).q-field--float .q-field__label {
+    top: var(--ods-field-float-top);
+    max-width: calc(100% - var(--ods-space-md));
+    padding-inline: var(--ods-space-xs);
+    margin-inline-start: calc(-1 * var(--ods-space-xs));
+    transform: translateY(var(--ods-field-float-shift));
+    font-size: var(--ods-field-label-size-float);
+    background: var(--ods-field-label-mask, transparent);
+    border-radius: var(--ods-radius-xs);
   }
 
-  .qds-ui :is(.qds-field--float, .qds-field--stacked-animated).q-field--focused .q-field__label { color: var(--qds-stroke-focus); }
+  .ods-ui :is(.ods-field--float, .ods-field--stacked-animated).q-field--focused .q-field__label { color: var(--ods-stroke-focus); }
 
-  .qds-ui :is(.qds-field--float, .qds-field--stacked-animated).q-field--float :is(.q-field__native, .q-field__prefix, .q-field__suffix) { padding-block: var(--qds-field-value-inset); }
+  .ods-ui :is(.ods-field--float, .ods-field--stacked-animated).q-field--float :is(.q-field__native, .q-field__prefix, .q-field__suffix) { padding-block: var(--ods-field-value-inset); }
 
-  .qds-ui :is(.qds-field--float, .qds-field--stacked-animated):not(.q-field--float) :is(.q-field__native, .q-field__input)::placeholder { color: transparent; }
-  .qds-ui :is(.qds-field--float, .qds-field--stacked-animated):not(.q-field--float) :is(.q-field__prefix, .q-field__suffix) { opacity: 0; }
+  .ods-ui :is(.ods-field--float, .ods-field--stacked-animated):not(.q-field--float) :is(.q-field__native, .q-field__input)::placeholder { color: transparent; }
+  .ods-ui :is(.ods-field--float, .ods-field--stacked-animated):not(.q-field--float) :is(.q-field__prefix, .q-field__suffix) { opacity: 0; }
 
   @media (min-width: 45rem) {
-    .qds-ui .qds-field--start { padding-top: 0; }
-    .qds-ui .qds-field--start .q-field__inner { margin-inline-start: calc(var(--qds-field-label-column) + var(--qds-space-md)); }
+    .ods-ui .ods-field--start { padding-top: 0; }
+    .ods-ui .ods-field--start .q-field__inner { margin-inline-start: calc(var(--ods-field-label-column) + var(--ods-space-md)); }
 
-    .qds-ui .qds-field--start .q-field__label {
+    .ods-ui .ods-field--start .q-field__label {
       top: 50%;
-      inset-inline-start: calc(-1 * (var(--qds-field-label-column) + var(--qds-space-md)));
-      width: var(--qds-field-label-column);
+      inset-inline-start: calc(-1 * (var(--ods-field-label-column) + var(--ods-space-md)));
+      width: var(--ods-field-label-column);
       transform: translateY(-50%);
       white-space: normal;
       overflow: visible;
@@ -379,42 +379,42 @@ $one-field: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one) :is(.q-field
   }
 
   @media (forced-colors: active) {
-    .qds-ui .q-field--highlighted .q-field__control { box-shadow: none; }
-    .qds-ui .q-field--outlined.q-field--highlighted .q-field__control::before { border-color: Highlight; }
+    .ods-ui .q-field--highlighted .q-field__control { box-shadow: none; }
+    .ods-ui .q-field--outlined.q-field--highlighted .q-field__control::before { border-color: Highlight; }
   }
 
-  .qds-variant-shadcn:is(.qds-ui,.qds-ui *) {
-    .q-field { --qds-field-stroke: var(--qds-control-stroke-strong); }
-    .q-field:where(:not(.q-field--borderless, .qds-field--ghost)) .q-field__control { border-radius: var(--qds-field-radius); }
-    .q-field:where(:not(.q-field--borderless, .qds-field--ghost)) .q-field__control::before { border-width: var(--qds-border-width-control); border-color: var(--qds-field-stroke); border-style: solid; }
+  .ods-variant-shadcn:is(.ods-ui,.ods-ui *) {
+    .q-field { --ods-field-stroke: var(--ods-control-stroke-strong); }
+    .q-field:where(:not(.q-field--borderless, .ods-field--ghost)) .q-field__control { border-radius: var(--ods-field-radius); }
+    .q-field:where(:not(.q-field--borderless, .ods-field--ghost)) .q-field__control::before { border-width: var(--ods-border-width-control); border-color: var(--ods-field-stroke); border-style: solid; }
     .q-field .q-field__control::after { display: none; }
     .q-field--borderless .q-field__control::before { border: 0; }
-    .q-field--standard:not(.q-field--rounded) { --qds-field-radius: var(--qds-radius-control); }
-    .q-field--standard .q-field__control { border-radius: var(--qds-field-radius); padding-inline: var(--qds-field-padding-inline); }
-    .q-field--outlined .q-field__control { background: var(--qds-control-fill-default); }
-    .q-field--readonly .q-field__control:hover { background: var(--qds-control-fill-default); }
+    .q-field--standard:not(.q-field--rounded) { --ods-field-radius: var(--ods-radius-control); }
+    .q-field--standard .q-field__control { border-radius: var(--ods-field-radius); padding-inline: var(--ods-field-padding-inline); }
+    .q-field--outlined .q-field__control { background: var(--ods-control-fill-default); }
+    .q-field--readonly .q-field__control:hover { background: var(--ods-control-fill-default); }
     .q-field--filled.q-field--readonly .q-field__control:hover,
-    .q-field--standout.q-field--readonly .q-field__control:hover { background: var(--qds-field-fill); }
-    .q-field--highlighted:not(.q-field--disabled) .q-field__control { box-shadow: var(--qds-field-focus-halo); }
-    .q-field--highlighted:not(.q-field--error, .qds-field--positive, .qds-field--warning, .q-field--borderless, .qds-field--ghost) .q-field__control::before { border-color: var(--qds-stroke-focus); }
+    .q-field--standout.q-field--readonly .q-field__control:hover { background: var(--ods-field-fill); }
+    .q-field--highlighted:not(.q-field--disabled) .q-field__control { box-shadow: var(--ods-field-focus-halo); }
+    .q-field--highlighted:not(.q-field--error, .ods-field--positive, .ods-field--warning, .q-field--borderless, .ods-field--ghost) .q-field__control::before { border-color: var(--ods-stroke-focus); }
     .q-field--error .q-field__control { box-shadow: none; }
-    .q-field--error.q-field--highlighted .q-field__control { box-shadow: 0 0 0 var(--qds-focus-ring-width) color-mix(in srgb, var(--qds-stroke-error) 20%, transparent); }
-    .q-field--error .q-field__control::before { border-color: var(--qds-stroke-error); }
-    :is(.qds-field--positive, .qds-field--warning) .q-field__control::before { border-color: var(--qds-field-tone); }
-    .qds-field--dropzone .q-field__control::before { border-style: dashed; }
-    .q-field--disabled .q-field__control { background: var(--qds-control-fill-disabled); box-shadow: none; }
-    .q-field--disabled .q-field__control::before { border-color: var(--qds-field-stroke); }
-    .q-field .q-field__input { color: var(--qds-fg-default); font: inherit; }
-    .q-field :is(.q-field__native, .q-field__input)::selection { color: var(--qds-text-on-primary); background: var(--qds-color-primary); }
-    .q-field .q-field__focusable-action { opacity: 1; border-radius: var(--qds-radius-xs); }
+    .q-field--error.q-field--highlighted .q-field__control { box-shadow: 0 0 0 var(--ods-focus-ring-width) color-mix(in srgb, var(--ods-stroke-error) 20%, transparent); }
+    .q-field--error .q-field__control::before { border-color: var(--ods-stroke-error); }
+    :is(.ods-field--positive, .ods-field--warning) .q-field__control::before { border-color: var(--ods-field-tone); }
+    .ods-field--dropzone .q-field__control::before { border-style: dashed; }
+    .q-field--disabled .q-field__control { background: var(--ods-control-fill-disabled); box-shadow: none; }
+    .q-field--disabled .q-field__control::before { border-color: var(--ods-field-stroke); }
+    .q-field .q-field__input { color: var(--ods-fg-default); font: inherit; }
+    .q-field :is(.q-field__native, .q-field__input)::selection { color: var(--ods-text-on-primary); background: var(--ods-color-primary); }
+    .q-field .q-field__focusable-action { opacity: 1; border-radius: var(--ods-radius-xs); }
     .q-field .q-field__focusable-action:focus-visible {
-      @include importance.declarations { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus) !important; }
-      outline-offset: var(--qds-focus-ring-offset);
+      @include importance.declarations { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus) !important; }
+      outline-offset: var(--ods-focus-ring-offset);
     }
-    .q-field .q-field__counter { color: var(--qds-fg-muted); font-variant-numeric: tabular-nums; }
-    .q-field--error .q-field__label { color: var(--qds-fg-negative); }
-    .q-field--error:is(.qds-field--positive, .qds-field--warning) .q-field__control::before { border-color: var(--qds-stroke-error); }
-    .q-field--error:is(.qds-field--positive, .qds-field--warning) :is(.q-field__bottom, .q-field__marginal :is(.q-icon, svg)) { color: var(--qds-fg-negative); }
+    .q-field .q-field__counter { color: var(--ods-fg-muted); font-variant-numeric: tabular-nums; }
+    .q-field--error .q-field__label { color: var(--ods-fg-negative); }
+    .q-field--error:is(.ods-field--positive, .ods-field--warning) .q-field__control::before { border-color: var(--ods-stroke-error); }
+    .q-field--error:is(.ods-field--positive, .ods-field--warning) :is(.q-field__bottom, .q-field__marginal :is(.q-icon, svg)) { color: var(--ods-fg-negative); }
     .q-field .q-field__bottom { overflow-wrap: anywhere; }
     .q-textarea .q-field__native { resize: vertical; }
     .q-textarea.q-field--autogrow .q-field__native { resize: none; }

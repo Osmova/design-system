@@ -38,7 +38,7 @@ export interface DesignSystemOptions {
   storageKey?: string
   /**
    * Additional class toggled on the target alongside the package scope class
-   * `.qds-ui`. This does NOT replace the scope class the CSS is compiled
+   * `.ods-ui`. This does NOT replace the scope class the CSS is compiled
    * against; set it only when you need an extra hook class.
    */
   rootClass?: string
@@ -54,7 +54,7 @@ export interface DesignSystemOptions {
   /**
    * Quasar icon-set object to apply on initialization.
    * The recommended way to set the icon-set is via Quasar's own plugin:
-   *   app.use(Quasar, { iconSet: qdsIconSet })
+   *   app.use(Quasar, { iconSet: odsIconSet })
    * Supply this option only when you need `configureDesignSystem` to apply it
    * after Quasar is already mounted (e.g. runtime switching). Requires Quasar
    * to be present on the app instance; silently ignored otherwise.
@@ -114,7 +114,7 @@ interface QuasarLike {
   iconSet?: QuasarIconSetLike
 }
 
-export const DESIGN_SYSTEM_THEME_KEY = Symbol('bastvi-quasar-design-system')
+export const DESIGN_SYSTEM_THEME_KEY = Symbol('osmova-design-system')
 
 export const DEFAULT_DESIGN_SYSTEM_OPTIONS: Required<
   Omit<DesignSystemOptions, 'target' | 'iconSet' | 'themes' | 'variants'>
@@ -127,18 +127,18 @@ export const DEFAULT_DESIGN_SYSTEM_OPTIONS: Required<
   inkColor: 'charcoal',
   syncWithSystem: true,
   persist: true,
-  storageKey: 'bastvi.quasar-design-system.theme',
-  rootClass: 'qds-ui',
+  storageKey: 'osmova.ds.theme',
+  rootClass: 'ods-ui',
 }
 
 const THEME_MODES: DesignSystemMode[] = ['light', 'dark', 'system']
-const DESIGN_SYSTEM_SCOPE_CLASS = 'qds-ui'
+const DESIGN_SYSTEM_SCOPE_CLASS = 'ods-ui'
 const LEGACY_VARIANT_CLASSES = [
-  'qds-variant-fluent',
-  'qds-variant-air',
-  'qds-variant-feather',
-  'qds-variant-mobile',
-  'qds-variant-terminal',
+  'ods-variant-fluent',
+  'ods-variant-air',
+  'ods-variant-feather',
+  'ods-variant-mobile',
+  'ods-variant-terminal',
 ]
 let fallbackController: DesignSystemController | null = null
 
@@ -228,26 +228,26 @@ export function createDesignSystemController(
       return
     }
 
-    target.dataset.qdsMode = state.mode
-    target.dataset.qdsResolved = state.resolvedMode
-    target.dataset.qdsVariant = state.variant
+    target.dataset.odsMode = state.mode
+    target.dataset.odsResolved = state.resolvedMode
+    target.dataset.odsVariant = state.variant
     if (state.variant === 'shadcn') {
-      target.dataset.qdsShadcnBaseColor = state.shadcnBaseColor
+      target.dataset.odsShadcnBaseColor = state.shadcnBaseColor
     } else {
-      delete target.dataset.qdsShadcnBaseColor
+      delete target.dataset.odsShadcnBaseColor
     }
     if (state.variant === 'shadcn' && state.shadcnAccent !== 'none') {
-      target.dataset.qdsShadcnAccent = state.shadcnAccent
+      target.dataset.odsShadcnAccent = state.shadcnAccent
     } else {
-      delete target.dataset.qdsShadcnAccent
+      delete target.dataset.odsShadcnAccent
     }
     if (state.variant === 'ink') {
-      target.dataset.qdsInk = state.inkColor
+      target.dataset.odsInk = state.inkColor
     } else {
-      delete target.dataset.qdsInk
+      delete target.dataset.odsInk
     }
-    target.classList.toggle('qds-theme-light', !state.isDark)
-    target.classList.toggle('qds-theme-dark', state.isDark)
+    target.classList.toggle('ods-theme-light', !state.isDark)
+    target.classList.toggle('ods-theme-dark', state.isDark)
     target.classList.toggle(DESIGN_SYSTEM_SCOPE_CLASS, state.enabled)
     if (state.rootClass !== DESIGN_SYSTEM_SCOPE_CLASS) {
       target.classList.toggle(state.rootClass, state.enabled)
@@ -369,15 +369,15 @@ export function createDesignSystemController(
   const destroy = () => {
     detachSystemListener()
     if (target) {
-      target.classList.remove(DESIGN_SYSTEM_SCOPE_CLASS, state.rootClass, 'qds-theme-light', 'qds-theme-dark')
+      target.classList.remove(DESIGN_SYSTEM_SCOPE_CLASS, state.rootClass, 'ods-theme-light', 'ods-theme-dark')
       target.classList.remove(...LEGACY_VARIANT_CLASSES)
       Object.values(variantRegistry).forEach((variant) => target.classList.remove(variant.cssClass))
-      delete target.dataset.qdsMode
-      delete target.dataset.qdsResolved
-      delete target.dataset.qdsVariant
-      delete target.dataset.qdsShadcnBaseColor
-      delete target.dataset.qdsShadcnAccent
-      delete target.dataset.qdsInk
+      delete target.dataset.odsMode
+      delete target.dataset.odsResolved
+      delete target.dataset.odsVariant
+      delete target.dataset.odsShadcnBaseColor
+      delete target.dataset.odsShadcnAccent
+      delete target.dataset.odsInk
     }
     state.initialized = false
   }
@@ -471,9 +471,9 @@ function warnIfVariantCssMissing(target: HTMLElement, variant: string): void {
   }
 
   try {
-    if (getComputedStyle(target).getPropertyValue('--_qds-variant').trim() !== variant) {
+    if (getComputedStyle(target).getPropertyValue('--_ods-variant').trim() !== variant) {
       const file = variant === 'win' ? 'css' : `css/variants/${variant}`
-      console.warn(`[quasar-design-system] The "${variant}" variant is active but its stylesheet is not loaded. Import '@osmova/quasar-design-system/${file}' (or css/all) before applying it.`)
+      console.warn(`[osmova-design-system] The "${variant}" variant is active but its stylesheet is not loaded. Import '@osmova/ds-quasar/${file}' (or css/all) before applying it.`)
     }
   } catch {
     // Diagnostics must never break theming.

@@ -3,7 +3,7 @@ $layered: false !default;
 @mixin declarations {
   @if $layered {
     @at-root (without: layer) {
-      @layer qds-important { @content; }
+      @layer ods-important { @content; }
     }
   } @else { @content; }
 }

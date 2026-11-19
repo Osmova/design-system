@@ -9,6 +9,7 @@ import { readFileSync } from 'node:fs'
 import { compileMechanics, compilePilot, families, root } from './grammar-fixture.mjs'
 import { compileSubstrateBaseline, substrateBaseline } from './grammar-fixture-baseline.mjs'
 import { ruleKeys } from './css-rules.mjs'
+import { renameText } from '../../../../scripts/rename-prefix.mjs'
 import { ADDED_WIN_RULE, ADDED_IMPORTANT_RULE, applyDeclaredFluentChanges, applyDeclaredShadcnChanges } from './declared-fluent-changes.mjs'
 
 test('independent hooks compile identically after physically excluding all compatibility modules', () => {
@@ -22,7 +23,7 @@ test('neutral mechanics emit layout/containment only, without focus, paint, typo
   const css = compileMechanics()
   const declarations = [...css.matchAll(/(?:\{|;)([\w-]+):/g)].map((m) => m[1])
   assert.deepEqual(new Set(declarations), new Set(['min-width', 'flex-shrink', 'overflow-wrap', 'pointer-events', 'overflow', 'overscroll-behavior']))
-  assert.doesNotMatch(css, /fluent|variant|focus|::|--qds-/)
+  assert.doesNotMatch(css, /fluent|variant|focus|::|--ods-/)
   for (const family of ['q-btn', 'q-field', 'q-tab', 'q-menu']) assert.ok(css.includes(family))
 })
 
@@ -32,10 +33,10 @@ test('neutral mechanics emit layout/containment only, without focus, paint, typo
 // now enforced rule by rule: every 150d952 rule must still be present verbatim
 // and in order, and every added rule must belong to a profile added after it.
 // The immutable baseline source hash is never regenerated.
-// data-qds-shadcn-accent: optional shadcn brand accent added after 150d952 (token-only rules).
+// data-ods-shadcn-accent: optional shadcn brand accent added after 150d952 (token-only rules).
 // Ink is rebuilt for 0.10.0 as a new design language: its 150d952 rules are
 // retired, not immutable, and its new rules are an added profile.
-const PROFILE_SCOPES = /qds-variant-zen|qds-reading|qds-variant-glass|qds-variant-ink|data-qds-shadcn-accent/
+const PROFILE_SCOPES = /ods-variant-zen|ods-reading|ods-variant-glass|ods-variant-ink|data-ods-shadcn-accent/
 const RETIRED_PROFILE = 'ink'
 const selectorsOf = (rule) => {
   const path = rule.slice(0, rule.indexOf('{')).split('|')
@@ -51,7 +52,7 @@ const selectorsOf = (rule) => {
   return [...parts, list.slice(start)]
 }
 // Ink's rules left the shared partials: drop its own selectors and its alternatives inside shared :is() lists.
-const INK_ALTERNATIVES = [':is(.qds-ui.qds-variant-ink,.qds-ui .qds-variant-ink),', '.qds-ui.qds-variant-ink,.qds-ui .qds-variant-ink,']
+const INK_ALTERNATIVES = [':is(.ods-ui.ods-variant-ink,.ods-ui .ods-variant-ink),', '.ods-ui.ods-variant-ink,.ods-ui .ods-variant-ink,']
 const retire = (rule) => {
   const brace = rule.indexOf('{')
   const head = rule.slice(0, brace)
@@ -61,7 +62,7 @@ const retire = (rule) => {
   return kept.length ? `${prefix}${kept.join(',')}${rule.slice(brace)}` : null
 }
 // The runtime's per-variant stylesheet sentinel, one declaration per variant scope.
-const VARIANT_SENTINEL = /\.qds-variant-([a-z]+)\{--_qds-variant: ?\1\}$/
+const VARIANT_SENTINEL = /\.ods-variant-([a-z]+)\{--_ods-variant: ?\1\}$/
 test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only added-profile rules', () => {
   assert.equal(substrateBaseline, '150d9526aa9aad65af8259cb4aab313d7ab6cce4')
   const baselines = [
@@ -78,7 +79,7 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
     const current = ruleKeys(css)
     // The frozen hash above still covers the untouched baseline; only the
     // enumerated declared changes are normalised before the rule-by-rule compare.
-    const expected = ruleKeys(applyDeclaredShadcnChanges(applyDeclaredFluentChanges(baseline, { layered: entry.includes('layered') }))).map(retire).filter(Boolean)
+    const expected = ruleKeys(applyDeclaredShadcnChanges(applyDeclaredFluentChanges(renameText(baseline), { layered: entry.includes('layered') }))).map(retire).filter(Boolean)
     const added = []
     let cursor = 0
     for (const rule of expected) {

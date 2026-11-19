@@ -168,16 +168,16 @@ async function pluginStates(page: Page, capture?: (selector: string, name: strin
   await assertParts(page, ['.q-loading__backdrop', '.q-loading__box', '.q-loading__spinner', '.q-loading__message'], 'Loading')
   await expect(page.locator('.q-loading__message')).toHaveText('Loading newer group')
   await capture?.('.q-loading__box', 'loading-newer')
-  await page.evaluate(() => (window as unknown as { __qdsPluginsTest: { hideNewerLoadingGroup: () => void } }).__qdsPluginsTest.hideNewerLoadingGroup())
+  await page.evaluate(() => (window as unknown as { __odsPluginsTest: { hideNewerLoadingGroup: () => void } }).__odsPluginsTest.hideNewerLoadingGroup())
   await expect(page.locator('.q-loading__message')).toHaveText('Loading base group')
   await capture?.('.q-loading__box', 'loading-base')
-  await page.evaluate(() => (window as unknown as { __qdsPluginsTest: { hideLoading: () => void } }).__qdsPluginsTest.hideLoading())
+  await page.evaluate(() => (window as unknown as { __odsPluginsTest: { hideLoading: () => void } }).__odsPluginsTest.hideLoading())
   await expect(page.locator('.q-loading')).toHaveCount(0)
   await page.getByRole('button', { name: 'Show loading overlay', exact: true }).click()
-  await assertParts(page, ['.qds-plugin-loading .q-loading__backdrop.bg-positive', '.qds-plugin-loading .q-loading__box', '.qds-plugin-loading .q-loading__spinner.text-accent', '.qds-plugin-loading .q-loading__message.text-warning'], 'native custom Loading options')
+  await assertParts(page, ['.ods-plugin-loading .q-loading__backdrop.bg-positive', '.ods-plugin-loading .q-loading__box', '.ods-plugin-loading .q-loading__spinner.text-accent', '.ods-plugin-loading .q-loading__message.text-warning'], 'native custom Loading options')
   expect((await paint(page.locator('.q-loading__message'))).textContrast, 'custom native Loading message contrast').toBeGreaterThanOrEqual(4.5)
   await capture?.('.q-loading__box', 'loading-custom')
-  await page.evaluate(() => (window as unknown as { __qdsPluginsTest: { hideLoading: () => void } }).__qdsPluginsTest.hideLoading())
+  await page.evaluate(() => (window as unknown as { __odsPluginsTest: { hideLoading: () => void } }).__odsPluginsTest.hideLoading())
   await expect(page.locator('.q-loading')).toHaveCount(0)
   await page.getByRole('button', { name: 'Start loading bar', exact: true }).click()
   await expect(page.locator('.q-loading-bar[role="progressbar"]')).toBeVisible()
@@ -335,7 +335,7 @@ for (const palette of SHADCN_PALETTES) for (const mode of ['light', 'dark'] as c
 
 // Opt-in raw proof: --repeat-each uses independent Playwright page/context fixtures.
 // These captures never consult or update a golden, nor use assertion retry capture.
-if (process.env.QDS_OVERLAY_STABILITY) for (const palette of SHADCN_PALETTES) for (const mode of ['light', 'dark'] as const) {
+if (process.env.ODS_OVERLAY_STABILITY) for (const palette of SHADCN_PALETTES) for (const mode of ['light', 'dark'] as const) {
   test(`@screens shadcn overlay raw stability ${palette}/${mode}`, async ({ page }, info) => {
     test.setTimeout(120_000)
     const capture = async (selector: string, name: string) => {

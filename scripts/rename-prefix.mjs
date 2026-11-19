@@ -35,6 +35,13 @@ export function renameText(text, { keep, stats } = {}) {
   return masked.length ? out.replace(/\0(\d+)\0/g, (_, i) => masked[i]) : out
 }
 
+const swap = (v, [a, b, c], [x, y, z]) => v.replace(a, x).replace(b, y).replace(c, z)
+const INVERSE = MAP.rules.toReversed().map((rule) => rule.find
+  ? { regex: new RegExp(escape(rule.replace), 'g'), replace: rule.find }
+  : { regex: new RegExp(swap(rule.pattern, ['qds', 'QDS', 'Qds'], ['ods', 'ODS', 'Ods']), 'g'), replace: swap(rule.replace, ['ods', 'ODS', 'Ods'], ['qds', 'QDS', 'Qds']) })
+
+export const revertText = (text) => INVERSE.reduce((out, { regex, replace }) => out.replace(regex, replace), text)
+
 const globToRegex = (glob) => new RegExp(`^${glob.split('**/').map((part) => part.split('**').map((p) => p.split('*').map(escape).join('[^/]*')).join('.*')).join('(?:.*/)?')}$`)
 const KEEP_FILES = MAP.keep.files.map(globToRegex)
 const kept = (file) => KEEP_FILES.some((re) => re.test(file))

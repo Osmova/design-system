@@ -25,8 +25,8 @@ test('the glass grammar compiles identically with or without the compatibility g
 })
 
 const assertScoped = ([path, body]) => {
-  assert.match(path, /\.qds-variant-glass|@keyframes qds-variant-glass-/, `unscoped glass rule: ${path}`)
-  assert.doesNotMatch(path, /qds-variant-(fluent|ink|one|term|shadcn|zen)/, `glass borrowed another profile scope: ${path}`)
+  assert.match(path, /\.ods-variant-glass|@keyframes ods-variant-glass-/, `unscoped glass rule: ${path}`)
+  assert.doesNotMatch(path, /ods-variant-(fluent|ink|one|term|shadcn|zen)/, `glass borrowed another profile scope: ${path}`)
   assert.doesNotMatch(body, /!important/, `glass must win on specificity: ${path}`)
 }
 
@@ -37,7 +37,7 @@ test('every glass rule is scoped to the glass profile, borrows no other scope an
 // Most glass grammar lives inline in its owning partials, so the whole bundle is checked too.
 test('every glass rule in the full bundle, inline partials included, is scoped and needs no !important', () => {
   const css = compile(`@use 'src/css/index';`)
-  const rules = flattenRules(css).filter(([path, body]) => !path.startsWith('@layer qds.tokens') && (path.includes('qds-variant-glass') || body.includes('--_qds-glass')))
+  const rules = flattenRules(css).filter(([path, body]) => !path.startsWith('@layer ods.tokens') && (path.includes('ods-variant-glass') || body.includes('--_ods-glass')))
   assert.ok(rules.length >= 80, `${rules.length} glass rules found`)
   for (const rule of rules) assertScoped(rule)
 })
@@ -53,12 +53,12 @@ test('menus spring from their centre and reduced motion drops the scale', () => 
 // Translucency is decoration only: each fallback resolves the glass scope to opaque materials.
 test('no-filter, reduced transparency, forced colours and increased contrast all resolve to opaque glass', () => {
   const css = compile(`@use 'src/themes/default';`)
-  const rules = flattenRules(css).filter(([path]) => path.includes('.qds-variant-glass'))
+  const rules = flattenRules(css).filter(([path]) => path.includes('.ods-variant-glass'))
     .map(([path, body]) => [path.replace(/: /g, ':'), body.replace(/:\s+/g, ':')])
   const opaque = (pattern) => rules.filter(([path, body]) => pattern.test(path)
-    && body.includes('--qds-material-regular-bg:var(--qds-surface-0)')
-    && body.includes('--qds-material-regular-filter:none')
-    && body.includes('--_qds-glass-bar-line:var(--qds-border)'))
+    && body.includes('--ods-material-regular-bg:var(--ods-surface-0)')
+    && body.includes('--ods-material-regular-filter:none')
+    && body.includes('--_ods-glass-bar-line:var(--ods-border)'))
   for (const [name, pattern] of [
     ['no backdrop-filter', /@supports not/],
     ['reduced transparency', /prefers-reduced-transparency:reduce/],
@@ -66,13 +66,13 @@ test('no-filter, reduced transparency, forced colours and increased contrast all
     ['increased contrast', /prefers-contrast:more/],
   ]) {
     const paths = opaque(pattern).map(([path]) => path).join(' ')
-    assert.match(paths, /\|\.qds-variant-glass,/, `${name} must reach the light glass scope`)
-    assert.match(paths, /body\.qds-ui\.body--dark \.qds-variant-glass/, `${name} must reach the dark glass scope`)
+    assert.match(paths, /\|\.ods-variant-glass,/, `${name} must reach the light glass scope`)
+    assert.match(paths, /body\.ods-ui\.body--dark \.ods-variant-glass/, `${name} must reach the dark glass scope`)
   }
   const contrastRules = rules.filter(([path]) => /@media ?\(prefers-contrast:more\)\|/.test(path))
-  assert.ok(contrastRules.some(([, body]) => body.includes('--qds-color-primary:#0040dd')), 'light increased-contrast accent')
-  assert.ok(contrastRules.some(([, body]) => body.includes('--qds-color-primary:#8cc3ff')), 'dark increased-contrast accent')
-  assert.ok(contrastRules.every(([, body]) => body.includes('--qds-material-stroke:var(--qds-stroke-strong)')), 'increased contrast restores the 3:1 ring on every glass edge')
+  assert.ok(contrastRules.some(([, body]) => body.includes('--ods-color-primary:#0040dd')), 'light increased-contrast accent')
+  assert.ok(contrastRules.some(([, body]) => body.includes('--ods-color-primary:#8cc3ff')), 'dark increased-contrast accent')
+  assert.ok(contrastRules.every(([, body]) => body.includes('--ods-material-stroke:var(--ods-stroke-strong)')), 'increased contrast restores the 3:1 ring on every glass edge')
 })
 
 // ── Contrast is a hard gate, computed from the shipped token values ──────────

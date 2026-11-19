@@ -1,4 +1,4 @@
-/* Private document only. Never import this stylesheet into the QDS gallery. */
+/* Private document only. Never import this stylesheet into the ODS gallery. */
 @import "tailwindcss" source(none);
 @import "tw-animate-css";
 @import "../../../packages/quasar/src/fonts/inter.css";

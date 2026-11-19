@@ -108,7 +108,7 @@ export const Radio: Story = {
     components: { QRadio },
     setup: () => ({ args, model: ref('comfortable') }),
     template: `
-      <div class="qds-story-row" role="radiogroup" aria-label="Density">
+      <div class="ods-story-row" role="radiogroup" aria-label="Density">
         <QRadio v-model="model" val="compact" label="Compact" :color="args.color" :dense="args.dense" :left-label="args.leftLabel" :disable="args.disable" />
         <QRadio v-model="model" val="comfortable" :label="args.label" :color="args.color" :dense="args.dense" :left-label="args.leftLabel" :disable="args.disable" />
       </div>`,

@@ -1330,7 +1330,7 @@
     "sourceSha256": "451b8bd9f75850925a924a45b1e10f437cbe9682dbec347d817b4f5d0ec8b1cd",
     "version": "2.35.0"
   },
-  "title": "QDS native export inventory (bounded proof)",
+  "title": "ODS native export inventory (bounded proof)",
   "visualPlugins": [
     {
       "disposition": "visual-plugin",

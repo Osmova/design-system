@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { QAvatar, QBadge, QBar, QBtn, QCard, QCardActions, QCardSection, QCarousel, QCarouselSlide, QChatMessage, QCheckbox, QChip, QColor, QDate, QEditor, QExpansionItem, QFile, QIcon, QInput, QItem, QItemLabel, QItemSection, QLinearProgress, QList, QMarkupTable, QPagination, QRadio, QRange, QRating, QSelect, QSeparator, QSkeleton, QSlider, QStep, QStepper, QTab, QTabPanel, QTabPanels, QTable, QTabs, QTime, QTimeline, QTimelineEntry, QToggle, QToolbar, QToolbarTitle, QTree, QUploader } from 'quasar'
 import { ppCheck, ppStar, ppPlus } from 'quasar-extras-svg-icons/phosphor-icons-v2'
-import type { ShadcnBaseColor } from '@osmova/quasar-design-system'
+import type { ShadcnBaseColor } from '@osmova/ds-quasar'
 
 defineProps<{ dark: boolean; variant: string; palette: ShadcnBaseColor }>()
 const $q = useQuasar()
@@ -23,7 +23,7 @@ const nodes = [{ label: 'Root', id: 'root', children: [{ label: 'Branch', id: 'b
 </script>
 
 <template>
-  <q-card :dark="dark" :class="dark ? undefined : ['qds-theme-light', `qds-variant-${variant}`]" :data-qds-shadcn-base-color="!dark && variant === 'shadcn' ? palette : undefined" :data-scheme="dark ? 'dark' : 'light'" style="display: grid; gap: 16px; min-width: 0; padding: 16px">
+  <q-card :dark="dark" :class="dark ? undefined : ['ods-theme-light', `ods-variant-${variant}`]" :data-ods-shadcn-base-color="!dark && variant === 'shadcn' ? palette : undefined" :data-scheme="dark ? 'dark' : 'light'" style="display: grid; gap: 16px; min-width: 0; padding: 16px">
     <q-card :dark="dark" bordered data-native="card">
       <q-card-section><h2>{{ dark ? 'Local dark' : 'Explicit light' }}</h2></q-card-section>
       <q-card-section>

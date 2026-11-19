@@ -1,104 +1,104 @@
 @use '../materials';
 @use '../importance';
 
-$one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
+$one: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one)';
 
-$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
-$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
-$win-dialog-fill: linear-gradient(var(--_qds-win-layer-alt), var(--_qds-win-layer-alt)), var(--qds-surface-1);
+$glass: '.ods-variant-glass:is(.ods-ui,.ods-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui,.ods-ui *)';
+$win: '.ods-variant-win:is(.ods-ui,.ods-ui *)';
+$win-dialog-fill: linear-gradient(var(--_ods-win-layer-alt), var(--_ods-win-layer-alt)), var(--ods-surface-1);
 
 @mixin styles {
-  .qds-ui .q-dialog__backdrop { background: var(--qds-bg-overlay); }
+  .ods-ui .q-dialog__backdrop { background: var(--ods-bg-overlay); }
 
   // :where keeps Quasar's positioned-dialog corner flattening (0,2,1) in charge.
-  .qds-ui :where(.q-dialog__inner--minimized) > .q-card {
-    width: min(32rem, calc(100vw - 2 * var(--qds-space-md)));
-    border: var(--qds-border-width-control) solid var(--qds-material-stroke);
-    border-radius: var(--qds-card-radius);
-    box-shadow: var(--qds-material-edge), var(--qds-shadow-lg);
+  .ods-ui :where(.q-dialog__inner--minimized) > .q-card {
+    width: min(32rem, calc(100vw - 2 * var(--ods-space-md)));
+    border: var(--ods-border-width-control) solid var(--ods-material-stroke);
+    border-radius: var(--ods-card-radius);
+    box-shadow: var(--ods-material-edge), var(--ods-shadow-lg);
     @include materials.material(thick);
   }
 
   // The content animates, not the inner: fading the inner would make the card's backdrop blur snap in.
-  .qds-ui .q-dialog__inner:is(.q-transition--scale-enter-active, .q-transition--scale-leave-active) {
-    --qds-dialog-motion: min(var(--q-transition-duration, 300ms), var(--qds-motion-duration-slow));
-    transition: transform var(--qds-dialog-motion);
+  .ods-ui .q-dialog__inner:is(.q-transition--scale-enter-active, .q-transition--scale-leave-active) {
+    --ods-dialog-motion: min(var(--q-transition-duration, 300ms), var(--ods-motion-duration-slow));
+    transition: transform var(--ods-dialog-motion);
   }
 
-  .qds-ui .q-dialog__inner.q-transition--scale-leave-active { --qds-dialog-motion: min(var(--q-transition-duration, 300ms), var(--qds-motion-duration-medium)); }
-  .qds-ui .q-dialog__inner:is(.q-transition--scale-enter-from, .q-transition--scale-leave-to) { opacity: 1; transform: none; }
-  .qds-ui .q-dialog__inner:is(.q-transition--scale-enter-active, .q-transition--scale-leave-active) > * { transition: opacity var(--qds-dialog-motion) var(--qds-motion-ease-out), transform var(--qds-dialog-motion) var(--qds-motion-ease-out); }
-  .qds-ui .q-dialog__inner:is(.q-transition--scale-enter-from, .q-transition--scale-leave-to) > * { opacity: 0; transform: scale3d(0.96, 0.96, 1); }
+  .ods-ui .q-dialog__inner.q-transition--scale-leave-active { --ods-dialog-motion: min(var(--q-transition-duration, 300ms), var(--ods-motion-duration-medium)); }
+  .ods-ui .q-dialog__inner:is(.q-transition--scale-enter-from, .q-transition--scale-leave-to) { opacity: 1; transform: none; }
+  .ods-ui .q-dialog__inner:is(.q-transition--scale-enter-active, .q-transition--scale-leave-active) > * { transition: opacity var(--ods-dialog-motion) var(--ods-motion-ease-out), transform var(--ods-dialog-motion) var(--ods-motion-ease-out); }
+  .ods-ui .q-dialog__inner:is(.q-transition--scale-enter-from, .q-transition--scale-leave-to) > * { opacity: 0; transform: scale3d(0.96, 0.96, 1); }
 
-  .qds-ui .q-dialog__inner > .q-card > .q-card__section { padding: var(--qds-space-sm) var(--qds-space-lg); }
-  .qds-ui .q-dialog__inner > .q-card > .q-card__section:first-child { padding-block-start: var(--qds-space-lg); }
-  .qds-ui .q-dialog__inner > .q-card > .q-card__section:last-child { padding-block-end: var(--qds-space-lg); }
-  .qds-ui .q-dialog__inner > .q-card > .q-card__actions { gap: var(--qds-space-sm); padding: var(--qds-space-md) var(--qds-space-lg) var(--qds-space-lg); }
-  .qds-ui .q-dialog__inner--minimized { padding: var(--qds-space-md); }
+  .ods-ui .q-dialog__inner > .q-card > .q-card__section { padding: var(--ods-space-sm) var(--ods-space-lg); }
+  .ods-ui .q-dialog__inner > .q-card > .q-card__section:first-child { padding-block-start: var(--ods-space-lg); }
+  .ods-ui .q-dialog__inner > .q-card > .q-card__section:last-child { padding-block-end: var(--ods-space-lg); }
+  .ods-ui .q-dialog__inner > .q-card > .q-card__actions { gap: var(--ods-space-sm); padding: var(--ods-space-md) var(--ods-space-lg) var(--ods-space-lg); }
+  .ods-ui .q-dialog__inner--minimized { padding: var(--ods-space-md); }
 
-  .qds-ui .q-dialog__title {
-    color: var(--qds-fg-strong);
-    font-size: var(--qds-font-size-h5);
-    font-weight: var(--qds-font-weight-h5);
-    line-height: var(--qds-line-height-h5);
+  .ods-ui .q-dialog__title {
+    color: var(--ods-fg-strong);
+    font-size: var(--ods-font-size-h5);
+    font-weight: var(--ods-font-weight-h5);
+    line-height: var(--ods-line-height-h5);
     letter-spacing: normal;
   }
 
-  .qds-ui .q-dialog__message { color: var(--qds-fg-default); }
+  .ods-ui .q-dialog__message { color: var(--ods-fg-default); }
 
-  .qds-ui .q-dialog .q-card__actions .q-btn:is(.q-btn--flat, .q-btn--outline):not(:last-child, .text-negative, .text-warning, .text-positive, .disabled) { @include importance.declarations { color: var(--qds-fg-default) !important; } }
+  .ods-ui .q-dialog .q-card__actions .q-btn:is(.q-btn--flat, .q-btn--outline):not(:last-child, .text-negative, .text-warning, .text-positive, .disabled) { @include importance.declarations { color: var(--ods-fg-default) !important; } }
   // The Dialog plugin defaults its actions to Quasar's amber in dark mode.
-  .qds-ui .q-dialog-plugin .q-btn.text-amber { @include importance.declarations { color: var(--qds-fg-brand) !important; } }
+  .ods-ui .q-dialog-plugin .q-btn.text-amber { @include importance.declarations { color: var(--ods-fg-brand) !important; } }
 
   // WinUI ContentDialog: a solid layer over the base, with the command row on a base-coloured footer band.
   #{$win} :where(.q-dialog__inner--minimized) > .q-card:not(.q-bottom-sheet) {
-    border-color: var(--_qds-win-surface-stroke);
+    border-color: var(--_ods-win-surface-stroke);
     @include materials.solid($win-dialog-fill);
   }
 
-  #{$win} .q-dialog__inner > .q-card > .q-card__section:has(+ .q-card__actions:last-child) { padding-block-end: var(--qds-space-lg); }
+  #{$win} .q-dialog__inner > .q-card > .q-card__section:has(+ .q-card__actions:last-child) { padding-block-end: var(--ods-space-lg); }
   // ContentDialog settles in from 105%.
   #{$win} .q-dialog__inner:is(.q-transition--scale-enter-from, .q-transition--scale-leave-to) > * { transform: scale3d(1.05, 1.05, 1); }
 
   #{$win} :where(.q-dialog__inner--minimized) > .q-card > .q-card__actions:last-child {
-    padding: var(--qds-space-lg);
-    background: var(--qds-surface-1);
-    border-block-start: var(--qds-border-width-control) solid var(--qds-card-stroke);
+    padding: var(--ods-space-lg);
+    background: var(--ods-surface-1);
+    border-block-start: var(--ods-border-width-control) solid var(--ods-card-stroke);
     border-end-start-radius: inherit;
     border-end-end-radius: inherit;
   }
 
   #{$one} .q-dialog__inner > :is(.q-card, .q-bottom-sheet) {
-    --qds-surface-focus-block: color-mix(in srgb, var(--qds-surface-transient) 92%, var(--qds-text));
-    --qds-card-fill: var(--qds-surface-focus-block);
-    --qds-control-fill-default: var(--qds-surface-focus-block);
-    --qds-control-fill-hover: color-mix(in srgb, var(--qds-surface-transient) 90%, var(--qds-text));
+    --ods-surface-focus-block: color-mix(in srgb, var(--ods-surface-transient) 92%, var(--ods-text));
+    --ods-card-fill: var(--ods-surface-focus-block);
+    --ods-control-fill-default: var(--ods-surface-focus-block);
+    --ods-control-fill-hover: color-mix(in srgb, var(--ods-surface-transient) 90%, var(--ods-text));
   }
 
-  #{$one} .q-dialog__inner--standard > .q-card { border-color: transparent; border-radius: calc(var(--qds-card-radius) + 0.25rem); @include materials.solid(var(--qds-surface-transient)); }
+  #{$one} .q-dialog__inner--standard > .q-card { border-color: transparent; border-radius: calc(var(--ods-card-radius) + 0.25rem); @include materials.solid(var(--ods-surface-transient)); }
 
-  #{$shadcn} .q-dialog__inner > .q-card { color: var(--qds-fg-default); border: var(--qds-border-width-control) solid var(--qds-border); box-shadow: var(--qds-shadow-lg); @include materials.solid(var(--qds-bg-card)); }
-  #{$shadcn} .q-dialog__inner--standard > .q-card { border-radius: var(--qds-card-radius); }
+  #{$shadcn} .q-dialog__inner > .q-card { color: var(--ods-fg-default); border: var(--ods-border-width-control) solid var(--ods-border); box-shadow: var(--ods-shadow-lg); @include materials.solid(var(--ods-bg-card)); }
+  #{$shadcn} .q-dialog__inner--standard > .q-card { border-radius: var(--ods-card-radius); }
   #{$shadcn} .q-dialog__inner--maximized > .q-card { border: 0; box-shadow: none; }
-  #{$shadcn} .q-dialog__title { font-size: var(--qds-font-size-h6); line-height: var(--qds-line-height-h6); font-weight: var(--qds-font-weight-semibold); }
-  #{$shadcn} .q-dialog__message { color: var(--qds-fg-muted); font-size: var(--qds-font-size-body); line-height: var(--qds-line-height-body); }
+  #{$shadcn} .q-dialog__title { font-size: var(--ods-font-size-h6); line-height: var(--ods-line-height-h6); font-weight: var(--ods-font-weight-semibold); }
+  #{$shadcn} .q-dialog__message { color: var(--ods-fg-muted); font-size: var(--ods-font-size-body); line-height: var(--ods-line-height-body); }
   #{$shadcn} .q-dialog-plugin__form { max-height: min(50dvh, 24rem); }
-  #{$shadcn} .q-dialog-plugin__form .q-option-group > div + div { margin-block-start: var(--qds-space-sm); }
-  #{$shadcn} .q-dialog__inner > .q-card > .q-card__actions { gap: var(--qds-space-sm); }
+  #{$shadcn} .q-dialog-plugin__form .q-option-group > div + div { margin-block-start: var(--ods-space-sm); }
+  #{$shadcn} .q-dialog__inner > .q-card > .q-card__actions { gap: var(--ods-space-sm); }
   @media (prefers-reduced-motion: reduce) { #{$shadcn} .q-dialog__inner:is(.q-transition--scale-enter-active, .q-transition--scale-leave-active), #{$shadcn} .q-dialog__inner:is(.q-transition--scale-enter-active, .q-transition--scale-leave-active) > * { transition: none; } }
   @media (forced-colors: active) { #{$shadcn} .q-dialog__inner > .q-card { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; } }
 
   // Sheets float inset with a large radius, concentric with fields one sheet padding in.
-  #{$glass} .q-dialog__inner--minimized:not(.q-dialog__inner--animating) > div { border-radius: var(--_qds-glass-sheet-radius); }
-  #{$glass} .q-dialog__inner > .q-card > .q-form > :is(.q-card__section, .q-card__actions) { padding-inline: var(--_qds-glass-sheet-pad); }
-  #{$glass} .q-dialog__inner--bottom > div { margin: 0 var(--_qds-glass-inset) calc(var(--_qds-glass-inset) + env(safe-area-inset-bottom)); }
+  #{$glass} .q-dialog__inner--minimized:not(.q-dialog__inner--animating) > div { border-radius: var(--_ods-glass-sheet-radius); }
+  #{$glass} .q-dialog__inner > .q-card > .q-form > :is(.q-card__section, .q-card__actions) { padding-inline: var(--_ods-glass-sheet-pad); }
+  #{$glass} .q-dialog__inner--bottom > div { margin: 0 var(--_ods-glass-inset) calc(var(--_ods-glass-inset) + env(safe-area-inset-bottom)); }
   // Alerts and partial sheets are regular glass; a maximized dialog stays opaque.
-  #{$glass} .q-dialog__inner--minimized > :is(.q-card, .q-bottom-sheet) { box-shadow: var(--qds-material-edge), var(--qds-shadow-lg); @include materials.material(regular); }
+  #{$glass} .q-dialog__inner--minimized > :is(.q-card, .q-bottom-sheet) { box-shadow: var(--ods-material-edge), var(--ods-shadow-lg); @include materials.material(regular); }
   #{$glass} .q-dialog__inner--maximized > .q-card { border: 0; box-shadow: none; }
-  #{$glass} .q-dialog__inner.q-transition--scale-enter-active > * { transition-timing-function: var(--qds-motion-ease-out), var(--_qds-glass-spring); }
+  #{$glass} .q-dialog__inner.q-transition--scale-enter-active > * { transition-timing-function: var(--ods-motion-ease-out), var(--_ods-glass-spring); }
   @media (prefers-reduced-motion: reduce) { #{$glass} .q-dialog__inner.q-transition--scale-enter-from > * { transform: none; } }
-  #{$glass} .q-dialog__title { font-weight: var(--qds-font-weight-bold); text-align: start; }
+  #{$glass} .q-dialog__title { font-weight: var(--ods-font-weight-bold); text-align: start; }
   #{$glass} .q-dialog__inner > .q-card > .q-card__actions { justify-content: flex-end; }
 
 }

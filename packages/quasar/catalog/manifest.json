@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "schemaVersion": 1,
-  "title": "QDS shared catalog \u2014 bounded proof",
+  "title": "ODS shared catalog \u2014 bounded proof",
   "scope": {
     "kind": "development-only",
     "note": "Catalog demos, manifest and control data are excluded from the published package (not listed in package.json files/exports). They only back the Histoire + Storybook preview proof.",
@@ -9,7 +9,7 @@
     "inventoryRule": "The native inventory is machine-generated from the installed Quasar source; the case list is separate from the export list."
   },
   "runtime": {
-    "package": "@osmova/quasar-design-system",
+    "package": "@osmova/ds-quasar",
     "controllerEntryRule": "The preview controller is configured from the compiled package entrypoint (dist) by each host's setup file and injected once per preview document/app.",
     "injection": {
       "key": "DESIGN_SYSTEM_THEME_KEY",
@@ -35,7 +35,7 @@
       "family": "actions",
       "title": "Native QBtn states",
       "order": 1,
-      "demo": "./demos/QdsButtonDemo.vue",
+      "demo": "./demos/OdsButtonDemo.vue",
       "nativeExports": [
         "QBtn",
         "QBtnDropdown"
@@ -74,7 +74,7 @@
       "family": "forms",
       "title": "Native QField marginals and states",
       "order": 2,
-      "demo": "./demos/QdsFieldDemo.vue",
+      "demo": "./demos/OdsFieldDemo.vue",
       "nativeExports": [
         "QField",
         "QIcon"
@@ -123,7 +123,7 @@
       "family": "navigation",
       "title": "Native QTabs, arrows and disabled state",
       "order": 3,
-      "demo": "./demos/QdsTabsDemo.vue",
+      "demo": "./demos/OdsTabsDemo.vue",
       "nativeExports": [
         "QTabs",
         "QTab",
@@ -161,7 +161,7 @@
       "family": "overlays",
       "title": "Native QMenu portal lifecycle",
       "order": 4,
-      "demo": "./demos/QdsMenuDemo.vue",
+      "demo": "./demos/OdsMenuDemo.vue",
       "nativeExports": [
         "QMenu",
         "QList",

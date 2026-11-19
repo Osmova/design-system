@@ -19,20 +19,20 @@ export function compileSubstrateBaseline(file) {
   paths ??= new Set(git('ls-tree', '--full-tree', '-r', '--name-only', substrateBaseline, '--', 'src').trim().split('\n'))
   const importer = {
     canonicalize(url, { containingUrl }) {
-      if (/^[a-z][a-z\d+.-]*:/i.test(url) && !url.startsWith('qds-substrate:')) return null
-      const path = url.startsWith('qds-substrate:') ? new URL(url).pathname.slice(1)
+      if (/^[a-z][a-z\d+.-]*:/i.test(url) && !url.startsWith('ods-substrate:')) return null
+      const path = url.startsWith('ods-substrate:') ? new URL(url).pathname.slice(1)
         : posix.normalize(posix.join(containingUrl ? posix.dirname(containingUrl.pathname.slice(1)) : '', url))
       const dir = posix.dirname(path)
       const name = posix.basename(path)
       const candidates = path.endsWith('.scss') ? [path, posix.join(dir, `_${name}`)]
         : [`${path}.scss`, posix.join(dir, `_${name}.scss`), `${path}/index.scss`, `${path}/_index.scss`]
       const match = candidates.find((candidate) => paths.has(candidate))
-      return match ? new URL(`qds-substrate:/${match}`) : null
+      return match ? new URL(`ods-substrate:/${match}`) : null
     },
     load(url) { return { contents: read(url.pathname.slice(1)), syntax: 'scss' } },
   }
   return compileString(read(file), {
-    url: new URL(`qds-substrate:/${file}`), importers: [importer],
+    url: new URL(`ods-substrate:/${file}`), importers: [importer],
     loadPaths: [new URL('node_modules/', root).pathname], style: 'compressed', silenceDeprecations: ['if-function'],
   }).css
 }

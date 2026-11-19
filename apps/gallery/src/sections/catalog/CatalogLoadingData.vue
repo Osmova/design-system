@@ -59,13 +59,13 @@ function pulseAjaxBar(): void {
 
 <template>
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Progress, loading &amp; placeholders</div>
+    <div class="text-h6 ods-display q-mb-md">Progress, loading &amp; placeholders</div>
     <q-ajax-bar ref="ajaxBar" color="primary" position="top" size="3px" skip-hijack />
     <div class="catalog-grid catalog-grid--three">
       <div class="catalog-demo">
         <div class="catalog-label">QAjaxBar</div>
         <q-btn unelevated color="primary" label="Pulse ajax bar" no-caps @click="pulseAjaxBar" />
-        <div class="qds-text-muted q-mt-sm">Manual preview only; no network hijacking.</div>
+        <div class="ods-text-muted q-mt-sm">Manual preview only; no network hijacking.</div>
       </div>
 
       <div class="catalog-demo">
@@ -91,7 +91,7 @@ function pulseAjaxBar(): void {
       <div class="catalog-demo">
         <div class="catalog-label">QInnerLoading</div>
         <div class="catalog-loading-box">
-          <div class="qds-text-muted">Loading overlay preview</div>
+          <div class="ods-text-muted">Loading overlay preview</div>
           <q-inner-loading showing label="Syncing" color="primary" data-test="qds-catalog-inner-loading" />
         </div>
       </div>
@@ -106,14 +106,14 @@ function pulseAjaxBar(): void {
   </q-card>
 
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Data display &amp; navigation structures</div>
+    <div class="text-h6 ods-display q-mb-md">Data display &amp; navigation structures</div>
     <div class="catalog-grid catalog-grid--two">
       <div class="catalog-demo catalog-demo--wide">
         <div class="catalog-label">QExpansionItem</div>
         <q-list class="catalog-expansion-list" separator>
           <q-expansion-item
             v-model="expansionExpanded"
-            class="qds-card"
+            class="ods-card"
             expand-separator
             data-test="qds-expansion-expanded"
           >
@@ -133,7 +133,7 @@ function pulseAjaxBar(): void {
 
           <q-expansion-item
             v-model="expansionCollapsed"
-            class="qds-card"
+            class="ods-card"
             label="Collapsed chevron state"
             caption="Chevron remains deterministic and content starts hidden"
             expand-icon-toggle
@@ -144,7 +144,7 @@ function pulseAjaxBar(): void {
 
           <q-expansion-item
             v-model="expansionDense"
-            class="qds-card"
+            class="ods-card"
             dense
             expand-separator
             label="Dense expanded row"
@@ -155,7 +155,7 @@ function pulseAjaxBar(): void {
           </q-expansion-item>
 
           <q-expansion-item
-            class="qds-card"
+            class="ods-card"
             disable
             label="Disabled header"
             caption="Non-interactive expansion header"

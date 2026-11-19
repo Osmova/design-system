@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { useDesignSystem } from '@osmova/quasar-design-system'
+import { useDesignSystem } from '@osmova/ds-quasar'
 import ShadcnPalettePanels from '../components/ShadcnPalettePanels.vue'
 
 type VariantName = 'win' | 'ink' | 'one' | 'term' | 'shadcn' | 'zen' | 'glass'
@@ -70,12 +70,12 @@ const pages = reactive<Record<VariantName, number>>({
 </script>
 
 <template>
-  <section class="variants-section" data-test="qds-variants-section" aria-labelledby="qds-variants-title">
+  <section class="variants-section" data-test="qds-variants-section" aria-labelledby="ods-variants-title">
     <ShadcnPalettePanels v-if="ds.variant.value === 'shadcn'" />
-    <div class="variants-hero qds-card">
+    <div class="variants-hero ods-card">
       <p class="variants-kicker">Variant lab</p>
-      <h1 id="qds-variants-title" class="qds-display">Same anatomy, different visual systems</h1>
-      <p class="qds-text-muted">
+      <h1 id="ods-variants-title" class="ods-display">Same anatomy, different visual systems</h1>
+      <p class="ods-text-muted">
         This view keeps component anatomy identical so variant-specific typography, density, borders,
         material, and state rules are visible side by side. Seven canonical variants share one token system.
       </p>
@@ -86,13 +86,13 @@ const pages = reactive<Record<VariantName, number>>({
         v-for="variant in variants"
         :key="variant.name"
         class="variant-card"
-        :class="`qds-variant-${variant.name}`"
-        :data-qds-shadcn-base-color="variant.name === 'shadcn' ? ds.shadcnBaseColor.value : undefined"
+        :class="`ods-variant-${variant.name}`"
+        :data-ods-shadcn-base-color="variant.name === 'shadcn' ? ds.shadcnBaseColor.value : undefined"
         :data-test="`qds-variant-card-${variant.name}`"
       >
         <q-card-section>
           <div class="variant-card__eyebrow">{{ variant.sample }}</div>
-          <h2 class="variant-card__title qds-display">{{ variant.label }}</h2>
+          <h2 class="variant-card__title ods-display">{{ variant.label }}</h2>
           <p class="variant-card__copy">{{ variant.intent }}</p>
         </q-card-section>
 
@@ -106,7 +106,7 @@ const pages = reactive<Record<VariantName, number>>({
             <span class="variant-role variant-role--negative">Alert</span>
           </div>
 
-          <div class="qds-button-row qds-button-row--tight">
+          <div class="ods-button-row ods-button-row--tight">
             <q-btn unelevated color="primary" label="Apply" />
             <q-btn outline color="primary" label="Inspect" />
           </div>
@@ -172,7 +172,7 @@ const pages = reactive<Record<VariantName, number>>({
 .variants-section {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--qds-space-lg);
+  gap: var(--ods-space-lg);
 }
 
 .variants-section > *,
@@ -186,17 +186,17 @@ const pages = reactive<Record<VariantName, number>>({
 }
 
 .variants-kicker {
-  margin: 0 0 var(--qds-space-xs);
-  color: var(--qds-fg-brand);
+  margin: 0 0 var(--ods-space-xs);
+  color: var(--ods-fg-brand);
   font-size: 0.78rem;
-  font-weight: var(--qds-font-weight-semibold);
+  font-weight: var(--ods-font-weight-semibold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .variants-hero h1 {
-  margin: 0 0 var(--qds-space-sm);
-  color: var(--qds-text-strong);
+  margin: 0 0 var(--ods-space-sm);
+  color: var(--ods-text-strong);
   font-size: clamp(1.75rem, 4vw, 3rem);
   line-height: 1.05;
 }
@@ -210,45 +210,45 @@ const pages = reactive<Record<VariantName, number>>({
 .variants-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--qds-space-lg);
+  gap: var(--ods-space-lg);
 }
 
 .variant-card__eyebrow {
-  color: var(--qds-color-primary);
-  font-family: var(--qds-font-family);
+  color: var(--ods-color-primary);
+  font-family: var(--ods-font-family);
   font-size: 0.75rem;
-  font-weight: var(--qds-font-weight-semibold);
-  letter-spacing: var(--qds-control-letter-spacing);
-  text-transform: var(--qds-control-text-transform);
+  font-weight: var(--ods-font-weight-semibold);
+  letter-spacing: var(--ods-control-letter-spacing);
+  text-transform: var(--ods-control-text-transform);
 }
 
-.variant-card.qds-variant-term .variant-card__eyebrow,
-.variant-card.qds-variant-one .variant-card__eyebrow {
-  color: var(--qds-fg-brand);
+.variant-card.ods-variant-term .variant-card__eyebrow,
+.variant-card.ods-variant-one .variant-card__eyebrow {
+  color: var(--ods-fg-brand);
 }
 
 .variant-card__title {
   margin: 0.2rem 0 0;
-  color: var(--qds-text-strong);
+  color: var(--ods-text-strong);
   font-size: clamp(1.6rem, 3vw, 2.25rem);
   line-height: 1;
 }
 
 .variant-card__copy {
-  margin: var(--qds-space-sm) 0 0;
-  color: var(--qds-text-muted);
+  margin: var(--ods-space-sm) 0 0;
+  color: var(--ods-text-muted);
 }
 
 .variant-card__controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--qds-space-md);
+  gap: var(--ods-space-md);
 }
 
 .variant-card__roles {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--qds-space-xs);
+  gap: var(--ods-space-xs);
 }
 
 .variant-role {
@@ -256,46 +256,46 @@ const pages = reactive<Record<VariantName, number>>({
   align-items: center;
   min-height: 1.5rem;
   padding: 0 0.625rem;
-  border-radius: var(--qds-radius-full);
+  border-radius: var(--ods-radius-full);
   font-size: 0.78rem;
-  font-weight: var(--qds-font-weight-medium);
-  background: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-bg-opacity));
-  color: var(--qds-text-strong);
+  font-weight: var(--ods-font-weight-medium);
+  background: rgba(var(--ods-color-primary-rgb), var(--ods-tonal-bg-opacity));
+  color: var(--ods-text-strong);
 }
 
 .variant-role--info {
-  background: rgba(var(--qds-color-info-rgb, 59 130 246), var(--qds-tonal-bg-opacity));
+  background: rgba(var(--ods-color-info-rgb, 59 130 246), var(--ods-tonal-bg-opacity));
 }
 
 .variant-role--positive {
-  background: rgba(var(--qds-color-positive-rgb, 16 185 129), var(--qds-tonal-bg-opacity));
+  background: rgba(var(--ods-color-positive-rgb, 16 185 129), var(--ods-tonal-bg-opacity));
 }
 
 .variant-role--warning {
-  background: rgba(var(--qds-color-warning-rgb, 245 158 11), var(--qds-tonal-bg-opacity));
+  background: rgba(var(--ods-color-warning-rgb, 245 158 11), var(--ods-tonal-bg-opacity));
 }
 
 .variant-role--negative {
-  background: rgba(var(--qds-color-negative-rgb, 239 68 68), var(--qds-tonal-bg-opacity));
+  background: rgba(var(--ods-color-negative-rgb, 239 68 68), var(--ods-tonal-bg-opacity));
 }
 
 .variant-card__nested {
-  padding: var(--qds-space-xs);
+  padding: var(--ods-space-xs);
 }
 
 /* Ink has no tonal fills: roles are outlined, and only the alert takes the danger red. */
-.qds-variant-ink .variant-role {
-  box-shadow: inset 0 0 0 1px var(--qds-stroke-strong);
+.ods-variant-ink .variant-role {
+  box-shadow: inset 0 0 0 1px var(--ods-stroke-strong);
 }
 
-.qds-variant-ink .variant-role--negative {
-  color: var(--qds-fg-negative);
-  box-shadow: inset 0 0 0 1px var(--qds-fg-negative);
+.ods-variant-ink .variant-role--negative {
+  color: var(--ods-fg-negative);
+  box-shadow: inset 0 0 0 1px var(--ods-fg-negative);
 }
 
 .variant-card__progress {
   display: grid;
-  gap: var(--qds-space-xs);
+  gap: var(--ods-space-xs);
 }
 
 .variant-card :deep(.q-pagination) {

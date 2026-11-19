@@ -6,7 +6,7 @@ const tab = ref('overview')
 
 <template>
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Identity, notices &amp; panels</div>
+    <div class="text-h6 ods-display q-mb-md">Identity, notices &amp; panels</div>
     <div class="catalog-grid catalog-grid--three">
       <div class="catalog-demo">
         <div class="catalog-label">QAvatar</div>

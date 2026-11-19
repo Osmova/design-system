@@ -1,412 +1,412 @@
 @use '../importance';
 
-$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
-$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
+$glass: '.ods-variant-glass:is(.ods-ui,.ods-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui,.ods-ui *)';
+$win: '.ods-variant-win:is(.ods-ui,.ods-ui *)';
 $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive, .text-negative, .text-warning, .text-info)';
 
 @mixin styles {
-  .qds-ui .q-checkbox,
-  .qds-ui .q-radio,
-  .qds-ui .q-toggle {
-    color: var(--qds-fg-default);
+  .ods-ui .q-checkbox,
+  .ods-ui .q-radio,
+  .ods-ui .q-toggle {
+    color: var(--ods-fg-default);
   }
 
-  .qds-ui .q-checkbox:not(.q-checkbox--dense),
-  .qds-ui .q-radio:not(.q-radio--dense),
-  .qds-ui .q-toggle:not(.q-toggle--dense) {
-    min-height: var(--qds-control-size-md);
+  .ods-ui .q-checkbox:not(.q-checkbox--dense),
+  .ods-ui .q-radio:not(.q-radio--dense),
+  .ods-ui .q-toggle:not(.q-toggle--dense) {
+    min-height: var(--ods-control-size-md);
   }
 
-  .qds-ui .q-checkbox .q-checkbox__label,
-  .qds-ui .q-radio .q-radio__label,
-  .qds-ui .q-toggle .q-toggle__label {
-    padding-inline: var(--qds-space-sm) 0;
+  .ods-ui .q-checkbox .q-checkbox__label,
+  .ods-ui .q-radio .q-radio__label,
+  .ods-ui .q-toggle .q-toggle__label {
+    padding-inline: var(--ods-space-sm) 0;
   }
 
-  .qds-ui .q-checkbox.reverse .q-checkbox__label,
-  .qds-ui .q-radio.reverse .q-radio__label,
-  .qds-ui .q-toggle.reverse .q-toggle__label {
-    padding-inline: 0 var(--qds-space-sm);
+  .ods-ui .q-checkbox.reverse .q-checkbox__label,
+  .ods-ui .q-radio.reverse .q-radio__label,
+  .ods-ui .q-toggle.reverse .q-toggle__label {
+    padding-inline: 0 var(--ods-space-sm);
   }
 
-  .qds-ui .q-checkbox--dense,
-  .qds-ui .q-radio--dense {
-    --qds-selection-inner-size: var(--qds-icon-size-md);
+  .ods-ui .q-checkbox--dense,
+  .ods-ui .q-radio--dense {
+    --ods-selection-inner-size: var(--ods-icon-size-md);
   }
 
-  .qds-ui .q-checkbox .q-checkbox__inner,
-  .qds-ui .q-radio .q-radio__inner {
-    width: var(--qds-selection-inner-size);
-    min-width: var(--qds-selection-inner-size);
-    height: var(--qds-selection-inner-size);
-    font-size: var(--qds-selection-inner-size);
-    color: var(--qds-stroke-strong);
+  .ods-ui .q-checkbox .q-checkbox__inner,
+  .ods-ui .q-radio .q-radio__inner {
+    width: var(--ods-selection-inner-size);
+    min-width: var(--ods-selection-inner-size);
+    height: var(--ods-selection-inner-size);
+    font-size: var(--ods-selection-inner-size);
+    color: var(--ods-stroke-strong);
   }
 
-  .qds-ui .q-checkbox .q-checkbox__inner::before,
-  .qds-ui .q-radio .q-radio__inner::before,
-  .qds-ui .q-toggle .q-toggle__thumb::before {
+  .ods-ui .q-checkbox .q-checkbox__inner::before,
+  .ods-ui .q-radio .q-radio__inner::before,
+  .ods-ui .q-toggle .q-toggle__thumb::before {
     display: none;
   }
 
-  .qds-ui .q-checkbox .q-checkbox__bg,
-  .qds-ui .q-radio .q-radio__bg {
+  .ods-ui .q-checkbox .q-checkbox__bg,
+  .ods-ui .q-radio .q-radio__bg {
     inset: 0;
-    width: var(--qds-selection-mark-size);
-    height: var(--qds-selection-mark-size);
+    width: var(--ods-selection-mark-size);
+    height: var(--ods-selection-mark-size);
     margin: auto;
     background: transparent;
-    border: var(--qds-border-width-control) solid currentColor;
+    border: var(--ods-border-width-control) solid currentColor;
     transition:
-      background-color var(--qds-motion-fast),
-      border-color var(--qds-motion-fast);
+      background-color var(--ods-motion-fast),
+      border-color var(--ods-motion-fast);
   }
 
-  .qds-ui .q-checkbox .q-checkbox__bg {
+  .ods-ui .q-checkbox .q-checkbox__bg {
     overflow: hidden;
-    border-radius: var(--qds-radius-sm);
+    border-radius: var(--ods-radius-sm);
   }
 
-  .qds-ui .q-radio .q-radio__bg {
-    border-radius: var(--qds-radius-full);
+  .ods-ui .q-radio .q-radio__bg {
+    border-radius: var(--ods-radius-full);
   }
 
-  .qds-ui .q-radio .q-radio__bg path:not(.q-radio__check) {
+  .ods-ui .q-radio .q-radio__bg path:not(.q-radio__check) {
     fill: transparent;
   }
 
-  .qds-ui .q-checkbox:not(.disabled):hover .q-checkbox__inner--falsy,
-  .qds-ui .q-radio:not(.disabled):hover .q-radio__inner--falsy {
-    color: var(--qds-fg-default);
+  .ods-ui .q-checkbox:not(.disabled):hover .q-checkbox__inner--falsy,
+  .ods-ui .q-radio:not(.disabled):hover .q-radio__inner--falsy {
+    color: var(--ods-fg-default);
   }
 
-  .qds-ui .q-checkbox .q-checkbox__inner--truthy,
-  .qds-ui .q-checkbox .q-checkbox__inner--indet,
-  .qds-ui .q-radio .q-radio__inner--truthy {
-    color: var(--qds-color-primary);
+  .ods-ui .q-checkbox .q-checkbox__inner--truthy,
+  .ods-ui .q-checkbox .q-checkbox__inner--indet,
+  .ods-ui .q-radio .q-radio__inner--truthy {
+    color: var(--ods-color-primary);
   }
 
-  .qds-ui .q-checkbox .q-checkbox__inner--truthy .q-checkbox__bg,
-  .qds-ui .q-checkbox .q-checkbox__inner--indet .q-checkbox__bg {
+  .ods-ui .q-checkbox .q-checkbox__inner--truthy .q-checkbox__bg,
+  .ods-ui .q-checkbox .q-checkbox__inner--indet .q-checkbox__bg {
     background: currentColor;
   }
 
-  .qds-ui .q-checkbox:not(.disabled):hover .q-checkbox__inner--truthy,
-  .qds-ui .q-checkbox:not(.disabled):hover .q-checkbox__inner--indet,
-  .qds-ui .q-radio:not(.disabled):hover .q-radio__inner--truthy {
-    color: var(--qds-color-primary-hover);
+  .ods-ui .q-checkbox:not(.disabled):hover .q-checkbox__inner--truthy,
+  .ods-ui .q-checkbox:not(.disabled):hover .q-checkbox__inner--indet,
+  .ods-ui .q-radio:not(.disabled):hover .q-radio__inner--truthy {
+    color: var(--ods-color-primary-hover);
   }
 
-  .qds-ui .q-checkbox .q-checkbox__svg {
+  .ods-ui .q-checkbox .q-checkbox__svg {
     padding: 0.125rem;
-    color: var(--qds-selection-on, var(--qds-text-on-primary));
+    color: var(--ods-selection-on, var(--ods-text-on-primary));
   }
 
   // Dot is 10px on the 16px ring; the falsy scale3d(0) from Quasar stays untouched.
-  .qds-ui .q-radio .q-radio__inner--truthy .q-radio__check {
+  .ods-ui .q-radio .q-radio__inner--truthy .q-radio__check {
     transform: scale3d(1.43, 1.43, 1);
   }
 
   // Selection marks fill with the role colour and draw marks in its on-fill colour.
   @each $role in primary, secondary, accent, positive, negative, warning, info {
-    .qds-ui .q-checkbox__inner--truthy.text-#{$role},
-    .qds-ui .q-checkbox__inner--indet.text-#{$role},
-    .qds-ui .q-radio__inner--truthy.text-#{$role},
-    .qds-ui .q-toggle__inner--truthy.text-#{$role},
+    .ods-ui .q-checkbox__inner--truthy.text-#{$role},
+    .ods-ui .q-checkbox__inner--indet.text-#{$role},
+    .ods-ui .q-radio__inner--truthy.text-#{$role},
+    .ods-ui .q-toggle__inner--truthy.text-#{$role},
     #{$shadcn} .q-toggle__inner--indet.text-#{$role},
-    .qds-ui .q-slider__track.text-#{$role},
-    .qds-ui .q-slider__selection.text-#{$role},
-    .qds-ui .q-slider__thumb.text-#{$role} {
-      --qds-selection-on: var(--qds-text-on-#{$role});
-      @include importance.declarations { color: var(--qds-selection-fill, var(--qds-color-#{$role})) !important; }
+    .ods-ui .q-slider__track.text-#{$role},
+    .ods-ui .q-slider__selection.text-#{$role},
+    .ods-ui .q-slider__thumb.text-#{$role} {
+      --ods-selection-on: var(--ods-text-on-#{$role});
+      @include importance.declarations { color: var(--ods-selection-fill, var(--ods-color-#{$role})) !important; }
     }
   }
 
-  .qds-ui .q-checkbox.disabled .q-checkbox__inner,
-  .qds-ui .q-radio.disabled .q-radio__inner {
-    color: color-mix(in srgb, var(--qds-fg-disabled), var(--qds-fg-muted) 40%);
+  .ods-ui .q-checkbox.disabled .q-checkbox__inner,
+  .ods-ui .q-radio.disabled .q-radio__inner {
+    color: color-mix(in srgb, var(--ods-fg-disabled), var(--ods-fg-muted) 40%);
   }
 
-  .qds-ui .q-checkbox.disabled .q-checkbox__label,
-  .qds-ui .q-radio.disabled .q-radio__label,
-  .qds-ui .q-toggle.disabled .q-toggle__label {
-    color: var(--qds-fg-disabled);
+  .ods-ui .q-checkbox.disabled .q-checkbox__label,
+  .ods-ui .q-radio.disabled .q-radio__label,
+  .ods-ui .q-toggle.disabled .q-toggle__label {
+    color: var(--ods-fg-disabled);
   }
 
-  .qds-ui .q-checkbox:focus-visible .q-checkbox__inner,
-  .qds-ui .q-radio:focus-visible .q-radio__inner,
-  .qds-ui .q-toggle:focus-visible .q-toggle__inner {
-    outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus);
+  .ods-ui .q-checkbox:focus-visible .q-checkbox__inner,
+  .ods-ui .q-radio:focus-visible .q-radio__inner,
+  .ods-ui .q-toggle:focus-visible .q-toggle__inner {
+    outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
     outline-offset: 0;
   }
 
-  .qds-ui .q-checkbox:focus-visible .q-checkbox__inner {
-    border-radius: var(--qds-radius-sm);
+  .ods-ui .q-checkbox:focus-visible .q-checkbox__inner {
+    border-radius: var(--ods-radius-sm);
   }
 
-  .qds-ui .q-toggle {
-    --qds-toggle-thumb-size: calc(var(--qds-toggle-track-height) - 2 * var(--qds-toggle-thumb-inset));
+  .ods-ui .q-toggle {
+    --ods-toggle-thumb-size: calc(var(--ods-toggle-track-height) - 2 * var(--ods-toggle-thumb-inset));
   }
 
-  .qds-ui .q-toggle--dense {
-    --qds-toggle-track-width: var(--qds-control-size-md);
-    --qds-toggle-track-height: calc(var(--qds-control-size-md) / 2);
+  .ods-ui .q-toggle--dense {
+    --ods-toggle-track-width: var(--ods-control-size-md);
+    --ods-toggle-track-height: calc(var(--ods-control-size-md) / 2);
   }
 
-  .qds-ui .q-toggle .q-toggle__inner {
-    width: var(--qds-toggle-track-width);
-    min-width: var(--qds-toggle-track-width);
-    height: var(--qds-toggle-track-height);
+  .ods-ui .q-toggle .q-toggle__inner {
+    width: var(--ods-toggle-track-width);
+    min-width: var(--ods-toggle-track-width);
+    height: var(--ods-toggle-track-height);
     padding: 0;
-    border-radius: var(--qds-radius-full);
+    border-radius: var(--ods-radius-full);
   }
 
-  .qds-ui .q-toggle:focus-visible .q-toggle__inner {
-    outline-offset: var(--qds-focus-ring-offset);
+  .ods-ui .q-toggle:focus-visible .q-toggle__inner {
+    outline-offset: var(--ods-focus-ring-offset);
   }
 
-  .qds-ui .q-toggle .q-toggle__track {
+  .ods-ui .q-toggle .q-toggle__track {
     height: 100%;
     background: transparent;
-    border: var(--qds-border-width-control) solid var(--qds-stroke-strong);
-    border-radius: var(--qds-radius-full);
+    border: var(--ods-border-width-control) solid var(--ods-stroke-strong);
+    border-radius: var(--ods-radius-full);
     opacity: 1;
     transition:
-      background-color var(--qds-motion-fast),
-      border-color var(--qds-motion-fast);
+      background-color var(--ods-motion-fast),
+      border-color var(--ods-motion-fast);
   }
 
-  .qds-ui .q-toggle .q-toggle__thumb {
-    top: var(--qds-toggle-thumb-inset);
-    inset-inline-start: var(--qds-toggle-thumb-inset);
-    width: var(--qds-toggle-thumb-size);
-    height: var(--qds-toggle-thumb-size);
-    transition: inset-inline-start var(--qds-motion-duration-medium) var(--qds-motion-ease-out);
+  .ods-ui .q-toggle .q-toggle__thumb {
+    top: var(--ods-toggle-thumb-inset);
+    inset-inline-start: var(--ods-toggle-thumb-inset);
+    width: var(--ods-toggle-thumb-size);
+    height: var(--ods-toggle-thumb-size);
+    transition: inset-inline-start var(--ods-motion-duration-medium) var(--ods-motion-ease-out);
   }
 
-  .qds-ui .q-toggle .q-toggle__thumb::after {
-    background: var(--qds-stroke-strong);
+  .ods-ui .q-toggle .q-toggle__thumb::after {
+    background: var(--ods-stroke-strong);
     box-shadow: none;
-    transition: background-color var(--qds-motion-fast);
+    transition: background-color var(--ods-motion-fast);
   }
 
-  .qds-ui .q-toggle .q-toggle__thumb .q-icon {
-    font-size: calc(var(--qds-toggle-thumb-size) * 0.75);
-    color: var(--qds-bg-canvas);
+  .ods-ui .q-toggle .q-toggle__thumb .q-icon {
+    font-size: calc(var(--ods-toggle-thumb-size) * 0.75);
+    color: var(--ods-bg-canvas);
     opacity: 1;
   }
 
-  .qds-ui .q-toggle .q-toggle__inner--truthy .q-toggle__thumb {
-    inset-inline-start: calc(var(--qds-toggle-track-width) - var(--qds-toggle-thumb-size) - var(--qds-toggle-thumb-inset));
+  .ods-ui .q-toggle .q-toggle__inner--truthy .q-toggle__thumb {
+    inset-inline-start: calc(var(--ods-toggle-track-width) - var(--ods-toggle-thumb-size) - var(--ods-toggle-thumb-inset));
   }
 
-  .qds-ui .q-toggle .q-toggle__inner--indet .q-toggle__thumb {
-    inset-inline-start: calc((var(--qds-toggle-track-width) - var(--qds-toggle-thumb-size)) / 2);
+  .ods-ui .q-toggle .q-toggle__inner--indet .q-toggle__thumb {
+    inset-inline-start: calc((var(--ods-toggle-track-width) - var(--ods-toggle-thumb-size)) / 2);
   }
 
-  .qds-ui .q-toggle .q-toggle__inner--truthy {
-    color: var(--qds-color-primary);
+  .ods-ui .q-toggle .q-toggle__inner--truthy {
+    color: var(--ods-color-primary);
   }
 
-  .qds-ui .q-toggle .q-toggle__inner--truthy .q-toggle__track {
+  .ods-ui .q-toggle .q-toggle__inner--truthy .q-toggle__track {
     background: currentColor;
     border-color: currentColor;
   }
 
-  .qds-ui .q-toggle .q-toggle__inner--truthy .q-toggle__thumb::after {
-    background: var(--qds-selection-on, var(--qds-text-on-primary));
+  .ods-ui .q-toggle .q-toggle__inner--truthy .q-toggle__thumb::after {
+    background: var(--ods-selection-on, var(--ods-text-on-primary));
   }
 
-  .qds-ui .q-toggle .q-toggle__inner--truthy .q-toggle__thumb .q-icon {
+  .ods-ui .q-toggle .q-toggle__inner--truthy .q-toggle__thumb .q-icon {
     color: currentColor;
   }
 
-  .qds-ui .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track {
-    border-color: var(--qds-fg-default);
+  .ods-ui .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track {
+    border-color: var(--ods-fg-default);
   }
 
-  .qds-ui .q-toggle:not(.disabled):hover .q-toggle__inner--truthy {
-    color: var(--qds-color-primary-hover);
+  .ods-ui .q-toggle:not(.disabled):hover .q-toggle__inner--truthy {
+    color: var(--ods-color-primary-hover);
   }
 
-  .qds-ui .q-toggle.disabled .q-toggle__track {
-    border-color: var(--qds-fg-disabled);
+  .ods-ui .q-toggle.disabled .q-toggle__track {
+    border-color: var(--ods-fg-disabled);
   }
 
-  .qds-ui .q-toggle.disabled .q-toggle__thumb::after,
-  .qds-ui .q-toggle.disabled .q-toggle__inner--truthy .q-toggle__track {
-    background: var(--qds-fg-disabled);
+  .ods-ui .q-toggle.disabled .q-toggle__thumb::after,
+  .ods-ui .q-toggle.disabled .q-toggle__inner--truthy .q-toggle__track {
+    background: var(--ods-fg-disabled);
   }
 
-  .qds-ui .q-toggle.disabled .q-toggle__inner--truthy .q-toggle__thumb::after {
-    background: var(--qds-bg-canvas);
+  .ods-ui .q-toggle.disabled .q-toggle__inner--truthy .q-toggle__thumb::after {
+    background: var(--ods-bg-canvas);
   }
 
-  .qds-ui .q-slider .q-slider__track,
-  .qds-ui .q-slider .q-slider__thumb {
-    color: var(--qds-color-primary);
+  .ods-ui .q-slider .q-slider__track,
+  .ods-ui .q-slider .q-slider__thumb {
+    color: var(--ods-color-primary);
   }
 
-  .qds-ui .q-slider .q-slider__track {
+  .ods-ui .q-slider .q-slider__track {
     background: transparent;
-    border-radius: var(--qds-radius-full);
+    border-radius: var(--ods-radius-full);
   }
 
-  .qds-ui .q-slider .q-slider__inner {
-    background: var(--qds-stroke-strong);
+  .ods-ui .q-slider .q-slider__inner {
+    background: var(--ods-stroke-strong);
   }
 
-  .qds-ui .q-slider .q-slider__selection {
+  .ods-ui .q-slider .q-slider__selection {
     background: currentColor;
   }
 
-  .qds-ui .q-slider .q-slider__markers {
-    color: var(--qds-stroke-default);
+  .ods-ui .q-slider .q-slider__markers {
+    color: var(--ods-stroke-default);
   }
 
-  .qds-ui .q-slider .q-slider__thumb {
-    background: var(--qds-bg-canvas);
-    border: var(--qds-border-width-control) solid var(--qds-stroke-default);
-    border-radius: var(--qds-radius-full);
+  .ods-ui .q-slider .q-slider__thumb {
+    background: var(--ods-bg-canvas);
+    border: var(--ods-border-width-control) solid var(--ods-stroke-default);
+    border-radius: var(--ods-radius-full);
     box-shadow: none;
   }
 
-  .qds-ui .q-slider .q-slider__thumb-shape path {
+  .ods-ui .q-slider .q-slider__thumb-shape path {
     stroke-width: 0;
   }
 
-  .qds-ui .q-slider.q-slider--active .q-slider__thumb-shape {
+  .ods-ui .q-slider.q-slider--active .q-slider__thumb-shape {
     transform: none;
   }
 
-  .qds-ui .q-slider .q-slider__focus-ring {
+  .ods-ui .q-slider .q-slider__focus-ring {
     display: none;
   }
 
-  .qds-ui .q-slider .q-slider__thumb.q-slider--focus {
-    outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus);
-    outline-offset: var(--qds-focus-ring-offset);
+  .ods-ui .q-slider .q-slider__thumb.q-slider--focus {
+    outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
+    outline-offset: var(--ods-focus-ring-offset);
   }
 
-  .qds-ui .q-slider .q-slider__pin {
-    color: var(--qds-slider-label-bg);
+  .ods-ui .q-slider .q-slider__pin {
+    color: var(--ods-slider-label-bg);
   }
 
-  .qds-ui .q-slider .q-slider__text-container {
+  .ods-ui .q-slider .q-slider__text-container {
     min-height: 1.5rem;
     padding: 0.125rem 0.5rem;
-    background: var(--qds-slider-label-bg);
-    border: var(--qds-border-width-control) solid var(--qds-slider-label-border);
-    border-radius: var(--qds-radius-sm);
-    box-shadow: var(--qds-shadow-8);
+    background: var(--ods-slider-label-bg);
+    border: var(--ods-border-width-control) solid var(--ods-slider-label-border);
+    border-radius: var(--ods-radius-sm);
+    box-shadow: var(--ods-shadow-8);
   }
 
-  .qds-ui .q-slider .q-slider__text {
-    color: var(--qds-slider-label-text);
-    font-size: var(--qds-font-size-caption);
-    font-weight: var(--qds-font-weight-semibold);
+  .ods-ui .q-slider .q-slider__text {
+    color: var(--ods-slider-label-text);
+    font-size: var(--ods-font-size-caption);
+    font-weight: var(--ods-font-weight-semibold);
   }
 
   // Term checked marks are amber keys ruled and marked in their on-fill ink.
-  .qds-ui.qds-variant-term .q-checkbox:not(.disabled) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg,
-  .qds-ui .qds-variant-term .q-checkbox:not(.disabled) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg,
-  .qds-ui.qds-variant-term .q-toggle:not(.disabled) .q-toggle__inner--truthy .q-toggle__track,
-  .qds-ui .qds-variant-term .q-toggle:not(.disabled) .q-toggle__inner--truthy .q-toggle__track {
-    border-color: var(--qds-selection-on, var(--qds-text-on-primary));
+  .ods-ui.ods-variant-term .q-checkbox:not(.disabled) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg,
+  .ods-ui .ods-variant-term .q-checkbox:not(.disabled) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg,
+  .ods-ui.ods-variant-term .q-toggle:not(.disabled) .q-toggle__inner--truthy .q-toggle__track,
+  .ods-ui .ods-variant-term .q-toggle:not(.disabled) .q-toggle__inner--truthy .q-toggle__track {
+    border-color: var(--ods-selection-on, var(--ods-text-on-primary));
   }
 
-  .qds-ui.qds-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__bg,
-  .qds-ui .qds-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__bg {
+  .ods-ui.ods-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__bg,
+  .ods-ui .ods-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__bg {
     background: currentColor;
-    border-color: var(--qds-selection-on, var(--qds-text-on-primary));
+    border-color: var(--ods-selection-on, var(--ods-text-on-primary));
   }
 
-  .qds-ui.qds-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__check,
-  .qds-ui .qds-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__check {
-    fill: var(--qds-selection-on, var(--qds-text-on-primary));
+  .ods-ui.ods-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__check,
+  .ods-ui .ods-variant-term .q-radio:not(.disabled) .q-radio__inner--truthy .q-radio__check {
+    fill: var(--ods-selection-on, var(--ods-text-on-primary));
     transform: none;
   }
 
-  .qds-ui.qds-variant-term .q-slider:not(.disabled) .q-slider__thumb,
-  .qds-ui .qds-variant-term .q-slider:not(.disabled) .q-slider__thumb { border-color: var(--qds-selection-on, var(--qds-text-on-primary)); }
-  .qds-ui.qds-variant-term .q-slider:not(.disabled) .q-slider__selection,
-  .qds-ui .qds-variant-term .q-slider:not(.disabled) .q-slider__selection { outline: var(--qds-border-width-control) solid var(--qds-selection-on, var(--qds-text-on-primary)); }
+  .ods-ui.ods-variant-term .q-slider:not(.disabled) .q-slider__thumb,
+  .ods-ui .ods-variant-term .q-slider:not(.disabled) .q-slider__thumb { border-color: var(--ods-selection-on, var(--ods-text-on-primary)); }
+  .ods-ui.ods-variant-term .q-slider:not(.disabled) .q-slider__selection,
+  .ods-ui .ods-variant-term .q-slider:not(.disabled) .q-slider__selection { outline: var(--ods-border-width-control) solid var(--ods-selection-on, var(--ods-text-on-primary)); }
 
   // WinUI: 20px box with a 12px glyph; 20px ring with a 12/14/10px rest/hover/pressed dot.
   // Dense keeps its 16px mark, which follows the dense inner size.
-  #{$win} :is(.q-checkbox, .q-radio) { --qds-selection-mark-size: var(--qds-selection-inner-size); }
+  #{$win} :is(.q-checkbox, .q-radio) { --ods-selection-mark-size: var(--ods-selection-inner-size); }
   #{$win} .q-checkbox:not(.q-checkbox--dense) .q-checkbox__svg { padding: 0.1875rem; }
   #{$win} .q-radio:not(.q-radio--dense) .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.333, 1.333, 1); }
   #{$win} .q-radio:not(.q-radio--dense, .disabled):hover .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.556, 1.556, 1); }
   #{$win} .q-radio:not(.q-radio--dense, .disabled):active .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.111, 1.111, 1); }
   // The 20px thumb's accent dot: 10.8px drawn, scaled to 12/14/10px.
-  #{$win} .q-slider .q-slider__thumb-shape { transform: scale(1.111); transition: transform var(--qds-motion-fast); }
+  #{$win} .q-slider .q-slider__thumb-shape { transform: scale(1.111); transition: transform var(--ods-motion-fast); }
   #{$win} .q-slider:not(.disabled) .q-slider__thumb:hover .q-slider__thumb-shape { transform: scale(1.296); }
   #{$win} .q-slider.q-slider--active .q-slider__thumb-shape { transform: scale(0.926); }
   // ToggleSwitch knob: 12px at rest, 14px on hover, 17 x 14px pressed; dense keeps its knob.
-  #{$win} .q-toggle:not(.q-toggle--dense) { --qds-toggle-thumb-inset: var(--qds-space-xs); }
-  #{$win} .q-toggle:not(.q-toggle--dense) .q-toggle__thumb::after { transition: background-color var(--qds-motion-fast), transform var(--qds-motion-fast); }
+  #{$win} .q-toggle:not(.q-toggle--dense) { --ods-toggle-thumb-inset: var(--ods-space-xs); }
+  #{$win} .q-toggle:not(.q-toggle--dense) .q-toggle__thumb::after { transition: background-color var(--ods-motion-fast), transform var(--ods-motion-fast); }
   #{$win} .q-toggle:not(.q-toggle--dense, .disabled):hover .q-toggle__thumb::after { transform: scale(1.167); }
   #{$win} .q-toggle:not(.q-toggle--dense, .disabled):active .q-toggle__thumb::after { transform: scale(1.417, 1.167); }
 
   // A filled capsule; the knob stays light in both schemes.
-  #{$glass} .q-toggle { --_qds-glass-knob-width: calc(var(--qds-toggle-thumb-size) * 1.5); }
-  #{$glass} .q-toggle--dense { --qds-toggle-track-width: 3.25rem; --qds-toggle-track-height: 1.5rem; }
-  #{$glass} .q-toggle .q-toggle__thumb { width: var(--_qds-glass-knob-width); }
-  #{$glass} .q-toggle .q-toggle__inner--truthy .q-toggle__thumb { inset-inline-start: calc(var(--qds-toggle-track-width) - var(--_qds-glass-knob-width) - var(--qds-toggle-thumb-inset)); }
-  #{$glass} .q-toggle .q-toggle__inner--indet .q-toggle__thumb { inset-inline-start: calc((var(--qds-toggle-track-width) - var(--_qds-glass-knob-width)) / 2); }
-  #{$glass} .q-toggle .q-toggle__track { background: var(--qds-stroke-strong); border-color: transparent; }
-  #{$glass} .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__track { background: var(--_qds-glass-on-track); border-color: transparent; }
-  #{$glass} .q-toggle.disabled .q-toggle__inner--falsy .q-toggle__track { background: var(--qds-bg-surface-2); }
-  #{$glass} .q-toggle:is(*, .disabled) :is(.q-toggle__thumb, .q-toggle__inner--truthy .q-toggle__thumb)::after { border-radius: var(--qds-radius-full); background: var(--_qds-glass-knob); box-shadow: var(--qds-shadow-sm); }
-  #{$glass} .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track { background: color-mix(in srgb, var(--qds-stroke-strong) 84%, var(--qds-text-strong)); }
+  #{$glass} .q-toggle { --_ods-glass-knob-width: calc(var(--ods-toggle-thumb-size) * 1.5); }
+  #{$glass} .q-toggle--dense { --ods-toggle-track-width: 3.25rem; --ods-toggle-track-height: 1.5rem; }
+  #{$glass} .q-toggle .q-toggle__thumb { width: var(--_ods-glass-knob-width); }
+  #{$glass} .q-toggle .q-toggle__inner--truthy .q-toggle__thumb { inset-inline-start: calc(var(--ods-toggle-track-width) - var(--_ods-glass-knob-width) - var(--ods-toggle-thumb-inset)); }
+  #{$glass} .q-toggle .q-toggle__inner--indet .q-toggle__thumb { inset-inline-start: calc((var(--ods-toggle-track-width) - var(--_ods-glass-knob-width)) / 2); }
+  #{$glass} .q-toggle .q-toggle__track { background: var(--ods-stroke-strong); border-color: transparent; }
+  #{$glass} .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__track { background: var(--_ods-glass-on-track); border-color: transparent; }
+  #{$glass} .q-toggle.disabled .q-toggle__inner--falsy .q-toggle__track { background: var(--ods-bg-surface-2); }
+  #{$glass} .q-toggle:is(*, .disabled) :is(.q-toggle__thumb, .q-toggle__inner--truthy .q-toggle__thumb)::after { border-radius: var(--ods-radius-full); background: var(--_ods-glass-knob); box-shadow: var(--ods-shadow-sm); }
+  #{$glass} .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track { background: color-mix(in srgb, var(--ods-stroke-strong) 84%, var(--ods-text-strong)); }
   #{$glass} :is(.q-checkbox, .q-radio) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet, .q-radio__inner--truthy) :is(.q-checkbox__bg, .q-radio__bg) { border-color: transparent; }
   #{$glass} .q-radio .q-radio__inner--truthy .q-radio__bg { background: currentColor; }
-  #{$glass} .q-radio .q-radio__inner--truthy .q-radio__check { fill: var(--qds-selection-on, var(--qds-text-on-primary)); }
+  #{$glass} .q-radio .q-radio__inner--truthy .q-radio__check { fill: var(--ods-selection-on, var(--ods-text-on-primary)); }
   // The knob is a light capsule drawn around Quasar's square thumb box, whose size is set inline.
   #{$glass} .q-slider .q-slider__thumb { background: transparent; border-color: transparent; }
-  #{$glass} .q-slider .q-slider__thumb::before { content: ''; position: absolute; inset: -0.125rem -0.5rem; border-radius: var(--qds-radius-full); background: var(--_qds-glass-knob); box-shadow: 0 0 0 1px var(--qds-material-stroke), var(--qds-shadow-sm); }
+  #{$glass} .q-slider .q-slider__thumb::before { content: ''; position: absolute; inset: -0.125rem -0.5rem; border-radius: var(--ods-radius-full); background: var(--_ods-glass-knob); box-shadow: 0 0 0 1px var(--ods-material-stroke), var(--ods-shadow-sm); }
   #{$glass} .q-slider .q-slider__thumb--v::before { inset: -0.5rem -0.125rem; }
   #{$glass} .q-slider .q-slider__thumb-shape { display: none; }
   #{$glass} .q-slider .q-slider__thumb.q-slider--focus { outline: 0; }
-  #{$glass} .q-slider .q-slider__thumb.q-slider--focus::before { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); }  #{$glass} .q-slider .q-slider__inner { background: var(--qds-stroke-strong); }
-  #{$glass} .q-slider .q-slider__selection { background: var(--_qds-glass-on-track); }
+  #{$glass} .q-slider .q-slider__thumb.q-slider--focus::before { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus); outline-offset: var(--ods-focus-ring-offset); }  #{$glass} .q-slider .q-slider__inner { background: var(--ods-stroke-strong); }
+  #{$glass} .q-slider .q-slider__selection { background: var(--_ods-glass-on-track); }
 
 
 
   #{$shadcn} {
-    :is(.q-checkbox, .q-radio) :is(.q-checkbox__inner--falsy, .q-radio__inner--falsy) { color: var(--qds-control-stroke-strong); }
-    .q-checkbox .q-checkbox__bg { border-radius: var(--qds-radius-xs); }
-    :is(.q-checkbox__bg, .q-radio__bg) { border-color: var(--qds-control-stroke-strong); }
+    :is(.q-checkbox, .q-radio) :is(.q-checkbox__inner--falsy, .q-radio__inner--falsy) { color: var(--ods-control-stroke-strong); }
+    .q-checkbox .q-checkbox__bg { border-radius: var(--ods-radius-xs); }
+    :is(.q-checkbox__bg, .q-radio__bg) { border-color: var(--ods-control-stroke-strong); }
     .q-radio .q-radio__inner--truthy .q-radio__check { transform: none; }
-    .q-toggle .q-toggle__track { border-color: transparent; background: var(--qds-shadcn-input); }
+    .q-toggle .q-toggle__track { border-color: transparent; background: var(--ods-shadcn-input); }
     .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track { border-color: transparent; }
-    .q-toggle .q-toggle__thumb::after { background: var(--qds-bg-canvas); box-shadow: none; }
-    .q-toggle .q-toggle__inner--falsy .q-toggle__thumb::after { box-shadow: 0 0 0 1px var(--qds-text-muted); }
-    .q-toggle .q-toggle__inner--indet { color: var(--qds-color-primary); }
+    .q-toggle .q-toggle__thumb::after { background: var(--ods-bg-canvas); box-shadow: none; }
+    .q-toggle .q-toggle__inner--falsy .q-toggle__thumb::after { box-shadow: 0 0 0 1px var(--ods-text-muted); }
+    .q-toggle .q-toggle__inner--indet { color: var(--ods-color-primary); }
     .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__track { background: currentColor; border-color: transparent; }
-    .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__thumb::after { background: var(--qds-selection-on, var(--qds-text-on-primary)); }
-    :is(.q-checkbox, .q-radio, .q-toggle):not(.disabled):active :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet, .q-radio__inner--truthy, .q-toggle__inner--truthy, .q-toggle__inner--indet):where(:not([class*='text-'])) { color: var(--qds-color-primary-pressed); }
-    .q-toggle:not(.disabled):hover .q-toggle__inner--indet:where(:not([class*='text-'])) { color: var(--qds-color-primary-hover); }
-    :is(.q-checkbox, .q-radio, .q-toggle):focus-visible :is(.q-checkbox__inner, .q-radio__inner, .q-toggle__inner) { box-shadow: var(--qds-field-focus-halo); outline-width: var(--qds-border-width-control); }
+    .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__thumb::after { background: var(--ods-selection-on, var(--ods-text-on-primary)); }
+    :is(.q-checkbox, .q-radio, .q-toggle):not(.disabled):active :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet, .q-radio__inner--truthy, .q-toggle__inner--truthy, .q-toggle__inner--indet):where(:not([class*='text-'])) { color: var(--ods-color-primary-pressed); }
+    .q-toggle:not(.disabled):hover .q-toggle__inner--indet:where(:not([class*='text-'])) { color: var(--ods-color-primary-hover); }
+    :is(.q-checkbox, .q-radio, .q-toggle):focus-visible :is(.q-checkbox__inner, .q-radio__inner, .q-toggle__inner) { box-shadow: var(--ods-field-focus-halo); outline-width: var(--ods-border-width-control); }
     @supports (color: light-dark(#000, #fff)) {
-      .q-toggle .q-toggle__track { background: light-dark(var(--qds-shadcn-input), color-mix(in srgb, var(--qds-shadcn-input) 80%, transparent)); }
-      .q-toggle .q-toggle__inner--falsy .q-toggle__thumb::after { background: light-dark(var(--qds-shadcn-background), var(--qds-shadcn-foreground)); box-shadow: 0 0 0 1px light-dark(var(--qds-text-muted), transparent); }
+      .q-toggle .q-toggle__track { background: light-dark(var(--ods-shadcn-input), color-mix(in srgb, var(--ods-shadcn-input) 80%, transparent)); }
+      .q-toggle .q-toggle__inner--falsy .q-toggle__thumb::after { background: light-dark(var(--ods-shadcn-background), var(--ods-shadcn-foreground)); box-shadow: 0 0 0 1px light-dark(var(--ods-text-muted), transparent); }
     }
-    .q-slider .q-slider__thumb { border-color: var(--qds-control-stroke-strong); background: var(--qds-bg-canvas); box-shadow: var(--qds-shadow-sm); }
-    .q-slider .q-slider__thumb-shape path { fill: var(--qds-bg-canvas); stroke: currentColor; stroke-width: var(--qds-border-width-control); }
-    .q-slider .q-slider__marker-labels { color: var(--qds-fg-muted); font-size: var(--qds-font-size-caption); }
-    .q-slider .q-slider__markers { color: var(--qds-control-stroke-strong); }
-    .q-slider .q-slider__inner { background: var(--qds-control-stroke-strong); }
-    .q-slider .q-slider__thumb.q-slider--focus { box-shadow: var(--qds-field-focus-halo); }
-    .q-slider .q-slider__track-container:focus-visible { outline: var(--qds-border-width-control) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); }
-    .q-radio .q-radio__inner--truthy#{$shadcn-roles} .q-radio__check { fill: var(--_qds-text); }
+    .q-slider .q-slider__thumb { border-color: var(--ods-control-stroke-strong); background: var(--ods-bg-canvas); box-shadow: var(--ods-shadow-sm); }
+    .q-slider .q-slider__thumb-shape path { fill: var(--ods-bg-canvas); stroke: currentColor; stroke-width: var(--ods-border-width-control); }
+    .q-slider .q-slider__marker-labels { color: var(--ods-fg-muted); font-size: var(--ods-font-size-caption); }
+    .q-slider .q-slider__markers { color: var(--ods-control-stroke-strong); }
+    .q-slider .q-slider__inner { background: var(--ods-control-stroke-strong); }
+    .q-slider .q-slider__thumb.q-slider--focus { box-shadow: var(--ods-field-focus-halo); }
+    .q-slider .q-slider__track-container:focus-visible { outline: var(--ods-border-width-control) solid var(--ods-stroke-focus); outline-offset: var(--ods-focus-ring-offset); }
+    .q-radio .q-radio__inner--truthy#{$shadcn-roles} .q-radio__check { fill: var(--_ods-text); }
     .q-checkbox:not(.disabled):hover :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet)#{$shadcn-roles},
     .q-radio:not(.disabled):hover .q-radio__inner--truthy#{$shadcn-roles},
-    .q-toggle:not(.disabled):hover :is(.q-toggle__inner--truthy, .q-toggle__inner--indet)#{$shadcn-roles} { --qds-selection-fill: var(--_qds-text-hover); }
+    .q-toggle:not(.disabled):hover :is(.q-toggle__inner--truthy, .q-toggle__inner--indet)#{$shadcn-roles} { --ods-selection-fill: var(--_ods-text-hover); }
     .q-checkbox:not(.disabled):active :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet)#{$shadcn-roles},
     .q-radio:not(.disabled):active .q-radio__inner--truthy#{$shadcn-roles},
-    .q-toggle:not(.disabled):active :is(.q-toggle__inner--truthy, .q-toggle__inner--indet)#{$shadcn-roles} { --qds-selection-fill: var(--_qds-text-pressed); }
+    .q-toggle:not(.disabled):active :is(.q-toggle__inner--truthy, .q-toggle__inner--indet)#{$shadcn-roles} { --ods-selection-fill: var(--_ods-text-pressed); }
   }
 }

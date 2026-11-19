@@ -13,21 +13,21 @@ function durationMs(value: string): number {
 // Unfilled stars take the accessible neutral stroke; states differ by colour, never by opacity.
 async function expectRatingStates(page: Page) {
   const star = (hook: string, active = false) => page.locator(`[data-test="${hook}"] .q-rating__icon${active ? '--active' : ''}`).first()
-  const accent = await resolvedColor(page, '--qds-color-accent')
-  await expect(star('qds-rating-inactive'), 'unfilled star uses the accessible stroke').toHaveCSS('color', await resolvedColor(page, '--qds-stroke-strong'))
+  const accent = await resolvedColor(page, '--ods-color-accent')
+  await expect(star('qds-rating-inactive'), 'unfilled star uses the accessible stroke').toHaveCSS('color', await resolvedColor(page, '--ods-stroke-strong'))
   await expect(star('qds-rating-inactive')).toHaveCSS('opacity', '1')
   await expect(star('qds-rating-active', true), 'selected star uses the accent fill').toHaveCSS('color', accent)
   await expect(star('qds-rating-active', true)).toHaveCSS('opacity', '1')
   await expect(star('qds-rating-readonly', true), 'readonly selected star is not dimmed').toHaveCSS('color', accent)
   await expect(star('qds-rating-readonly', true)).toHaveCSS('opacity', '1')
-  await expect(star('qds-rating-disabled'), 'disabled star uses the disabled foreground').toHaveCSS('color', await resolvedColor(page, '--qds-fg-disabled'))
+  await expect(star('qds-rating-disabled'), 'disabled star uses the disabled foreground').toHaveCSS('color', await resolvedColor(page, '--ods-fg-disabled'))
   await expect(star('qds-rating-disabled')).toHaveCSS('opacity', '1')
 }
 
-test.describe('QDS catalog lightweight primitives gate', () => {
+test.describe('ODS catalog lightweight primitives gate', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/#catalog')
-    await page.waitForFunction(() => Boolean((window as unknown as { __qdsGallery?: unknown }).__qdsGallery))
+    await page.waitForFunction(() => Boolean((window as unknown as { __odsGallery?: unknown }).__odsGallery))
     await expectGalleryPage(page, 'Catalog')
   })
 
@@ -95,9 +95,9 @@ test.describe('QDS catalog lightweight primitives gate', () => {
 
   test('renders QRating semantic colors and sizes in Fluent dark, One, and Term', async ({ page }) => {
     await applyTheme(page, 'dark', 'win')
-    const positive = await resolvedColor(page, '--qds-fg-positive')
-    const negative = await resolvedColor(page, '--qds-fg-negative')
-    const primary = await resolvedColor(page, '--qds-fg-primary')
+    const positive = await resolvedColor(page, '--ods-fg-positive')
+    const negative = await resolvedColor(page, '--ods-fg-negative')
+    const primary = await resolvedColor(page, '--ods-fg-primary')
 
     await expect(page.locator('[data-test="qds-rating-positive"] .q-rating__icon--active').first()).toHaveCSS('color', positive)
     await expect(page.locator('[data-test="qds-rating-negative"] .q-rating__icon--active').first()).toHaveCSS('color', negative)
@@ -120,9 +120,9 @@ test.describe('QDS catalog lightweight primitives gate', () => {
   test('owns QToolbar, QBar, and QSeparator direct surfaces with exact geometry', async ({ page }) => {
     await applyTheme(page, 'light', 'win')
 
-    const surface1 = await resolvedColor(page, '--qds-surface-1')
-    const radius = await customProperty(page, '--qds-radius-control')
-    const separatorColor = await resolvedColor(page, '--qds-stroke-divider')
+    const surface1 = await resolvedColor(page, '--ods-surface-1')
+    const radius = await customProperty(page, '--ods-radius-control')
+    const separatorColor = await resolvedColor(page, '--ods-stroke-divider')
     const toolbar = page.locator('[data-test="qds-toolbar-surface"]')
     const denseToolbar = page.locator('[data-test="qds-toolbar-dense"]')
     const wrapToolbar = page.locator('[data-test="qds-toolbar-wrap"]')
@@ -182,11 +182,11 @@ test.describe('QDS catalog lightweight primitives gate', () => {
     await applyTheme(page, 'dark', 'win')
     await expect(page.locator('[data-test="qds-bar-standard"]')).toBeVisible()
     expect(await computed(page, '[data-test="qds-bar-standard"]', 'background-color'), 'dark standard bar sits on surface-1').toBe(
-      await resolvedColor(page, '--qds-bg-surface-1'),
+      await resolvedColor(page, '--ods-bg-surface-1'),
     )
 
     await applyTheme(page, 'light', 'ink')
-    const surface0 = await resolvedColor(page, '--qds-surface-0')
+    const surface0 = await resolvedColor(page, '--ods-surface-0')
     expect(await computed(page, '[data-test="qds-bar-standard"]', 'background-color')).toBe(surface0)
 
     await applyTheme(page, 'light', 'term')
@@ -223,16 +223,16 @@ test.describe('QDS catalog lightweight primitives gate', () => {
     ).toBeLessThanOrEqual(1)
   })
 
-  test('honors explicit QBar dark semantics inside light QDS variants', async ({ page }) => {
+  test('honors explicit QBar dark semantics inside light ODS variants', async ({ page }) => {
     await applyTheme(page, 'light', 'win')
 
     const darkBar = page.locator('[data-test="qds-bar-dark"]')
     await expect(darkBar).toHaveClass(/q-bar--dark/)
-    const darkBarBg = await resolvedColor(page, '--qds-bar-dark-bg')
+    const darkBarBg = await resolvedColor(page, '--ods-bar-dark-bg')
     expect(darkBarBg, 'light dark-bar token is the neutral charcoal surface').toBe('rgb(41, 41, 41)')
-    expect(await resolvedColor(page, '--qds-bar-dark-fg')).toBe('rgb(255, 255, 255)')
+    expect(await resolvedColor(page, '--ods-bar-dark-fg')).toBe('rgb(255, 255, 255)')
     expect(await computed(page, '[data-test="qds-bar-dark"]', 'background-color')).toBe(darkBarBg)
-    expect(await computed(page, '[data-test="qds-bar-dark"]', 'color')).toBe(await resolvedColor(page, '--qds-bar-dark-fg'))
+    expect(await computed(page, '[data-test="qds-bar-dark"]', 'color')).toBe(await resolvedColor(page, '--ods-bar-dark-fg'))
     const closeDarkBar = darkBar.getByRole('button', { name: 'Close dark bar' })
     await expect(closeDarkBar).toBeVisible()
     await expect(closeDarkBar.locator('svg'), 'dark bar action renders its Phosphor glyph').toBeVisible()
@@ -240,18 +240,18 @@ test.describe('QDS catalog lightweight primitives gate', () => {
     for (const variant of ['ink', 'one'] as const) {
       await applyTheme(page, 'light', variant)
       const expectedStandardSurface = variant === 'ink'
-        ? await resolvedColor(page, '--qds-surface-0')
-        : await resolvedColor(page, '--qds-surface-1')
+        ? await resolvedColor(page, '--ods-surface-0')
+        : await resolvedColor(page, '--ods-surface-1')
 
       expect(await computed(page, '[data-test="qds-bar-standard"]', 'background-color')).toBe(expectedStandardSurface)
-      expect(await computed(page, '[data-test="qds-bar-dark"]', 'background-color')).toBe(await resolvedColor(page, '--qds-bar-dark-bg'))
-      expect(await computed(page, '[data-test="qds-bar-dark"]', 'color')).toBe(await resolvedColor(page, '--qds-bar-dark-fg'))
+      expect(await computed(page, '[data-test="qds-bar-dark"]', 'background-color')).toBe(await resolvedColor(page, '--ods-bar-dark-bg'))
+      expect(await computed(page, '[data-test="qds-bar-dark"]', 'color')).toBe(await resolvedColor(page, '--ods-bar-dark-fg'))
     }
 
     await applyTheme(page, 'dark', 'win')
     expect(await computed(page, '[data-test="qds-bar-dark"]', 'background-color'), 'in dark mode the dark bar matches the standard bar').toBe(
       await computed(page, '[data-test="qds-bar-standard"]', 'background-color'),
     )
-    expect(await computed(page, '[data-test="qds-bar-dark"]', 'color')).toBe(await resolvedColor(page, '--qds-fg-default'))
+    expect(await computed(page, '[data-test="qds-bar-dark"]', 'color')).toBe(await resolvedColor(page, '--ods-fg-default'))
   })
 })

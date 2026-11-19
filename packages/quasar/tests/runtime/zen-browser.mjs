@@ -1,5 +1,5 @@
 // Computed-paint proof for the Zen pilot: real Quasar controls, the real
-// compiled QDS bundle, and measured contrast. Nothing here is judged by eye and
+// compiled ODS bundle, and measured contrast. Nothing here is judged by eye and
 // nothing here claims anything about physical e-paper hardware.
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -131,7 +131,7 @@ const record = (scheme, label, ratio, minimum) => {
 
 const browser = await chromium.launch()
 try {
-  for (const [scheme, bodyClass] of [['light', 'qds-ui qds-variant-zen'], ['dark', 'qds-ui qds-variant-zen qds-theme-dark']]) {
+  for (const [scheme, bodyClass] of [['light', 'ods-ui ods-variant-zen'], ['dark', 'ods-ui ods-variant-zen ods-theme-dark']]) {
     const page = await mount(browser, bodyClass)
     try {
       const paint = await observe(page)
@@ -240,7 +240,7 @@ try {
   }
 
   // Reading presentation: decorative depth and motion gone, boundaries intact.
-  for (const [scheme, bodyClass] of [['light', 'qds-ui qds-variant-zen qds-reading'], ['dark', 'qds-ui qds-variant-zen qds-theme-dark qds-reading']]) {
+  for (const [scheme, bodyClass] of [['light', 'ods-ui ods-variant-zen ods-reading'], ['dark', 'ods-ui ods-variant-zen ods-theme-dark ods-reading']]) {
     const page = await mount(browser, bodyClass)
     try {
       const paint = await observe(page)

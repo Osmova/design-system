@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "title": "QDS shared catalog control semantics (single source of control defaults for both preview hosts)",
+  "title": "ODS shared catalog control semantics (single source of control defaults for both preview hosts)",
   "note": "Both adapters build controls/defaults from these rows at runtime; demo prop defaults are intentionally absent so the control table stays the single source.",
   "kinds": ["toggle", "select", "number", "text"],
   "cases": {
     "actions/button": [
       { "key": "label", "kind": "text", "default": "Neutral", "subelement": "content", "semantics": "v-model free prop; drives the visible QBtn/QBtnDropdown label" },
-      { "key": "icon", "kind": "select", "default": "", "options": ["", "plus", "close", "edit"], "subelement": "icons", "semantics": "empty clears the icon; named options map onto qdsPhosphor line SVG paths (no removed material fonts involved)" },
+      { "key": "icon", "kind": "select", "default": "", "options": ["", "plus", "close", "edit"], "subelement": "icons", "semantics": "empty clears the icon; named options map onto odsPhosphor line SVG paths (no removed material fonts involved)" },
       { "key": "dense", "kind": "toggle", "default": false, "subelement": "shape", "semantics": "native QBtn dense sizing" },
       { "key": "loading", "kind": "toggle", "default": false, "subelement": "spinner", "semantics": "native QBtn loading spinner replaces content while true" },
       { "key": "disable", "kind": "toggle", "default": false, "subelement": "disabled", "semantics": "native disable state incl. opacity/dim" },

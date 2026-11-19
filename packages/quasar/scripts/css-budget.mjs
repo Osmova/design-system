@@ -44,8 +44,8 @@ function readBaseline(path) {
 // Resolve the frozen extension's relative Sass imports in memory, never in a worktree or artifact directory.
 const baselineImporter = {
   canonicalize(url, { containingUrl }) {
-    if (/^[a-z][a-z\d+.-]*:/i.test(url) && !url.startsWith('qds-baseline:')) return null
-    const path = url.startsWith('qds-baseline:')
+    if (/^[a-z][a-z\d+.-]*:/i.test(url) && !url.startsWith('ods-baseline:')) return null
+    const path = url.startsWith('ods-baseline:')
       ? new URL(url).pathname.slice(1)
       : posix.normalize(posix.join(containingUrl ? posix.dirname(containingUrl.pathname.slice(1)) : '', url))
     const dir = posix.dirname(path)
@@ -54,7 +54,7 @@ const baselineImporter = {
       ? [path, posix.join(dir, `_${name}`)]
       : [`${path}.scss`, posix.join(dir, `_${name}.scss`), `${path}/index.scss`, `${path}/_index.scss`]
     const match = candidates.find((candidate) => baselinePaths.has(candidate))
-    return match ? new URL(`qds-baseline:/${match}`) : null
+    return match ? new URL(`ods-baseline:/${match}`) : null
   },
   load(url) {
     return { contents: readBaseline(url.pathname.slice(1)), syntax: 'scss' }
@@ -96,7 +96,7 @@ function enforce(label, measured, limits) {
 function compiledMetrics(file, baseline = false) {
   const source = baseline ? readBaseline(file) : readFileSync(new URL(file, ROOT), 'utf8')
   const { css } = compileString(source, {
-    url: baseline ? new URL(`qds-baseline:/${file}`) : new URL(file, ROOT),
+    url: baseline ? new URL(`ods-baseline:/${file}`) : new URL(file, ROOT),
     importers: baseline ? [baselineImporter] : [],
     loadPaths: [fileURLToPath(new URL('node_modules/', ROOT))],
     style: 'compressed',

@@ -1,4 +1,4 @@
-# QDS shared catalog — bounded proof (development only)
+# ODS shared catalog — bounded proof (development only)
 
 This directory is **development-only tooling** for the shared Histoire + Storybook catalog proof.
 It is **not part of the published package**: `package.json#files` and `#exports` deliberately do not
@@ -13,10 +13,10 @@ reference `catalog/`, and `npm pack` never ships it.
   compiler-derived bindings, adapter render structures and deterministic generated data.
 - `control.json` — single source of control rows (key/kind/default/options/subelement). Both preview
   hosts build their controls from it; demos intentionally carry **no prop defaults**.
-- `demos/` — shared Vue demo components (plain Quasar + `--qds-*` tokens; no Histoire/Storybook APIs).
+- `demos/` — shared Vue demo components (plain Quasar + `--ods-*` tokens; no Histoire/Storybook APIs).
 - `preview/` — shared preview helper: `useCatalogPreviewController()` reads the **injected**
   controller directly (module-global fallback is never used in the proof path), and
-  `QdsPreviewScaffold.vue` renders the same shell + lifecycle readout in both hosts.
+  `OdsPreviewScaffold.vue` renders the same shell + lifecycle readout in both hosts.
 - `fixtures/` — generated fixture JSON (fresh state/fixtured defaults + assertion lists per case).
 - `native-inventory.json` — machine-generated native Quasar inventory: every `node_modules/quasar/src/components.js`
   export with an explicit disjoint disposition (`mixin`, `helper`, `composite-child`, `spinner`, `core`),

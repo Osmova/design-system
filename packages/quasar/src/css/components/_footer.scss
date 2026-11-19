@@ -1,14 +1,14 @@
-$shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui, .ods-ui *)';
 
 @mixin styles {
-  .qds-ui .q-footer { border-top: var(--qds-border-width-control) solid var(--qds-stroke-subtle); }
+  .ods-ui .q-footer { border-top: var(--ods-border-width-control) solid var(--ods-stroke-subtle); }
 
-  :is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one) .q-footer {
-    border-start-start-radius: var(--qds-card-radius);
-    border-start-end-radius: var(--qds-card-radius);
-    box-shadow: var(--qds-shadow-8);
+  :is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one) .q-footer {
+    border-start-start-radius: var(--ods-card-radius);
+    border-start-end-radius: var(--ods-card-radius);
+    box-shadow: var(--ods-shadow-8);
   }
 
-  #{$shadcn} .q-footer { border-top-color: var(--qds-stroke-divider); border-radius: 0; box-shadow: none; }
-  #{$shadcn} .q-footer .q-toolbar { font-size: var(--qds-font-size-body); }
+  #{$shadcn} .q-footer { border-top-color: var(--ods-stroke-divider); border-radius: 0; box-shadow: none; }
+  #{$shadcn} .q-footer .q-toolbar { font-size: var(--ods-font-size-body); }
 }

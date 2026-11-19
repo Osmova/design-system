@@ -20,18 +20,18 @@ import {
 
 type NativeActionItem = QWindowActionMenuItem | 'separator'
 
-export type QdsWindowProps = QWindowProps
-export type QdsWindowActionMenuItem = QWindowActionMenuItem
-export type QdsWindowPosition = QWindowPosition
-export type QdsWindowResponsiveProps = QWindowResponsiveProps
-export type QdsWindowResponsivePropsOptions = QWindowResponsivePropsOptions
-export type QdsWindowInstance = NativeQWindowInstance
+export type OdsWindowProps = QWindowProps
+export type OdsWindowActionMenuItem = QWindowActionMenuItem
+export type OdsWindowPosition = QWindowPosition
+export type OdsWindowResponsiveProps = QWindowResponsiveProps
+export type OdsWindowResponsivePropsOptions = QWindowResponsivePropsOptions
+export type OdsWindowInstance = NativeQWindowInstance
 
-export interface QdsWindowTitlebarSlotScope {
+export interface OdsWindowTitlebarSlotScope {
   menuData: QWindowActionMenuItem[]
 }
 
-export interface QdsWindowDefaultSlotScope {
+export interface OdsWindowDefaultSlotScope {
   zIndex: number
 }
 
@@ -46,7 +46,7 @@ const actionIcons: Record<string, string> = {
 
 // @quasar/quasar-ui-qwindow@3.0.0 exposes a `minimized` prop/action/method,
 // but its internal action-state guard currently throws for the `minimize` action.
-// QDS keeps minimized as a visual/consumer-controlled state and does not forward
+// ODS keeps minimized as a visual/consumer-controlled state and does not forward
 // it into the native component until the peer bug is fixed upstream.
 const unsupportedNativeActions = new Set(['minimize'])
 
@@ -85,7 +85,7 @@ function stopPointer(evt: Event) {
   evt.stopPropagation()
 }
 
-const qdsWindowProps = {
+const odsWindowProps = {
   actions: Array as PropType<string[]>,
   ariaLabel: String,
   ariaRole: String as PropType<QWindowProps['ariaRole']>,
@@ -127,26 +127,26 @@ const qdsWindowProps = {
   width: [Number, String] as PropType<number | string>,
 }
 
-export const QdsWindow = defineComponent({
-  name: 'QdsWindow',
+export const OdsWindow = defineComponent({
+  name: 'OdsWindow',
   inheritAttrs: false,
-  props: qdsWindowProps,
+  props: odsWindowProps,
   setup(props, { slots, expose }) {
     const attrs = useAttrs()
     const windowRef = ref<NativeQWindowInstance | null>(null)
     const selected = ref(false)
 
-    const qdsClasses = computed(() => ({
-      'qds-window--active': selected.value,
-      'qds-window--dense': props.dense,
-      'qds-window--disabled': props.disabled,
-      'qds-window--embedded': props.embedded,
-      'qds-window--floating': props.embedded !== true,
-      'qds-window--fullscreen': props.fullscreen,
-      'qds-window--headless': props.headless,
-      'qds-window--maximized': props.maximized,
-      'qds-window--minimized': props.minimized,
-      'qds-window--pinned': props.pinned,
+    const odsClasses = computed(() => ({
+      'ods-window--active': selected.value,
+      'ods-window--dense': props.dense,
+      'ods-window--disabled': props.disabled,
+      'ods-window--embedded': props.embedded,
+      'ods-window--floating': props.embedded !== true,
+      'ods-window--fullscreen': props.fullscreen,
+      'ods-window--headless': props.headless,
+      'ods-window--maximized': props.maximized,
+      'ods-window--minimized': props.minimized,
+      'ods-window--pinned': props.pinned,
     }))
 
     function exposeBooleanMethod(method: keyof NativeQWindowInstance) {
@@ -183,7 +183,7 @@ export const QdsWindow = defineComponent({
       return h(QBtn, {
         key: item.key,
         'aria-label': label,
-        class: ['qds-window__action', `qds-window__action--${item.key}`],
+        class: ['ods-window__action', `ods-window__action--${item.key}`],
         dense: true,
         flat: true,
         round: true,
@@ -205,7 +205,7 @@ export const QdsWindow = defineComponent({
       return h(QBtn, {
         key: `fallback-${key}`,
         'aria-label': label,
-        class: ['qds-window__action', `qds-window__action--${key}`],
+        class: ['ods-window__action', `ods-window__action--${key}`],
         dense: true,
         flat: true,
         round: true,
@@ -221,7 +221,7 @@ export const QdsWindow = defineComponent({
       }, icon ? undefined : () => label.slice(0, 1))
     }
 
-    function renderTitlebar(scope: QdsWindowTitlebarSlotScope) {
+    function renderTitlebar(scope: OdsWindowTitlebarSlotScope) {
       if (slots.titlebar) {
         return slots.titlebar(scope)
       }
@@ -232,14 +232,14 @@ export const QdsWindow = defineComponent({
         actions.push(renderFallbackAction('close', 'Close', () => windowRef.value?.hide()))
       }
 
-      return h('div', { class: 'qds-window__chrome' }, [
-        h('div', { class: 'qds-window__title' }, slots.title ? slots.title() : props.title),
-        h('div', { class: 'qds-window__actions' }, actions),
+      return h('div', { class: 'ods-window__chrome' }, [
+        h('div', { class: 'ods-window__title' }, slots.title ? slots.title() : props.title),
+        h('div', { class: 'ods-window__actions' }, actions),
       ])
     }
 
-    function renderDefault(scope: QdsWindowDefaultSlotScope) {
-      return h('div', { class: 'qds-window__body' }, slots.default?.(scope))
+    function renderDefault(scope: OdsWindowDefaultSlotScope) {
+      return h('div', { class: 'ods-window__body' }, slots.default?.(scope))
     }
 
     return () => {
@@ -263,15 +263,15 @@ export const QdsWindow = defineComponent({
         ...nativeProps,
         ref: windowRef,
         actions: nativeActions,
-        backgroundColor: props.backgroundColor ?? 'var(--qds-card-bg)',
+        backgroundColor: props.backgroundColor ?? 'var(--ods-card-bg)',
         borderStyle: props.borderStyle ?? 'solid',
-        borderWidth: props.borderWidth ?? 'var(--qds-border-width-control)',
-        color: props.color ?? 'var(--qds-text)',
-        contentClass: ['qds-window', qdsClasses.value, props.contentClass, inheritedClass],
+        borderWidth: props.borderWidth ?? 'var(--ods-border-width-control)',
+        color: props.color ?? 'var(--ods-text)',
+        contentClass: ['ods-window', odsClasses.value, props.contentClass, inheritedClass],
         contentStyle: [props.contentStyle, inheritedStyle],
-        gripperBackgroundColor: props.gripperBackgroundColor ?? 'var(--qds-surface-0)',
-        gripperBorderColor: props.gripperBorderColor ?? 'var(--qds-border)',
-        titlebarClass: ['qds-window__titlebar', props.titlebarClass],
+        gripperBackgroundColor: props.gripperBackgroundColor ?? 'var(--ods-surface-0)',
+        gripperBorderColor: props.gripperBorderColor ?? 'var(--ods-border)',
+        titlebarClass: ['ods-window__titlebar', props.titlebarClass],
         onSelected: (value: boolean) => {
           selected.value = value
           callListener(onSelected, value)
@@ -286,4 +286,4 @@ export const QdsWindow = defineComponent({
 
 export { useQWindowResponsiveProps }
 
-export default QdsWindow
+export default OdsWindow

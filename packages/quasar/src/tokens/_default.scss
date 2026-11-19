@@ -4,38 +4,38 @@
 @forward 'generated/default';
 @use 'generated/default' as g;
 
-@function qds-rgb($color) {
+@function ods-rgb($color) {
   @return '#{color.channel($color, "red", $space: rgb)}, #{color.channel($color, "green", $space: rgb)}, #{color.channel($color, "blue", $space: rgb)}';
 }
 
-@function qds-rgb-map($colors) {
+@function ods-rgb-map($colors) {
   $result: ();
   @each $name, $color in $colors {
-    $result: map.set($result, $name, qds-rgb($color));
+    $result: map.set($result, $name, ods-rgb($color));
   }
   @return $result;
 }
 
-$palette-rgb: qds-rgb-map(g.$palette) !default;
-$dark-palette-rgb: qds-rgb-map(g.$dark-palette) !default;
+$palette-rgb: ods-rgb-map(g.$palette) !default;
+$dark-palette-rgb: ods-rgb-map(g.$dark-palette) !default;
 
 // Fluent two-part shadows: ambient + key layer per step, alpha pair per scheme.
-@function qds-shadow($step, $scheme: light, $direction: 1) {
+@function ods-shadow($step, $scheme: light, $direction: 1) {
   $geometry: map.get(g.$shadow-steps, $step);
   $alpha: map.get(g.$shadow-alpha, $scheme);
   @return 0 0 map.get($geometry, ambient-blur) rgba(0, 0, 0, map.get($alpha, ambient)), 0 (map.get($geometry, key-offset-y) * $direction) map.get($geometry, key-blur) rgba(0, 0, 0, map.get($alpha, key));
 }
 
 $shadow: (
-  sm: qds-shadow(4),
-  md: qds-shadow(16),
-  lg: qds-shadow(64),
-  dark-sm: qds-shadow(4, dark),
-  dark-md: qds-shadow(16, dark),
-  dark-lg: qds-shadow(64, dark),
+  sm: ods-shadow(4),
+  md: ods-shadow(16),
+  lg: ods-shadow(64),
+  dark-sm: ods-shadow(4, dark),
+  dark-md: ods-shadow(16, dark),
+  dark-lg: ods-shadow(64, dark),
 ) !default;
 
-g.$components: map.deep-merge((button: (elevated-shadow-hover: qds-shadow(4), dark-elevated-shadow-hover: qds-shadow(4, dark))), g.$components);
+g.$components: map.deep-merge((button: (elevated-shadow-hover: ods-shadow(4), dark-elevated-shadow-hover: ods-shadow(4, dark))), g.$components);
 
 @if map.get(g.$font, display) == null {
   g.$font: map.merge(g.$font, (display: map.get(g.$font, body)));

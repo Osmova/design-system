@@ -178,9 +178,9 @@ test.describe('apps', () => {
     test(`menu rows lay out icon, title, caption and description (${mode})`, async ({ page }) => {
       await openApps(page, mode)
       await page.locator(`${byHook('qds-apps-split')} .q-btn-dropdown__arrow-container`).click()
-      const rows = page.locator(`${byHook('qds-apps-split-menu')} .qds-menu-row`)
+      const rows = page.locator(`${byHook('qds-apps-split-menu')} .ods-menu-row`)
       await expect(rows).toHaveCount(5)
-      const muted = await resolvedColor(page, '--qds-fg-muted')
+      const muted = await resolvedColor(page, '--ods-fg-muted')
 
       for (const row of (await rows.all()).slice(0, 4)) {
         const parts = await row.evaluate((element) => {
@@ -198,13 +198,13 @@ test.describe('apps', () => {
           }
           return {
             row: element.getBoundingClientRect().height,
-            icon: read('.qds-menu-row__icon'),
-            title: read('.qds-menu-row__title'),
-            caption: read('.qds-menu-row__caption'),
-            description: read('.qds-menu-row__description'),
+            icon: read('.ods-menu-row__icon'),
+            title: read('.ods-menu-row__title'),
+            caption: read('.ods-menu-row__caption'),
+            description: read('.ods-menu-row__description'),
           }
         })
-        const name = await row.locator('.qds-menu-row__title').innerText()
+        const name = await row.locator('.ods-menu-row__title').innerText()
         expect.soft(parts.icon.right, `${name}: icon leads the text`).toBeLessThanOrEqual(parts.title.left + 0.5)
         expect.soft(parts.caption.top, `${name}: caption follows the title`).toBeGreaterThanOrEqual(parts.title.bottom - 1)
         expect.soft(parts.description.top, `${name}: description follows the caption`).toBeGreaterThanOrEqual(parts.caption.bottom - 1)
@@ -306,7 +306,7 @@ test.describe('apps', () => {
       expect.soft(rail.content, 'active mini item draws an indicator').not.toBe('none')
       expect.soft(rail.width, 'indicator is a 3px rail').toBeCloseTo(3, 0)
       expect.soft(rail.height, 'indicator is 16px tall').toBeCloseTo(16, 0)
-      expect.soft(distance(rail.color, await resolvedColor(page, '--qds-tab-active-rail')), `indicator ${rail.color} uses the accent rail`).toBeLessThanOrEqual(2)
+      expect.soft(distance(rail.color, await resolvedColor(page, '--ods-tab-active-rail')), `indicator ${rail.color} uses the accent rail`).toBeLessThanOrEqual(2)
 
       const tooltip = page.getByRole('tooltip')
       await toggle.focus()
@@ -455,15 +455,15 @@ test.describe('apps', () => {
       await openApps(page, mode)
       const tablist = page.locator(byHook('qds-apps-subpage-tabs'))
       await expect(tablist).toHaveAttribute('role', 'tablist')
-      await expect(tablist).toHaveClass(/qds-subpage-tabs/)
+      await expect(tablist).toHaveClass(/ods-subpage-tabs/)
       expect.soft(await style(tablist.locator('.q-tabs__content'), 'justify-content'), 'tabs start at the inline start').toBe('flex-start')
       const divider = await style(tablist, 'box-shadow')
       expect.soft(divider, 'the strip draws an inset hairline divider').toMatch(/inset/)
-      expect.soft(distance(divider.match(/color\(srgb[^)]*\)|rgba?\([^)]*\)/)?.[0] ?? 'rgba(0, 0, 0, 0)', await resolvedColor(page, '--qds-stroke-divider')), 'the divider uses the divider stroke').toBeLessThanOrEqual(2)
+      expect.soft(distance(divider.match(/color\(srgb[^)]*\)|rgba?\([^)]*\)/)?.[0] ?? 'rgba(0, 0, 0, 0)', await resolvedColor(page, '--ods-stroke-divider')), 'the divider uses the divider stroke').toBeLessThanOrEqual(2)
       const panel = page.locator(`${byHook('qds-apps-subpage-panels')} .q-tab-panel`)
       const spaceLg = await page.locator('body').evaluate((body) => {
         const probe = document.createElement('span')
-        probe.style.cssText = 'display:block;position:absolute;width:var(--qds-space-lg)'
+        probe.style.cssText = 'display:block;position:absolute;width:var(--ods-space-lg)'
         body.append(probe)
         const width = probe.getBoundingClientRect().width
         probe.remove()
@@ -496,7 +496,7 @@ test.describe('apps', () => {
       expect.soft(active.height, 'underline stays thin').toBeLessThanOrEqual(4)
       expect.soft(Math.abs(active.bottom - tabBottom), 'underline sits on the tab baseline').toBeLessThanOrEqual(2)
       expect.soft(idle.opacity, 'inactive tabs hide the underline').toBe(0)
-      expect.soft(distance(active.color, await resolvedColor(page, '--qds-tab-active-rail')), `underline ${active.color} uses the accent rail`).toBeLessThanOrEqual(2)
+      expect.soft(distance(active.color, await resolvedColor(page, '--ods-tab-active-rail')), `underline ${active.color} uses the accent rail`).toBeLessThanOrEqual(2)
       expect.soft(Number(await style(tabs.nth(0), 'font-weight')), 'active label weight').toBeGreaterThanOrEqual(Number(await style(tabs.nth(1), 'font-weight')))
     })
   }
@@ -593,7 +593,7 @@ test.describe('apps', () => {
       }
 
       const segmented = table.locator(`tbody ${byHook('qds-apps-table-traffic')}`).first()
-      await expect(segmented).toHaveClass(/qds-table-segmented/)
+      await expect(segmented).toHaveClass(/ods-table-segmented/)
       await expect(segmented).toHaveAccessibleName('Traffic for checkout-api')
       const cell = await box(segmented.locator('xpath=ancestor::td[1]'))
       const control = await box(segmented)
@@ -645,7 +645,7 @@ test.describe('apps', () => {
     test(`expansion headers fill subtly on hover and when expanded (${mode})`, async ({ page }, testInfo) => {
       await openApps(page, mode)
       const header = page.locator(`${byHook('qds-apps-expansion-item')} .q-expansion-item__container > .q-item`).first()
-      const hoverLayer = await resolvedColor(page, '--qds-state-hover')
+      const hoverLayer = await resolvedColor(page, '--ods-state-hover')
       const fill = () => style(header, 'background-color')
       const rest = await fill()
       expect.soft(isTransparent(rest), `rest header ${rest} is clear`).toBe(true)
@@ -680,12 +680,12 @@ test.describe('apps', () => {
     for (const variant of CANONICAL_VARIANTS) {
       test(`dashboard tiles carry value, label, state and sparkline (${mode} / ${variant})`, async ({ page }) => {
         await openApps(page, mode, variant)
-        const tiles = page.locator(`${byHook('qds-apps-tiles')} .qds-tile`)
+        const tiles = page.locator(`${byHook('qds-apps-tiles')} .ods-tile`)
         await expect(tiles).toHaveCount(6)
         const roles = { alert: 'negative', warning: 'warning', positive: 'positive' } as const
         const sparkHeight = await page.locator('body').evaluate((body) => {
           const probe = document.createElement('span')
-          probe.style.cssText = 'display:block;position:absolute;height:var(--qds-tile-spark-height)'
+          probe.style.cssText = 'display:block;position:absolute;height:var(--ods-tile-spark-height)'
           body.append(probe)
           const height = probe.getBoundingClientRect().height
           probe.remove()
@@ -701,15 +701,15 @@ test.describe('apps', () => {
               const r = node.getBoundingClientRect()
               return { size: Number.parseFloat(s.fontSize), weight: Number(s.fontWeight), color: s.color, width: r.width, height: r.height, left: r.left, right: r.right }
             }
-            const spark = element.querySelector('.qds-tile__spark svg')!.getBoundingClientRect()
-            const text = element.querySelector('.qds-tile__spark .qds-sr-only') as HTMLElement
+            const spark = element.querySelector('.ods-tile__spark svg')!.getBoundingClientRect()
+            const text = element.querySelector('.ods-tile__spark .ods-sr-only') as HTMLElement
             const tile = element.getBoundingClientRect()
             const surface = getComputedStyle(element)
             return {
-              value: read('.qds-tile__value'),
-              label: read('.qds-tile__label'),
-              meta: read('.qds-tile__meta'),
-              icon: read('.qds-tile__icon'),
+              value: read('.ods-tile__value'),
+              label: read('.ods-tile__label'),
+              meta: read('.ods-tile__meta'),
+              icon: read('.ods-tile__icon'),
               spark: { width: spark.width, height: spark.height, left: spark.left, right: spark.right },
               srText: { width: text.getBoundingClientRect().width, height: text.getBoundingClientRect().height, text: text.textContent ?? '' },
               tile: { left: tile.left, right: tile.right },
@@ -717,7 +717,7 @@ test.describe('apps', () => {
               radius: Number.parseFloat(surface.borderTopLeftRadius),
             }
           })
-          const label = await tile.locator('.qds-tile__label').innerText()
+          const label = await tile.locator('.ods-tile__label').innerText()
           expect.soft(parts.value.size, `${label}: value leads the hierarchy`).toBeGreaterThan(parts.label.size)
           expect.soft(parts.value.weight, `${label}: value is emphasised`).toBeGreaterThanOrEqual(600)
           expect.soft(parts.meta.size, `${label}: meta is secondary`).toBeLessThanOrEqual(parts.label.size)
@@ -730,19 +730,19 @@ test.describe('apps', () => {
           expect.soft(parts.spark.left >= parts.tile.left - 0.5 && parts.spark.right <= parts.tile.right + 0.5, `${label}: sparkline stays inside the tile`).toBe(true)
           expect.soft(parts.srText.text, `${label}: sparkline has a text equivalent`).toMatch(/^Trend: /)
           expect.soft(parts.srText.width * parts.srText.height, `${label}: text equivalent is visually hidden`).toBeLessThanOrEqual(1)
-          await expect(tile.locator('.qds-tile__spark svg'), `${label}: sparkline is hidden from AT`).toHaveAttribute('aria-hidden', 'true')
+          await expect(tile.locator('.ods-tile__spark svg'), `${label}: sparkline is hidden from AT`).toHaveAttribute('aria-hidden', 'true')
         }
 
         expect.soft(await style(tiles.nth(3), 'outline-style'), 'a neutral tile draws no tone ring').toBe('none')
         for (const [index, tone] of [[0, 'alert'], [1, 'warning'], [2, 'positive']] as const) {
           const tile = tiles.nth(index)
-          await expect(tile).toHaveClass(new RegExp(`qds-tile--${tone}`))
-          const [fg, soft] = [await resolvedColor(page, `--qds-fg-${roles[tone]}`), await resolvedColor(page, `--qds-surface-${roles[tone]}-soft`)]
-          const icon = tile.locator('.qds-tile__icon')
-          expect.soft(distance(await style(icon, 'color'), fg), `${tone} icon uses --qds-fg-${roles[tone]}`).toBeLessThanOrEqual(2)
-          expect.soft(distance(await style(icon, 'background-color'), soft), `${tone} icon sits on --qds-surface-${roles[tone]}-soft`).toBeLessThanOrEqual(2)
-          expect.soft(distance(await style(tile.locator('.qds-tile__meta'), 'color'), fg), `${tone} meta text carries the role colour`).toBeLessThanOrEqual(2)
-          const role = await resolvedColor(page, `--qds-color-${roles[tone]}`)
+          await expect(tile).toHaveClass(new RegExp(`ods-tile--${tone}`))
+          const [fg, soft] = [await resolvedColor(page, `--ods-fg-${roles[tone]}`), await resolvedColor(page, `--ods-surface-${roles[tone]}-soft`)]
+          const icon = tile.locator('.ods-tile__icon')
+          expect.soft(distance(await style(icon, 'color'), fg), `${tone} icon uses --ods-fg-${roles[tone]}`).toBeLessThanOrEqual(2)
+          expect.soft(distance(await style(icon, 'background-color'), soft), `${tone} icon sits on --ods-surface-${roles[tone]}-soft`).toBeLessThanOrEqual(2)
+          expect.soft(distance(await style(tile.locator('.ods-tile__meta'), 'color'), fg), `${tone} meta text carries the role colour`).toBeLessThanOrEqual(2)
+          const role = await resolvedColor(page, `--ods-color-${roles[tone]}`)
           const ring = await tile.evaluate((element) => {
             const s = getComputedStyle(element)
             return { style: s.outlineStyle, width: Number.parseFloat(s.outlineWidth), offset: s.outlineOffset, color: s.outlineColor }
@@ -750,8 +750,8 @@ test.describe('apps', () => {
           expect.soft(ring.style, `${tone} tile draws a tone ring`).toBe('solid')
           expect.soft(ring.width, `${tone} ring is at least a hairline`).toBeGreaterThanOrEqual(1)
           expect.soft(ring.offset, `${tone} ring sits on the tile edge`).toBe('-1px')
-          expect.soft(distance(ring.color, role), `${tone} ring ${ring.color} uses --qds-color-${roles[tone]}`).toBeLessThanOrEqual(3)
-          await expect(tile.locator('.qds-tile__meta'), `${tone} meaning is spelled out in text`).toHaveText(/^(Critical|Warning|On track):/)
+          expect.soft(distance(ring.color, role), `${tone} ring ${ring.color} uses --ods-color-${roles[tone]}`).toBeLessThanOrEqual(3)
+          await expect(tile.locator('.ods-tile__meta'), `${tone} meaning is spelled out in text`).toHaveText(/^(Critical|Warning|On track):/)
         }
       })
     }
@@ -761,7 +761,7 @@ test.describe('apps', () => {
     await openApps(page)
     const grid = page.locator(byHook('qds-apps-tiles'))
     const columns = async () =>
-      grid.locator('.qds-tile').evaluateAll((tiles) => new Set(tiles.map((tile) => Math.round(tile.getBoundingClientRect().top))).size)
+      grid.locator('.ods-tile').evaluateAll((tiles) => new Set(tiles.map((tile) => Math.round(tile.getBoundingClientRect().top))).size)
     const initial = page.viewportSize()!
     if (initial.width >= 1024) expect.soft(6 / (await columns()), 'desktop fits at least three tiles per row').toBeGreaterThanOrEqual(3)
 
@@ -776,11 +776,11 @@ test.describe('apps', () => {
       expect.soft(overflow.grid, `${width}px grid does not scroll horizontally`).toBeLessThanOrEqual(0)
       expect.soft(overflow.page, `${width}px page does not scroll horizontally`).toBeLessThanOrEqual(0)
       for (const [index, tile] of overflow.tiles.entries()) expect.soft(tile, `${width}px tile ${index} does not overflow`).toBeLessThanOrEqual(0)
-      const rows = await grid.locator('.qds-tile').evaluateAll((tiles) => {
+      const rows = await grid.locator('.ods-tile').evaluateAll((tiles) => {
         const byRow = new Map<number, number[]>()
         for (const tile of tiles) {
           const top = Math.round(tile.getBoundingClientRect().top)
-          byRow.set(top, [...(byRow.get(top) ?? []), tile.querySelector('.qds-tile__value')!.getBoundingClientRect().top])
+          byRow.set(top, [...(byRow.get(top) ?? []), tile.querySelector('.ods-tile__value')!.getBoundingClientRect().top])
         }
         return [...byRow.values()]
       })

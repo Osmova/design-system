@@ -144,7 +144,7 @@ export function countAtlasHooks(rootDir = REPO_ROOT) {
   const ids = [...text.matchAll(/'([a-z0-9-]+)'/g)].map((entry) => entry[1])
   // Section names ('components'|'forms'|'apps'|'catalog'|'plugins') are not hook ids.
   const sectionNames = new Set(['components', 'forms', 'apps', 'catalog', 'plugins'])
-  const hookIds = new Set(ids.filter((id) => id.startsWith('qds-') && !sectionNames.has(id)))
+  const hookIds = new Set(ids.filter((id) => !sectionNames.has(id)))
   return { file: 'apps/gallery/tests/visual/atlas-families.ts', uniqueHookIds: hookIds.size }
 }
 
@@ -247,7 +247,7 @@ export function buildNativeInventory(manifest, quasarVersion, sourceText, atlasS
 
   return {
     schemaVersion: 1,
-    title: 'QDS native export inventory (bounded proof)',
+    title: 'ODS native export inventory (bounded proof)',
     source: {
       module: 'quasar',
       version: quasarVersion,

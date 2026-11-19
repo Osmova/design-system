@@ -1,7 +1,7 @@
 {
   "$description": "Ink variant and its selectable inks.",
   "ink-colors": {
-    "$description": "Selectable inks (data-qds-ink): one ink and one paper per scheme; dark is the same ink inverted; danger is the one red.",
+    "$description": "Selectable inks (data-ods-ink): one ink and one paper per scheme; dark is the same ink inverted; danger is the one red.",
     "$type": "color",
     "charcoal": {
       "light-ink": {

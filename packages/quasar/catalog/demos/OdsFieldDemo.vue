@@ -29,10 +29,10 @@ const value = ref('Draft value')
 </script>
 
 <template>
-  <div class="qds-catalog-demo-field">
+  <div class="ods-catalog-demo-field">
     <QField
       v-model="value"
-      class="qds-catalog-demo__control"
+      class="ods-catalog-demo__control"
       outlined
       :label="label"
       :dense="dense"
@@ -72,7 +72,7 @@ const value = ref('Draft value')
 </template>
 
 <style scoped>
-.qds-catalog-demo-field {
+.ods-catalog-demo-field {
   display: grid;
   gap: 0.25rem;
 }

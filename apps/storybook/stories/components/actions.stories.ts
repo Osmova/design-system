@@ -69,7 +69,7 @@ export const Roles: Story = {
     components: { QBtn },
     setup: () => ({ args, roles: ['primary', 'secondary', 'accent', 'positive', 'negative', 'info', 'warning'], look: computed(() => styled({ appearance: args.appearance })) }),
     template: `
-      <div class="qds-story-row">
+      <div class="ods-story-row">
         <QBtn v-for="role in roles" :key="role" v-bind="look" :dense="args.dense" :color="role" :label="role" no-caps />
         <QBtn v-bind="look" :dense="args.dense" label="Disabled" color="primary" disable no-caps />
       </div>`,

@@ -122,7 +122,7 @@ for (const mode of ['light', 'dark'] as const) {
     await expect(page.locator(byHook('qds-shadcn-panels'))).toHaveScreenshot(`shadcn-five-palettes-${mode}.png`, { stylePath: hideHeader })
     await page.goto('/conformance.html')
     await applyShadcn(page, mode, 'neutral')
-    for (const selector of ['[data-native="rich"]', '.qds-window', '[data-scheme="dark"]', '[data-scheme="light"]']) {
+    for (const selector of ['[data-native="rich"]', '.ods-window', '[data-scheme="dark"]', '[data-scheme="light"]']) {
       await expect(page.locator(selector)).toHaveScreenshot(`shadcn-native-${selector.replace(/[^a-z]/g, '')}-${mode}.png`)
     }
   })

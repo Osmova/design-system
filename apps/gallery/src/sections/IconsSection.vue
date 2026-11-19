@@ -22,9 +22,9 @@ const duotone = [
 <template>
   <div class="column" style="gap: 1.5rem">
     <q-card class="q-pa-lg">
-      <div class="text-h6 qds-display q-mb-xs">Quasar control icons (qdsIconSet — Phosphor line)</div>
-      <p class="qds-text-muted q-mb-md">
-        These glyphs come from the Quasar icon-set wired via <code>app.use(Quasar, { iconSet: qdsIconSet })</code>.
+      <div class="text-h6 ods-display q-mb-xs">Quasar control icons (odsIconSet — Phosphor line)</div>
+      <p class="ods-text-muted q-mb-md">
+        These glyphs come from the Quasar icon-set wired via <code>app.use(Quasar, { iconSet: odsIconSet })</code>.
       </p>
       <div class="row q-col-gutter-md items-center">
         <div data-test="qds-icon-dropdown" class="col-auto"><q-btn-dropdown flat dense label="Button menu" /></div>
@@ -40,15 +40,15 @@ const duotone = [
         <div class="col-auto"><q-btn class="icons-lg-control" outline color="primary" label="lg" /></div>
       </div>
       <div data-test="qds-icon-expansion">
-        <q-expansion-item label="Expansion item (chevron)" class="q-mt-md qds-card" style="border-radius: var(--qds-radius-md)">
-          <q-card-section class="qds-text-muted">Uses the icon-set caret.</q-card-section>
+        <q-expansion-item label="Expansion item (chevron)" class="q-mt-md ods-card" style="border-radius: var(--ods-radius-md)">
+          <q-card-section class="ods-text-muted">Uses the icon-set caret.</q-card-section>
         </q-expansion-item>
       </div>
     </q-card>
 
     <q-card class="q-pa-lg">
-      <div class="text-h6 qds-display q-mb-xs">Content icons (@phosphor-icons/vue — duotone)</div>
-      <p class="qds-text-muted q-mb-md">App-level feature icons, <code>weight="duotone"</code>, sized via <code>1.75em</code>.</p>
+      <div class="text-h6 ods-display q-mb-xs">Content icons (@phosphor-icons/vue — duotone)</div>
+      <p class="ods-text-muted q-mb-md">App-level feature icons, <code>weight="duotone"</code>, sized via <code>1.75em</code>.</p>
       <div class="row q-col-gutter-lg">
         <div
           v-for="icon in duotone"
@@ -56,7 +56,7 @@ const duotone = [
           class="col-auto column items-center"
           style="gap: 0.5rem"
         >
-          <component :is="icon.comp" weight="duotone" :size="28" color="var(--qds-color-primary)" />
+          <component :is="icon.comp" weight="duotone" :size="28" color="var(--ods-color-primary)" />
           <code class="caption">{{ icon.name }}</code>
         </div>
       </div>
@@ -67,11 +67,11 @@ const duotone = [
 <style scoped>
 .caption {
   font-size: 0.7rem;
-  color: var(--qds-text-muted);
+  color: var(--ods-text-muted);
 }
 
 .icons-lg-control {
-  --qds-button-min-height: var(--qds-control-size-lg);
-  --qds-button-padding-inline: 1rem;
+  --ods-button-min-height: var(--ods-control-size-lg);
+  --ods-button-padding-inline: 1rem;
 }
 </style>

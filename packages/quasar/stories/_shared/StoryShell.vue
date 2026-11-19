@@ -31,22 +31,22 @@ const rootState = computed(() => {
   const variant = DESIGN_SYSTEM_VARIANTS[designSystem.variant.value as keyof typeof DESIGN_SYSTEM_VARIANTS]
 
   return [
-    'qds-ui',
-    `qds-theme-${designSystem.resolvedMode.value}`,
+    'ods-ui',
+    `ods-theme-${designSystem.resolvedMode.value}`,
     variant?.cssClass ?? DESIGN_SYSTEM_VARIANTS.fluent.cssClass,
   ].join(' · ')
 })
 </script>
 
 <template>
-  <main class="qds-story-shell">
-    <header class="qds-story-header">
+  <main class="ods-story-shell">
+    <header class="ods-story-header">
       <div>
-        <p class="qds-story-kicker">Quasar Design System</p>
-        <h1 class="qds-story-heading">{{ title }}</h1>
-        <p v-if="description" class="qds-story-description">{{ description }}</p>
+        <p class="ods-story-kicker">Osmova Design System</p>
+        <h1 class="ods-story-heading">{{ title }}</h1>
+        <p v-if="description" class="ods-story-description">{{ description }}</p>
       </div>
-      <QBadge class="qds-story-root-state" color="primary" text-color="white" role="status" aria-live="polite">
+      <QBadge class="ods-story-root-state" color="primary" text-color="white" role="status" aria-live="polite">
         {{ rootState }}
       </QBadge>
       <QSelect

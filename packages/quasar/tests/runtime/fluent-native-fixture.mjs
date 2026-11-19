@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import Color from 'colorjs.io'
-import { qdsIconSet } from '../../dist/icons/quasar-icon-set.js'
+import { odsIconSet } from '../../dist/icons/quasar-icon-set.js'
 import { root } from './grammar-fixture.mjs'
 
 const require = createRequire(import.meta.url)
@@ -11,9 +11,9 @@ export const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 
 
 export async function mount(browser, css, { layered = false, mode = 'light', profile = 'win', custom = false, coarse = false, forced = false } = {}) {
   const page = await browser.newPage({ viewport: { width: coarse ? 393 : 1100, height: 1000 }, hasTouch: coarse, isMobile: coarse, forcedColors: forced ? 'active' : 'none' })
-  const classes = `qds-ui qds-theme-${mode} ${profile === 'default' ? '' : `qds-variant-${profile.startsWith('shadcn') ? 'shadcn' : profile}`}`
+  const classes = `ods-ui ods-theme-${mode} ${profile === 'default' ? '' : `ods-variant-${profile.startsWith('shadcn') ? 'shadcn' : profile}`}`
   const palette = profile.startsWith('shadcn-') ? profile.slice(7) : 'neutral'
-  await page.setContent(`<style>${layered ? '@layer qds-important,quasar,qds;@layer quasar {' + assets.css + '}' : assets.css}</style><style>${css}</style><style>@property --qds-active-probe { syntax: '<integer>'; inherits: false; initial-value: 0 } button:active, [role='button']:active, a:active, input:active, textarea:active, select:active { --qds-active-probe: 1 }</style><style>body{margin:16px}#app{display:grid;gap:16px} .roles,.group{display:flex;gap:8px;flex-wrap:wrap} .field{max-width:340px} .contexts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px} .q-editor{max-width:360px}</style><body class="${custom ? '' : classes}" data-qds-shadcn-base="${palette}"><main id="app" class="${custom ? classes : ''}" data-qds-shadcn-base="${palette}"></main></body>`)
+  await page.setContent(`<style>${layered ? '@layer ods-important,quasar,ods;@layer quasar {' + assets.css + '}' : assets.css}</style><style>${css}</style><style>@property --ods-active-probe { syntax: '<integer>'; inherits: false; initial-value: 0 } button:active, [role='button']:active, a:active, input:active, textarea:active, select:active { --ods-active-probe: 1 }</style><style>body{margin:16px}#app{display:grid;gap:16px} .roles,.group{display:flex;gap:8px;flex-wrap:wrap} .field{max-width:340px} .contexts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px} .q-editor{max-width:360px}</style><body class="${custom ? '' : classes}" data-ods-shadcn-base="${palette}"><main id="app" class="${custom ? classes : ''}" data-ods-shadcn-base="${palette}"></main></body>`)
   await page.addScriptTag({ content: assets.vue })
   await page.addScriptTag({ content: assets.quasar })
   await page.evaluate(({ icons, roles, mode }) => {
@@ -22,7 +22,7 @@ export async function mount(browser, css, { layered = false, mode = 'light', pro
     const state = reactive({ value: 'Project', chips: ['One', 'Two'], page: 2, toggle: 'a', date: '2026/10/15', editor: 'Native editor' })
     const app = createApp({ setup: () => () => [
       h('div', { class: 'roles' }, roles.map((role) => h(QBtn, { id: role, label: role, color: role, textColor: 'white', unelevated: true, ripple: false, icon: icons.fab.icon }))),
-      h('div', { class: 'group' }, [h(QBtn, { id: 'literal', label: 'Literal', color: 'red-7', textColor: 'white', ripple: false }), h(QBtn, { id: 'author', label: 'Author', color: 'primary', style: 'color:rgb(13,23,33)!important;background-color:rgb(233,223,213)!important', ripple: false }), h(QBtn, { id: 'tonal', label: 'Tonal', color: 'primary', class: 'qds-tonal', ripple: false }), h(QBtn, { id: 'disabled', label: 'Disabled', color: 'primary', disable: true })]),
+      h('div', { class: 'group' }, [h(QBtn, { id: 'literal', label: 'Literal', color: 'red-7', textColor: 'white', ripple: false }), h(QBtn, { id: 'author', label: 'Author', color: 'primary', style: 'color:rgb(13,23,33)!important;background-color:rgb(233,223,213)!important', ripple: false }), h(QBtn, { id: 'tonal', label: 'Tonal', color: 'primary', class: 'ods-tonal', ripple: false }), h(QBtn, { id: 'disabled', label: 'Disabled', color: 'primary', disable: true })]),
       h(QInput, { class: 'field', modelValue: state.value, 'onUpdate:modelValue': (v) => { state.value = v }, label: 'Project', outlined: true, clearable: true, counter: true, hint: 'Native hint' }, { append: () => h(QBtn, { id: 'append', flat: true, round: true, dense: true, icon: icons.fab.icon, 'aria-label': 'Custom append', ripple: false }) }),
       h(QBtn, { id: 'next', label: 'Next', ripple: false }),
       h(QSelect, { class: 'chips', modelValue: state.chips, multiple: true, useChips: true, options: ['One', 'Two'], outlined: true, label: 'Tags' }),
@@ -36,7 +36,7 @@ export async function mount(browser, css, { layered = false, mode = 'light', pro
     app.use(Quasar, { iconSet: icons, config: { dark: mode === 'dark' } })
     app.mount('#app')
     window.fixture = { state, async reset() { state.value = 'Project'; await nextTick() }, dispose: () => app.unmount() }
-  }, { icons: JSON.parse(JSON.stringify(qdsIconSet)), roles, mode })
+  }, { icons: JSON.parse(JSON.stringify(odsIconSet)), roles, mode })
   await settle(page)
   return page
 }
@@ -59,7 +59,7 @@ export async function paint(page, selector) {
       if (s.opacity !== '1') throw new Error(`Unexpected group opacity ${s.opacity}`)
       ancestors.push(s.backgroundColor)
     }
-    return { foreground: style.color, background: style.backgroundColor, ancestors, active: style.getPropertyValue('--qds-active-probe').trim() === '1' }
+    return { foreground: style.color, background: style.backgroundColor, ancestors, active: style.getPropertyValue('--ods-active-probe').trim() === '1' }
   })
   const parse = (text) => { const c = new Color(text).to('srgb'); return [...c.coords, c.alpha] }
   const over = (a, b) => a.slice(0, 3).map((v, i) => v * a[3] + b[i] * (1 - a[3]))

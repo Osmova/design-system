@@ -36,15 +36,15 @@
 @use 'components/variants/zen';
 @use 'components/variants/ink';
 
-@layer qds.base {
+@layer ods.base {
   @include base.styles;
 }
 
-@layer qds.utilities {
+@layer ods.utilities {
   @include utilities.styles;
 }
 
-@layer qds.quasar {
+@layer ods.quasar {
   @include button.styles;
   @include badge.styles;
   @include chip.styles;

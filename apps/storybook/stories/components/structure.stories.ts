@@ -111,7 +111,7 @@ export const Avatar: Story = {
     components: { QAvatar },
     setup: () => ({ args }),
     template: `
-      <div class="qds-story-row">
+      <div class="ods-story-row">
         <QAvatar :size="args.size" :color="args.color" :text-color="args.textColor" :square="args.square" :rounded="args.rounded"
           :icon="args.content === 'icon' ? args.icon : undefined">{{ args.content === 'initials' ? 'AV' : '' }}</QAvatar>
         <QAvatar :size="args.size" :square="args.square" :rounded="args.rounded" color="secondary" text-color="white">JD</QAvatar>
@@ -141,7 +141,7 @@ export const Splitter: Story = {
     components: { QSplitter },
     setup: () => ({ args, model: ref(38) }),
     template: `
-      <QSplitter v-model="model" :horizontal="args.horizontal" :limits="args.limits" :disable="args.disable" class="qds-story-demo" style="height: 14rem">
+      <QSplitter v-model="model" :horizontal="args.horizontal" :limits="args.limits" :disable="args.disable" class="ods-story-demo" style="height: 14rem">
         <template #before><div class="q-pa-md">Navigation pane</div></template>
         <template #after><div class="q-pa-md">Content pane</div></template>
       </QSplitter>`,
@@ -158,7 +158,7 @@ export const ScrollArea: Story = {
     components: { QScrollArea },
     setup: () => ({ args }),
     template: `
-      <QScrollArea :visible="args.visible" class="qds-story-demo" style="height: 12rem; max-width: 24rem" tabindex="0" aria-label="Release notes">
+      <QScrollArea :visible="args.visible" class="ods-story-demo" style="height: 12rem; max-width: 24rem" tabindex="0" aria-label="Release notes">
         <p v-for="n in args.paragraphs" :key="n">Paragraph {{ n }}: token updates and component fixes.</p>
       </QScrollArea>`,
   }),

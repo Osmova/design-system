@@ -1,84 +1,84 @@
 /* Gallery-only layout helpers.
- * These classes are demo scaffolding, not part of the public @osmova/quasar-design-system CSS. */
+ * These classes are demo scaffolding, not part of the public @osmova/ds-quasar CSS. */
 
 /* From src/css/components/_catalog-forms.scss */
-.qds-ui .q-form.q-form .catalog-stack {
+.ods-ui .q-form.q-form .catalog-stack {
   display: grid;
-  gap: var(--qds-space-sm);
+  gap: var(--ods-space-sm);
 }
 
-.qds-ui .q-form.q-form .catalog-stack--relaxed {
-  gap: var(--qds-space-lg);
-  padding-block-start: var(--qds-space-md);
+.ods-ui .q-form.q-form .catalog-stack--relaxed {
+  gap: var(--ods-space-lg);
+  padding-block-start: var(--ods-space-md);
 }
 
 /* From src/css/components/_catalog-loading-data.scss */
-.qds-ui .catalog-expansion-list.catalog-expansion-list {
+.ods-ui .catalog-expansion-list.catalog-expansion-list {
   display: grid;
-  gap: var(--qds-space-sm);
-  color: var(--qds-text);
+  gap: var(--ods-space-sm);
+  color: var(--ods-text);
   background: transparent;
 }
 
-.qds-ui .catalog-expansion-list.catalog-expansion-list .q-separator {
+.ods-ui .catalog-expansion-list.catalog-expansion-list .q-separator {
   display: none;
 }
 
-.qds-ui .catalog-expansion-content {
-  padding: var(--qds-space-md);
-  color: var(--qds-text-muted);
+.ods-ui .catalog-expansion-content {
+  padding: var(--ods-space-md);
+  color: var(--ods-text-muted);
 }
 
-.qds-ui .catalog-expansion-content--dense {
-  padding-block: var(--qds-space-sm);
+.ods-ui .catalog-expansion-content--dense {
+  padding-block: var(--ods-space-sm);
 }
 
-.qds-ui.qds-variant-ink .catalog-expansion-list.catalog-expansion-list,
-.qds-ui .qds-variant-ink .catalog-expansion-list.catalog-expansion-list {
+.ods-ui.ods-variant-ink .catalog-expansion-list.catalog-expansion-list,
+.ods-ui .ods-variant-ink .catalog-expansion-list.catalog-expansion-list {
   gap: 0;
-  background: var(--qds-bg-card);
-  border: var(--qds-border-width-control) solid var(--qds-separator-color);
-  border-radius: var(--qds-card-radius);
+  background: var(--ods-bg-card);
+  border: var(--ods-border-width-control) solid var(--ods-separator-color);
+  border-radius: var(--ods-card-radius);
 }
 
-.qds-ui.qds-variant-ink .catalog-expansion-list.catalog-expansion-list .q-expansion-item + .q-expansion-item,
-.qds-ui .qds-variant-ink .catalog-expansion-list.catalog-expansion-list .q-expansion-item + .q-expansion-item {
-  border-top: var(--qds-border-width-control) solid var(--qds-separator-color);
+.ods-ui.ods-variant-ink .catalog-expansion-list.catalog-expansion-list .q-expansion-item + .q-expansion-item,
+.ods-ui .ods-variant-ink .catalog-expansion-list.catalog-expansion-list .q-expansion-item + .q-expansion-item {
+  border-top: var(--ods-border-width-control) solid var(--ods-separator-color);
 }
 
 /* From src/css/components/_catalog-complex-media.scss */
-.qds-ui .q-carousel.q-carousel .catalog-carousel-slide,
-.qds-ui .q-carousel.q-carousel .catalog-carousel-image.q-img {
+.ods-ui .q-carousel.q-carousel .catalog-carousel-slide,
+.ods-ui .q-carousel.q-carousel .catalog-carousel-image.q-img {
   width: 100%;
   height: 100%;
   min-height: 100%;
 }
 
-.qds-ui .q-carousel.q-carousel .catalog-carousel-image.q-img {
+.ods-ui .q-carousel.q-carousel .catalog-carousel-image.q-img {
   border-radius: 0;
 }
 
-.qds-ui .q-carousel.q-carousel .catalog-carousel-image.q-img .q-img__image {
+.ods-ui .q-carousel.q-carousel .catalog-carousel-image.q-img .q-img__image {
   filter: saturate(1.04) contrast(1.02);
 }
 
-.qds-ui .catalog-scroll-box.q-scrollarea {
+.ods-ui .catalog-scroll-box.q-scrollarea {
   overflow: hidden;
-  background: var(--qds-surface-0);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--qds-surface-0) 72%, transparent);
+  background: var(--ods-surface-0);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ods-surface-0) 72%, transparent);
 }
 
-.qds-ui .catalog-scroll-box.q-scrollarea .q-scrollarea__content {
-  padding: var(--qds-space-xs) calc(var(--qds-space-md) + var(--qds-scrollbar-size)) var(--qds-space-xs) var(--qds-space-xs);
+.ods-ui .catalog-scroll-box.q-scrollarea .q-scrollarea__content {
+  padding: var(--ods-space-xs) calc(var(--ods-space-md) + var(--ods-scrollbar-size)) var(--ods-space-xs) var(--ods-space-xs);
 }
 
-.qds-ui.qds-variant-term .catalog-scroll-box.q-scrollarea,
-.qds-ui .qds-variant-term .catalog-scroll-box.q-scrollarea {
-  font-family: var(--qds-font-family);
+.ods-ui.ods-variant-term .catalog-scroll-box.q-scrollarea,
+.ods-ui .ods-variant-term .catalog-scroll-box.q-scrollarea {
+  font-family: var(--ods-font-family);
   background:
-    linear-gradient(180deg, rgba(var(--qds-color-primary-rgb), 0.035), transparent 42%),
-    var(--qds-surface-0);
-  border-color: color-mix(in srgb, var(--qds-color-primary) 24%, var(--qds-border) 76%);
+    linear-gradient(180deg, rgba(var(--ods-color-primary-rgb), 0.035), transparent 42%),
+    var(--ods-surface-0);
+  border-color: color-mix(in srgb, var(--ods-color-primary) 24%, var(--ods-border) 76%);
   box-shadow: none;
 }
 

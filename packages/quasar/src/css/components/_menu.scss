@@ -3,9 +3,9 @@
 
 @use 'variants/glass';
 
-$one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
-$term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
+$one: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one)';
+$term: ':is(.ods-ui.ods-variant-term, .ods-ui .ods-variant-term)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui,.ods-ui *)';
 
 // Native Quasar owns portal positioning; compatibility still owns acrylic/rows.
 @mixin styles($grammar: compatibility) {
@@ -17,54 +17,54 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
 
 @mixin compatibility-styles {
   // QMenu `fit` pins min-width to the anchor inline; the anchor gap is Quasar's `offset` prop.
-  .qds-ui .q-menu {
+  .ods-ui .q-menu {
     min-width: 8rem;
-    color: var(--qds-fg-default);
-    border: var(--qds-border-width-control) solid var(--qds-material-stroke);
-    border-radius: var(--qds-menu-radius);
-    box-shadow: var(--qds-material-edge), var(--qds-menu-shadow);
-    @include materials.material(regular, var(--qds-menu-bg));
+    color: var(--ods-fg-default);
+    border: var(--ods-border-width-control) solid var(--ods-material-stroke);
+    border-radius: var(--ods-menu-radius);
+    box-shadow: var(--ods-material-edge), var(--ods-menu-shadow);
+    @include materials.material(regular, var(--ods-menu-bg));
   }
 
   // Quasar's `transition-duration` prop still shortens these; longer values are capped.
-  .qds-ui .q-menu.q-transition--fade-enter-active {
-    --qds-menu-motion: min(var(--q-transition-duration, 300ms), var(--qds-motion-duration-base));
-    transition: opacity var(--qds-menu-motion) var(--qds-motion-ease-out), transform var(--qds-menu-motion) var(--qds-motion-ease-out);
+  .ods-ui .q-menu.q-transition--fade-enter-active {
+    --ods-menu-motion: min(var(--q-transition-duration, 300ms), var(--ods-motion-duration-base));
+    transition: opacity var(--ods-menu-motion) var(--ods-motion-ease-out), transform var(--ods-menu-motion) var(--ods-motion-ease-out);
   }
 
-  .qds-ui .q-menu.q-transition--fade-leave-active { transition: opacity min(var(--q-transition-duration, 300ms), var(--qds-motion-duration-medium)) var(--qds-motion-ease-in-out); }
-  .qds-ui .q-menu.q-transition--fade-enter-from { transform: scale3d(0.98, 0.98, 1); }
-  .qds-ui .q-menu .q-list { padding: var(--qds-space-xs); }
+  .ods-ui .q-menu.q-transition--fade-leave-active { transition: opacity min(var(--q-transition-duration, 300ms), var(--ods-motion-duration-medium)) var(--ods-motion-ease-in-out); }
+  .ods-ui .q-menu.q-transition--fade-enter-from { transform: scale3d(0.98, 0.98, 1); }
+  .ods-ui .q-menu .q-list { padding: var(--ods-space-xs); }
 
-  .qds-ui .q-menu .q-item {
-    min-height: var(--qds-menu-item-min-height);
+  .ods-ui .q-menu .q-item {
+    min-height: var(--ods-menu-item-min-height);
     padding: 0.25rem 0.625rem;
-    border-radius: calc(var(--qds-menu-radius) - var(--qds-space-xs));
+    border-radius: calc(var(--ods-menu-radius) - var(--ods-space-xs));
   }
 
-  .qds-ui .q-menu .q-item + .q-item { margin-block-start: var(--qds-row-gap); }
-  .qds-ui .q-menu .q-separator { margin-block: var(--qds-space-xs); margin-inline: calc(-1 * var(--qds-space-xs)); }
+  .ods-ui .q-menu .q-item + .q-item { margin-block-start: var(--ods-row-gap); }
+  .ods-ui .q-menu .q-separator { margin-block: var(--ods-space-xs); margin-inline: calc(-1 * var(--ods-space-xs)); }
 
-  #{$term} .q-menu { border-radius: var(--qds-radius-sm); }
-  #{$term} .q-menu .q-item { border-radius: var(--qds-radius-xs); }
-  #{$one} .q-menu { border-radius: var(--qds-card-radius); }
-  #{$one} .q-menu .q-list { padding: var(--qds-space-sm); }
-  #{$one} .q-menu .q-item { padding-inline: var(--qds-space-md); border-radius: var(--qds-radius-control); }
+  #{$term} .q-menu { border-radius: var(--ods-radius-sm); }
+  #{$term} .q-menu .q-item { border-radius: var(--ods-radius-xs); }
+  #{$one} .q-menu { border-radius: var(--ods-card-radius); }
+  #{$one} .q-menu .q-list { padding: var(--ods-space-sm); }
+  #{$one} .q-menu .q-item { padding-inline: var(--ods-space-md); border-radius: var(--ods-radius-control); }
 
-  #{$shadcn} .q-menu { padding: var(--qds-space-xs); border-color: var(--qds-menu-border); box-shadow: var(--qds-menu-shadow); @include materials.solid(var(--qds-menu-bg)); }
+  #{$shadcn} .q-menu { padding: var(--ods-space-xs); border-color: var(--ods-menu-border); box-shadow: var(--ods-menu-shadow); @include materials.solid(var(--ods-menu-bg)); }
   #{$shadcn} .q-menu--square { border-radius: 0; }
   #{$shadcn} .q-menu > .q-card--flat:not(.q-card--bordered) { background: transparent; border: 0; box-shadow: none; }
   #{$shadcn} .q-menu .q-list { padding: 0; }
-  #{$shadcn} .q-menu .q-item { min-height: var(--qds-menu-item-min-height); padding: var(--qds-space-xs) var(--qds-space-sm); gap: var(--qds-space-sm); border-radius: var(--qds-row-radius); font-size: var(--qds-font-size-body); line-height: var(--qds-line-height-body); }
-  #{$shadcn} .q-menu :is(.q-item--dense, .q-list--dense > .q-item) { min-height: calc(var(--qds-control-size-sm) - var(--qds-space-xs)); }
+  #{$shadcn} .q-menu .q-item { min-height: var(--ods-menu-item-min-height); padding: var(--ods-space-xs) var(--ods-space-sm); gap: var(--ods-space-sm); border-radius: var(--ods-row-radius); font-size: var(--ods-font-size-body); line-height: var(--ods-line-height-body); }
+  #{$shadcn} .q-menu :is(.q-item--dense, .q-list--dense > .q-item) { min-height: calc(var(--ods-control-size-sm) - var(--ods-space-xs)); }
   #{$shadcn} .q-menu .q-item + .q-item { margin-block-start: 0; }
-  #{$shadcn} .q-menu .q-item__section--avatar { min-width: var(--qds-control-icon-size-md); padding-inline-end: 0; }
-  #{$shadcn} .q-menu .q-item__section--side { padding-inline-start: 0; color: var(--qds-fg-muted); }
-  #{$shadcn} .q-menu :is(.q-item__label--caption, .q-item__label--header) { color: var(--qds-fg-muted); font-size: var(--qds-font-size-caption); }
-  #{$shadcn} .q-menu .q-item:not(.disabled):is(:hover, :focus-visible, .q-manual-focusable--focused, .q-item--active, [aria-selected='true']) { background: var(--qds-state-selected); }
-  #{$shadcn} .q-menu .q-item:not(.disabled):active { background: var(--qds-state-pressed); }
+  #{$shadcn} .q-menu .q-item__section--avatar { min-width: var(--ods-control-icon-size-md); padding-inline-end: 0; }
+  #{$shadcn} .q-menu .q-item__section--side { padding-inline-start: 0; color: var(--ods-fg-muted); }
+  #{$shadcn} .q-menu :is(.q-item__label--caption, .q-item__label--header) { color: var(--ods-fg-muted); font-size: var(--ods-font-size-caption); }
+  #{$shadcn} .q-menu .q-item:not(.disabled):is(:hover, :focus-visible, .q-manual-focusable--focused, .q-item--active, [aria-selected='true']) { background: var(--ods-state-selected); }
+  #{$shadcn} .q-menu .q-item:not(.disabled):active { background: var(--ods-state-pressed); }
   #{$shadcn} .q-menu .q-item > .q-focus-helper { opacity: 0; }
-  #{$shadcn} .q-menu .q-item:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: calc(-1 * var(--qds-focus-ring-width)); }
+  #{$shadcn} .q-menu .q-item:focus-visible { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus); outline-offset: calc(-1 * var(--ods-focus-ring-width)); }
   @media (prefers-reduced-motion: reduce) { #{$shadcn} .q-menu:is(.q-transition--fade-enter-active, .q-transition--fade-leave-active) { transition: none; } }
-  @media (forced-colors: active) { #{$shadcn} .q-menu { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; } #{$shadcn} .q-menu .q-item:not(.disabled):is(:hover, :focus-visible, .q-manual-focusable--focused, .q-item--active, [aria-selected='true']) { outline: var(--qds-focus-ring-width) solid Highlight; } }
+  @media (forced-colors: active) { #{$shadcn} .q-menu { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; } #{$shadcn} .q-menu .q-item:not(.disabled):is(:hover, :focus-visible, .q-manual-focusable--focused, .q-item--active, [aria-selected='true']) { outline: var(--ods-focus-ring-width) solid Highlight; } }
 }

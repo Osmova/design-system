@@ -1,4 +1,4 @@
-# Quasar Design System workspace
+# Osmova Design System workspace
 
 pnpm workspace for the design system.
 

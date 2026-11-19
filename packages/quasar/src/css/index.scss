@@ -1,4 +1,4 @@
-// Default bundle: tokens stay in @layer qds.tokens (they never compete with
+// Default bundle: tokens stay in @layer ods.tokens (they never compete with
 // Quasar's rules), but the component/base/utility overrides emit UNLAYERED so
 // they beat Quasar's own unlayered CSS. Import this AFTER Quasar's CSS.
 @use 'layers';

@@ -14,7 +14,7 @@ const initState = () => ({ mode: 'light' as DesignSystemMode, variant: 'win' as 
       <template #default="{ state }">
         <StoryShell
           title="Navigation states"
-          description="Tabs, panels, menus, drawers, and modal overlays use tokenized chrome across QDS variants."
+          description="Tabs, panels, menus, drawers, and modal overlays use tokenized chrome across ODS variants."
           :mode="state.mode"
           :variant="state.variant"
         >

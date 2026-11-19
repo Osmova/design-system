@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import * as sass from 'sass'
-import { QDS_TOKENS } from '@osmova/quasar-design-system/tokens'
+import { ODS_TOKENS } from '@osmova/ds-quasar/tokens'
 
 const root = new URL('../', import.meta.url)
 const { chromium } = createRequire(new URL('../../apps/gallery/package.json', root))('@playwright/test')
@@ -18,7 +18,7 @@ for (const palette of palettes) cases.push({ palette, mode: 'light', resolved: '
 for (const palette of [null, '', 'unknown', 'Gray']) for (const mode of ['light', 'dark']) cases.push({ palette, mode })
 for (const outer of ['light', 'dark']) {
   for (const middle of ['light', 'dark']) {
-    for (const inner of ['', 'qds-theme-light', 'qds-theme-dark', 'resolved-light', 'resolved-dark']) {
+    for (const inner of ['', 'ods-theme-light', 'ods-theme-dark', 'resolved-light', 'resolved-dark']) {
       cases.push({ palette: 'gray', mode: outer, resolved: outer, middle, inner })
     }
   }
@@ -32,26 +32,26 @@ try {
     for (const scenario of cases) {
       const values = await Promise.all(pages.map(async (page) => {
         await page.evaluate((s) => {
-          document.body.className = `qds-ui qds-variant-shadcn qds-theme-${s.mode}${s.staleDark ? ' body--dark' : ''}`
-          if (s.palette === null) delete document.body.dataset.qdsShadcnBaseColor
-          else document.body.dataset.qdsShadcnBaseColor = s.palette
-          if (s.resolved) document.body.dataset.qdsResolved = s.resolved
-          else delete document.body.dataset.qdsResolved
+          document.body.className = `ods-ui ods-variant-shadcn ods-theme-${s.mode}${s.staleDark ? ' body--dark' : ''}`
+          if (s.palette === null) delete document.body.dataset.odsShadcnBaseColor
+          else document.body.dataset.odsShadcnBaseColor = s.palette
+          if (s.resolved) document.body.dataset.odsResolved = s.resolved
+          else delete document.body.dataset.odsResolved
           const middle = document.querySelector('#middle'), probe = document.querySelector('#probe')
-          middle.className = s.middle ? `qds-theme-${s.middle}` : ''
-          probe.className = s.middle ? `qds-variant-shadcn ${s.inner.startsWith('resolved') ? '' : s.inner}` : ''
-          if (s.inner?.startsWith('resolved')) probe.dataset.qdsResolved = s.inner.slice(9)
-          else delete probe.dataset.qdsResolved
-          if (s.middle) probe.dataset.qdsShadcnBaseColor = 'stone'
-          else delete probe.dataset.qdsShadcnBaseColor
+          middle.className = s.middle ? `ods-theme-${s.middle}` : ''
+          probe.className = s.middle ? `ods-variant-shadcn ${s.inner.startsWith('resolved') ? '' : s.inner}` : ''
+          if (s.inner?.startsWith('resolved')) probe.dataset.odsResolved = s.inner.slice(9)
+          else delete probe.dataset.odsResolved
+          if (s.middle) probe.dataset.odsShadcnBaseColor = 'stone'
+          else delete probe.dataset.odsShadcnBaseColor
         }, scenario)
         return page.evaluate((names) => {
           const style = getComputedStyle(document.querySelector('#probe'))
           return Object.fromEntries(names.map((name) => [name, style.getPropertyValue(name).trim().replace(/\s+/g, ' ')]))
-        }, QDS_TOKENS)
+        }, ODS_TOKENS)
       }))
       assert.deepEqual(values[1], values[0], `${entry}: ${JSON.stringify(scenario)}`)
-      checked += QDS_TOKENS.length
+      checked += ODS_TOKENS.length
     }
     await Promise.all(pages.map((p) => p.close()))
   }

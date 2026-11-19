@@ -11,7 +11,7 @@ type NotifyHandle = (props?: QNotifyUpdateOptions) => void
 
 declare global {
   interface Window {
-    __qdsPluginsTest?: {
+    __odsPluginsTest?: {
       hideLoading: () => void
       hideNewerLoadingGroup: () => void
       cleanup: () => void
@@ -77,7 +77,7 @@ function openGridBottomSheet() {
 function openDialog() {
   $q.dialog({
     title: 'Plugin dialog',
-    message: 'The Dialog plugin uses the same QDS card, scrim, and action styling as component dialogs.',
+    message: 'The Dialog plugin uses the same ODS card, scrim, and action styling as component dialogs.',
     cancel: { label: 'Cancel', noCaps: true, flat: true, color: 'primary' },
     ok: { label: 'Confirm', noCaps: true, unelevated: true, color: 'primary' },
   }).onOk(() => {
@@ -179,7 +179,7 @@ function showGroupedNotify() {
     caption: 'The same explicit group increments Quasar’s stable notification badge.',
     position: 'bottom-right' as const,
     timeout: 0,
-    group: 'qds-gallery-notify-group',
+    group: 'ods-gallery-notify-group',
     badgePosition: 'top-left' as const,
     classes: 'qds-notify-grouped',
     actions: [{ label: 'Dismiss', color: 'warning' as const, noCaps: true }],
@@ -236,7 +236,7 @@ function showSemanticNotify(type: typeof notifyTypes[number]) {
   dismissNotify = $q.notify({
     type,
     message: `${type[0].toUpperCase()}${type.slice(1)} semantic surface`,
-    caption: 'Each canonical QDS variant resolves the matching role accent and wash.',
+    caption: 'Each canonical ODS variant resolves the matching role accent and wash.',
     position: 'bottom-right',
     timeout: 0,
     group: false,
@@ -273,8 +273,8 @@ function showLoading() {
     spinnerColor: 'accent',
     messageColor: 'warning',
     backgroundColor: 'positive',
-    boxClass: 'qds-plugin-loading-box',
-    customClass: 'qds-plugin-loading',
+    boxClass: 'ods-plugin-loading-box',
+    customClass: 'ods-plugin-loading',
   })
   setStatus('Loading plugin opened')
 }
@@ -283,21 +283,21 @@ function showGroupedLoading() {
   hideLoading()
   $q.loading.show({
     delay: 0,
-    group: 'qds-loading-base',
+    group: 'ods-loading-base',
     message: 'Loading base group',
-    customClass: 'qds-plugin-loading-group qds-plugin-loading-group--base',
+    customClass: 'ods-plugin-loading-group ods-plugin-loading-group--base',
   })
   $q.loading.show({
     delay: 0,
-    group: 'qds-loading-newer',
+    group: 'ods-loading-newer',
     message: 'Loading newer group',
-    customClass: 'qds-plugin-loading-group qds-plugin-loading-group--newer',
+    customClass: 'ods-plugin-loading-group ods-plugin-loading-group--newer',
   })
   setStatus('Loading newer group opened above the base group')
 }
 
 function hideNewerLoadingGroup() {
-  $q.loading.hide('qds-loading-newer')
+  $q.loading.hide('ods-loading-newer')
   setStatus('Loading newer group hidden; base group restored')
 }
 
@@ -324,33 +324,33 @@ const pluginTestHooks = {
 }
 
 onMounted(() => {
-  window.__qdsPluginsTest = pluginTestHooks
+  window.__odsPluginsTest = pluginTestHooks
 })
 
 onBeforeUnmount(() => {
   pluginTestHooks.cleanup()
-  if (window.__qdsPluginsTest === pluginTestHooks) {
-    delete window.__qdsPluginsTest
+  if (window.__odsPluginsTest === pluginTestHooks) {
+    delete window.__odsPluginsTest
   }
 })
 </script>
 
 <template>
-  <div class="column" style="gap: var(--qds-space-lg)">
+  <div class="column" style="gap: var(--ods-space-lg)">
     <q-card class="q-pa-lg">
-      <div class="text-h6 qds-display q-mb-sm">Quasar plugin surfaces</div>
-      <p class="qds-text-muted q-mb-lg" style="max-width: 64rem">
+      <div class="text-h6 ods-display q-mb-sm">Quasar plugin surfaces</div>
+      <p class="ods-text-muted q-mb-lg" style="max-width: 64rem">
         Deterministic coverage for plugin/global UI that renders outside the local component tree.
-        BottomSheet gets dedicated QDS styling; Dialog, Notify, Loading, and LoadingBar prove their
-        teleported surfaces continue to inherit the body-level <code>.qds-ui</code> scope.
+        BottomSheet gets dedicated ODS styling; Dialog, Notify, Loading, and LoadingBar prove their
+        teleported surfaces continue to inherit the body-level <code>.ods-ui</code> scope.
       </p>
 
       <div class="row q-col-gutter-md">
         <div class="col-12 col-md-6 col-lg-4">
           <q-card flat bordered class="q-pa-md full-height" data-test="qds-plugin-bottomsheet-card">
-            <div class="text-subtitle1 qds-text-strong q-mb-xs">BottomSheet</div>
-            <div class="qds-text-muted q-mb-md">List and grid action sheets share one tokenized surface.</div>
-            <div class="qds-button-row">
+            <div class="text-subtitle1 ods-text-strong q-mb-xs">BottomSheet</div>
+            <div class="ods-text-muted q-mb-md">List and grid action sheets share one tokenized surface.</div>
+            <div class="ods-button-row">
               <q-btn outline no-caps label="Open list BottomSheet" @click="openListBottomSheet" />
               <q-btn outline no-caps label="Open grid BottomSheet" @click="openGridBottomSheet" />
             </div>
@@ -359,9 +359,9 @@ onBeforeUnmount(() => {
 
         <div class="col-12 col-md-6 col-lg-4">
           <q-card flat bordered class="q-pa-md full-height" data-test="qds-plugin-dialog-notify-card">
-            <div class="text-subtitle1 qds-text-strong q-mb-xs">Dialog &amp; Notify</div>
-            <div class="qds-text-muted q-mb-md">Global overlays reuse the existing dialog and notification skin.</div>
-            <div class="qds-button-row">
+            <div class="text-subtitle1 ods-text-strong q-mb-xs">Dialog &amp; Notify</div>
+            <div class="ods-text-muted q-mb-md">Global overlays reuse the existing dialog and notification skin.</div>
+            <div class="ods-button-row">
               <q-btn outline no-caps label="Open plugin dialog" @click="openDialog" />
               <q-btn outline no-caps label="Show plugin notify" @click="showNotify" />
               <q-btn outline no-caps label="Show avatar Notify" data-test="qds-notify-avatar-trigger" @click="showAvatarNotify" />
@@ -371,7 +371,7 @@ onBeforeUnmount(() => {
               <q-btn outline no-caps label="Show updatable notify" data-test="qds-notify-updatable-trigger" @click="showUpdatableNotify" />
               <q-btn flat no-caps label="Clear demo notifications" data-test="qds-notify-clear" @click="clearNotifications" />
             </div>
-            <div class="qds-button-row q-mt-sm" aria-label="Semantic Notify surfaces">
+            <div class="ods-button-row q-mt-sm" aria-label="Semantic Notify surfaces">
               <q-btn
                 v-for="type in notifyTypes"
                 :key="type"
@@ -387,9 +387,9 @@ onBeforeUnmount(() => {
 
         <div class="col-12 col-md-6 col-lg-4">
           <q-card flat bordered class="q-pa-md full-height" data-test="qds-plugin-loading-card">
-            <div class="text-subtitle1 qds-text-strong q-mb-xs">Loading surfaces</div>
-            <div class="qds-text-muted q-mb-md">Custom Quasar loading options stay visible until their explicit cleanup action.</div>
-            <div class="qds-button-row">
+            <div class="text-subtitle1 ods-text-strong q-mb-xs">Loading surfaces</div>
+            <div class="ods-text-muted q-mb-md">Custom Quasar loading options stay visible until their explicit cleanup action.</div>
+            <div class="ods-button-row">
               <q-btn outline no-caps label="Show loading overlay" @click="showLoading" />
               <q-btn flat no-caps label="Hide loading overlay" data-test="qds-loading-hide" @click="hideLoading" />
               <q-btn outline no-caps label="Show grouped Loading precedence" data-test="qds-loading-grouped-trigger" @click="showGroupedLoading" />
@@ -398,8 +398,8 @@ onBeforeUnmount(() => {
               <q-btn flat no-caps label="Stop loading bar" @click="stopLoadingBar" />
             </div>
             <div class="qds-plugin-inner-loading-box q-mt-md" data-test="qds-plugin-inner-loading-box">
-              <div class="qds-text-strong">Inline busy proof</div>
-              <div class="qds-text-muted">QInnerLoading keeps plugin-overlay material without a timer.</div>
+              <div class="ods-text-strong">Inline busy proof</div>
+              <div class="ods-text-muted">QInnerLoading keeps plugin-overlay material without a timer.</div>
               <q-inner-loading showing label="Syncing" color="primary" class="qds-plugin-inner-loading" data-test="qds-plugin-inner-loading" />
             </div>
           </q-card>
@@ -408,8 +408,8 @@ onBeforeUnmount(() => {
     </q-card>
 
     <q-card class="q-pa-md" data-test="qds-plugin-status-card" data-testid="plugin-status-card">
-      <div class="text-subtitle2 qds-text-muted q-mb-xs">Last plugin event</div>
-      <div class="qds-text-strong" data-test="qds-plugin-status" data-testid="plugin-status">{{ status }}</div>
+      <div class="text-subtitle2 ods-text-muted q-mb-xs">Last plugin event</div>
+      <div class="ods-text-strong" data-test="qds-plugin-status" data-testid="plugin-status">{{ status }}</div>
     </q-card>
   </div>
 </template>
@@ -418,10 +418,10 @@ onBeforeUnmount(() => {
 .qds-plugin-inner-loading-box {
   position: relative;
   min-height: 6.5rem;
-  padding: var(--qds-space-md);
+  padding: var(--ods-space-md);
   overflow: hidden;
-  background: var(--qds-surface-1);
-  border: var(--qds-border-width-control) solid var(--qds-border-subtle);
-  border-radius: var(--qds-radius-lg);
+  background: var(--ods-surface-1);
+  border: var(--ods-border-width-control) solid var(--ods-border-subtle);
+  border-radius: var(--ods-radius-lg);
 }
 </style>

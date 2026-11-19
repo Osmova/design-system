@@ -33,25 +33,25 @@ export async function waitForThemePaint(page: Page) {
 export async function applyShadcn(page: Page, mode: Mode, palette: BaseColor) {
   await applyTheme(page, mode, 'shadcn')
   await page.evaluate((color) => {
-    const ds = (window as unknown as { __qdsGallery: { setShadcnBaseColor: (value: BaseColor) => void } }).__qdsGallery
+    const ds = (window as unknown as { __odsGallery: { setShadcnBaseColor: (value: BaseColor) => void } }).__odsGallery
     ds.setShadcnBaseColor(color)
   }, palette)
-  await expect(page.locator('body')).toHaveAttribute('data-qds-shadcn-base-color', palette)
+  await expect(page.locator('body')).toHaveAttribute('data-ods-shadcn-base-color', palette)
   await waitForThemePaint(page)
 }
 
 export async function applyTheme(page: Page, mode: Mode, variant: Variant) {
-  await page.waitForFunction(() => Boolean((window as unknown as { __qdsGallery?: unknown }).__qdsGallery))
+  await page.waitForFunction(() => Boolean((window as unknown as { __odsGallery?: unknown }).__odsGallery))
   await page.evaluate(
     ({ mode, variant }) => {
-      const ds = (window as unknown as { __qdsGallery: { setMode: (value: Mode) => Mode; setVariant: (value: Variant) => Variant } }).__qdsGallery
+      const ds = (window as unknown as { __odsGallery: { setMode: (value: Mode) => Mode; setVariant: (value: Variant) => Variant } }).__odsGallery
       ds.setMode(mode)
       ds.setVariant(variant)
     },
     { mode, variant },
   )
-  await expect(page.locator('body')).toHaveClass(new RegExp(`qds-variant-${variant}`))
-  await expect(page.locator('body')).toHaveClass(new RegExp(mode === 'dark' ? 'qds-theme-dark' : 'qds-theme-light'))
+  await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
+  await expect(page.locator('body')).toHaveClass(new RegExp(mode === 'dark' ? 'ods-theme-dark' : 'ods-theme-light'))
   await waitForThemePaint(page)
 }
 
@@ -88,7 +88,7 @@ export async function resolvedShadow(page: Page, property: string): Promise<stri
   }, property)
 }
 
-// Touch projects (Pixel 5) match `(pointer: coarse)`, which raises QDS control and row tokens.
+// Touch projects (Pixel 5) match `(pointer: coarse)`, which raises ODS control and row tokens.
 export async function coarsePointer(page: Page): Promise<boolean> {
   return page.evaluate(() => matchMedia('(pointer: coarse)').matches)
 }

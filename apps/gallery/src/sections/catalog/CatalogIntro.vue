@@ -9,8 +9,8 @@ const overflowItems = ['Workspace', 'Design library', 'Component catalog', 'Navi
   <q-card class="catalog-card q-pa-lg">
     <div class="catalog-heading q-mb-md">
       <div>
-        <div class="text-overline qds-text-muted">Catalog extension</div>
-        <div class="text-h5 qds-display">Remaining Quasar components</div>
+        <div class="text-overline ods-text-muted">Catalog extension</div>
+        <div class="text-h5 ods-display">Remaining Quasar components</div>
       </div>
       <q-badge color="primary" label="static gallery" />
     </div>

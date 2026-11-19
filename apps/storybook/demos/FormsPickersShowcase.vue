@@ -71,18 +71,18 @@ function dateSelectable(day: string) {
 </script>
 
 <template>
-  <div class="qds-story-stack qds-story-stack--relaxed">
+  <div class="ods-story-stack ods-story-stack--relaxed">
     <div class="row q-col-gutter-lg">
       <div class="col-12 col-md-6">
-        <QCard class="qds-story-panel q-pa-lg full-height">
+        <QCard class="ods-story-panel q-pa-lg full-height">
           <div class="row items-center q-mb-md">
             <div>
-              <div class="text-overline qds-text-muted">Checkbox, radio, toggle</div>
-              <div class="text-h6 qds-story-title">Individual controls</div>
+              <div class="text-overline ods-text-muted">Checkbox, radio, toggle</div>
+              <div class="text-h6 ods-story-title">Individual controls</div>
             </div>
-            <PhChecks class="qds-story-card-icon q-ml-auto" :size="28" weight="duotone" />
+            <PhChecks class="ods-story-card-icon q-ml-auto" :size="28" weight="duotone" />
           </div>
-          <div class="qds-story-stack">
+          <div class="ods-story-stack">
             <QCheckbox v-model="checkbox" color="primary" label="Checked checkbox" />
             <QCheckbox v-model="denseCheckbox" dense color="secondary" label="Dense unchecked checkbox" />
             <QRadio v-model="radio" val="fluent" color="primary" label="Fluent radio" />
@@ -94,13 +94,13 @@ function dateSelectable(day: string) {
       </div>
 
       <div class="col-12 col-md-6">
-        <QCard class="qds-story-panel q-pa-lg full-height">
+        <QCard class="ods-story-panel q-pa-lg full-height">
           <div class="row items-center q-mb-md">
             <div>
-              <div class="text-overline qds-text-muted">QOptionGroup</div>
-              <div class="text-h6 qds-story-title">Grouped choices</div>
+              <div class="text-overline ods-text-muted">QOptionGroup</div>
+              <div class="text-h6 ods-story-title">Grouped choices</div>
             </div>
-            <PhSlidersHorizontal class="qds-story-card-icon q-ml-auto" :size="28" weight="duotone" />
+            <PhSlidersHorizontal class="ods-story-card-icon q-ml-auto" :size="28" weight="duotone" />
           </div>
           <QOptionGroup v-model="groupSingle" color="primary" :options="densityOptions" />
           <QSeparator spaced />
@@ -113,12 +113,12 @@ function dateSelectable(day: string) {
       </div>
 
       <div class="col-12">
-        <QCard class="qds-story-panel q-pa-lg">
+        <QCard class="ods-story-panel q-pa-lg">
           <div class="row q-col-gutter-lg items-start">
             <div class="col-12 col-md-5">
-              <div class="text-overline qds-text-muted">QDate</div>
-              <h2 class="qds-story-title q-my-sm">Calendar picker</h2>
-              <p class="qds-text-muted">
+              <div class="text-overline ods-text-muted">QDate</div>
+              <h2 class="ods-story-title q-my-sm">Calendar picker</h2>
+              <p class="ods-text-muted">
                 Static date picker coverage keeps day cells, disabled days, month/year views, selected state, and range state visible.
               </p>
               <div class="row items-center q-gutter-sm">
@@ -127,11 +127,11 @@ function dateSelectable(day: string) {
               </div>
             </div>
             <div class="col-12 col-md-7">
-              <div class="qds-story-stack qds-story-stack--relaxed">
-                <QDate v-model="date" :options="dateSelectable" flat bordered class="qds-story-picker" />
-                <QDate v-model="dateRange" range flat bordered class="qds-story-picker" />
-                <QDate v-model="dateMonthView" default-view="Months" flat bordered class="qds-story-picker" />
-                <QDate v-model="dateYearView" default-view="Years" flat bordered class="qds-story-picker" />
+              <div class="ods-story-stack ods-story-stack--relaxed">
+                <QDate v-model="date" :options="dateSelectable" flat bordered class="ods-story-picker" />
+                <QDate v-model="dateRange" range flat bordered class="ods-story-picker" />
+                <QDate v-model="dateMonthView" default-view="Months" flat bordered class="ods-story-picker" />
+                <QDate v-model="dateYearView" default-view="Years" flat bordered class="ods-story-picker" />
               </div>
             </div>
           </div>
@@ -139,13 +139,13 @@ function dateSelectable(day: string) {
       </div>
 
       <div class="col-12 col-lg-6">
-        <QCard class="qds-story-panel qds-story-panel--neutral q-pa-lg full-height">
-          <div class="text-overline qds-text-muted">QInput, QSelect, QFile</div>
-          <h2 class="qds-story-title q-my-sm">Visible field states</h2>
-          <p class="qds-text-muted">
+        <QCard class="ods-story-panel ods-story-panel--neutral q-pa-lg full-height">
+          <div class="text-overline ods-text-muted">QInput, QSelect, QFile</div>
+          <h2 class="ods-story-title q-my-sm">Visible field states</h2>
+          <p class="ods-text-muted">
             Readonly, error, disabled, and file affordances keep the field sub-elements visible without interaction.
           </p>
-          <div class="qds-story-stack">
+          <div class="ods-story-stack">
             <QInput v-model="inputReadonly" label="Readonly input" outlined readonly />
             <QInput v-model="inputError" label="Error input" outlined error error-message="Validation remains visible" />
             <QInput v-model="inputDisabled" label="Disabled input" outlined disable />
@@ -159,18 +159,18 @@ function dateSelectable(day: string) {
       </div>
 
       <div class="col-12 col-lg-6">
-        <QCard class="qds-story-panel q-pa-lg full-height">
-          <div class="text-overline qds-text-muted">QTime, QColor, QPopupEdit, QSlider, QRange</div>
-          <h2 class="qds-story-title q-my-sm">Picker and edit surfaces</h2>
-          <p class="qds-text-muted">
+        <QCard class="ods-story-panel q-pa-lg full-height">
+          <div class="text-overline ods-text-muted">QTime, QColor, QPopupEdit, QSlider, QRange</div>
+          <h2 class="ods-story-title q-my-sm">Picker and edit surfaces</h2>
+          <p class="ods-text-muted">
             Static picker surfaces expose AM/PM, landscape, spectrum/tune/alpha, popup editing chrome, and range controls.
           </p>
-          <div class="qds-story-stack qds-story-stack--relaxed">
-            <QTime v-model="time" flat bordered :landscape="$q.screen.gt.xs" :format24h="false" :hour-options="timeHourOptions" class="qds-story-picker" />
-            <QColor v-model="color" default-view="palette" class="qds-story-picker" />
-            <QColor v-model="colorAlpha" default-view="spectrum" format-model="rgba" class="qds-story-picker" />
-            <QColor v-model="colorTune" default-view="tune" format-model="rgba" class="qds-story-picker" />
-            <div class="qds-story-edit-target">
+          <div class="ods-story-stack ods-story-stack--relaxed">
+            <QTime v-model="time" flat bordered :landscape="$q.screen.gt.xs" :format24h="false" :hour-options="timeHourOptions" class="ods-story-picker" />
+            <QColor v-model="color" default-view="palette" class="ods-story-picker" />
+            <QColor v-model="colorAlpha" default-view="spectrum" format-model="rgba" class="ods-story-picker" />
+            <QColor v-model="colorTune" default-view="tune" format-model="rgba" class="ods-story-picker" />
+            <div class="ods-story-edit-target">
               {{ popupLabel }}
               <QPopupEdit v-model="popupLabel" buttons v-slot="scope">
                 <QInput v-model="scope.value" dense autofocus @keyup.enter="scope.set" />
@@ -186,31 +186,31 @@ function dateSelectable(day: string) {
 </template>
 
 <style scoped>
-.qds-story-title {
-  font-family: var(--qds-font-family-display);
+.ods-story-title {
+  font-family: var(--ods-font-family-display);
 }
 
-.qds-story-edit-target {
+.ods-story-edit-target {
   display: inline-flex;
   width: fit-content;
-  padding: var(--qds-space-sm) var(--qds-space-md);
-  color: var(--qds-text-strong);
-  background: var(--qds-surface-2);
-  border: var(--qds-border-width-control) solid var(--qds-border);
-  border-radius: var(--qds-radius-control);
+  padding: var(--ods-space-sm) var(--ods-space-md);
+  color: var(--ods-text-strong);
+  background: var(--ods-surface-2);
+  border: var(--ods-border-width-control) solid var(--ods-border);
+  border-radius: var(--ods-radius-control);
 }
 
-.qds-story-picker {
+.ods-story-picker {
   width: 100%;
   max-width: 24rem;
 }
 
 @media (max-width: 32rem) {
-  .qds-story-card-icon {
+  .ods-story-card-icon {
     display: none;
   }
 
-  .qds-story-picker {
+  .ods-story-picker {
     max-width: 100%;
   }
 }

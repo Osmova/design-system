@@ -3,7 +3,7 @@
 @use 'qwindow-styles' as qwindow;
 @use '../components/variants/ink';
 
-@layer qds.quasar {
+@layer ods.quasar {
   @include qwindow.styles;
   @include ink.qwindow;
 }

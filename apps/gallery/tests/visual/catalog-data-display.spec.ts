@@ -8,16 +8,16 @@ type Variant = 'win' | 'ink' | 'one'
 async function applyTheme(page: Page, mode: Mode, variant: Variant) {
   await page.evaluate(
     ({ mode, variant }) => {
-      const ds = (window as unknown as { __qdsGallery: any }).__qdsGallery
+      const ds = (window as unknown as { __odsGallery: any }).__odsGallery
       ds.setMode(mode)
       ds.setVariant(variant)
     },
     { mode, variant },
   )
   // Confirm the controller wrote the scope classes onto <body> before asserting.
-  await expect(page.locator('body')).toHaveClass(new RegExp(`qds-variant-${variant}`))
+  await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
   await expect(page.locator('body')).toHaveClass(
-    new RegExp(mode === 'dark' ? 'qds-theme-dark' : 'qds-theme-light'),
+    new RegExp(mode === 'dark' ? 'ods-theme-dark' : 'ods-theme-light'),
   )
 }
 
@@ -29,7 +29,7 @@ async function computed(page: Page, selector: string, prop: string, pseudo: stri
   )
 }
 
-test.describe('QDS catalog data display gate', () => {
+test.describe('ODS catalog data display gate', () => {
   test('catalog coverage tab skins remaining Quasar primitives', async ({ page }) => {
     await page.goto('/')
     await gotoGalleryPage(page, 'Catalog')
@@ -72,26 +72,26 @@ test.describe('QDS catalog data display gate', () => {
     await expectVisible('.q-editor')
     await expectVisible('.q-uploader')
 
-    expect.soft(await computed(page, '.q-banner', 'border-top-width'), 'QBanner QDS border').toBe('1px')
+    expect.soft(await computed(page, '.q-banner', 'border-top-width'), 'QBanner ODS border').toBe('1px')
     expect.soft(await computed(page, '[data-test="qds-btn-group"]', 'border-top-width'), 'QBtnGroup is a quiet Fluent command surface (no enclosing shell)').toBe('0px')
     expect.soft(await computed(page, '[data-test="qds-btn-group"]', 'background-color'), 'QBtnGroup transparent').toBe('rgba(0, 0, 0, 0)')
     expect.soft(await computed(page, '[data-test="qds-btn-group"]', 'box-shadow'), 'QBtnGroup flat surface').toBe('none')
     expect.soft(await computed(page, '[data-test="qds-btn-dropdown"] .q-btn-dropdown__arrow', 'opacity'), 'QBtnDropdown arrow default opacity').toBe('0.72')
     expect.soft(await computed(page, '[data-test="qds-btn-toggle"]', 'border-top-width'), 'QBtnToggle segmented track has no stroke').toBe('0px')
-    expect.soft(await computed(page, '[data-test="qds-btn-toggle"]', 'background-color'), 'QBtnToggle segmented track uses the neutral surface-2 fill').toBe(await resolvedColor(page, '--qds-bg-surface-2'))
-    expect.soft(await computed(page, '[data-test="qds-btn-toggle"] .q-btn[aria-pressed="true"]', 'background-color'), 'QBtnToggle selected segment is raised on the control fill').toBe(await resolvedColor(page, '--qds-control-fill-default'))
-    expect.soft(await computed(page, '[data-test="qds-btn-toggle"] .q-btn[aria-pressed="true"]', 'box-shadow'), 'QBtnToggle selected segment carries shadow-2').toBe(await resolvedShadow(page, '--qds-shadow-2'))
+    expect.soft(await computed(page, '[data-test="qds-btn-toggle"]', 'background-color'), 'QBtnToggle segmented track uses the neutral surface-2 fill').toBe(await resolvedColor(page, '--ods-bg-surface-2'))
+    expect.soft(await computed(page, '[data-test="qds-btn-toggle"] .q-btn[aria-pressed="true"]', 'background-color'), 'QBtnToggle selected segment is raised on the control fill').toBe(await resolvedColor(page, '--ods-control-fill-default'))
+    expect.soft(await computed(page, '[data-test="qds-btn-toggle"] .q-btn[aria-pressed="true"]', 'box-shadow'), 'QBtnToggle selected segment carries shadow-2').toBe(await resolvedShadow(page, '--ods-shadow-2'))
     expect.soft(await computed(page, '[data-test="qds-btn-toggle"] .q-btn[aria-pressed="true"]', 'border-top-color'), 'QBtnToggle active has no extra outline').toBe('rgba(0, 0, 0, 0)')
     expect.soft(await computed(page, '[data-test="qds-avatar"]', 'border-top-width'), 'QAvatar is a borderless fill').toBe('0px')
-    expect.soft(await computed(page, '[data-test="qds-avatar"]', 'border-radius'), 'QAvatar QDS radius').toBe('9999px')
-    expect.soft(await computed(page, '[data-test="qds-avatar"]', 'background-color'), 'QAvatar color prop fills with the primary token').toBe(await resolvedColor(page, '--qds-color-primary'))
-    expect.soft(await computed(page, '.catalog-panel', 'border-radius'), 'QTabPanels leaves framing to the host instead of forcing a card radius').toBe(await customProperty(page, '--qds-radius-md'))
-    expect.soft(await computed(page, '.q-stepper', 'border-radius'), 'QStepper QDS radius').toBe(await customProperty(page, '--qds-card-radius'))
-    expect.soft(await computed(page, '.q-markup-table', 'border-radius'), 'QMarkupTable QDS radius').toBe(await customProperty(page, '--qds-card-radius'))
-    expect.soft(await computed(page, '.q-editor', 'border-top-width'), 'QEditor QDS border').toBe('1px')
-    expect.soft(await computed(page, '.q-uploader', 'border-radius'), 'QUploader QDS radius').toBe(await customProperty(page, '--qds-card-radius'))
-    expect.soft(await computed(page, '[data-test="qds-knob"]', 'color'), 'QKnob primary color').toBe(await resolvedColor(page, '--qds-color-primary'))
-    expect.soft(await computed(page, '[data-test="qds-spinner"]', 'color'), 'QSpinner primary color').toBe(await resolvedColor(page, '--qds-color-primary'))
+    expect.soft(await computed(page, '[data-test="qds-avatar"]', 'border-radius'), 'QAvatar ODS radius').toBe('9999px')
+    expect.soft(await computed(page, '[data-test="qds-avatar"]', 'background-color'), 'QAvatar color prop fills with the primary token').toBe(await resolvedColor(page, '--ods-color-primary'))
+    expect.soft(await computed(page, '.catalog-panel', 'border-radius'), 'QTabPanels leaves framing to the host instead of forcing a card radius').toBe(await customProperty(page, '--ods-radius-md'))
+    expect.soft(await computed(page, '.q-stepper', 'border-radius'), 'QStepper ODS radius').toBe(await customProperty(page, '--ods-card-radius'))
+    expect.soft(await computed(page, '.q-markup-table', 'border-radius'), 'QMarkupTable ODS radius').toBe(await customProperty(page, '--ods-card-radius'))
+    expect.soft(await computed(page, '.q-editor', 'border-top-width'), 'QEditor ODS border').toBe('1px')
+    expect.soft(await computed(page, '.q-uploader', 'border-radius'), 'QUploader ODS radius').toBe(await customProperty(page, '--ods-card-radius'))
+    expect.soft(await computed(page, '[data-test="qds-knob"]', 'color'), 'QKnob primary color').toBe(await resolvedColor(page, '--ods-color-primary'))
+    expect.soft(await computed(page, '[data-test="qds-spinner"]', 'color'), 'QSpinner primary color').toBe(await resolvedColor(page, '--ods-color-primary'))
     expect.soft(await computed(page, '[data-test="qds-circular-progress"] .q-circular-progress__circle', 'filter'), 'QCircularProgress retains Fluent solid/no-glow treatment').toBe('none')
   })
 
@@ -142,7 +142,7 @@ test.describe('QDS catalog data display gate', () => {
         await applyTheme(page, mode, variant)
         const primary = await page.locator('body').evaluate((el) => {
           const probe = document.createElement('span')
-          probe.style.color = 'var(--qds-fg-primary)'
+          probe.style.color = 'var(--ods-fg-primary)'
           el.append(probe)
           const value = getComputedStyle(probe).color
           probe.remove()
@@ -152,7 +152,7 @@ test.describe('QDS catalog data display gate', () => {
         await expect(page.locator('[data-test="qds-linear-progress"]')).toBeVisible()
         await expect(page.locator('[data-test="qds-circular-progress"]')).toBeVisible()
         await expect(page.locator('[data-test="qds-expansion-expanded"]')).toBeVisible()
-        expect.soft(await computed(page, '[data-test="qds-btn-group"]', 'border-radius'), `${mode}/${variant} action group follows the button radius`).toBe(variant === 'ink' ? '8.8px 4.8px 8px 4px / 4.8px 8px 4px 8.8px' : await customProperty(page, '--qds-button-radius'))
+        expect.soft(await computed(page, '[data-test="qds-btn-group"]', 'border-radius'), `${mode}/${variant} action group follows the button radius`).toBe(variant === 'ink' ? '8.8px 4.8px 8px 4px / 4.8px 8px 4px 8.8px' : await customProperty(page, '--ods-button-radius'))
         expect.soft(await computed(page, '[data-test="qds-linear-progress"] .q-linear-progress__model', 'background-color'), `${mode}/${variant} linear progress uses the text-safe primary foreground`).toBe(primary)
         expect.soft(await computed(page, '[data-test="qds-circular-progress"]', 'color'), `${mode}/${variant} circular progress retains contrast`).not.toBe('rgba(0, 0, 0, 0)')
         if (variant === 'win') {

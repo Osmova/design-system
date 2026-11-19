@@ -126,7 +126,7 @@ jobs:
             bash -euc 'corepack enable; corepack prepare pnpm@10.28.1 --activate;
               pnpm -C examples/shadcn-reference test:reference;
               pnpm gallery:shadcn-reference:test --workers=2 --output=test-results-reference-metrics;
-              QDS_SCREENS=1 pnpm gallery:shadcn-reference:test --workers=2 --output=test-results-reference-screens'
+              ODS_SCREENS=1 pnpm gallery:shadcn-reference:test --workers=2 --output=test-results-reference-screens'
 
       - name: Upload screenshot and reference evidence
         if: always()

@@ -724,12 +724,12 @@
       }
     },
     "aliases": {
-      "$description": "Native --qds-* aliases bound to the shadcn slots.",
+      "$description": "Native --ods-* aliases bound to the shadcn slots.",
       "font-family-display": {
-        "$value": "var(--qds-font-family)"
+        "$value": "var(--ods-font-family)"
       },
       "font-family-accent": {
-        "$value": "var(--qds-font-family)"
+        "$value": "var(--ods-font-family)"
       },
       "font-size-body": {
         "$type": "dimension",
@@ -776,43 +776,43 @@
         "$value": "1rem"
       },
       "elevation-1": {
-        "$value": "var(--qds-shadow-sm)"
+        "$value": "var(--ods-shadow-sm)"
       },
       "elevation-2": {
-        "$value": "var(--qds-shadow-md)"
+        "$value": "var(--ods-shadow-md)"
       },
       "elevation-3": {
-        "$value": "var(--qds-shadow-lg)"
+        "$value": "var(--ods-shadow-lg)"
       },
       "elevation-card": {
-        "$value": "var(--qds-shadow-sm)"
+        "$value": "var(--ods-shadow-sm)"
       },
       "elevation-flyout": {
-        "$value": "var(--qds-shadow-md)"
+        "$value": "var(--ods-shadow-md)"
       },
       "elevation-dialog": {
-        "$value": "var(--qds-shadow-lg)"
+        "$value": "var(--ods-shadow-lg)"
       },
       "interactive-bg": {
-        "$value": "var(--qds-surface-0)"
+        "$value": "var(--ods-surface-0)"
       },
       "interactive-bg-hover": {
-        "$value": "var(--qds-surface-1)"
+        "$value": "var(--ods-surface-1)"
       },
       "interactive-bg-active": {
-        "$value": "var(--qds-surface-2)"
+        "$value": "var(--ods-surface-2)"
       },
       "interactive-border": {
-        "$value": "var(--qds-border-subtle)"
+        "$value": "var(--ods-border-subtle)"
       },
       "interactive-border-strong": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "interactive-text": {
-        "$value": "var(--qds-text)"
+        "$value": "var(--ods-text)"
       },
       "interactive-text-muted": {
-        "$value": "var(--qds-text-muted)"
+        "$value": "var(--ods-text-muted)"
       },
       "field-label-gap": {
         "$type": "dimension",
@@ -823,125 +823,125 @@
         "$value": "8rem"
       },
       "field-transition": {
-        "$value": "var(--qds-motion-fast)"
+        "$value": "var(--ods-motion-fast)"
       },
       "field-label-weight": {
-        "$value": "var(--qds-font-weight-regular)"
+        "$value": "var(--ods-font-weight-regular)"
       },
       "field-shadow": {
         "$value": "none"
       },
       "field-help-gap": {
-        "$value": "var(--qds-space-xs)"
+        "$value": "var(--ods-space-xs)"
       },
       "field-focus-stroke": {
-        "$value": "var(--qds-stroke-focus)"
+        "$value": "var(--ods-stroke-focus)"
       },
       "field-focus-halo": {
-        "$value": "0 0 0 3px color-mix(in srgb, var(--qds-stroke-focus) 50%, transparent)"
+        "$value": "0 0 0 3px color-mix(in srgb, var(--ods-stroke-focus) 50%, transparent)"
       },
       "field-description-color": {
-        "$value": "var(--qds-text-muted)"
+        "$value": "var(--ods-text-muted)"
       },
       "control-halo": {
         "$value": "none"
       },
       "control-icon-color": {
-        "$value": "var(--qds-text-muted)"
+        "$value": "var(--ods-text-muted)"
       },
       "progress-stripe": {
         "$type": "color",
         "$value": "rgba(255, 255, 255, 0.24)"
       },
       "button-min-height": {
-        "$value": "var(--qds-control-size-md)"
+        "$value": "var(--ods-control-size-md)"
       },
       "button-dense-min-height": {
-        "$value": "var(--qds-control-size-sm)"
+        "$value": "var(--ods-control-size-sm)"
       },
       "button-round-size": {
-        "$value": "var(--qds-control-size-md)"
+        "$value": "var(--ods-control-size-md)"
       },
       "compact-action-size": {
-        "$value": "var(--qds-control-size-md)"
+        "$value": "var(--ods-control-size-md)"
       },
       "compact-action-icon-size": {
-        "$value": "var(--qds-control-icon-size-md)"
+        "$value": "var(--ods-control-icon-size-md)"
       },
       "button-icon-gap": {
-        "$value": "var(--qds-inline-icon-gap)"
+        "$value": "var(--ods-inline-icon-gap)"
       },
       "button-dense-icon-gap": {
-        "$value": "var(--qds-inline-icon-dense-gap)"
+        "$value": "var(--ods-inline-icon-dense-gap)"
       },
       "button-radius": {
-        "$value": "var(--qds-radius-control)"
+        "$value": "var(--ods-radius-control)"
       },
       "chip-icon-gap": {
-        "$value": "var(--qds-inline-icon-gap)"
+        "$value": "var(--ods-inline-icon-gap)"
       },
       "chip-dense-icon-gap": {
-        "$value": "var(--qds-inline-icon-dense-gap)"
+        "$value": "var(--ods-inline-icon-dense-gap)"
       },
       "chip-radius": {
-        "$value": "var(--qds-radius-full)"
+        "$value": "var(--ods-radius-full)"
       },
       "badge-icon-gap": {
-        "$value": "var(--qds-inline-icon-gap)"
+        "$value": "var(--ods-inline-icon-gap)"
       },
       "badge-dense-icon-gap": {
-        "$value": "var(--qds-inline-icon-dense-gap)"
+        "$value": "var(--ods-inline-icon-dense-gap)"
       },
       "badge-radius": {
-        "$value": "var(--qds-radius-full)"
+        "$value": "var(--ods-radius-full)"
       },
       "surface-0": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "surface-1": {
-        "$value": "var(--qds-shadcn-card)"
+        "$value": "var(--ods-shadcn-card)"
       },
       "surface-2": {
-        "$value": "var(--qds-shadcn-muted)"
+        "$value": "var(--ods-shadcn-muted)"
       },
       "surface-3": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "surface-glass": {
-        "$value": "var(--qds-shadcn-card)"
+        "$value": "var(--ods-shadcn-card)"
       },
       "text": {
-        "$value": "var(--qds-shadcn-foreground)"
+        "$value": "var(--ods-shadcn-foreground)"
       },
       "text-strong": {
-        "$value": "var(--qds-shadcn-foreground)"
+        "$value": "var(--ods-shadcn-foreground)"
       },
       "fg-default": {
-        "$value": "var(--qds-text)"
+        "$value": "var(--ods-text)"
       },
       "fg-strong": {
-        "$value": "var(--qds-text-strong)"
+        "$value": "var(--ods-text-strong)"
       },
       "fg-muted": {
-        "$value": "var(--qds-text-muted)"
+        "$value": "var(--ods-text-muted)"
       },
       "fg-disabled": {
-        "$value": "var(--qds-text-muted)"
+        "$value": "var(--ods-text-muted)"
       },
       "fg-brand": {
-        "$value": "var(--qds-fg-primary)"
+        "$value": "var(--ods-fg-primary)"
       },
       "fg-on-brand": {
-        "$value": "var(--qds-text-on-primary)"
+        "$value": "var(--ods-text-on-primary)"
       },
       "text-on-solid": {
-        "$value": "var(--qds-text-on-primary)"
+        "$value": "var(--ods-text-on-primary)"
       },
       "border": {
-        "$value": "var(--qds-shadcn-border)"
+        "$value": "var(--ods-shadcn-border)"
       },
       "border-subtle": {
-        "$value": "var(--qds-shadcn-border)"
+        "$value": "var(--ods-shadcn-border)"
       },
       "fill-hover-mix": {
         "$value": "90%"
@@ -950,74 +950,74 @@
         "$value": "80%"
       },
       "fill-state-base": {
-        "$value": "var(--qds-bg-card)"
+        "$value": "var(--ods-bg-card)"
       },
       "text-on-fill-pressed-mix": {
         "$value": "100%"
       },
       "surface-focus-block": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "surface-transient": {
-        "$value": "var(--qds-shadcn-popover)"
+        "$value": "var(--ods-shadcn-popover)"
       },
       "bg-canvas": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "bg-surface-1": {
-        "$value": "var(--qds-shadcn-card)"
+        "$value": "var(--ods-shadcn-card)"
       },
       "bg-surface-2": {
-        "$value": "var(--qds-shadcn-muted)"
+        "$value": "var(--ods-shadcn-muted)"
       },
       "bg-layer": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "bg-flyout": {
-        "$value": "var(--qds-shadcn-popover)"
+        "$value": "var(--ods-shadcn-popover)"
       },
       "bg-card": {
-        "$value": "var(--qds-shadcn-card)"
+        "$value": "var(--ods-shadcn-card)"
       },
       "bg-card-hover": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "bg-overlay": {
         "$type": "color",
         "$value": "rgba(0, 0, 0, 0.5)"
       },
       "stroke-default": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "stroke-subtle": {
-        "$value": "var(--qds-border-subtle)"
+        "$value": "var(--ods-border-subtle)"
       },
       "stroke-divider": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "stroke-focus": {
-        "$value": "var(--qds-stroke-strong)"
+        "$value": "var(--ods-stroke-strong)"
       },
       "stroke-error": {
-        "$value": "var(--qds-fg-negative)"
+        "$value": "var(--ods-fg-negative)"
       },
       "control-stroke-strong": {
-        "$value": "var(--qds-stroke-strong)"
+        "$value": "var(--ods-stroke-strong)"
       },
       "control-fill-default": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "control-fill-hover": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "control-fill-pressed": {
-        "$value": "var(--qds-shadcn-muted)"
+        "$value": "var(--ods-shadcn-muted)"
       },
       "control-fill-disabled": {
-        "$value": "var(--qds-shadcn-muted)"
+        "$value": "var(--ods-shadcn-muted)"
       },
       "control-fill-input-active": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "control-stroke-on-accent-top": {
         "$value": "transparent"
@@ -1026,10 +1026,10 @@
         "$value": "transparent"
       },
       "card-fill": {
-        "$value": "var(--qds-shadcn-card)"
+        "$value": "var(--ods-shadcn-card)"
       },
       "card-stroke": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "card-radius": {
         "$type": "dimension",
@@ -1040,22 +1040,22 @@
         "$value": "0.375rem"
       },
       "state-hover": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "state-pressed": {
-        "$value": "var(--qds-shadcn-muted)"
+        "$value": "var(--ods-shadcn-muted)"
       },
       "state-selected": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "state-disabled": {
-        "$value": "var(--qds-shadcn-muted)"
+        "$value": "var(--ods-shadcn-muted)"
       },
       "state-focus-indicator": {
-        "$value": "var(--qds-stroke-focus)"
+        "$value": "var(--ods-stroke-focus)"
       },
       "material-stroke": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "material-saturate": {
         "$type": "number",
@@ -1065,125 +1065,125 @@
         "$value": "inset 0 0 0 0 transparent"
       },
       "mica-alt": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "backdrop": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "card-border": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "card-border-strong": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "card-header-border": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "chrome-border": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "chrome-border-soft": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "chrome-surface": {
-        "$value": "var(--qds-shadcn-sidebar)"
+        "$value": "var(--ods-shadcn-sidebar)"
       },
       "chrome-surface-strong": {
-        "$value": "var(--qds-shadcn-sidebar)"
+        "$value": "var(--ods-shadcn-sidebar)"
       },
       "chrome-shadow": {
-        "$value": "var(--qds-chrome-shadow-value, none)"
+        "$value": "var(--ods-chrome-shadow-value, none)"
       },
       "media-frame-shadow": {
-        "$value": "var(--qds-media-frame-shadow-value, var(--qds-card-shadow))"
+        "$value": "var(--ods-media-frame-shadow-value, var(--ods-card-shadow))"
       },
       "toolbar-bg": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "separator-color": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "handle-color": {
-        "$value": "var(--qds-text-muted)"
+        "$value": "var(--ods-text-muted)"
       },
       "menu-bg": {
-        "$value": "var(--qds-shadcn-popover)"
+        "$value": "var(--ods-shadcn-popover)"
       },
       "menu-border": {
-        "$value": "var(--qds-border)"
+        "$value": "var(--ods-border)"
       },
       "menu-radius": {
         "$type": "dimension",
         "$value": "0.5rem"
       },
       "menu-shadow": {
-        "$value": "var(--qds-shadow-md)"
+        "$value": "var(--ods-shadow-md)"
       },
       "menu-item-min-height": {
-        "$value": "var(--qds-menu-item-min-height-value, 2rem)"
+        "$value": "var(--ods-menu-item-min-height-value, 2rem)"
       },
       "notification-radius": {
-        "$value": "var(--qds-radius-md)"
+        "$value": "var(--ods-radius-md)"
       },
       "notification-shadow": {
-        "$value": "var(--qds-shadow-md)"
+        "$value": "var(--ods-shadow-md)"
       },
       "list-item-min-height": {
-        "$value": "var(--qds-list-item-min-height-value, 2.25rem)"
+        "$value": "var(--ods-list-item-min-height-value, 2.25rem)"
       },
       "expansion-item-min-height": {
-        "$value": "var(--qds-expansion-item-min-height-value, 2.75rem)"
+        "$value": "var(--ods-expansion-item-min-height-value, 2.75rem)"
       },
       "table-header-height": {
-        "$value": "var(--qds-table-header-height-value, 2.5rem)"
+        "$value": "var(--ods-table-header-height-value, 2.5rem)"
       },
       "table-row-height": {
-        "$value": "var(--qds-table-row-height-value, 2.5rem)"
+        "$value": "var(--ods-table-row-height-value, 2.5rem)"
       },
       "field-label-bg": {
-        "$value": "var(--qds-bg-canvas)"
+        "$value": "var(--ods-bg-canvas)"
       },
       "slider-label-bg": {
-        "$value": "var(--qds-surface-0)"
+        "$value": "var(--ods-surface-0)"
       },
       "slider-label-text": {
-        "$value": "var(--qds-text-strong)"
+        "$value": "var(--ods-text-strong)"
       },
       "slider-label-border": {
-        "$value": "var(--qds-border-subtle)"
+        "$value": "var(--ods-border-subtle)"
       },
       "tab-radius": {
-        "$value": "var(--qds-radius-control)"
+        "$value": "var(--ods-radius-control)"
       },
       "tab-hover-bg": {
-        "$value": "var(--qds-shadcn-accent)"
+        "$value": "var(--ods-shadcn-accent)"
       },
       "tab-active-bg": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "tab-active-text": {
-        "$value": "var(--qds-text)"
+        "$value": "var(--ods-text)"
       },
       "tab-active-rail": {
         "$value": "transparent"
       },
       "segmented-track-bg": {
-        "$value": "var(--qds-shadcn-muted)"
+        "$value": "var(--ods-shadcn-muted)"
       },
       "segmented-thumb-bg": {
-        "$value": "var(--qds-shadcn-background)"
+        "$value": "var(--ods-shadcn-background)"
       },
       "bar-dark-bg": {
-        "$value": "var(--qds-shadcn-primary)"
+        "$value": "var(--ods-shadcn-primary)"
       },
       "bar-dark-fg": {
-        "$value": "var(--qds-shadcn-primary-foreground)"
+        "$value": "var(--ods-shadcn-primary-foreground)"
       },
       "toggle-track-width": {
-        "$value": "var(--qds-control-size-lg)"
+        "$value": "var(--ods-control-size-lg)"
       },
       "toggle-track-height": {
-        "$value": "calc(var(--qds-control-size-lg) / 2)"
+        "$value": "calc(var(--ods-control-size-lg) / 2)"
       },
       "toggle-thumb-inset": {
         "$type": "dimension",
@@ -1199,92 +1199,92 @@
         "$value": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)"
       },
       "button-elevated-shadow": {
-        "$value": "var(--qds-shadow-sm)"
+        "$value": "var(--ods-shadow-sm)"
       },
       "button-elevated-shadow-hover": {
-        "$value": "var(--qds-shadow-sm)"
+        "$value": "var(--ods-shadow-sm)"
       },
       "card-shadow": {
-        "$value": "var(--qds-shadow-sm)"
+        "$value": "var(--ods-shadow-sm)"
       },
       "banner-accent": {
-        "$value": "var(--qds-color-primary)"
+        "$value": "var(--ods-color-primary)"
       },
       "banner-accent-rgb": {
-        "$value": "var(--qds-color-primary-rgb)"
+        "$value": "var(--ods-color-primary-rgb)"
       },
       "banner-text": {
-        "$value": "var(--qds-text)"
+        "$value": "var(--ods-text)"
       },
       "notify-accent": {
-        "$value": "var(--qds-color-primary)"
+        "$value": "var(--ods-color-primary)"
       },
       "notify-accent-rgb": {
-        "$value": "var(--qds-color-primary-rgb)"
+        "$value": "var(--ods-color-primary-rgb)"
       },
       "notify-bg": {
-        "$value": "var(--qds-surface-transient)"
+        "$value": "var(--ods-surface-transient)"
       },
       "notify-text": {
-        "$value": "var(--qds-text)"
+        "$value": "var(--ods-text)"
       },
       "pagination-active-bg": {
-        "$value": "var(--qds-surface-brand-soft)"
+        "$value": "var(--ods-surface-brand-soft)"
       },
       "pagination-active-border": {
-        "$value": "rgba(var(--qds-color-primary-rgb), var(--qds-tonal-border-opacity))"
+        "$value": "rgba(var(--ods-color-primary-rgb), var(--ods-tonal-border-opacity))"
       },
       "pagination-active-text": {
-        "$value": "var(--qds-text-strong)"
+        "$value": "var(--ods-text-strong)"
       },
       "scrollbar-size": {
         "$type": "dimension",
         "$value": "0.625rem"
       },
       "scrollbar-thumb": {
-        "$value": "var(--qds-handle-color)"
+        "$value": "var(--ods-handle-color)"
       },
       "scrollbar-thumb-hover": {
-        "$value": "color-mix(in srgb, var(--qds-handle-color) 72%, var(--qds-text-muted))"
+        "$value": "color-mix(in srgb, var(--ods-handle-color) 72%, var(--ods-text-muted))"
       },
       "selection-inner-size": {
-        "$value": "var(--qds-icon-size-lg)"
+        "$value": "var(--ods-icon-size-lg)"
       },
       "selection-mark-size": {
-        "$value": "var(--qds-icon-size-md)"
+        "$value": "var(--ods-icon-size-md)"
       },
       "selection-mark-offset": {
-        "$value": "calc((var(--qds-selection-inner-size) - var(--qds-selection-mark-size)) / 2)"
+        "$value": "calc((var(--ods-selection-inner-size) - var(--ods-selection-mark-size)) / 2)"
       },
       "stepper-rail": {
-        "$value": "var(--qds-separator-color)"
+        "$value": "var(--ods-separator-color)"
       },
       "stepper-rail-active": {
-        "$value": "var(--qds-color-primary)"
+        "$value": "var(--ods-color-primary)"
       },
       "table-header-bg": {
-        "$value": "var(--qds-surface-1)"
+        "$value": "var(--ods-surface-1)"
       },
       "table-header-text": {
-        "$value": "var(--qds-text-muted)"
+        "$value": "var(--ods-text-muted)"
       },
       "table-row-hover-bg": {
-        "$value": "var(--qds-surface-brand-soft)"
+        "$value": "var(--ods-surface-brand-soft)"
       },
       "table-selected-bg": {
-        "$value": "var(--qds-surface-focus-block)"
+        "$value": "var(--ods-surface-focus-block)"
       },
       "table-sort-icon": {
-        "$value": "var(--qds-color-primary)"
+        "$value": "var(--ods-color-primary)"
       },
       "timeline-rail": {
-        "$value": "var(--qds-separator-color)"
+        "$value": "var(--ods-separator-color)"
       },
       "chat-bubble-bg": {
-        "$value": "var(--qds-surface-1)"
+        "$value": "var(--ods-surface-1)"
       },
       "chat-bubble-fg": {
-        "$value": "var(--qds-text)"
+        "$value": "var(--ods-text)"
       }
     }
   }

@@ -31,11 +31,11 @@ test.describe('control composition', () => {
         await applyTheme(page, mode, variant)
         const inactive = page.locator('[data-test="qds-toggle-color"] > .q-btn:not([aria-pressed="true"])').first()
         // The win Segmented keeps idle labels primary; the selected one carries the pill.
-        const muted = await resolvedColor(page, variant === 'win' ? '--qds-fg-default' : '--qds-fg-muted')
+        const muted = await resolvedColor(page, variant === 'win' ? '--ods-fg-default' : '--ods-fg-muted')
         await expect.poll(() => inactive.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
         await expect.poll(() => inactive.evaluate((element) => getComputedStyle(element).color)).toBe(muted)
         const disabled = page.locator('[data-test="qds-toggle-color"] > .q-btn.disabled')
-        const disabledText = await resolvedColor(page, '--qds-fg-disabled')
+        const disabledText = await resolvedColor(page, '--ods-fg-disabled')
         await expect.poll(() => disabled.evaluate((element) => getComputedStyle(element).color)).toBe(disabledText)
         await expect.poll(() => disabled.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
       })

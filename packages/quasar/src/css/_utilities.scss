@@ -1,13 +1,13 @@
 @use 'importance';
 @mixin styles {
   @each $role in primary, secondary, accent, positive, negative, warning, info {
-    .qds-ui .text-#{$role} { @include importance.declarations { color: var(--qds-fg-#{$role}) !important; } }
-    .qds-ui .bg-#{$role} { @include importance.declarations { background: var(--qds-color-#{$role}) !important; } }
+    .ods-ui .text-#{$role} { @include importance.declarations { color: var(--ods-fg-#{$role}) !important; } }
+    .ods-ui .bg-#{$role} { @include importance.declarations { background: var(--ods-color-#{$role}) !important; } }
   }
 
-  .qds-ui .rounded-borders { border-radius: var(--qds-radius-control); }
+  .ods-ui .rounded-borders { border-radius: var(--ods-radius-control); }
 
-  .qds-ui .qds-sr-only {
+  .ods-ui .ods-sr-only {
     position: absolute;
     inline-size: 1px;
     block-size: 1px;
@@ -19,61 +19,61 @@
     border: 0;
   }
 
-  .qds-surface { background: var(--qds-surface-0); color: var(--qds-text); }
-  .qds-surface-muted { background: var(--qds-surface-1); color: var(--qds-text); }
-  .qds-surface-brand { background: var(--qds-surface-brand-soft); color: var(--qds-text); }
-  .qds-surface-focus { background: var(--qds-surface-focus-block); color: var(--qds-text); }
+  .ods-surface { background: var(--ods-surface-0); color: var(--ods-text); }
+  .ods-surface-muted { background: var(--ods-surface-1); color: var(--ods-text); }
+  .ods-surface-brand { background: var(--ods-surface-brand-soft); color: var(--ods-text); }
+  .ods-surface-focus { background: var(--ods-surface-focus-block); color: var(--ods-text); }
   // Kept for existing consumers, but generic content no longer opts into blur.
-  .qds-glass { background: var(--qds-surface-transient); border: var(--qds-border-width-control) solid var(--qds-chrome-border-soft); }
-  .qds-card { background: var(--qds-surface-0); border: 0; border-radius: var(--qds-card-radius); box-shadow: none; color: var(--qds-text); }
-  .qds-card.qds-card--readable,
-  .qds-card.qds-card--contrast { background: var(--qds-card-bg-readable); border: var(--qds-border-width-control) solid var(--qds-card-border-strong); }
-  .qds-card.qds-card--opaque,
-  .qds-card.qds-card--solid { background: var(--qds-card-bg-opaque); border: var(--qds-border-width-control) solid var(--qds-card-border-strong); }
-  .qds-display { font-family: var(--qds-font-family-display); }
-  .qds-text-muted { color: color-mix(in srgb, var(--qds-text-muted) 75%, var(--qds-text-strong)); }
-  .qds-text-strong { color: var(--qds-text-strong); font-weight: var(--qds-font-weight-semibold); }
+  .ods-glass { background: var(--ods-surface-transient); border: var(--ods-border-width-control) solid var(--ods-chrome-border-soft); }
+  .ods-card { background: var(--ods-surface-0); border: 0; border-radius: var(--ods-card-radius); box-shadow: none; color: var(--ods-text); }
+  .ods-card.ods-card--readable,
+  .ods-card.ods-card--contrast { background: var(--ods-card-bg-readable); border: var(--ods-border-width-control) solid var(--ods-card-border-strong); }
+  .ods-card.ods-card--opaque,
+  .ods-card.ods-card--solid { background: var(--ods-card-bg-opaque); border: var(--ods-border-width-control) solid var(--ods-card-border-strong); }
+  .ods-display { font-family: var(--ods-font-family-display); }
+  .ods-text-muted { color: color-mix(in srgb, var(--ods-text-muted) 75%, var(--ods-text-strong)); }
+  .ods-text-strong { color: var(--ods-text-strong); font-weight: var(--ods-font-weight-semibold); }
   @each $role in solid, primary, secondary, accent, positive, negative, warning, info {
-    .qds-text-on-#{$role} { @include importance.declarations { color: var(--qds-text-on-#{$role}) !important; } }
+    .ods-text-on-#{$role} { @include importance.declarations { color: var(--ods-text-on-#{$role}) !important; } }
   }
-  .qds-focus-ring:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-color-primary); outline-offset: var(--qds-focus-ring-offset); box-shadow: none; }
+  .ods-focus-ring:focus-visible { outline: var(--ods-focus-ring-width) solid var(--ods-color-primary); outline-offset: var(--ods-focus-ring-offset); box-shadow: none; }
   // Private bindings keep role-dependent component grammar compact. Text and fill
   // bindings stay separate so bg-primary + text-negative cannot swap the fill.
-  .qds-variant-shadcn:is(.qds-ui,.qds-ui *) {
+  .ods-variant-shadcn:is(.ods-ui,.ods-ui *) {
     @each $role in primary, secondary, accent, positive, negative, warning, info {
-      .bg-#{$role} { --_qds-fill: var(--qds-color-#{$role}); --_qds-on: var(--qds-text-on-#{$role}); --_qds-hover: var(--qds-color-#{$role}-hover); --_qds-pressed: var(--qds-color-#{$role}-pressed); --_qds-fg: var(--qds-fg-#{$role}); --_qds-pressed-mix: var(--qds-text-on-#{$role}-pressed-mix); }
-      .text-#{$role} { --_qds-text: var(--qds-fg-#{$role}); --_qds-text-hover: var(--qds-color-#{$role}-hover); --_qds-text-pressed: var(--qds-color-#{$role}-pressed); }
+      .bg-#{$role} { --_ods-fill: var(--ods-color-#{$role}); --_ods-on: var(--ods-text-on-#{$role}); --_ods-hover: var(--ods-color-#{$role}-hover); --_ods-pressed: var(--ods-color-#{$role}-pressed); --_ods-fg: var(--ods-fg-#{$role}); --_ods-pressed-mix: var(--ods-text-on-#{$role}-pressed-mix); }
+      .text-#{$role} { --_ods-text: var(--ods-fg-#{$role}); --_ods-text-hover: var(--ods-color-#{$role}-hover); --_ods-text-pressed: var(--ods-color-#{$role}-pressed); }
     }
-    .qds-text-muted { color: var(--qds-fg-muted); }
-    .qds-focus-ring:focus-visible { outline-color: var(--qds-stroke-focus); box-shadow: var(--qds-field-focus-halo); }
-    .qds-card { border: var(--qds-border-width-control) solid var(--qds-card-stroke); box-shadow: var(--qds-card-shadow); }
+    .ods-text-muted { color: var(--ods-fg-muted); }
+    .ods-focus-ring:focus-visible { outline-color: var(--ods-stroke-focus); box-shadow: var(--ods-field-focus-halo); }
+    .ods-card { border: var(--ods-border-width-control) solid var(--ods-card-stroke); box-shadow: var(--ods-card-shadow); }
   }
-  .qds-button-row,
-  .qds-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--qds-space-sm); }
-  .qds-button-row--tight { gap: var(--qds-space-xs); }
+  .ods-button-row,
+  .ods-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ods-space-sm); }
+  .ods-button-row--tight { gap: var(--ods-space-xs); }
 
-  .qds-form--label-start {
-    --qds-field-label-column: 8rem;
+  .ods-form--label-start {
+    --ods-field-label-column: 8rem;
     display: grid;
-    gap: var(--qds-space-md);
+    gap: var(--ods-space-md);
   }
 
-  .qds-form--label-start-sm { --qds-field-label-column: 6rem; }
-  .qds-form--label-start-lg { --qds-field-label-column: 10rem; }
+  .ods-form--label-start-sm { --ods-field-label-column: 6rem; }
+  .ods-form--label-start-lg { --ods-field-label-column: 10rem; }
 
-  .qds-field-demo-grid {
+  .ods-field-demo-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--qds-space-md);
+    gap: var(--ods-space-md);
   }
 
   @media (max-width: 44.99rem) {
-    .qds-field-demo-grid { grid-template-columns: 1fr; }
+    .ods-field-demo-grid { grid-template-columns: 1fr; }
   }
 
   // One UI mobile safe-area rhythm: anchor bottom-spaced actions clear of the
   // device's home indicator/gesture bar. Apply to scroll containers or sticky
   // bottom bars in one-variant layouts.
-  .qds-ui .qds-safe-bottom { padding-block-end: env(safe-area-inset-bottom, 0px); }
-  .qds-ui .qds-safe-top { padding-block-start: env(safe-area-inset-top, 0px); }
+  .ods-ui .ods-safe-bottom { padding-block-end: env(safe-area-inset-bottom, 0px); }
+  .ods-ui .ods-safe-top { padding-block-start: env(safe-area-inset-top, 0px); }
 }

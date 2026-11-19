@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { useDesignSystem } from '@osmova/quasar-design-system'
+import { useDesignSystem } from '@osmova/ds-quasar'
 import {
   ppPlus,
   ppTrash,
@@ -127,13 +127,13 @@ function avatarSvg(initials: string, fill: string): string {
 const revealKey = ref(0)
 const inkMediaOptions = [
   { cls: '', label: 'greyscale' },
-  { cls: 'qds-media-color', label: 'always in colour' },
-  { cls: 'qds-media-color-hover', label: 'colour on hover or focus' },
-  { cls: 'qds-media-color-reveal', label: 'colour once when it appears' },
+  { cls: 'ods-media-color', label: 'always in colour' },
+  { cls: 'ods-media-color-hover', label: 'colour on hover or focus' },
+  { cls: 'ods-media-color-reveal', label: 'colour once when it appears' },
 ]
-const visualImage = mediaSvg('QDS Gallery', 'Static media surface', '#6366f1', '#06b6d4', '#f59e0b')
-const loadingImageSrc = '/qds-media-loading.svg'
-const errorImageSrc = '/qds-media-error.svg'
+const visualImage = mediaSvg('ODS Gallery', 'Static media surface', '#6366f1', '#06b6d4', '#f59e0b')
+const loadingImageSrc = '/ods-media-loading.svg'
+const errorImageSrc = '/ods-media-error.svg'
 const carouselSlides = [
   {
     name: 'ink',
@@ -151,7 +151,7 @@ const carouselSlides = [
     name: 'win',
     title: 'Fluent contrast',
     caption: 'Readable captions over owned gradient surfaces.',
-    src: mediaSvg('Fluent', 'Primary QDS tone', '#0f6cbd', '#2563eb', '#8b5cf6'),
+    src: mediaSvg('Fluent', 'Primary ODS tone', '#0f6cbd', '#2563eb', '#8b5cf6'),
   },
 ]
 const chatAvatars = {
@@ -198,17 +198,17 @@ const complexMediaTestHook: ComplexMediaTestHook = {
 }
 
 onMounted(() => {
-  ;(window as Window & { __qdsComplexMedia?: ComplexMediaTestHook }).__qdsComplexMedia = complexMediaTestHook
+  ;(window as Window & { __odsComplexMedia?: ComplexMediaTestHook }).__odsComplexMedia = complexMediaTestHook
 })
 
 onBeforeUnmount(() => {
-  delete (window as Window & { __qdsComplexMedia?: ComplexMediaTestHook }).__qdsComplexMedia
+  delete (window as Window & { __odsComplexMedia?: ComplexMediaTestHook }).__odsComplexMedia
 })
 </script>
 
 <template>
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Flows, timelines &amp; rich content</div>
+    <div class="text-h6 ods-display q-mb-md">Flows, timelines &amp; rich content</div>
     <div class="catalog-grid catalog-grid--two">
       <div class="catalog-demo">
         <div class="catalog-label">QStepper</div>
@@ -345,7 +345,7 @@ onBeforeUnmount(() => {
           name="Designer"
           :avatar="chatAvatars.designer"
           stamp="10:24"
-          :text="['Does the surface keep QDS radius, tail color, and readable contrast?']"
+          :text="['Does the surface keep ODS radius, tail color, and readable contrast?']"
           sent
         />
         <q-chat-message
@@ -360,11 +360,11 @@ onBeforeUnmount(() => {
   </q-card>
 
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Media</div>
+    <div class="text-h6 ods-display q-mb-md">Media</div>
     <div class="catalog-grid catalog-grid--two">
       <div class="catalog-demo">
         <div class="catalog-label">QCarousel + QImg</div>
-        <q-img :src="visualImage" alt="QDS gallery static media surface" ratio="16/9" class="catalog-image q-mb-md">
+        <q-img :src="visualImage" alt="ODS gallery static media surface" ratio="16/9" class="catalog-image q-mb-md">
           <div class="absolute-bottom catalog-media-caption">Standalone image surface</div>
         </q-img>
         <div class="catalog-label q-mt-md">QImg state proof</div>
@@ -441,7 +441,7 @@ onBeforeUnmount(() => {
       <div class="catalog-demo">
         <div class="catalog-label">QParallax</div>
         <q-parallax :src="visualImage" :height="220">
-          <div class="catalog-parallax-caption text-white text-h5 qds-display" data-test="qds-parallax-caption">Parallax surface</div>
+          <div class="catalog-parallax-caption text-white text-h5 ods-display" data-test="qds-parallax-caption">Parallax surface</div>
         </q-parallax>
       </div>
 
@@ -449,7 +449,7 @@ onBeforeUnmount(() => {
         <div class="catalog-label">Ink media colour: greyscale by default, opt back into colour</div>
         <div class="catalog-grid catalog-grid--two">
           <figure v-for="option in inkMediaOptions" :key="option.cls" class="q-ma-none">
-            <q-img :key="option.cls === 'qds-media-color-reveal' ? `reveal-${revealKey}` : option.cls" :src="visualImage" :alt="option.label" :ratio="16 / 9" :class="['catalog-image', option.cls]" :tabindex="option.cls === 'qds-media-color-hover' ? 0 : undefined" />
+            <q-img :key="option.cls === 'ods-media-color-reveal' ? `reveal-${revealKey}` : option.cls" :src="visualImage" :alt="option.label" :ratio="16 / 9" :class="['catalog-image', option.cls]" :tabindex="option.cls === 'ods-media-color-hover' ? 0 : undefined" />
             <figcaption class="q-mt-xs"><code>{{ option.cls || 'default' }}</code> {{ option.label }}</figcaption>
           </figure>
         </div>
@@ -464,7 +464,7 @@ onBeforeUnmount(() => {
   </q-card>
 
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Scrolling, split layouts &amp; gestures</div>
+    <div class="text-h6 ods-display q-mb-md">Scrolling, split layouts &amp; gestures</div>
     <div class="catalog-grid catalog-grid--two">
       <div class="catalog-demo">
         <div class="catalog-label">QScrollArea</div>
@@ -477,7 +477,7 @@ onBeforeUnmount(() => {
         <div class="catalog-label">QSplitter</div>
         <q-splitter v-model="splitter" style="height: 180px" class="catalog-splitter" data-test="qds-splitter">
           <template #before><div class="q-pa-md">Navigation</div></template>
-          <template #after><div class="q-pa-md qds-text-muted">Preview content</div></template>
+          <template #after><div class="q-pa-md ods-text-muted">Preview content</div></template>
         </q-splitter>
       </div>
 
@@ -527,16 +527,16 @@ onBeforeUnmount(() => {
   </q-card>
 
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Rich text &amp; safe upload shell</div>
+    <div class="text-h6 ods-display q-mb-md">Rich text &amp; safe upload shell</div>
     <div class="catalog-grid catalog-grid--two">
       <div class="catalog-demo">
         <div class="catalog-label">QEditor</div>
         <!-- Root class hook: Quasar 2.25+ routes $attrs to QEditor's content node and teleports
              the .q-editor root (which keeps `class`, the frame, and the `fullscreen` modifier)
              when full-screen, so root-geometry proofs anchor here while data-test lands on content. -->
-        <q-editor v-model="editor" min-height="8rem" :toolbar="editorToolbar" class="qds-editor-proof" data-test="qds-editor" />
+        <q-editor v-model="editor" min-height="8rem" :toolbar="editorToolbar" class="ods-editor-proof" data-test="qds-editor" />
         <div class="catalog-label q-mt-md">QEditor read-only</div>
-        <q-editor v-model="readonlyEditor" readonly min-height="5rem" :toolbar="[]" class="qds-editor-proof-readonly" data-test="qds-editor-readonly" />
+        <q-editor v-model="readonlyEditor" readonly min-height="5rem" :toolbar="[]" class="ods-editor-proof-readonly" data-test="qds-editor-readonly" />
       </div>
 
       <div class="catalog-demo">
@@ -557,7 +557,7 @@ onBeforeUnmount(() => {
               <q-uploader-add-trigger />
               <div>
                 <div class="text-weight-semibold">Uploader state proof</div>
-                <div class="text-caption qds-text-muted">Queued, progress, failed, uploaded, remove, and local-only upload affordances.</div>
+                <div class="text-caption ods-text-muted">Queued, progress, failed, uploaded, remove, and local-only upload affordances.</div>
               </div>
               <q-space />
               <q-btn dense round flat aria-label="Add local files" data-test="qds-uploader-add">
@@ -606,39 +606,39 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .catalog-parallax-caption {
-  padding: var(--qds-space-sm) var(--qds-space-md);
-  border-radius: var(--qds-radius-control);
-  background: var(--qds-media-scrim-strong);
+  padding: var(--ods-space-sm) var(--ods-space-md);
+  border-radius: var(--ods-radius-control);
+  background: var(--ods-media-scrim-strong);
 }
 
 .catalog-carousel-controls,
 .catalog-uploader-header {
   display: flex;
   align-items: center;
-  gap: var(--qds-space-sm);
+  gap: var(--ods-space-sm);
 }
 
 /* Ink has no tints: the demo header stays on paper. */
-.qds-variant-ink .catalog-uploader-header.catalog-uploader-header {
-  background: var(--qds-bg-card);
+.ods-variant-ink .catalog-uploader-header.catalog-uploader-header {
+  background: var(--ods-bg-card);
 }
 
 .catalog-carousel-controls {
-  padding: var(--qds-space-2xs, 0.125rem);
-  border-radius: var(--qds-radius-full);
+  padding: var(--ods-space-2xs, 0.125rem);
+  border-radius: var(--ods-radius-full);
 }
 
 .catalog-uploader-header {
   position: relative;
   min-height: 4.75rem;
-  padding: var(--qds-space-md);
-  color: var(--qds-text-strong);
-  background: color-mix(in srgb, var(--qds-surface-1) 86%, var(--qds-color-primary) 6%);
-  border-bottom: var(--qds-border-width-control) solid var(--qds-separator-color);
+  padding: var(--ods-space-md);
+  color: var(--ods-text-strong);
+  background: color-mix(in srgb, var(--ods-surface-1) 86%, var(--ods-color-primary) 6%);
+  border-bottom: var(--ods-border-width-control) solid var(--ods-separator-color);
 }
 
 .catalog-vertical-slide {
-  padding: var(--qds-space-md);
+  padding: var(--ods-space-md);
   padding-left: 5rem;
 }
 

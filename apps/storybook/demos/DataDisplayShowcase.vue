@@ -44,30 +44,30 @@ const tableRows: CoverageRow[] = [
 </script>
 
 <template>
-  <div class="qds-story-stack qds-story-stack--relaxed">
-    <QCard class="qds-story-panel q-pa-lg q-mb-lg">
+  <div class="ods-story-stack ods-story-stack--relaxed">
+    <QCard class="ods-story-panel q-pa-lg q-mb-lg">
       <div class="row items-center q-mb-md">
         <div>
-          <div class="text-overline qds-text-muted">QTable + QPagination</div>
-          <div class="text-h6 qds-story-title">Coverage matrix sample</div>
+          <div class="text-overline ods-text-muted">QTable + QPagination</div>
+          <div class="text-h6 ods-story-title">Coverage matrix sample</div>
         </div>
         <div class="q-ml-auto"><PhDatabase :size="28" weight="duotone" /></div>
       </div>
 
-      <div class="qds-story-table-scroll">
+      <div class="ods-story-table-scroll">
         <QTable v-model:pagination="tablePagination" :columns="tableColumns" :rows="tableRows" row-key="component" flat bordered dense hide-bottom />
       </div>
       <div class="row justify-end q-mt-md qds-story-pagination">
         <QPagination v-model="page" data-test="qds-story-pagination" color="primary" :max="5" :max-pages="5" boundary-numbers direction-links />
       </div>
-      <p class="qds-text-muted q-mt-sm q-mb-none">Switch to Ink or One to verify the same pagination proof against variant tokens.</p>
+      <p class="ods-text-muted q-mt-sm q-mb-none">Switch to Ink or One to verify the same pagination proof against variant tokens.</p>
     </QCard>
 
     <div class="row q-col-gutter-lg">
       <div class="col-12 col-md-6">
-        <QCard class="qds-story-panel q-pa-lg full-height">
+        <QCard class="ods-story-panel q-pa-lg full-height">
           <div class="row items-center q-mb-md">
-            <div class="text-overline qds-text-muted">QList</div>
+            <div class="text-overline ods-text-muted">QList</div>
             <PhListChecks class="q-ml-auto" :size="26" weight="duotone" />
           </div>
           <QList separator>
@@ -99,12 +99,12 @@ const tableRows: CoverageRow[] = [
       </div>
 
       <div class="col-12 col-md-6">
-        <QCard class="qds-story-panel q-pa-lg full-height">
+        <QCard class="ods-story-panel q-pa-lg full-height">
           <div class="row items-center q-mb-md">
-            <div class="text-overline qds-text-muted">QExpansionItem</div>
+            <div class="text-overline ods-text-muted">QExpansionItem</div>
             <PhStack class="q-ml-auto" :size="26" weight="duotone" />
           </div>
-          <QList class="qds-story-expansion" separator>
+          <QList class="ods-story-expansion" separator>
             <QExpansionItem v-model="expansionOpen" expand-separator>
               <template #header="{ expanded }">
                 <QItemSection>
@@ -113,7 +113,7 @@ const tableRows: CoverageRow[] = [
                 </QItemSection>
                 <QItemSection side><QBadge outline color="primary" label="open" /></QItemSection>
               </template>
-              <div class="qds-story-expansion-body">Expanded content uses the same card surface and muted border rhythm.</div>
+              <div class="ods-story-expansion-body">Expanded content uses the same card surface and muted border rhythm.</div>
             </QExpansionItem>
 
             <QExpansionItem
@@ -123,11 +123,11 @@ const tableRows: CoverageRow[] = [
               caption="Compact header state"
               expand-icon-toggle
             >
-              <div class="qds-story-expansion-body">Hidden until toggled.</div>
+              <div class="ods-story-expansion-body">Hidden until toggled.</div>
             </QExpansionItem>
           </QList>
           <QSeparator class="q-my-md" />
-          <p class="qds-text-muted q-mb-none">Includes expanded, collapsed, dense, active, and disabled visual states.</p>
+          <p class="ods-text-muted q-mb-none">Includes expanded, collapsed, dense, active, and disabled visual states.</p>
         </QCard>
       </div>
     </div>
@@ -135,28 +135,28 @@ const tableRows: CoverageRow[] = [
 </template>
 
 <style scoped>
-.qds-story-title {
-  font-family: var(--qds-font-family-display);
+.ods-story-title {
+  font-family: var(--ods-font-family-display);
 }
 
-.qds-story-expansion {
+.ods-story-expansion {
   overflow: hidden;
-  border: var(--qds-border-width-control) solid var(--qds-border-subtle);
-  border-radius: var(--qds-radius-lg);
+  border: var(--ods-border-width-control) solid var(--ods-border-subtle);
+  border-radius: var(--ods-radius-lg);
 }
 
-.qds-story-expansion-body {
-  padding: var(--qds-space-md);
-  color: var(--qds-text-muted);
-  background: var(--qds-surface-1);
+.ods-story-expansion-body {
+  padding: var(--ods-space-md);
+  color: var(--ods-text-muted);
+  background: var(--ods-surface-1);
 }
 
-.qds-story-table-scroll {
+.ods-story-table-scroll {
   max-inline-size: 100%;
   overflow-x: auto;
 }
 
-.qds-story-table-scroll :deep(.q-table) {
+.ods-story-table-scroll :deep(.q-table) {
   min-inline-size: 36rem;
 }
 

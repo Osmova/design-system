@@ -1,30 +1,30 @@
 @use '../materials';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui,.ods-ui *)';
 
 @mixin styles {
-  .qds-ui .q-tooltip {
+  .ods-ui .q-tooltip {
     max-width: min(20rem, calc(100vw - 2rem));
-    padding: var(--qds-space-xs) 0.6875rem;
-    font-size: var(--qds-font-size-caption);
-    line-height: var(--qds-line-height-caption);
-    color: var(--qds-fg-default);
-    border: var(--qds-border-width-control) solid var(--qds-material-stroke);
-    border-radius: var(--qds-radius-control);
-    box-shadow: var(--qds-material-edge), var(--qds-shadow-16);
+    padding: var(--ods-space-xs) 0.6875rem;
+    font-size: var(--ods-font-size-caption);
+    line-height: var(--ods-line-height-caption);
+    color: var(--ods-fg-default);
+    border: var(--ods-border-width-control) solid var(--ods-material-stroke);
+    border-radius: var(--ods-radius-control);
+    box-shadow: var(--ods-material-edge), var(--ods-shadow-16);
     @include materials.material(thin);
   }
 
   // Pickers opened from QPopupProxy take the menu surface instead of their own frame.
-  .qds-ui .q-menu > :is(.q-date, .q-time, .q-color-picker) {
+  .ods-ui .q-menu > :is(.q-date, .q-time, .q-color-picker) {
     background: transparent;
     border: 0;
     border-radius: inherit;
     box-shadow: none;
   }
 
-  #{$shadcn} .q-tooltip { color: var(--qds-text-on-primary); border-color: var(--qds-color-primary); border-radius: var(--qds-row-radius); box-shadow: var(--qds-shadow-sm); @include materials.solid(var(--qds-color-primary)); }
-  #{$shadcn} .q-popup-edit { padding: var(--qds-space-md); }
-  #{$shadcn} .q-popup-edit__buttons { gap: var(--qds-space-sm); margin-block-start: var(--qds-space-sm); }
+  #{$shadcn} .q-tooltip { color: var(--ods-text-on-primary); border-color: var(--ods-color-primary); border-radius: var(--ods-row-radius); box-shadow: var(--ods-shadow-sm); @include materials.solid(var(--ods-color-primary)); }
+  #{$shadcn} .q-popup-edit { padding: var(--ods-space-md); }
+  #{$shadcn} .q-popup-edit__buttons { gap: var(--ods-space-sm); margin-block-start: var(--ods-space-sm); }
   #{$shadcn} .q-popup-edit__buttons .q-btn + .q-btn { margin-inline-start: 0; }
   @media (forced-colors: active) { #{$shadcn} .q-tooltip { background: CanvasText; color: Canvas; border-color: CanvasText; box-shadow: none; } }
 }

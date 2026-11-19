@@ -32,7 +32,7 @@ for (const prefix of ['', 'layered/']) {
 
 const head = {
   unlayered: (css) => `<link rel="stylesheet" href="/quasar.css"><link rel="stylesheet" href="${css}">`,
-  layered: (css) => `<style>@layer qds-important, quasar, qds; @import url(/quasar.css) layer(quasar);</style><link rel="stylesheet" href="${css}">`,
+  layered: (css) => `<style>@layer ods-important, quasar, ods; @import url(/quasar.css) layer(quasar);</style><link rel="stylesheet" href="${css}">`,
 }
 
 const SAMPLES = [
@@ -80,7 +80,7 @@ async function mount(browser, entry, css) {
         h(QCheckbox, { class: 'fx-check', modelValue: true, label: 'Checked' }),
         h(QChip, { class: 'fx-chip', label: 'Chip' }),
       ]),
-      h('div', { class: 'qds-field-group fx-group' }, [h(QInput, { modelValue: 'Grouped', outlined: true }), h(QBtn, { label: 'Go', unelevated: true })]),
+      h('div', { class: 'ods-field-group fx-group' }, [h(QInput, { modelValue: 'Grouped', outlined: true }), h(QBtn, { label: 'Go', unelevated: true })]),
       h(QEditor, { class: 'fx-editor', modelValue: 'Text' }),
       h(QColor, { class: 'fx-color', modelValue: '#3366cc' }),
     ] }).use(Quasar).mount('#app')
@@ -96,7 +96,7 @@ const observe = (page, bodyClass) => page.evaluate(([bodyClass, samples]) => {
   for (const animation of document.getAnimations()) {
     try { animation.finish() } catch { animation.cancel() }
   }
-  const out = { sentinel: getComputedStyle(document.body).getPropertyValue('--_qds-variant').trim() }
+  const out = { sentinel: getComputedStyle(document.body).getPropertyValue('--_ods-variant').trim() }
   for (const [selector, pseudo] of samples) {
     const element = document.querySelector(selector)
     if (!element) { out[selector + (pseudo ?? '')] = null; continue }
@@ -120,7 +120,7 @@ function differences(actual, expected) {
   return rows
 }
 
-const SCHEMES = { light: 'qds-theme-light body--light', dark: 'qds-theme-dark body--dark' }
+const SCHEMES = { light: 'ods-theme-light body--light', dark: 'ods-theme-dark body--dark' }
 const browser = await chromium.launch()
 const failures = []
 let compared = 0
@@ -130,7 +130,7 @@ try {
     for (const name of ['win', ...VARIANT_SCOPES]) {
       const page = await mount(browser, entry, `/${prefix}${name}.css`)
       for (const [scheme, schemeClass] of Object.entries(SCHEMES)) {
-        const bodyClass = `qds-ui qds-variant-${name} ${schemeClass}`
+        const bodyClass = `ods-ui ods-variant-${name} ${schemeClass}`
         const [actual, expected] = [await observe(page, bodyClass), await observe(reference, bodyClass)]
         assert.deepEqual([actual.sentinel, expected.sentinel], [name, name], `${entry} ${name}: stylesheets did not load`)
         const rows = differences(actual, expected)

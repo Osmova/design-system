@@ -32,17 +32,17 @@ interface CatalogManifestCase {
 
 type DemoArgs = Record<string, string | number | boolean>
 
-import controlData from '@qds-catalog/control.json'
-import manifestData from '@qds-catalog/manifest.json'
-import QdsPreviewScaffold from '@qds-catalog/preview/QdsPreviewScaffold.vue'
-import QdsButtonDemo from '@qds-catalog/demos/QdsButtonDemo.vue'
-import QdsFieldDemo from '@qds-catalog/demos/QdsFieldDemo.vue'
-import QdsTabsDemo from '@qds-catalog/demos/QdsTabsDemo.vue'
-import QdsMenuDemo from '@qds-catalog/demos/QdsMenuDemo.vue'
-import buttonSource from '@qds-catalog/demos/QdsButtonDemo.vue?raw'
-import fieldSource from '@qds-catalog/demos/QdsFieldDemo.vue?raw'
-import tabsSource from '@qds-catalog/demos/QdsTabsDemo.vue?raw'
-import menuSource from '@qds-catalog/demos/QdsMenuDemo.vue?raw'
+import controlData from '@ods-catalog/control.json'
+import manifestData from '@ods-catalog/manifest.json'
+import OdsPreviewScaffold from '@ods-catalog/preview/OdsPreviewScaffold.vue'
+import OdsButtonDemo from '@ods-catalog/demos/OdsButtonDemo.vue'
+import OdsFieldDemo from '@ods-catalog/demos/OdsFieldDemo.vue'
+import OdsTabsDemo from '@ods-catalog/demos/OdsTabsDemo.vue'
+import OdsMenuDemo from '@ods-catalog/demos/OdsMenuDemo.vue'
+import buttonSource from '@ods-catalog/demos/OdsButtonDemo.vue?raw'
+import fieldSource from '@ods-catalog/demos/OdsFieldDemo.vue?raw'
+import tabsSource from '@ods-catalog/demos/OdsTabsDemo.vue?raw'
+import menuSource from '@ods-catalog/demos/OdsMenuDemo.vue?raw'
 
 const control = controlData as { kinds: string[]; cases: Record<string, CatalogControlRow[]> }
 const manifest = manifestData as { cases: CatalogManifestCase[] }
@@ -93,10 +93,10 @@ function scaffold(catalogCase: CatalogManifestCase, renderArgs: (demoArgs: DemoA
   // store for this canvas document, so reading them inside a component render
   // keeps Controls-driven updates live without force-remounting.
   return (storyArgs: DemoArgs) => ({
-    name: 'QdsCatalogProofCanvas',
+    name: 'OdsCatalogProofCanvas',
     setup(): () => VNode {
       return () => h(
-        QdsPreviewScaffold,
+        OdsPreviewScaffold,
         { caseId: catalogCase.id, title: catalogCase.title, themeControls: false },
         { default: () => renderArgs(storyArgs) },
       )
@@ -105,7 +105,7 @@ function scaffold(catalogCase: CatalogManifestCase, renderArgs: (demoArgs: DemoA
 }
 
 function buttonDemoFor(args: DemoArgs): VNode {
-  return h(QdsButtonDemo, {
+  return h(OdsButtonDemo, {
     label: String(args.label),
     icon: String(args.icon),
     dense: Boolean(args.dense),
@@ -116,7 +116,7 @@ function buttonDemoFor(args: DemoArgs): VNode {
 }
 
 function fieldDemoFor(args: DemoArgs): VNode {
-  return h(QdsFieldDemo, {
+  return h(OdsFieldDemo, {
     label: String(args.label),
     dense: Boolean(args.dense),
     stackLabel: Boolean(args.stackLabel),
@@ -132,7 +132,7 @@ function fieldDemoFor(args: DemoArgs): VNode {
 }
 
 function tabsDemoFor(args: DemoArgs): VNode {
-  return h(QdsTabsDemo, {
+  return h(OdsTabsDemo, {
     dense: Boolean(args.dense),
     tabCount: String(args.tabCount),
     disabledTab: String(args.disabledTab),
@@ -140,7 +140,7 @@ function tabsDemoFor(args: DemoArgs): VNode {
 }
 
 function menuDemoFor(args: DemoArgs): VNode {
-  return h(QdsMenuDemo, {
+  return h(OdsMenuDemo, {
     dense: Boolean(args.dense),
     persistent: Boolean(args.persistent),
     checkable: Boolean(args.checkable),
@@ -158,7 +158,7 @@ function storyFor(
   }
 }
 const meta = {
-  title: 'QDS shared catalog proof',
+  title: 'ODS shared catalog proof',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',

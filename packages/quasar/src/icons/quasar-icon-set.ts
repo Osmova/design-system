@@ -92,8 +92,8 @@ import {
 //   editor.{hr,font,size,heading,fontSize,formatting,removeFormat} use the closest
 //   semantic matches (ppMinus / ppTextAa / ppX) where Phosphor has no exact glyph.
 
-const qdsIconSet = {
-  name: 'qds-phosphor',
+const odsIconSet = {
+  name: 'ods-phosphor',
 
   type: {
     positive: ppCheckCircle,
@@ -240,6 +240,6 @@ const qdsIconSet = {
   },
 } as const
 
-export type QdsIconSet = typeof qdsIconSet
-export { qdsIconSet }
-export default qdsIconSet
+export type OdsIconSet = typeof odsIconSet
+export { odsIconSet }
+export default odsIconSet

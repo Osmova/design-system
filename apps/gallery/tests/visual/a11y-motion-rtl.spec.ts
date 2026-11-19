@@ -15,7 +15,7 @@ const TAB_LABEL: Record<GalleryTab, string> = {
 
 const ACTIVE_PANEL = '.q-tab-panel'
 
-// These are deliberate Quasar/demo-widget exclusions, not QDS styling exclusions:
+// These are deliberate Quasar/demo-widget exclusions, not ODS styling exclusions:
 // axe reports upstream ARIA gaps on QSlider/QRange and several catalog-only Quasar
 // demo widgets, media alt/title gaps on static gallery placeholders, and
 // Safari-only scrollarea focusability.
@@ -52,14 +52,14 @@ const AXE_EXCLUSIONS: Record<GalleryTab, string[]> = {
 }
 
 async function applyLightFluent(page: Page) {
-  await page.waitForFunction(() => Boolean((window as unknown as { __qdsGallery?: unknown }).__qdsGallery))
+  await page.waitForFunction(() => Boolean((window as unknown as { __odsGallery?: unknown }).__odsGallery))
   await page.evaluate(() => {
-    const ds = (window as unknown as { __qdsGallery: any }).__qdsGallery
+    const ds = (window as unknown as { __odsGallery: any }).__odsGallery
     ds.setMode('light')
     ds.setVariant('win')
   })
-  await expect(page.locator('body')).toHaveClass(/qds-theme-light/)
-  await expect(page.locator('body')).toHaveClass(/qds-variant-win/)
+  await expect(page.locator('body')).toHaveClass(/ods-theme-light/)
+  await expect(page.locator('body')).toHaveClass(/ods-variant-win/)
 }
 
 async function openGalleryTab(page: Page, tab: GalleryTab) {
@@ -93,7 +93,7 @@ async function seriousCriticalAxeViolations(page: Page, tab: GalleryTab) {
   let builder = new AxeBuilder({ page })
     .include(ACTIVE_PANEL)
     // Current Phase B focuses on structural serious/critical findings. Color contrast
-    // remains an explicit QDS target (4.5:1 text, 3:1 UI), but broad token/demo contrast
+    // remains an explicit ODS target (4.5:1 text, 3:1 UI), but broad token/demo contrast
     // adjustments are outside this test-only task and should be fixed as source work.
     .disableRules(['color-contrast'])
 
@@ -105,7 +105,7 @@ async function seriousCriticalAxeViolations(page: Page, tab: GalleryTab) {
   return results.violations.filter((violation) => violation.impact === 'serious' || violation.impact === 'critical')
 }
 
-test.describe('QDS accessibility, motion, and RTL evidence', () => {
+test.describe('ODS accessibility, motion, and RTL evidence', () => {
   for (const tab of KEY_TABS) {
     test(`has no serious/critical axe findings on the ${tab} tab`, async ({ page }) => {
       await openGalleryTab(page, tab)
@@ -124,7 +124,7 @@ test.describe('QDS accessibility, motion, and RTL evidence', () => {
     await expect(page.locator('[data-test="qds-tree-primary"] .q-tree__node-header').first()).toBeVisible()
     await expect(page.locator('.q-skeleton').first()).toBeVisible()
 
-    // QDS' global reduced-motion rule clamps decorative transitions to 0.01ms;
+    // ODS' global reduced-motion rule clamps decorative transitions to 0.01ms;
     // the catalog loading-data override allows Quasar shimmer/spinner animations up to 1ms.
     expect(
       await maxDurationMs(page, '[data-test="qds-expansion-expanded"] .q-expansion-item__content', 'transition-duration'),
@@ -205,11 +205,11 @@ test.describe('QDS accessibility, motion, and RTL evidence', () => {
 
     for (const variant of ['ink', 'one'] as const) {
       await page.evaluate((variant) => {
-        const ds = (window as unknown as { __qdsGallery: any }).__qdsGallery
+        const ds = (window as unknown as { __odsGallery: any }).__odsGallery
         ds.setMode('light')
         ds.setVariant(variant)
       }, variant)
-      await expect(page.locator('body')).toHaveClass(new RegExp(`qds-variant-${variant}`))
+      await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
       expect(
         await maxDurationMs(page, '.q-skeleton', 'animation-duration', '::before'),
         `${variant} QSkeleton honors reduced motion`,

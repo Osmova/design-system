@@ -56,7 +56,7 @@ for (const entry of ['/conformance.html', '/conformance-layered.html']) {
       expect(await computed(page, native('weight'), 'font-weight')).toBe('700')
       expect(await computed(page, native('literal'), 'background-color')).toBe('rgb(229, 57, 53)')
       expect(await computed(page, native('literal'), 'color')).toBe('rgb(255, 255, 255)')
-      expect(await computed(page, native('author-inline'), 'color')).toBe(await resolvedColor(page, '--qds-text-on-primary'))
+      expect(await computed(page, native('author-inline'), 'color')).toBe(await resolvedColor(page, '--ods-text-on-primary'))
       expect(await computed(page, native('author-important'), 'color')).toBe('rgb(255, 0, 255)')
       // Direct literal and disabled fixtures are author intent/WCAG exemptions;
       // they are not silently used to lower the semantic contrast requirement.
@@ -113,31 +113,31 @@ for (const palette of SHADCN_PALETTES) for (const mode of ['light', 'dark'] as c
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('qds.shadcn.conformance')!))
     expect(stored).toEqual({ mode, variant: 'shadcn', shadcnBaseColor: palette, shadcnAccent: 'none', inkColor: 'charcoal' })
     await page.reload()
-    await expect(page.locator('body')).toHaveAttribute('data-qds-shadcn-base-color', palette)
+    await expect(page.locator('body')).toHaveAttribute('data-ods-shadcn-base-color', palette)
     expect(await computed(page, native('default-button'), 'background-color')).toBe(painted)
     for (const variant of CANONICAL_VARIANTS) {
       await applyTheme(page, mode, variant)
-      if (variant !== 'shadcn') await expect(page.locator('body')).not.toHaveAttribute('data-qds-shadcn-base-color')
+      if (variant !== 'shadcn') await expect(page.locator('body')).not.toHaveAttribute('data-ods-shadcn-base-color')
     }
     await applyShadcn(page, mode, palette)
     expect(await computed(page, native('default-button'), 'background-color')).toBe(painted)
-    await page.evaluate(() => (window as unknown as { __qdsGallery: { setMode: (value: string) => void } }).__qdsGallery.setMode('system'))
+    await page.evaluate(() => (window as unknown as { __odsGallery: { setMode: (value: string) => void } }).__odsGallery.setMode('system'))
     await page.emulateMedia({ colorScheme: 'dark' })
-    await expect(page.locator('body')).toHaveAttribute('data-qds-resolved', 'dark')
+    await expect(page.locator('body')).toHaveAttribute('data-ods-resolved', 'dark')
     await page.emulateMedia({ colorScheme: 'light' })
     const body = page.locator('body')
-    await expect(body).toHaveAttribute('data-qds-resolved', 'light')
-    await expect(body).toHaveClass(/qds-theme-light/)
+    await expect(body).toHaveAttribute('data-ods-resolved', 'light')
+    await expect(body).toHaveClass(/ods-theme-light/)
     await expect(body).not.toHaveClass(/body--dark/)
     const neutralLight = cell(expectations, 'neutral-light', expectationSlots, 'color-primary')
     const physicalBackground = async () => (await paint(page.locator(native('default-button')))).background
     // CSS-only adoption: genuine mounted native controls, no generated specimen.
-    await page.evaluate(() => { document.body.removeAttribute('data-qds-shadcn-base-color') })
+    await page.evaluate(() => { document.body.removeAttribute('data-ods-shadcn-base-color') })
     await expect.poll(physicalBackground, { message: 'omitted CSS palette reaches frozen Neutral/light paint' }).toEqual(neutralLight)
-    await page.evaluate(() => { document.body.setAttribute('data-qds-shadcn-base-color', 'invalid') })
+    await page.evaluate(() => { document.body.setAttribute('data-ods-shadcn-base-color', 'invalid') })
     await expect.poll(physicalBackground, { message: 'invalid CSS palette reaches frozen Neutral/light paint' }).toEqual(neutralLight)
-    await page.evaluate(() => (window as unknown as { __qdsGallery: { setShadcnBaseColor: (value: string) => void } }).__qdsGallery.setShadcnBaseColor('invalid'))
-    await expect(body).toHaveAttribute('data-qds-shadcn-base-color', 'neutral')
+    await page.evaluate(() => (window as unknown as { __odsGallery: { setShadcnBaseColor: (value: string) => void } }).__odsGallery.setShadcnBaseColor('invalid'))
+    await expect(body).toHaveAttribute('data-ods-shadcn-base-color', 'neutral')
     await expect.poll(physicalBackground, { message: 'invalid JS palette reaches frozen Neutral/light paint' }).toEqual(neutralLight)
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem('qds.shadcn.conformance')!))).toEqual({ mode: 'system', variant: 'shadcn', shadcnBaseColor: 'neutral', shadcnAccent: 'none', inkColor: 'charcoal' })
   })
@@ -164,7 +164,7 @@ test('shadcn controlled native RTL/forced colors/reduced motion/transparency/con
     const duration = await computed(page, '[data-scheme="dark"] [data-native="skeleton"]', 'animation-duration', pseudo)
     expect(parseFloat(duration) * (duration.endsWith('ms') ? 1 : 1000), `native skeleton ${pseudo ?? 'root'} motion`).toBeLessThanOrEqual(0.01)
   }
-  expect(await computed(page, '.qds-window', 'backdrop-filter')).toBe('none')
+  expect(await computed(page, '.ods-window', 'backdrop-filter')).toBe('none')
   await assertNoPageOverflow(page)
 })
 
@@ -174,17 +174,17 @@ test('native QWindow normal focus / five palettes / author paint / state props',
   for (const variant of CANONICAL_VARIANTS.filter(variant => variant !== 'shadcn')) for (const mode of ['light', 'dark'] as const) {
     await applyTheme(page, mode, variant)
     await settle(page)
-    const window = page.locator('.qds-window')
-    await keyboardFocus(page, '.qds-window__action--close')
-    const focus = await paint(window.locator('.qds-window__action--close'))
+    const window = page.locator('.ods-window')
+    await keyboardFocus(page, '.ods-window__action--close')
+    const focus = await paint(window.locator('.ods-window__action--close'))
     expect(focus.outlineWidth, `${variant}/${mode} window focus`).toBeGreaterThanOrEqual(2)
     expect.soft(focus.focusContrast, `${variant}/${mode} library-controlled normal window focus`).toBeGreaterThanOrEqual(3)
   }
   const boundaries = []
   for (const palette of SHADCN_PALETTES) for (const mode of ['light', 'dark'] as const) {
     await applyShadcn(page, mode, palette)
-    await keyboardFocus(page, '.qds-window__action--close')
-    const boundary = await focusBoundaryContrast(page.locator('.qds-window__action--close'))
+    await keyboardFocus(page, '.ods-window__action--close')
+    const boundary = await focusBoundaryContrast(page.locator('.ods-window__action--close'))
     boundaries.push({ palette, mode, ...boundary })
     expect.soft(boundary.inside, `${palette}/${mode} focus band against destructive fill`).toBeGreaterThanOrEqual(3)
     expect.soft(boundary.outside, `${palette}/${mode} focus band against native titlebar`).toBeGreaterThanOrEqual(3)
@@ -196,9 +196,9 @@ test('native QWindow normal focus / five palettes / author paint / state props',
     await page.getByRole('button', { name: 'Toggle author titlebar paint', exact: true }).click()
     for (const variant of CANONICAL_VARIANTS) {
       await applyTheme(page, 'light', variant)
-      await keyboardFocus(page, '.qds-window__action--close')
-      expect(await computed(page, '.qds-window__titlebar', 'background-color')).toBe('rgb(37, 99, 235)')
-      expect((await paint(page.locator('.qds-window__action--close'))).outlineWidth).toBeGreaterThanOrEqual(2)
+      await keyboardFocus(page, '.ods-window__action--close')
+      expect(await computed(page, '.ods-window__titlebar', 'background-color')).toBe('rgb(37, 99, 235)')
+      expect((await paint(page.locator('.ods-window__action--close'))).outlineWidth).toBeGreaterThanOrEqual(2)
     }
     await page.getByRole('button', { name: 'Toggle author titlebar paint', exact: true }).click()
   })
@@ -207,10 +207,10 @@ test('native QWindow normal focus / five palettes / author paint / state props',
   // floating-window user-activation test, and is forbidden while embedded.
   for (const [label, modifier] of [['Window maximize', 'maximized'], ['Window minimize', 'minimized'], ['Window fullscreen requested prop', 'fullscreen'], ['Window headless', 'headless'], ['Window disable', 'disabled']] as const) {
     await page.getByRole('button', { name: label, exact: true }).click()
-    await expect(page.locator('.qds-window')).toHaveClass(new RegExp(`qds-window--${modifier}`))
-    if (modifier === 'fullscreen' || modifier === 'maximized') await page.locator('.qds-window').getByRole('button', { name: 'Restore window', exact: true }).click()
+    await expect(page.locator('.ods-window')).toHaveClass(new RegExp(`ods-window--${modifier}`))
+    if (modifier === 'fullscreen' || modifier === 'maximized') await page.locator('.ods-window').getByRole('button', { name: 'Restore window', exact: true }).click()
     else await page.getByRole('button', { name: label, exact: true }).click()
-    await expect(page.locator('.qds-window')).not.toHaveClass(new RegExp(`qds-window--${modifier}`))
+    await expect(page.locator('.ods-window')).not.toHaveClass(new RegExp(`ods-window--${modifier}`))
   }
 })
 
@@ -222,13 +222,13 @@ test('layered and unlayered native consumer paint equivalence with author overri
   await applyShadcn(other, 'dark', 'stone')
   await settle(page)
   await settle(other)
-  for (const selector of [native('default-button'), '[data-scheme="dark"] .q-card', '[data-scheme="dark"] .q-field__control', '.qds-window__titlebar']) {
+  for (const selector of [native('default-button'), '[data-scheme="dark"] .q-card', '[data-scheme="dark"] .q-field__control', '.ods-window__titlebar']) {
     expect(await paint(other.locator(selector).first())).toEqual(await paint(page.locator(selector).first()))
   }
   // Unlayered consumer variables after either bundle must still win. This is a
   // legitimate consumer token override, not a hand-authored component specimen.
   for (const consumer of [page, other]) {
-    await consumer.addStyleTag({ content: '.qds-ui { --qds-card-radius: 20px; }' })
+    await consumer.addStyleTag({ content: '.ods-ui { --ods-card-radius: 20px; }' })
     expect(await computed(consumer, '[data-scheme="dark"]', 'border-top-left-radius')).toBe('20px')
   }
   await other.close()

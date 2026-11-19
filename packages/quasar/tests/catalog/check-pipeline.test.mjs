@@ -40,7 +40,7 @@ const faults = [
   ['stale-inventory', (s) => jsonEdit(s, 'catalog/native-inventory.json', (i) => i.counts.exports++), /native-inventory.json is stale/],
   ['missing-adapter-export', (s) => { s.files['../../apps/storybook/stories/catalog-proof.stories.ts'] = s.files['../../apps/storybook/stories/catalog-proof.stories.ts'].replace('export const buttonProof', 'const buttonProof') }, /storybook static export missing: buttonProof/],
   ['unknown-case-export', (s) => manifestEdit(s, (m) => m.cases[0].nativeExports.push('QNotARealComponent')), /unknown quasar exports: QNotARealComponent/],
-  ['missing-demo-file', (s) => { delete s.files['catalog/demos/QdsButtonDemo.vue'] }, /demo file missing: actions\/button/],
+  ['missing-demo-file', (s) => { delete s.files['catalog/demos/OdsButtonDemo.vue'] }, /demo file missing: actions\/button/],
   ['drop-controlled-key', (s) => manifestEdit(s, (m) => m.cases[0].controls.shift()), /control rows mismatch: actions\/button/],
   ['planned-as-covered', (s) => jsonEdit(s, 'catalog/native-inventory.json', (i) => { i.exports.find((r) => r.name === 'QRouteTab').proofStatus = 'covered-via-parent' }), /native-inventory.json is stale or claims unbacked coverage/],
 ]
@@ -62,10 +62,10 @@ for (const [name, mutate, diagnostic] of faults) {
 
 test('mutation control: removing bindings is detected despite retained props and comments', () => {
   const snapshot = clone()
-  snapshot.files['catalog/demos/QdsButtonDemo.vue'] = snapshot.files['catalog/demos/QdsButtonDemo.vue'].replaceAll(':loading="loading"', '<!-- loading -->')
+  snapshot.files['catalog/demos/OdsButtonDemo.vue'] = snapshot.files['catalog/demos/OdsButtonDemo.vue'].replaceAll(':loading="loading"', '<!-- loading -->')
   // Keep valid template syntax and the TypeScript prop declaration intact.
-  snapshot.files['catalog/demos/QdsButtonDemo.vue'] = snapshot.files['catalog/demos/QdsButtonDemo.vue'].replaceAll('<!-- loading -->', '')
-  snapshot.files['catalog/demos/QdsButtonDemo.vue'] += '\n<!-- loading is still declared -->'
+  snapshot.files['catalog/demos/OdsButtonDemo.vue'] = snapshot.files['catalog/demos/OdsButtonDemo.vue'].replaceAll('<!-- loading -->', '')
+  snapshot.files['catalog/demos/OdsButtonDemo.vue'] += '\n<!-- loading is still declared -->'
   const assertDetected = (validator) => assert.ok(validator(snapshot).some((e) => e === 'demo template binding missing: actions/button/loading'))
   assertDetected(validate)
   assert.throws(() => assertDetected(() => []), assert.AssertionError)
@@ -73,7 +73,7 @@ test('mutation control: removing bindings is detected despite retained props and
 
 test('split-only loading loss and render-adapter loss are independently detected', () => {
   const split = clone()
-  split.files['catalog/demos/QdsButtonDemo.vue'] = split.files['catalog/demos/QdsButtonDemo.vue'].replace(':loading="loading"', '')
+  split.files['catalog/demos/OdsButtonDemo.vue'] = split.files['catalog/demos/OdsButtonDemo.vue'].replace(':loading="loading"', '')
   assert.ok(validate(split).includes('button branch loading binding missing: QBtnDropdown'))
   const adapter = clone()
   adapter.files['../../apps/storybook/stories/catalog-proof.stories.ts'] = adapter.files['../../apps/storybook/stories/catalog-proof.stories.ts'].replace('loading: Boolean(args.loading)', 'loading: false /* args.loading */')
@@ -81,7 +81,7 @@ test('split-only loading loss and render-adapter loss are independently detected
 })
 
 test('loader reads a real temporary source tree, including a missing demo', () => {
-  const tmp = mkdtempSync(path.join(tmpdir(), 'qds-catalog-'))
+  const tmp = mkdtempSync(path.join(tmpdir(), 'ods-catalog-'))
   const root = path.join(tmp, 'packages', 'quasar')
   const write = (name, data) => { mkdirSync(path.dirname(path.join(root, name)), { recursive: true }); writeFileSync(path.join(root, name), data) }
   try {
@@ -91,7 +91,7 @@ test('loader reads a real temporary source tree, including a missing demo', () =
     // Only hook IDs are used by the loader's independent reference inventory.
     write('../../apps/gallery/tests/visual/atlas-families.ts', readFileSync(new URL('../../../../apps/gallery/tests/visual/atlas-families.ts', import.meta.url), 'utf8'))
     assert.deepEqual(validate(loadCatalogSources(root)), [])
-    rmSync(path.join(root, 'catalog/demos/QdsButtonDemo.vue'))
+    rmSync(path.join(root, 'catalog/demos/OdsButtonDemo.vue'))
     assert.ok(validate(loadCatalogSources(root)).includes('demo file missing: actions/button'))
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

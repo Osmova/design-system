@@ -12,7 +12,7 @@ import CatalogComplexMedia from '@gallery/sections/catalog/CatalogComplexMedia.v
 import ComplexMediaShowcase from '../../demos/ComplexMediaShowcase.vue'
 import { color, controls, ICONS, showcase, type Story } from '../support/story-kit'
 
-const SCENES = ['win', 'ink', 'one', 'term'].map((name) => `/scenes/qds-wallpaper-${name}.svg`)
+const SCENES = ['win', 'ink', 'one', 'term'].map((name) => `/scenes/ods-wallpaper-${name}.svg`)
 
 export default {
   title: 'Components/Media',

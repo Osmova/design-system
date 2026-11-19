@@ -1,7 +1,7 @@
 {
   "$id": "qds/catalog/schema",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "QDS shared catalog proof schema (development-only)",
+  "title": "ODS shared catalog proof schema (development-only)",
   "description": "Subset frozen by parent in .claude/docs/variant-evolution-contracts.md. The checker implements this subset (structural validation); it is documentation plus the contract the scripts must satisfy, not a shipped package schema.",
   "type": "object",
   "required": ["schemaVersion", "title", "scope", "runtime", "hosts", "cases"],

@@ -10,7 +10,7 @@ importers:
 
   apps/gallery:
     dependencies:
-      '@osmova/quasar-design-system':
+      '@osmova/ds-quasar':
         specifier: workspace:*
         version: link:../../packages/quasar
       '@phosphor-icons/vue':
@@ -68,7 +68,7 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@osmova/quasar-design-system':
+      '@osmova/ds-quasar':
         specifier: workspace:*
         version: link:../../packages/quasar
       '@phosphor-icons/vue':

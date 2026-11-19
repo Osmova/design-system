@@ -7,15 +7,15 @@ type Variant = 'win' | 'ink' | 'one' | 'term'
 async function applyTheme(page: Page, mode: Mode, variant: Variant) {
   await page.evaluate(
     ({ mode, variant }) => {
-      const ds = (window as unknown as { __qdsGallery: any }).__qdsGallery
+      const ds = (window as unknown as { __odsGallery: any }).__odsGallery
       ds.setMode(mode)
       ds.setVariant(variant)
     },
     { mode, variant },
   )
-  await expect(page.locator('body')).toHaveClass(new RegExp(`qds-variant-${variant}`))
+  await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
   await expect(page.locator('body')).toHaveClass(
-    new RegExp(mode === 'dark' ? 'qds-theme-dark' : 'qds-theme-light'),
+    new RegExp(mode === 'dark' ? 'ods-theme-dark' : 'ods-theme-light'),
   )
   // Class flips are instant but token-driven color transitions need ~150ms to settle.
   await page.waitForTimeout(150)
@@ -50,14 +50,14 @@ async function resolvedColor(page: Page, name: string): Promise<string> {
   )
 }
 
-test.describe('QDS catalog form picker gate', () => {
-  test('skins form controls, fields, file, slider, and range sub-elements with QDS tokens', async ({ page }) => {
+test.describe('ODS catalog form picker gate', () => {
+  test('skins form controls, fields, file, slider, and range sub-elements with ODS tokens', async ({ page }) => {
     await page.goto('/')
     await gotoGalleryPage(page, 'Catalog')
     await applyTheme(page, 'light', 'win')
 
-    const primary = await resolvedColor(page, '--qds-color-primary')
-    const negative = await resolvedColor(page, '--qds-color-negative')
+    const primary = await resolvedColor(page, '--ods-color-primary')
+    const negative = await resolvedColor(page, '--ods-color-negative')
 
     await expect(page.locator('[data-test="qds-catalog-input-readonly"] .q-field')).toHaveClass(/q-field--readonly/)
     await expect(page.locator('[data-test="qds-catalog-input-error"] .q-field')).toHaveClass(/q-field--error/)
@@ -117,7 +117,7 @@ test.describe('QDS catalog form picker gate', () => {
     expect.soft(await computed(page, '[data-test="qds-catalog-radio"] .q-radio__check', 'fill'), 'QRadio check uses primary').toBe(primary)
     expect.soft(await computed(page, '[data-test="qds-catalog-toggle"] .q-toggle__track', 'border-radius'), 'QToggle track is rounded').not.toBe('0px')
     expect.soft(await computed(page, '[data-test="qds-catalog-toggle"] .q-toggle__track', 'background-color'), 'QToggle track fills with primary when on').toBe(primary)
-    expect.soft(await computedPseudo(page, '[data-test="qds-catalog-toggle"] .q-toggle__thumb', '::after', 'background-color'), 'QToggle thumb uses on-primary on the brand track').toBe(await resolvedColor(page, '--qds-text-on-primary'))
+    expect.soft(await computedPseudo(page, '[data-test="qds-catalog-toggle"] .q-toggle__thumb', '::after', 'background-color'), 'QToggle thumb uses on-primary on the brand track').toBe(await resolvedColor(page, '--ods-text-on-primary'))
     const toggleGeo = await page.locator('[data-test="qds-catalog-toggle"]').evaluate((el) => {
       const track = el.querySelector('.q-toggle__track')!.getBoundingClientRect()
       const thumb = el.querySelector('.q-toggle__thumb')!.getBoundingClientRect()
@@ -202,7 +202,7 @@ test.describe('QDS catalog form picker gate', () => {
     }
     await page.waitForTimeout(100)
     page.off('filechooser', countNativeFileChooser)
-    await expect(page.locator('body'), 'protected QFile clicks do not reach the header switchers').toHaveClass(/qds-variant-win/)
+    await expect(page.locator('body'), 'protected QFile clicks do not reach the header switchers').toHaveClass(/ods-variant-win/)
     expect.soft(nativeFileChooserCount, 'Readonly and disabled QFile fields do not activate the native chooser by pointer or keyboard').toBe(0)
     await expect(page.locator('[data-test="qds-catalog-file-affordances"] .q-field__prepend svg')).toBeVisible()
     await expect(page.locator('[data-test="qds-catalog-file-affordances"] .q-field__append svg')).toBeVisible()
@@ -226,13 +226,13 @@ test.describe('QDS catalog form picker gate', () => {
     expect.soft(await computed(page, '[data-test="qds-catalog-range"] .q-slider__thumb', 'box-shadow'), 'QRange thumbs follow Fluent solid/no-small-shadow treatment').toBe('none')
   })
 
-  test('skins QColor, QDate, and QTime picker internals with QDS tokens', async ({ page }) => {
+  test('skins QColor, QDate, and QTime picker internals with ODS tokens', async ({ page }) => {
     await page.goto('/')
     await gotoGalleryPage(page, 'Catalog')
     await applyTheme(page, 'light', 'win')
 
-    const primary = await resolvedColor(page, '--qds-color-primary')
-    const onSolid = await resolvedColor(page, '--qds-text-on-solid')
+    const primary = await resolvedColor(page, '--ods-color-primary')
+    const onSolid = await resolvedColor(page, '--ods-text-on-solid')
 
     await expect(page.locator('[data-test="qds-catalog-color"] .q-color-picker__header-tabs')).toBeVisible()
     await expect(page.locator('[data-test="qds-catalog-color"] .q-color-picker__footer')).toBeVisible()
@@ -355,20 +355,20 @@ test.describe('QDS catalog form picker gate', () => {
     for (const mode of ['light', 'dark'] as const) {
       for (const variant of MATRIX_VARIANTS) {
         await applyTheme(page, mode, variant)
-        const primary = await resolvedColor(page, '--qds-color-primary')
+        const primary = await resolvedColor(page, '--ods-color-primary')
         await expect(page.locator('[data-test="qds-catalog-input-error"] .q-field')).toBeVisible()
         await expect(page.locator('[data-test="qds-catalog-file-readonly"] .q-file')).toHaveClass(/q-field--readonly/)
         await expect(page.locator('[data-test="qds-catalog-file-disabled"] .q-file')).toHaveClass(/q-field--disabled/)
         await expect(page.locator('[data-test="qds-catalog-date"] .q-date__header')).toBeVisible()
         await expect(page.locator('[data-test="qds-catalog-time"] .q-time__container-child')).toBeVisible()
         expect.soft(await computed(page, '[data-test="qds-catalog-input-error"] .q-field__control', 'border-radius'), `${mode}/${variant} field radius`).not.toBe('0px')
-        expect.soft(await computedPseudo(page, '[data-test="qds-catalog-input-error"] .q-field__control', '::after', 'border-bottom-color'), `${mode}/${variant} error bar is semantic`).toBe(await resolvedColor(page, '--qds-stroke-error'))
+        expect.soft(await computedPseudo(page, '[data-test="qds-catalog-input-error"] .q-field__control', '::after', 'border-bottom-color'), `${mode}/${variant} error bar is semantic`).toBe(await resolvedColor(page, '--ods-stroke-error'))
         expect.soft(await computedPseudo(page, '[data-test="qds-catalog-file-readonly"] .q-field__control', '::before', 'border-top-style'), `${mode}/${variant} QFile readonly outline is distinct`).toBe('dashed')
         expect.soft(await computed(page, '[data-test="qds-catalog-file-disabled"] .q-field__control', 'background-color'), `${mode}/${variant} QFile disabled surface remains visible`).not.toBe('rgba(0, 0, 0, 0)')
         expect.soft(await page.locator('[data-test="qds-catalog-date"]').getByRole('button', { name: '17 August 2029', exact: true }).evaluate((el) => getComputedStyle(el).backgroundColor), `${mode}/${variant} selected date uses the active primary`).toBe(primary)
         expect.soft(await computed(page, '[data-test="qds-catalog-time"] .q-time__clock-position--active', 'background-color'), `${mode}/${variant} active time uses the active primary`).toBe(primary)
         if (variant === 'ink') {
-          expect.soft(await page.locator('body').evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-surface-positive-soft').trim()), `${mode}/ink role surfaces are the paper itself`).toBe(mode === 'light' ? '#ebeae6' : '#1e2023')
+          expect.soft(await page.locator('body').evaluate((el) => getComputedStyle(el).getPropertyValue('--ods-surface-positive-soft').trim()), `${mode}/ink role surfaces are the paper itself`).toBe(mode === 'light' ? '#ebeae6' : '#1e2023')
         }
         if (variant === 'one') {
           expect.soft(await computed(page, '[data-test="qds-catalog-input-error"] .q-field__control', 'min-height'), `${mode}/One label-above fields use the 44px One UI control height`).toBe('44px')
@@ -430,7 +430,7 @@ test.describe('QDS catalog form picker gate', () => {
 
     // Term light: primary is yellow (#fcc40d), on-primary should be dark (#0d0d0c)
     await applyTheme(page, 'light', 'term')
-    const termLightOnPrimary = await resolvedColor(page, '--qds-text-on-primary')
+    const termLightOnPrimary = await resolvedColor(page, '--ods-text-on-primary')
     const termLightSelectedDate = page.locator('[data-test="qds-catalog-date"]').getByRole('button', { name: '17 August 2029', exact: true })
     await expect(termLightSelectedDate).toBeVisible()
     await expect.poll(() => termLightSelectedDate.evaluate((el) => getComputedStyle(el as Element).color), { message: 'Term light selected date uses dark on-primary text, not white', timeout: 2000 }).toBe(termLightOnPrimary)
@@ -449,7 +449,7 @@ test.describe('QDS catalog form picker gate', () => {
 
     // Term dark: primary is still yellow, on-primary should be dark (#0e0d0b)
     await applyTheme(page, 'dark', 'term')
-    const termDarkOnPrimary = await resolvedColor(page, '--qds-text-on-primary')
+    const termDarkOnPrimary = await resolvedColor(page, '--ods-text-on-primary')
     const termDarkSelectedDate = page.locator('[data-test="qds-catalog-date"]').getByRole('button', { name: '17 August 2029', exact: true })
     await expect(termDarkSelectedDate).toBeVisible()
     await expect.poll(() => termDarkSelectedDate.evaluate((el) => getComputedStyle(el as Element).color), { message: 'Term dark selected date uses dark on-primary text, not white', timeout: 2000 }).toBe(termDarkOnPrimary)
@@ -468,7 +468,7 @@ test.describe('QDS catalog form picker gate', () => {
 
     // Ink dark: primary is light cream (#f0e9db), on-primary should be dark (#25231f)
     await applyTheme(page, 'dark', 'ink')
-    const inkDarkOnPrimary = await resolvedColor(page, '--qds-text-on-primary')
+    const inkDarkOnPrimary = await resolvedColor(page, '--ods-text-on-primary')
     const inkDarkSelectedDate = page.locator('[data-test="qds-catalog-date"]').getByRole('button', { name: '17 August 2029', exact: true })
     await expect(inkDarkSelectedDate).toBeVisible()
     await expect.poll(() => inkDarkSelectedDate.evaluate((el) => getComputedStyle(el as Element).color), { message: 'Ink dark selected date uses dark on-primary text, not white', timeout: 2000 }).toBe(inkDarkOnPrimary)

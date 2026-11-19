@@ -83,7 +83,7 @@ export const Stepper: Story = {
         <QStep :name="2" title="Workspace" caption="Optional" :done="step > 2">Name the workspace.</QStep>
         <QStep :name="3" title="Review" :error="false">Check the summary.</QStep>
         <template #navigation>
-          <QStepperNavigation class="qds-story-row">
+          <QStepperNavigation class="ods-story-row">
             <QBtn color="primary" :label="step === 3 ? 'Finish' : 'Continue'" no-caps unelevated @click="step = step === 3 ? 1 : step + 1" />
             <QBtn v-if="step > 1" flat color="primary" label="Back" no-caps @click="step--" />
           </QStepperNavigation>

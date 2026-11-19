@@ -19,7 +19,7 @@
       {
         "key": "icon",
         "kind": "select",
-        "semantics": "empty clears the icon; named options map onto qdsPhosphor line SVG paths (no removed material fonts involved)",
+        "semantics": "empty clears the icon; named options map onto odsPhosphor line SVG paths (no removed material fonts involved)",
         "subelement": "icons"
       },
       {

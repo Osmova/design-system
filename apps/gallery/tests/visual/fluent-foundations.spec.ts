@@ -35,33 +35,33 @@ test.describe('Fluent foundation contract', () => {
 
     const panel = '.q-tab-panel'
     const defaultField = '[data-test="qds-control-input"] .q-field'
-    const floatField = '[data-test="qds-field-float"] .q-field--outlined.qds-field--float'
+    const floatField = '[data-test="qds-field-float"] .q-field--outlined.ods-field--float'
     // Coarse pointers step the scale up to 32/40/48px so dense, default and lg stay distinct.
     const coarse = await coarsePointer(page)
-    expect(await customProperty(page, '--qds-control-size-sm')).toBe(coarse ? '2rem' : '1.5rem')
-    expect(await customProperty(page, '--qds-control-size-md')).toBe(coarse ? '2.5rem' : '2rem')
-    expect(await customProperty(page, '--qds-control-size-lg')).toBe(coarse ? '3rem' : '2.5rem')
+    expect(await customProperty(page, '--ods-control-size-sm')).toBe(coarse ? '2rem' : '1.5rem')
+    expect(await customProperty(page, '--ods-control-size-md')).toBe(coarse ? '2.5rem' : '2rem')
+    expect(await customProperty(page, '--ods-control-size-lg')).toBe(coarse ? '3rem' : '2.5rem')
     expect(await computed(page, `${panel} .q-btn.q-btn--unelevated:not(.q-btn--dense)`, 'min-height')).toBe(coarse ? '40px' : '32px')
     expect(await computed(page, `${defaultField} .q-field__control`, 'min-height'), 'default field control is 32px (40px touch)').toBe(coarse ? '40px' : '32px')
     expect(await computed(page, defaultField, 'padding-top'), 'default field reserves a 20px label line plus 4px gap above the control').toBe('24px')
     expect(await computed(page, `${floatField} .q-field__control`, 'min-height'), 'opt-in float field keeps a 48px label band').toBe('48px')
-    expect(await customProperty(page, '--qds-button-dense-min-height')).toBe(coarse ? '2rem' : '1.5rem')
-    expect(await customProperty(page, '--qds-field-min-height')).toBe('3rem')
-    expect(await customProperty(page, '--qds-field-dense-min-height')).toBe('2.5rem')
-    expect(await customProperty(page, '--qds-chip-min-height')).toBe('1.75rem')
-    expect(await customProperty(page, '--qds-chip-padding')).toBe('0 .75rem')
-    expect(await customProperty(page, '--qds-chip-dense-min-height')).toBe('1.5rem')
-    expect(await customProperty(page, '--qds-chip-dense-padding')).toBe('0 .5rem')
-    expect(await customProperty(page, '--qds-badge-min-height')).toBe('1.25rem')
-    expect(await customProperty(page, '--qds-compact-action-size')).toBe(coarse ? '2.5rem' : '2rem')
-    expect(await customProperty(page, '--qds-compact-action-icon-size')).toBe('1rem')
+    expect(await customProperty(page, '--ods-button-dense-min-height')).toBe(coarse ? '2rem' : '1.5rem')
+    expect(await customProperty(page, '--ods-field-min-height')).toBe('3rem')
+    expect(await customProperty(page, '--ods-field-dense-min-height')).toBe('2.5rem')
+    expect(await customProperty(page, '--ods-chip-min-height')).toBe('1.75rem')
+    expect(await customProperty(page, '--ods-chip-padding')).toBe('0 .75rem')
+    expect(await customProperty(page, '--ods-chip-dense-min-height')).toBe('1.5rem')
+    expect(await customProperty(page, '--ods-chip-dense-padding')).toBe('0 .5rem')
+    expect(await customProperty(page, '--ods-badge-min-height')).toBe('1.25rem')
+    expect(await customProperty(page, '--ods-compact-action-size')).toBe(coarse ? '2.5rem' : '2rem')
+    expect(await customProperty(page, '--ods-compact-action-icon-size')).toBe('1rem')
 
     await applyTheme(page, 'light', 'one')
     expect(await computed(page, `${panel} .q-btn.q-btn--unelevated:not(.q-btn--dense)`, 'min-height')).toBe('44px')
     expect(await computed(page, `${defaultField} .q-field__control`, 'min-height'), 'One default field control meets the 44px touch height').toBe('44px')
     expect(await computed(page, `${floatField} .q-field__control`, 'min-height')).toBe('48px')
-    expect(await customProperty(page, '--qds-button-dense-min-height')).toBe('2.5rem')
-    expect(await customProperty(page, '--qds-control-size-sm')).toBe('2.5rem')
+    expect(await customProperty(page, '--ods-button-dense-min-height')).toBe('2.5rem')
+    expect(await customProperty(page, '--ods-control-size-sm')).toBe('2.5rem')
   })
 
   test('solid role buttons lighten toward the layer on hover and press and keep their text contrast', async ({ page }) => {
@@ -73,7 +73,7 @@ test.describe('Fluent foundation contract', () => {
     }
     const luminance = (rgb: Rgb) => contrast(rgb, [0, 0, 0]) - 1
     const paint = async () => {
-      const [background, color] = await page.locator('#qds-role-probe').evaluate((element) => [getComputedStyle(element).backgroundColor, getComputedStyle(element).color])
+      const [background, color] = await page.locator('#ods-role-probe').evaluate((element) => [getComputedStyle(element).backgroundColor, getComputedStyle(element).color])
       const fill = parse(background)
       const text = parse(color)
       const shown = text.rgb.map((channel, index) => channel * text.alpha + fill.rgb[index] * (1 - text.alpha)) as unknown as Rgb
@@ -83,9 +83,9 @@ test.describe('Fluent foundation contract', () => {
     const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
     const states = async (role: string) => {
       await page.evaluate((role) => {
-        document.getElementById('qds-role-probe')?.remove()
+        document.getElementById('ods-role-probe')?.remove()
         const button = document.createElement('button')
-        button.id = 'qds-role-probe'
+        button.id = 'ods-role-probe'
         button.className = `q-btn q-btn-item q-btn--unelevated bg-${role} text-white`
         button.textContent = role
         button.style.cssText = 'position: fixed; inset-block-start: 8px; inset-inline-start: 8px; z-index: 9999; transition: none'
@@ -93,7 +93,7 @@ test.describe('Fluent foundation contract', () => {
       }, role)
       await page.mouse.move(0, 0)
       const rest = await paint()
-      await page.locator('#qds-role-probe').hover()
+      await page.locator('#ods-role-probe').hover()
       const hover = await paint()
       await page.mouse.down()
       const pressed = await paint()
@@ -147,22 +147,22 @@ test.describe('Fluent foundation contract', () => {
 
     const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info'] as const
     for (const role of roles) {
-      const fill = await tokenColor(page, `--qds-color-${role}`)
-      const foreground = await tokenColor(page, `--qds-text-on-${role}`)
+      const fill = await tokenColor(page, `--ods-color-${role}`)
+      const foreground = await tokenColor(page, `--ods-text-on-${role}`)
       expect(contrast(fill.rgb, foreground.rgb), `${role} solid text contrast`).toBeGreaterThanOrEqual(4.5)
     }
 
-    const surface = await tokenColor(page, '--qds-surface-0')
-    for (const token of ['--qds-color-primary', '--qds-color-negative']) {
+    const surface = await tokenColor(page, '--ods-surface-0')
+    for (const token of ['--ods-color-primary', '--ods-color-negative']) {
       const boundary = await tokenColor(page, token)
       expect(contrast(boundary.rgb, surface.rgb), `${token} boundary contrast`).toBeGreaterThanOrEqual(3)
     }
 
-    const text = await tokenColor(page, '--qds-text')
+    const text = await tokenColor(page, '--ods-text')
     const softTokens = [
-      '--qds-surface-brand-soft', '--qds-surface-accent-soft', '--qds-surface-positive-soft',
-      '--qds-surface-warning-soft', '--qds-surface-negative-soft', '--qds-surface-info-soft',
-      '--qds-surface-focus-block', '--qds-surface-transient',
+      '--ods-surface-brand-soft', '--ods-surface-accent-soft', '--ods-surface-positive-soft',
+      '--ods-surface-warning-soft', '--ods-surface-negative-soft', '--ods-surface-info-soft',
+      '--ods-surface-focus-block', '--ods-surface-transient',
     ]
     const softColors: string[] = []
     for (const token of softTokens) {

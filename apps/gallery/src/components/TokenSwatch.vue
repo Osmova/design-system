@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { QdsToken } from '@osmova/quasar-design-system'
+import type { OdsToken } from '@osmova/ds-quasar'
 
 const props = defineProps<{
-  token: QdsToken | string
+  token: OdsToken | string
   /** Render style: a color chip, a box (radius/shadow), or a plain value. */
   kind?: 'color' | 'box' | 'value'
 }>()
@@ -14,14 +14,14 @@ const boxStyle = computed(() => {
   if (props.token.includes('radius')) {
     return {
       borderRadius: cssVar.value,
-      background: 'linear-gradient(135deg, rgba(var(--qds-color-primary-rgb), 0.16), rgba(var(--qds-color-accent-rgb), 0.14)), var(--qds-surface-0)',
+      background: 'linear-gradient(135deg, rgba(var(--ods-color-primary-rgb), 0.16), rgba(var(--ods-color-accent-rgb), 0.14)), var(--ods-surface-0)',
     }
   }
 
   if (props.token.includes('shadow') || props.token.includes('elevation')) {
     return {
       boxShadow: cssVar.value,
-      background: 'linear-gradient(135deg, rgba(var(--qds-color-info-rgb), 0.16), rgba(var(--qds-color-primary-rgb), 0.08)), var(--qds-surface-0)',
+      background: 'linear-gradient(135deg, rgba(var(--ods-color-info-rgb), 0.16), rgba(var(--ods-color-primary-rgb), 0.08)), var(--ods-surface-0)',
     }
   }
 
@@ -30,7 +30,7 @@ const boxStyle = computed(() => {
 </script>
 
 <template>
-  <div class="qds-card q-pa-sm column" style="gap: 0.5rem">
+  <div class="ods-card q-pa-sm column" style="gap: 0.5rem">
     <div
       v-if="kind === 'color'"
       class="swatch swatch--color"
@@ -49,17 +49,17 @@ const boxStyle = computed(() => {
 .swatch {
   width: 100%;
   height: 3rem;
-  border: 1px solid var(--qds-border);
+  border: 1px solid var(--ods-border);
 }
 .swatch--color {
-  border-radius: var(--qds-radius-sm);
+  border-radius: var(--ods-radius-sm);
 }
 .swatch--box {
-  background: var(--qds-surface-0);
+  background: var(--ods-surface-0);
 }
 .token-name {
   font-size: 0.68rem;
-  color: var(--qds-text-muted);
+  color: var(--ods-text-muted);
   overflow-wrap: anywhere;
   line-height: 1.25;
 }

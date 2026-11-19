@@ -1,119 +1,119 @@
 @use 'importance';
-@mixin qds-type-step($step) {
-  font-size: var(--qds-font-size-#{$step});
-  line-height: var(--qds-line-height-#{$step});
-  letter-spacing: var(--qds-letter-spacing-#{$step}, normal);
+@mixin ods-type-step($step) {
+  font-size: var(--ods-font-size-#{$step});
+  line-height: var(--ods-line-height-#{$step});
+  letter-spacing: var(--ods-letter-spacing-#{$step}, normal);
 }
 
 // Quasar weight utilities keep priority over the type scale.
 $weight-utilities: '.text-weight-thin, .text-weight-light, .text-weight-regular, .text-weight-medium, .text-weight-bold, .text-weight-bolder, .text-bold';
 
 @mixin styles {
-  body.qds-ui {
-    background: var(--qds-surface-1);
-    color: var(--qds-text);
-    font-family: var(--qds-font-family);
-    font-size: var(--qds-font-size-body);
-    line-height: var(--qds-line-height-body);
+  body.ods-ui {
+    background: var(--ods-surface-1);
+    color: var(--ods-text);
+    font-family: var(--ods-font-family);
+    font-size: var(--ods-font-size-body);
+    line-height: var(--ods-line-height-body);
   }
 
   // Fixed layer keeps the Mica wash tied to the window, not the document.
-  body.qds-ui::before {
+  body.ods-ui::before {
     position: fixed;
     inset: 0;
     z-index: -1;
     content: '';
     pointer-events: none;
-    background: var(--qds-backdrop);
+    background: var(--ods-backdrop);
   }
 
   // Bare headings stay at ELEMENT specificity (0,0,1): they must beat
-  // Quasar's `h3 { font-size: 3rem }` (same specificity, QDS loads later) yet
-  // lose to any app class such as `.card__title`. `body.qds-ui :where(h3)`
+  // Quasar's `h3 { font-size: 3rem }` (same specificity, ODS loads later) yet
+  // lose to any app class such as `.card__title`. `body.ods-ui :where(h3)`
   // was (0,1,1) and silently overrode every class-styled heading.
-  :where(body.qds-ui) :is(h1, h2, h3, h4, h5, h6),
-  body.qds-ui :where(.text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6),
-  .qds-display {
-    font-family: var(--qds-font-family-display);
+  :where(body.ods-ui) :is(h1, h2, h3, h4, h5, h6),
+  body.ods-ui :where(.text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6),
+  .ods-display {
+    font-family: var(--ods-font-family-display);
   }
 
   @each $step in h1, h2, h3, h4, h5, h6 {
-    :where(body.qds-ui) #{$step} {
-      @include qds-type-step($step);
+    :where(body.ods-ui) #{$step} {
+      @include ods-type-step($step);
     }
 
-    :where(body.qds-ui) #{$step}:where(:not(#{$weight-utilities})) {
-      font-weight: var(--qds-font-weight-#{$step});
+    :where(body.ods-ui) #{$step}:where(:not(#{$weight-utilities})) {
+      font-weight: var(--ods-font-weight-#{$step});
     }
   }
 
   @each $step in h1, h2, h3, h4, h5, h6, subtitle1, subtitle2, body1, body2, caption, overline {
-    body.qds-ui :where(.text-#{$step}) {
-      @include qds-type-step($step);
+    body.ods-ui :where(.text-#{$step}) {
+      @include ods-type-step($step);
     }
 
-    body.qds-ui :where(.text-#{$step}:not(#{$weight-utilities})) {
-      font-weight: var(--qds-font-weight-#{$step});
+    body.ods-ui :where(.text-#{$step}:not(#{$weight-utilities})) {
+      font-weight: var(--ods-font-weight-#{$step});
     }
   }
 
-  body.qds-ui :where(.text-overline:not(.text-lowercase, .text-capitalize)) {
+  body.ods-ui :where(.text-overline:not(.text-lowercase, .text-capitalize)) {
     text-transform: uppercase;
   }
 
   // Prose links only; Quasar components rendering anchors all carry a `q-` class.
-  :where(.qds-ui a[href]:not([class*='q-'])) {
-    color: var(--qds-fg-brand);
+  :where(.ods-ui a[href]:not([class*='q-'])) {
+    color: var(--ods-fg-brand);
     text-decoration-line: underline;
     text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
     text-underline-offset: 0.2em;
-    border-radius: var(--qds-radius-xs);
+    border-radius: var(--ods-radius-xs);
   }
 
-  :where(.qds-ui a[href]:not([class*='q-']):hover) {
+  :where(.ods-ui a[href]:not([class*='q-']):hover) {
     text-decoration-color: currentColor;
   }
 
-  :where(.qds-ui a[href]:not([class*='q-']):focus-visible) {
-    outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus);
-    outline-offset: var(--qds-focus-ring-offset);
+  :where(.ods-ui a[href]:not([class*='q-']):focus-visible) {
+    outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
+    outline-offset: var(--ods-focus-ring-offset);
   }
 
-  :where(.qds-ui :is([role='button'], [role='link'])[tabindex]:not([class*='q-']):focus-visible) {
-    outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus);
-    outline-offset: calc(-1 * var(--qds-focus-ring-width));
+  :where(.ods-ui :is([role='button'], [role='link'])[tabindex]:not([class*='q-']):focus-visible) {
+    outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
+    outline-offset: calc(-1 * var(--ods-focus-ring-width));
   }
 
-  .qds-variant-shadcn:is(.qds-ui,.qds-ui *) {
-    :where(h1, h2, h3, h4, h5, h6, .qds-display) { font-family: var(--qds-font-family); }
-    :where(a[href]:not([class*='q-'])) { color: var(--qds-fg-primary); text-decoration-color: currentColor; text-underline-offset: var(--qds-space-xs); }
-    :where(a[href], [role='button'][tabindex], [role='link'][tabindex]):not([class*='q-']):focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); box-shadow: var(--qds-field-focus-halo); }
+  .ods-variant-shadcn:is(.ods-ui,.ods-ui *) {
+    :where(h1, h2, h3, h4, h5, h6, .ods-display) { font-family: var(--ods-font-family); }
+    :where(a[href]:not([class*='q-'])) { color: var(--ods-fg-primary); text-decoration-color: currentColor; text-underline-offset: var(--ods-space-xs); }
+    :where(a[href], [role='button'][tabindex], [role='link'][tabindex]):not([class*='q-']):focus-visible { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus); outline-offset: var(--ods-focus-ring-offset); box-shadow: var(--ods-field-focus-halo); }
   }
 
   // WinUI focus visual: a 2px high-contrast outer ring; the 1px offset gap reads as the inner ring.
   @media not (forced-colors: active) {
-    .qds-variant-win:is(.qds-ui,.qds-ui *) :is(:focus-visible:where(:not(.q-btn-group > .q-btn-item[class*='bg-'])), :is(.q-checkbox, .q-radio, .q-toggle):focus-visible :is(.q-checkbox__inner, .q-radio__inner, .q-toggle__inner)) {
-      @include importance.declarations { outline-color: var(--_qds-win-focus-outer) !important; }
+    .ods-variant-win:is(.ods-ui,.ods-ui *) :is(:focus-visible:where(:not(.q-btn-group > .q-btn-item[class*='bg-'])), :is(.q-checkbox, .q-radio, .q-toggle):focus-visible :is(.q-checkbox__inner, .q-radio__inner, .q-toggle__inner)) {
+      @include importance.declarations { outline-color: var(--_ods-win-focus-outer) !important; }
     }
   }
 
   // Ripple is a Material 2 tell; CSS states replace it.
-  .qds-ui .q-ripple {
+  .ods-ui .q-ripple {
     display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .qds-ui *,
-    .qds-ui *::before,
-    .qds-ui *::after {
+    .ods-ui *,
+    .ods-ui *::before,
+    .ods-ui *::after {
       @include importance.declarations { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
   }
 
   @media (forced-colors: active) {
-    .qds-ui [class*="q-"]:focus-visible {
+    .ods-ui [class*="q-"]:focus-visible {
       outline-color: Highlight;
     }
-    .qds-variant-shadcn:is(.qds-ui,.qds-ui *) :is(.qds-focus-ring, a[href], [role='button'][tabindex], [role='link'][tabindex]):focus-visible { outline-color: Highlight; box-shadow: none; }
+    .ods-variant-shadcn:is(.ods-ui,.ods-ui *) :is(.ods-focus-ring, a[href], [role='button'][tabindex], [role='link'][tabindex]):focus-visible { outline-color: Highlight; box-shadow: none; }
   }
 }

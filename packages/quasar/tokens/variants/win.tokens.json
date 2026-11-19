@@ -202,7 +202,7 @@
         "$value": "#ffffff"
       },
       "fg-brand": {
-        "$value": "var(--qds-color-primary-dark)"
+        "$value": "var(--ods-color-primary-dark)"
       },
       "fg-info": {
         "$type": "color",
@@ -255,7 +255,7 @@
         "$value": "#000000"
       },
       "fg-brand": {
-        "$value": "var(--qds-color-primary-light)"
+        "$value": "var(--ods-color-primary-light)"
       },
       "fg-info": {
         "$type": "color",

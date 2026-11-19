@@ -4,9 +4,9 @@
   backdrop-filter: $filter;
 }
 
-@mixin material($weight, $fill: var(--qds-material-#{$weight}-bg)) {
+@mixin material($weight, $fill: var(--ods-material-#{$weight}-bg)) {
   @if $fill { background: $fill; }
-  @include backdrop(var(--qds-material-#{$weight}-filter));
+  @include backdrop(var(--ods-material-#{$weight}-filter));
 }
 
 @mixin solid($fill: null) {
@@ -15,7 +15,7 @@
 }
 
 // Win11 elevation edge as per-side colours; forced colours replace them with the system border.
-@mixin elevation-border($fill: null, $top: var(--qds-control-stroke-top), $bottom: var(--qds-control-stroke-bottom), $side: var(--qds-control-stroke-default)) {
+@mixin elevation-border($fill: null, $top: var(--ods-control-stroke-top), $bottom: var(--ods-control-stroke-bottom), $side: var(--ods-control-stroke-default)) {
   @if $fill { background-color: $fill; }
   border-color: $top $side $bottom;
 }

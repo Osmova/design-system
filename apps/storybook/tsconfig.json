@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@qds-catalog/*": ["../../packages/quasar/catalog/*"],
+      "@ods-catalog/*": ["../../packages/quasar/catalog/*"],
       "@gallery/*": ["../gallery/src/*"]
     }
   },

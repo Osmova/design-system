@@ -31,13 +31,13 @@ const config: StorybookConfig = {
         ...config.resolve,
         alias: [
           ...baseEntries,
-          { find: '@qds-catalog', replacement: path.resolve(repoRoot, 'packages/quasar/catalog') },
+          { find: '@ods-catalog', replacement: path.resolve(repoRoot, 'packages/quasar/catalog') },
           { find: '@gallery', replacement: path.resolve(galleryRoot, 'src') },
         ],
       },
       optimizeDeps: {
         ...config.optimizeDeps,
-        exclude: [...(config.optimizeDeps?.exclude ?? []), '@osmova/quasar-design-system'],
+        exclude: [...(config.optimizeDeps?.exclude ?? []), '@osmova/ds-quasar'],
       },
       build: { ...config.build, chunkSizeWarningLimit: 4096 },
       server: {

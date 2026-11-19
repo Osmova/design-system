@@ -24,7 +24,7 @@ const toggleOptions = [
 
 <template>
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Navigation, buttons &amp; app chrome</div>
+    <div class="text-h6 ods-display q-mb-md">Navigation, buttons &amp; app chrome</div>
     <div class="catalog-grid catalog-grid--three">
       <div class="catalog-demo">
         <div class="catalog-label">QBtnDropdown</div>
@@ -62,27 +62,27 @@ const toggleOptions = [
         <div class="catalog-label">QRating states</div>
         <div class="catalog-rating-stack">
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Inactive:</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Inactive:</span>
             <q-rating v-model="ratingInactive" data-test="qds-rating-inactive" aria-label="Product rating" icon-aria-label="Product rating" :icon="ppStar" size="sm" :max="5" />
           </div>
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Selected (3):</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Selected (3):</span>
             <q-rating v-model="ratingActive" data-test="qds-rating-active" aria-label="Product rating" icon-aria-label="Product rating" :icon="ppStar" :icon-selected="ppStarFill" size="sm" :max="5" />
           </div>
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Half (2.5):</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Half (2.5):</span>
             <q-rating v-model="ratingHalf" data-test="qds-rating-half" aria-label="Product rating" icon-aria-label="Product rating" :icon="ppStar" :icon-half="ppStarHalfFill" :icon-selected="ppStarFill" size="sm" :max="5" />
           </div>
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Readonly:</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Readonly:</span>
             <q-rating v-model="ratingReadonly" data-test="qds-rating-readonly" aria-label="Read only product rating" icon-aria-label="Read only product rating" :icon="ppStar" :icon-selected="ppStarFill" size="sm" :max="5" readonly />
           </div>
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Disabled:</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Disabled:</span>
             <q-rating v-model="ratingDisabled" data-test="qds-rating-disabled" aria-label="Unavailable product rating" icon-aria-label="Unavailable product rating" :icon="ppStar" :icon-selected="ppStarFill" size="sm" :max="5" disable />
           </div>
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">No dimming:</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">No dimming:</span>
             <q-rating v-model="ratingNoDimming" data-test="qds-rating-no-dimming" aria-label="No dimming product rating" icon-aria-label="No dimming product rating" :icon="ppStar" :icon-selected="ppStarFill" no-dimming size="sm" :max="5" />
           </div>
         </div>
@@ -101,15 +101,15 @@ const toggleOptions = [
         <div class="catalog-label">QRating semantic colors</div>
         <div class="catalog-rating-stack">
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Positive:</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Positive:</span>
             <q-rating v-model="ratingPositive" data-test="qds-rating-positive" :icon="ppStar" :icon-selected="ppStarFill" size="sm" :max="5" color="positive" />
           </div>
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Negative:</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Negative:</span>
             <q-rating v-model="ratingNegative" data-test="qds-rating-negative" :icon="ppStar" :icon-selected="ppStarFill" size="sm" :max="5" color="negative" />
           </div>
           <div class="catalog-rating-row">
-            <span class="qds-text-muted text-caption catalog-rating-label">Primary:</span>
+            <span class="ods-text-muted text-caption catalog-rating-label">Primary:</span>
             <q-rating v-model="ratingPrimary" data-test="qds-rating-primary" :icon="ppStar" :icon-selected="ppStarFill" size="sm" :max="5" color="primary" />
           </div>
         </div>
@@ -117,21 +117,21 @@ const toggleOptions = [
 
       <div class="catalog-demo catalog-demo--wide">
         <div class="catalog-label">QBar + QSeparator</div>
-        <q-toolbar data-test="qds-toolbar-surface" class="qds-card q-mb-sm">
+        <q-toolbar data-test="qds-toolbar-surface" class="ods-card q-mb-sm">
           <q-toolbar-title>Toolbar surface</q-toolbar-title>
           <q-btn dense flat label="Action" aria-label="Toolbar action" no-caps />
         </q-toolbar>
-        <q-toolbar data-test="qds-toolbar-dense" class="qds-card q-toolbar--dense q-mb-sm">
+        <q-toolbar data-test="qds-toolbar-dense" class="ods-card q-toolbar--dense q-mb-sm">
           <q-toolbar-title>Dense toolbar</q-toolbar-title>
           <q-btn dense flat label="Save" aria-label="Save dense toolbar" no-caps />
         </q-toolbar>
-        <q-toolbar data-test="qds-toolbar-wrap" class="qds-card qds-toolbar--wrap q-mb-sm">
+        <q-toolbar data-test="qds-toolbar-wrap" class="ods-card ods-toolbar--wrap q-mb-sm">
           <q-toolbar-title>Responsive toolbar actions</q-toolbar-title>
           <q-btn dense flat label="Share" aria-label="Share responsive toolbar" no-caps />
           <q-btn dense flat label="More" aria-label="More responsive toolbar actions" no-caps />
         </q-toolbar>
-        <q-toolbar data-test="qds-toolbar-truncate" class="qds-card q-mb-sm">
-          <q-toolbar-title data-test="qds-toolbar-long-title" class="qds-toolbar-title--truncate">
+        <q-toolbar data-test="qds-toolbar-truncate" class="ods-card q-mb-sm">
+          <q-toolbar-title data-test="qds-toolbar-long-title" class="ods-toolbar-title--truncate">
             A deliberately long toolbar title remains contained when action controls reserve the available space
           </q-toolbar-title>
           <q-btn dense flat label="Edit" aria-label="Edit long-title toolbar" no-caps />
@@ -146,7 +146,7 @@ const toggleOptions = [
         <div data-test="qds-separator-inset-host">
           <q-separator data-test="qds-separator-inset-dark" dark inset spaced />
         </div>
-        <div class="qds-text-muted">Separator rhythm below a tokenized bar.</div>
+        <div class="ods-text-muted">Separator rhythm below a tokenized bar.</div>
         <div data-test="qds-bar-separator-row" class="row items-center no-wrap q-mt-md">
           <q-bar data-test="qds-bar-dense" dense>
             <div>Dense bar</div>
@@ -201,18 +201,18 @@ const toggleOptions = [
 <style scoped>
 .catalog-rating-stack {
   display: grid;
-  gap: var(--qds-space-sm);
+  gap: var(--ods-space-sm);
 }
 
 .catalog-rating-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--qds-space-md);
+  gap: var(--ods-space-md);
 }
 
 .catalog-rating-row--sizes {
-  gap: var(--qds-space-lg);
+  gap: var(--ods-space-lg);
 }
 
 .catalog-rating-label {

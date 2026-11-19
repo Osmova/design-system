@@ -21,14 +21,14 @@ async function canvas(page: Page, host: Host): Promise<Frame> {
   const marker = host === 'histoire' ? '__sandbox.html' : 'iframe.html'
   await expect.poll(() => page.frames().filter((frame) => frame.url().includes(marker)).length).toBe(1)
   const frame = page.frames().find((item) => item.url().includes(marker))!
-  await expect(frame.locator('.qds-catalog-proof')).toBeVisible()
+  await expect(frame.locator('.ods-catalog-proof')).toBeVisible()
   return frame
 }
 
 async function open(page: Page, host: Host, index: number) {
   const route = host === 'histoire'
     ? `/#/story/stories-catalog-proof-story-vue?variantId=stories-catalog-proof-story-vue-${index}`
-    : `/?path=/story/qds-shared-catalog-proof--${cases[index]}-proof`
+    : `/?path=/story/ods-shared-catalog-proof--${cases[index]}-proof`
   await page.goto(origins[host] + route)
   return canvas(page, host)
 }
@@ -60,17 +60,17 @@ async function theme(page: Page, frame: Frame, host: Host, axis: 'mode' | 'varia
 
 async function assertTheme(frame: Frame, mode: string, resolved: string, variant: string) {
   const body = frame.locator('body')
-  await expect(body).toHaveAttribute('data-qds-mode', mode)
-  await expect(body).toHaveAttribute('data-qds-resolved', resolved)
-  await expect(body).toHaveAttribute('data-qds-variant', variant)
-  await expect(body).toHaveClass(new RegExp(`qds-theme-${resolved}`))
-  await expect(body).toHaveClass(new RegExp(`qds-variant-${variant}`))
-  const readout = frame.locator('.qds-catalog-proof__readout')
+  await expect(body).toHaveAttribute('data-ods-mode', mode)
+  await expect(body).toHaveAttribute('data-ods-resolved', resolved)
+  await expect(body).toHaveAttribute('data-ods-variant', variant)
+  await expect(body).toHaveClass(new RegExp(`ods-theme-${resolved}`))
+  await expect(body).toHaveClass(new RegExp(`ods-variant-${variant}`))
+  const readout = frame.locator('.ods-catalog-proof__readout')
   await expect(readout).toContainText(`mode: ${mode} (${resolved})`)
   await expect(readout).toContainText(`variant: ${variant}`)
-  await expect(readout).toContainText(`data-qds-mode=${mode}`)
-  await expect(readout).toContainText(`data-qds-resolved=${resolved}`)
-  await expect(readout).toContainText(`data-qds-variant=${variant}`)
+  await expect(readout).toContainText(`data-ods-mode=${mode}`)
+  await expect(readout).toContainText(`data-ods-resolved=${resolved}`)
+  await expect(readout).toContainText(`data-ods-variant=${variant}`)
 }
 
 for (const host of ['histoire', 'storybook'] as const) {
@@ -133,11 +133,11 @@ for (const host of ['histoire', 'storybook'] as const) {
 
   test(`${host}: body menu portal, Escape/focus, reset and case-switch cleanup`, async ({ page }) => {
     const frame = await open(page, host, 3)
-    const anchor = frame.locator('.qds-catalog-demo-menu__anchor')
+    const anchor = frame.locator('.ods-catalog-demo-menu__anchor')
     await anchor.click()
     const menu = frame.locator('.q-menu')
     await expect(menu).toBeVisible()
-    expect(await menu.evaluate((element) => element.parentElement?.parentElement === document.body && !element.closest('.qds-catalog-proof'))).toBe(true)
+    expect(await menu.evaluate((element) => element.parentElement?.parentElement === document.body && !element.closest('.ods-catalog-proof'))).toBe(true)
     await page.keyboard.press('Escape')
     await expect(menu).toHaveCount(0)
     await expect(anchor).toBeFocused()
@@ -147,16 +147,16 @@ for (const host of ['histoire', 'storybook'] as const) {
     await expect(menu).toHaveCount(0)
     await anchor.click()
     await expect(menu).toBeVisible()
-    if (host === 'storybook') await page.locator('#qds-shared-catalog-proof--button-proof').click()
+    if (host === 'storybook') await page.locator('#ods-shared-catalog-proof--button-proof').click()
     else await page.locator('a[href$="variantId=stories-catalog-proof-story-vue-0"]').click()
     const next = await canvas(page, host)
-    await expect(next.locator('.qds-catalog-demo-button')).toBeVisible()
+    await expect(next.locator('.ods-catalog-demo-button')).toBeVisible()
     for (const item of page.frames()) await expect(item.locator('.q-menu')).toHaveCount(0)
   })
 
   test(`${host}: sole theme authority, live body readout and palette cleanup`, async ({ page }) => {
     const frame = await open(page, host, 0)
-    await expect(frame.locator('.qds-catalog-proof select')).toHaveCount(host === 'histoire' ? 2 : 0)
+    await expect(frame.locator('.ods-catalog-proof select')).toHaveCount(host === 'histoire' ? 2 : 0)
     await assertTheme(frame, host === 'histoire' ? 'system' : 'light', 'light', 'win')
     await theme(page, frame, host, 'mode', 'dark')
     await assertTheme(frame, 'dark', 'dark', 'win')
@@ -171,22 +171,22 @@ for (const host of ['histoire', 'storybook'] as const) {
     await theme(page, frame, host, 'variant', 'shadcn')
     await theme(page, frame, host, 'shadcn palette', 'slate')
     await assertTheme(frame, 'light', 'light', 'shadcn')
-    await expect(frame.locator('body')).toHaveAttribute('data-qds-shadcn-base-color', 'slate')
-    await expect(frame.locator('.qds-catalog-proof__readout')).toContainText('palette: slate')
+    await expect(frame.locator('body')).toHaveAttribute('data-ods-shadcn-base-color', 'slate')
+    await expect(frame.locator('.ods-catalog-proof__readout')).toContainText('palette: slate')
     await theme(page, frame, host, 'variant', 'win')
-    await expect(frame.locator('body')).not.toHaveAttribute('data-qds-shadcn-base-color')
-    await expect(frame.locator('.qds-catalog-proof select')).toHaveCount(host === 'histoire' ? 2 : 0)
+    await expect(frame.locator('body')).not.toHaveAttribute('data-ods-shadcn-base-color')
+    await expect(frame.locator('.ods-catalog-proof select')).toHaveCount(host === 'histoire' ? 2 : 0)
   })
 
   test(`${host}: direct 393px tabs fit the document without hiding overflow`, async ({ page }) => {
     await page.setViewportSize({ width: 393, height: 850 })
     const url = host === 'histoire'
       ? '/__sandbox.html?storyId=stories-catalog-proof-story-vue&variantId=stories-catalog-proof-story-vue-2'
-      : '/iframe.html?id=qds-shared-catalog-proof--tabs-proof&viewMode=story&args=tabCount:12'
+      : '/iframe.html?id=ods-shared-catalog-proof--tabs-proof&viewMode=story&args=tabCount:12'
     await page.goto(origins[host] + url)
-    await expect(page.locator('.qds-catalog-demo-tabs')).toBeVisible()
+    await expect(page.locator('.ods-catalog-demo-tabs')).toBeVisible()
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(393)
-    const geometry = await page.locator('.qds-catalog-proof').evaluate((element) => {
+    const geometry = await page.locator('.ods-catalog-proof').evaluate((element) => {
       const rect = element.getBoundingClientRect()
       return { left: rect.left, right: rect.right, overflow: getComputedStyle(element).overflowX }
     })
@@ -199,12 +199,12 @@ for (const host of ['histoire', 'storybook'] as const) {
 }
 
 test('Storybook Docs exposes four unique isolated cases and actual shared source', async ({ page }) => {
-  await page.goto(origins.storybook + '/?path=/docs/qds-shared-catalog-proof--docs')
+  await page.goto(origins.storybook + '/?path=/docs/ods-shared-catalog-proof--docs')
   await expect.poll(() => page.frames().filter((frame) => frame.url().includes('viewMode=story')).length).toBe(5)
   const frames = page.frames().filter((frame) => frame.url().includes('viewMode=story'))
   const ids = new Set<string>()
   for (const frame of frames) {
-    const proof = frame.locator('.qds-catalog-proof')
+    const proof = frame.locator('.ods-catalog-proof')
     await expect(proof).toBeVisible()
     ids.add((await proof.getAttribute('data-case-id'))!)
     await expect(proof.locator('select')).toHaveCount(0)

@@ -111,6 +111,6 @@ export async function settle(page: Page) {
 
 export async function mediaFixtures(page: Page) {
   // Same native QImg states as the existing media gate: stalled and failed fetches.
-  await page.route('**/qds-media-loading.svg', () => new Promise<void>(resolve => { page.once('close', () => resolve()) }))
-  await page.route('**/qds-media-error.svg', route => route.abort('failed'))
+  await page.route('**/ods-media-loading.svg', () => new Promise<void>(resolve => { page.once('close', () => resolve()) }))
+  await page.route('**/ods-media-error.svg', route => route.abort('failed'))
 }

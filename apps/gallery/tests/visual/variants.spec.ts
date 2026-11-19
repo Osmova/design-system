@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { CANONICAL_VARIANTS, applyTheme, computed, customProperty, expectGalleryPage, resolvedColor } from './helpers'
 
-test.describe('QDS variant distinctiveness lab', () => {
+test.describe('ODS variant distinctiveness lab', () => {
   test('mounts five canonical comparison cards with deliberate visual systems', async ({ page }) => {
     await page.goto('/#variants')
     await applyTheme(page, 'light', 'win')
@@ -17,13 +17,13 @@ test.describe('QDS variant distinctiveness lab', () => {
     const fluent = page.locator('[data-test="qds-variant-card-win"]')
     expect.soft(await computed(page, '[data-test="qds-variant-card-win"] .variant-card__nested', 'backdrop-filter'), 'Fluent content has no blur').toBe('none')
     expect.soft(await computed(page, '[data-test="qds-variant-card-win"] .variant-card__nested', 'box-shadow'), 'Fluent content has no resting small shadow').toBe('none')
-    expect.soft(await computed(page, '[data-test="qds-variant-card-win"] .q-card', 'border-radius'), 'Fluent compact card radius').toBe(await customProperty(page, '--qds-card-radius'))
-    expect.soft(await fluent.evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-card-border-mix').trim()), 'Fluent uses low-border content').toBe('22%')
+    expect.soft(await computed(page, '[data-test="qds-variant-card-win"] .q-card', 'border-radius'), 'Fluent compact card radius').toBe(await customProperty(page, '--ods-card-radius'))
+    expect.soft(await fluent.evaluate((el) => getComputedStyle(el).getPropertyValue('--ods-card-border-mix').trim()), 'Fluent uses low-border content').toBe('22%')
 
     const ink = page.locator('[data-test="qds-variant-card-ink"]')
     const inkTitleFont = await computed(page, '[data-test="qds-variant-card-ink"] .variant-card__title', 'font-family')
     expect.soft(inkTitleFont, 'Ink display titles are handwritten').toMatch(/Caveat/)
-    expect.soft(await ink.evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-surface-positive-soft').trim()), 'Ink role surfaces are the paper itself').toBe('#ebeae6')
+    expect.soft(await ink.evaluate((el) => getComputedStyle(el).getPropertyValue('--ods-surface-positive-soft').trim()), 'Ink role surfaces are the paper itself').toBe('#ebeae6')
     expect.soft(await ink.locator('.variant-role--positive').evaluate((el) => getComputedStyle(el).boxShadow), 'Ink role fixture is outlined in ink').not.toBe('none')
     expect.soft(await computed(page, '[data-test="qds-variant-card-ink"] .variant-card__nested', 'backdrop-filter'), 'Ink is flat, not blurred').toBe('none')
     expect.soft(await computed(page, '[data-test="qds-variant-card-ink"] .variant-card__nested', 'box-shadow'), 'Ink content is matte').toBe('none')
@@ -33,22 +33,22 @@ test.describe('QDS variant distinctiveness lab', () => {
     const oneRow = await one.locator('.q-list .q-item').first().evaluate((el) => getComputedStyle(el).minHeight)
     expect.soft(parseFloat(oneRow), 'One list rows are touch-forward').toBeGreaterThanOrEqual(44)
     expect.soft(parseFloat(oneRow), 'One rows exceed Fluent density').toBeGreaterThan(parseFloat(fluentRow))
-    expect.soft(await one.evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-surface-focus-block').trim()), 'One focus-block token is available').toBe('#efefef')
+    expect.soft(await one.evaluate((el) => getComputedStyle(el).getPropertyValue('--ods-surface-focus-block').trim()), 'One focus-block token is available').toBe('#efefef')
 
     const term = page.locator('[data-test="qds-variant-card-term"]')
-    expect.soft(await term.evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-font-family').trim()), 'Term body font token is monospace').toContain('ui-monospace')
-    expect.soft(await term.evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-control-text-transform').trim()), 'Term controls request uppercase').toBe('uppercase')
+    expect.soft(await term.evaluate((el) => getComputedStyle(el).getPropertyValue('--ods-font-family').trim()), 'Term body font token is monospace').toContain('ui-monospace')
+    expect.soft(await term.evaluate((el) => getComputedStyle(el).getPropertyValue('--ods-control-text-transform').trim()), 'Term controls request uppercase').toBe('uppercase')
     expect.soft(await computed(page, '[data-test="qds-variant-card-term"] .q-btn', 'text-transform'), 'Term button renders uppercase').toBe('uppercase')
 
     const glass = page.locator('[data-test="qds-variant-card-glass"]')
-    expect.soft(await glass.evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-font-family').trim()), 'Glass uses the native system stack').toContain('-apple-system')
+    expect.soft(await glass.evaluate((el) => getComputedStyle(el).getPropertyValue('--ods-font-family').trim()), 'Glass uses the native system stack').toContain('-apple-system')
     const glassRow = await glass.locator('.q-list .q-item').first().evaluate((el) => getComputedStyle(el).minHeight)
     expect.soft(parseFloat(glassRow), 'Glass grouped rows stay roomy').toBeGreaterThanOrEqual(44)
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .q-item.q-item--active', 'background-color'), 'Glass active row takes the brand wash').toBe('rgb(228, 238, 252)')
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .variant-card__nested', 'box-shadow'), 'Glass content nests without a second drop').toBe('none')
-    expect.soft(await glass.evaluate((el) => getComputedStyle(el).getPropertyValue('--_qds-glass-knob').trim()), 'Glass keeps a light switch knob').toBe('#ffffff')
+    expect.soft(await glass.evaluate((el) => getComputedStyle(el).getPropertyValue('--_ods-glass-knob').trim()), 'Glass keeps a light switch knob').toBe('#ffffff')
 
-    expect.soft(await resolvedColor(page, '--qds-color-primary'), 'Win primary follows the Windows 11 accent').toBe('rgb(0, 95, 184)')
+    expect.soft(await resolvedColor(page, '--ods-color-primary'), 'Win primary follows the Windows 11 accent').toBe('rgb(0, 95, 184)')
   })
 
   // Body-level grammar only shows once the whole page is glass.
@@ -56,7 +56,7 @@ test.describe('QDS variant distinctiveness lab', () => {
     await page.goto('/#variants')
     await applyTheme(page, 'dark', 'glass')
 
-    expect.soft(await customProperty(page, '--_qds-glass-knob'), 'the knob stays light against a dark track').toBe('#ffffff')
+    expect.soft(await customProperty(page, '--_ods-glass-knob'), 'the knob stays light against a dark track').toBe('#ffffff')
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"]', 'border-radius'), 'blocks use the large radius').toBe('26px')
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .variant-card__nested', 'border-radius'), 'a nested block is its card radius minus the padding').toBe('10px')
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .q-btn:not(.q-btn--dense)', 'border-radius'), 'prominent buttons are capsules').toBe('9999px')
@@ -73,9 +73,9 @@ test.describe('QDS variant distinctiveness lab', () => {
       await applyTheme(page, mode, 'glass')
       await page.emulateMedia({ forcedColors: 'active' })
 
-      expect.soft(await customProperty(page, '--qds-material-thin-filter'), 'the acrylic filter is dropped').toBe('none')
-      expect.soft(await customProperty(page, '--qds-control-fill-default'), 'control fills become opaque').not.toContain('color-mix')
-      expect.soft(await customProperty(page, '--_qds-glass-bar-line'), 'bars keep a permanent divider once glass is opaque').not.toBe('transparent')
+      expect.soft(await customProperty(page, '--ods-material-thin-filter'), 'the acrylic filter is dropped').toBe('none')
+      expect.soft(await customProperty(page, '--ods-control-fill-default'), 'control fills become opaque').not.toContain('color-mix')
+      expect.soft(await customProperty(page, '--_ods-glass-bar-line'), 'bars keep a permanent divider once glass is opaque').not.toBe('transparent')
     })
 
     test(`glass resolves increased contrast to opaque glass and a deeper accent in ${mode}`, async ({ page }) => {
@@ -83,9 +83,9 @@ test.describe('QDS variant distinctiveness lab', () => {
       await applyTheme(page, mode, 'glass')
       await page.emulateMedia({ contrast: 'more' })
 
-      expect.soft(await customProperty(page, '--qds-material-regular-filter'), 'no blur behind controls').toBe('none')
-      expect.soft(await resolvedColor(page, '--qds-color-primary'), 'the accent moves to its increased-contrast value').toBe(mode === 'light' ? 'rgb(0, 64, 221)' : 'rgb(140, 195, 255)')
-      expect.soft(await resolvedColor(page, '--qds-stroke-strong'), 'control edges take the muted text colour').toBe(await resolvedColor(page, '--qds-text-muted'))
+      expect.soft(await customProperty(page, '--ods-material-regular-filter'), 'no blur behind controls').toBe('none')
+      expect.soft(await resolvedColor(page, '--ods-color-primary'), 'the accent moves to its increased-contrast value').toBe(mode === 'light' ? 'rgb(0, 64, 221)' : 'rgb(140, 195, 255)')
+      expect.soft(await resolvedColor(page, '--ods-stroke-strong'), 'control edges take the muted text colour').toBe(await resolvedColor(page, '--ods-text-muted'))
     })
   }
 
@@ -164,7 +164,7 @@ test.describe('QDS variant distinctiveness lab', () => {
 
     await page.goto('/#components?variant=glass')
     await applyTheme(page, 'light', 'glass')
-    const button = (label: string) => page.locator('.qds-button-row').first().locator('.q-btn', { hasText: label })
+    const button = (label: string) => page.locator('.ods-button-row').first().locator('.q-btn', { hasText: label })
     const style = (label: string) => button(label).evaluate((el) => {
       const s = getComputedStyle(el)
       return { border: s.borderTopColor, background: s.backgroundColor }
@@ -172,9 +172,9 @@ test.describe('QDS variant distinctiveness lab', () => {
     const [standard, outline, disabled] = [await style('Default'), await style('Outline'), await style('Disabled')]
     expect.soft(standard.border, 'Default and Outline differ in edge').not.toBe(outline.border)
     expect.soft(standard.background, 'Default and Outline differ in fill').not.toBe(outline.background)
-    expect.soft(outline.border, 'the outline keeps its 3:1 stroke').toBe(await resolvedColor(page, '--qds-stroke-strong'))
-    expect.soft(disabled.border, 'a disabled button drops to the plain border').toBe(await resolvedColor(page, '--qds-border'))
-    expect.soft(await computed(page, '.q-toolbar.qds-card .q-btn--flat', 'backdrop-filter'), 'toolbars inside content stay plain').toBe('none')
+    expect.soft(outline.border, 'the outline keeps its 3:1 stroke').toBe(await resolvedColor(page, '--ods-stroke-strong'))
+    expect.soft(disabled.border, 'a disabled button drops to the plain border').toBe(await resolvedColor(page, '--ods-border'))
+    expect.soft(await computed(page, '.q-toolbar.ods-card .q-btn--flat', 'backdrop-filter'), 'toolbars inside content stay plain').toBe('none')
     expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'backdrop-filter'), 'bar buttons float on glass').not.toBe('none')
     expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'border-radius'), 'the shell follows glass capsules').toBe('9999px')
   })
@@ -192,7 +192,7 @@ test.describe('QDS variant distinctiveness lab', () => {
     await page.goto('/#catalog?variant=glass')
     await applyTheme(page, 'light', 'glass')
 
-    expect.soft(await customProperty(page, '--qds-toggle-track-width'), 'the capsule survives the generic size ramp').toBe('3.9375rem')
+    expect.soft(await customProperty(page, '--ods-toggle-track-width'), 'the capsule survives the generic size ramp').toBe('3.9375rem')
     const toggle = page.locator('[data-test="qds-catalog-toggle"]')
     await expect(toggle).toBeVisible()
     const track = toggle.locator('.q-toggle__track')

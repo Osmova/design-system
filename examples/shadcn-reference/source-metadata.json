@@ -19,10 +19,10 @@
     "legacyColors": "hsl(source HSL triplet), with no rounding or conversion",
     "legacySidebar": "explicit aliases to same-palette background/foreground/primary/accent/border/ring; the legacy files do not define sidebar tokens",
     "radius": "each modern light radius retained in dark; legacy palettes use neutral.light.radius",
-    "geometry": "upstream component classes and multiplicative radius bindings from apps/v4/assets/css/main.css; no geometry corrections to match QDS"
+    "geometry": "upstream component classes and multiplicative radius bindings from apps/v4/assets/css/main.css; no geometry corrections to match ODS"
   },
   "intentionalComparisonAdaptations": {
-    "font": "shared src/fonts/inter.css and its local woff2 files; no QDS reset, tokens, CSS, or runtime",
+    "font": "shared src/fonts/inter.css and its local woff2 files; no ODS reset, tokens, CSS, or runtime",
     "icons": "Vite @lucide/vue import alias to Phosphor regular named equivalents; no component source edits; not a Lucide silhouette oracle",
     "sidebar": "upstream noncollapsible fixture, explicit open=true/defaultOpen=true; no cookie-dependent fixture state; random SidebarMenuSkeleton is not rendered",
     "capture": "capture=1 or setCapture(true) disables animation/transition/caret painting only; normal mode retains upstream motion"
@@ -52,7 +52,7 @@
   "limitations": [
     "Legacy Gray/Slate are officially sourced legacy palettes applied to v4 geometry, not missing modern OKLCH palette definitions.",
     "Legacy sidebar slots are source-value aliases, not an upstream Gray/Slate sidebar-specific theme.",
-    "This reference preserves upstream contrast, including failures; it is not a QDS accessibility-conformance assertion.",
+    "This reference preserves upstream contrast, including failures; it is not a ODS accessibility-conformance assertion.",
     "Sidebar fixture covers native noncollapsible anatomy; responsive mobile sheet behavior is vendored but not a screenshot fixture.",
     "Buttons in card/footer are deterministic visual actions, not business operations."
   ]

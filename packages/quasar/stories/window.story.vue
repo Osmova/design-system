@@ -10,7 +10,7 @@ const initState = () => ({ mode: 'light' as DesignSystemMode, variant: 'win' as 
 
 <template>
   <Story title="Optional / QWindow" :layout="{ type: 'single', iframe: true }" :init-state="initState">
-    <Variant title="Embedded QDS window">
+    <Variant title="Embedded ODS window">
       <template #default="{ state }">
         <StoryShell
           title="Optional window"

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { applyTheme, computed, customProperty, expectGalleryPage } from './helpers'
 
-test.describe('QDS scene gallery', () => {
+test.describe('ODS scene gallery', () => {
   test('mounts the four owned canonical scenes and their readable cards', async ({ page }) => {
     await page.goto('/#scenes')
     await applyTheme(page, 'light', 'win')
@@ -10,8 +10,8 @@ test.describe('QDS scene gallery', () => {
     for (const variant of ['win', 'ink', 'one', 'term'] as const) {
       const scene = page.locator(`[data-test="qds-scene-${variant}"]`)
       await expect(scene).toBeVisible()
-      await expect(scene.locator(`[data-test="qds-scene-card-${variant}"]`)).toHaveClass(/qds-card--readable/)
-      expect.soft(await scene.evaluate((el) => getComputedStyle(el).backgroundImage), `${variant} uses its owned wallpaper`).toContain(`/scenes/qds-wallpaper-${variant}.svg`)
+      await expect(scene.locator(`[data-test="qds-scene-card-${variant}"]`)).toHaveClass(/ods-card--readable/)
+      expect.soft(await scene.evaluate((el) => getComputedStyle(el).backgroundImage), `${variant} uses its owned wallpaper`).toContain(`/scenes/ods-wallpaper-${variant}.svg`)
     }
     await expect(page.locator('[data-test="qds-scene-air"], [data-test="qds-scene-feather"]')).toHaveCount(0)
   })
@@ -20,8 +20,8 @@ test.describe('QDS scene gallery', () => {
     await page.goto('/#scenes')
     await applyTheme(page, 'light', 'ink')
     const ink = '[data-test="qds-scene-ink"]'
-    expect.soft(await customProperty(page, '--qds-surface-0'), 'Ink paper surface comes from current token source').toBe('#ebeae6')
-    expect.soft(await customProperty(page, '--qds-surface-info-soft'), 'Ink has no tinted wash: the info surface is the paper').toBe('#ebeae6')
+    expect.soft(await customProperty(page, '--ods-surface-0'), 'Ink paper surface comes from current token source').toBe('#ebeae6')
+    expect.soft(await customProperty(page, '--ods-surface-info-soft'), 'Ink has no tinted wash: the info surface is the paper').toBe('#ebeae6')
     expect.soft(await computed(page, `${ink} .scene-panel`, 'backdrop-filter'), 'Ink scene card has no blur').toBe('none')
     expect.soft(await computed(page, `${ink} .scene-panel`, 'box-shadow'), 'Ink scene content is flat').toBe('none')
 

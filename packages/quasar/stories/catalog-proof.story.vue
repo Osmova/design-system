@@ -10,11 +10,11 @@
  */
 import controlsData from '../catalog/control.json'
 import manifestData from '../catalog/manifest.json'
-import QdsButtonDemo from '../catalog/demos/QdsButtonDemo.vue'
-import QdsFieldDemo from '../catalog/demos/QdsFieldDemo.vue'
-import QdsTabsDemo from '../catalog/demos/QdsTabsDemo.vue'
-import QdsMenuDemo from '../catalog/demos/QdsMenuDemo.vue'
-import QdsPreviewScaffold from '../catalog/preview/QdsPreviewScaffold.vue'
+import OdsButtonDemo from '../catalog/demos/OdsButtonDemo.vue'
+import OdsFieldDemo from '../catalog/demos/OdsFieldDemo.vue'
+import OdsTabsDemo from '../catalog/demos/OdsTabsDemo.vue'
+import OdsMenuDemo from '../catalog/demos/OdsMenuDemo.vue'
+import OdsPreviewScaffold from '../catalog/preview/OdsPreviewScaffold.vue'
 
 interface CatalogControlRow {
   key: string
@@ -52,10 +52,10 @@ const controlRows = controlsData as {
 }
 
 const demoByCase: Record<string, unknown> = {
-  'actions/button': QdsButtonDemo,
-  'forms/field': QdsFieldDemo,
-  'navigation/tabs': QdsTabsDemo,
-  'overlays/menu': QdsMenuDemo,
+  'actions/button': OdsButtonDemo,
+  'forms/field': OdsFieldDemo,
+  'navigation/tabs': OdsTabsDemo,
+  'overlays/menu': OdsMenuDemo,
 }
 
 function controlsFor(caseId: string): CatalogControlRow[] {
@@ -74,7 +74,7 @@ function initStateFor(caseId: string): () => Record<string, string | number | bo
 </script>
 
 <template>
-  <Story title="QDS shared catalog / proof" :layout="{ type: 'single', iframe: true }">
+  <Story title="ODS shared catalog / proof" :layout="{ type: 'single', iframe: true }">
     <Variant
       v-for="catalogCase in manifest.cases"
       :key="catalogCase.id"
@@ -82,9 +82,9 @@ function initStateFor(caseId: string): () => Record<string, string | number | bo
       :init-state="initStateFor(catalogCase.id)"
     >
       <template #default="{ state }">
-        <QdsPreviewScaffold :case-id="catalogCase.id" :title="catalogCase.title" :theme-controls="true">
+        <OdsPreviewScaffold :case-id="catalogCase.id" :title="catalogCase.title" :theme-controls="true">
           <component :is="demoByCase[catalogCase.id]" v-bind="state" />
-        </QdsPreviewScaffold>
+        </OdsPreviewScaffold>
       </template>
 
       <template #controls="{ state }">

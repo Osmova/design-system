@@ -6,7 +6,7 @@ export const VARIANT_SCOPES = ['ink', 'one', 'term', 'shadcn', 'zen', 'glass']
 export const DEFAULT_SCOPE = 'win'
 const OWNED_BY = { reading: 'zen' }
 
-const scopeRe = new RegExp(`\\.qds-variant-(${[DEFAULT_SCOPE, ...VARIANT_SCOPES].join('|')})\\b|\\.qds-(reading)\\b`, 'g')
+const scopeRe = new RegExp(`\\.ods-variant-(${[DEFAULT_SCOPE, ...VARIANT_SCOPES].join('|')})\\b|\\.ods-(reading)\\b`, 'g')
 
 function ownersOf(selector) {
   const owners = new Set()

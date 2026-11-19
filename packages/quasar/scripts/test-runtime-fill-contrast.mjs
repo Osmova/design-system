@@ -6,10 +6,10 @@ const failures = []
 let checked = 0
 for (const [profile, values] of Object.entries(emittedProfiles())) {
   for (const role of roles) {
-    const fill = parseRgb(values[`--qds-color-${role}`])
-    const pair = parseRgb(values[`--qds-text-on-${role}`])
+    const fill = parseRgb(values[`--ods-color-${role}`])
+    const pair = parseRgb(values[`--ods-text-on-${role}`])
     for (const state of ['default', 'hover', 'pressed']) {
-      const paint = state === 'default' ? fill : parseRgb(values[`--qds-color-${role}-${state}`])
+      const paint = state === 'default' ? fill : parseRgb(values[`--ods-color-${role}-${state}`])
       const ratio = contrast(pair, paint)
       if (ratio < 4.5) failures.push({ profile, role, state, contrast: ratio, minimum: 4.5 })
       checked++

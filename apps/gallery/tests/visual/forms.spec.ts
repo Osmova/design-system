@@ -70,7 +70,7 @@ async function paint(page: Page, selector: string): Promise<FieldPaint> {
       icon: icon ? getComputedStyle(icon).color : '',
       background: style.backgroundColor,
       halo: [style.boxShadow, before.boxShadow].filter((shadow) => shadow !== 'none'),
-      haloToken: getComputedStyle(root).getPropertyValue('--qds-field-focus-halo').trim(),
+      haloToken: getComputedStyle(root).getPropertyValue('--ods-field-focus-halo').trim(),
       borderWidths: ['Top', 'Right', 'Bottom', 'Left'].map((side) => Number.parseFloat(before.getPropertyValue(`border-${side.toLowerCase()}-width`))),
       height: control.getBoundingClientRect().height,
     }
@@ -104,7 +104,7 @@ test.describe('forms', () => {
       test(`focus switches to the input-active fill and shows the bar (${mode} / ${variant})`, async ({ page }) => {
         await openForms(page, mode, variant)
         const target = field('qds-forms-state-focus')
-        const active = await resolvedColor(page, '--qds-control-fill-input-active')
+        const active = await resolvedColor(page, '--ods-control-fill-input-active')
         const rest = await paint(page, target)
         expect.soft(rest.barShown, 'bar is hidden at rest').toBe(false)
         expect.soft(rest.haloToken, 'fields carry no halo by default').toBe('none')
@@ -130,7 +130,7 @@ test.describe('forms', () => {
     test(`error keeps its stroke and bar on focus (${mode})`, async ({ page }) => {
       await openForms(page, mode)
       const target = field('qds-forms-state-error')
-      const error = await resolvedColor(page, '--qds-stroke-error')
+      const error = await resolvedColor(page, '--ods-stroke-error')
 
       await page.locator(`${target} input`).focus()
       await expect(page.locator(target)).toHaveClass(/q-field--highlighted/)
@@ -144,12 +144,12 @@ test.describe('forms', () => {
     test(`validation tints stroke, bar, message and icon (${mode})`, async ({ page }) => {
       await openForms(page, mode)
       const neutral = await paint(page, field('qds-forms-state-rest'))
-      const muted = await resolvedColor(page, '--qds-fg-muted')
+      const muted = await resolvedColor(page, '--ods-fg-muted')
 
       for (const role of ['positive', 'warning'] as const) {
-        const tint = await resolvedColor(page, `--qds-color-${role}`)
+        const tint = await resolvedColor(page, `--ods-color-${role}`)
         const tinted = await paint(page, field(`qds-forms-state-${role}`))
-        await expect(page.locator(field(`qds-forms-state-${role}`))).toHaveClass(new RegExp(`qds-field--${role}`))
+        await expect(page.locator(field(`qds-forms-state-${role}`))).toHaveClass(new RegExp(`ods-field--${role}`))
         expect.soft(distance(tinted.stroke, tint), `${role} stroke ${tinted.stroke} leans to ${tint}`).toBeLessThan(distance(neutral.stroke, tint))
         expect.soft(distance(tinted.bar, tint), `${role} bar ${tinted.bar} leans to ${tint}`).toBeLessThan(distance(neutral.bar, tint))
         expect.soft(distance(tinted.bottom, tint), `${role} message ${tinted.bottom} leans to ${tint}`).toBeLessThan(distance(muted, tint))
@@ -159,10 +159,10 @@ test.describe('forms', () => {
 
     test(`option cards mark the selected tile (${mode})`, async ({ page }) => {
       await openForms(page, mode)
-      const focus = await resolvedColor(page, '--qds-stroke-focus')
+      const focus = await resolvedColor(page, '--ods-stroke-focus')
 
       for (const [hook, control] of [['qds-forms-option-cards-radio', '.q-radio'], ['qds-forms-option-cards-checkbox', '.q-checkbox']] as const) {
-        const tiles = page.locator(`${byHook(hook)} .qds-option-group--card ${control}`)
+        const tiles = page.locator(`${byHook(hook)} .ods-option-group--card ${control}`)
         const selected = tiles.and(page.locator('[aria-checked="true"]')).first()
         const unselected = tiles.and(page.locator('[aria-checked="false"]:not([aria-disabled="true"])')).first()
         // The tile stroke may live on the element or its ::before.
@@ -183,9 +183,9 @@ test.describe('forms', () => {
 
     test(`settings cards use card tokens and right-align their action (${mode})`, async ({ page }) => {
       await openForms(page, mode)
-      const fill = await resolvedColor(page, '--qds-card-fill')
-      const stroke = await resolvedColor(page, '--qds-card-stroke')
-      const cards = page.locator(`${byHook('qds-forms-settings-group')} > .qds-settings-card`)
+      const fill = await resolvedColor(page, '--ods-card-fill')
+      const stroke = await resolvedColor(page, '--ods-card-stroke')
+      const cards = page.locator(`${byHook('qds-forms-settings-group')} > .ods-settings-card`)
       await expect(cards).toHaveCount(4)
 
       for (const card of await cards.all()) {
@@ -202,10 +202,10 @@ test.describe('forms', () => {
             border: border.borderTopColor,
             borderWidth: Number.parseFloat(border.borderTopWidth),
             contentEnd: element.getBoundingClientRect().right - Number.parseFloat(getComputedStyle(element).borderInlineEndWidth) - Number.parseFloat(getComputedStyle(element).paddingInlineEnd),
-            icon: box('.qds-settings-card__icon'),
-            header: box('.qds-settings-card__header'),
-            description: box('.qds-settings-card__description'),
-            action: box('.qds-settings-card__action'),
+            icon: box('.ods-settings-card__icon'),
+            header: box('.ods-settings-card__header'),
+            description: box('.ods-settings-card__description'),
+            action: box('.ods-settings-card__action'),
           }
         })
         expect.soft(paint.background, `${paint.name} uses the card fill`).toBe(fill)
@@ -220,7 +220,7 @@ test.describe('forms', () => {
       }
 
       const expander = page.locator(byHook('qds-forms-settings-accent'))
-      await expect(expander.locator('.q-expansion-item__container > .q-item .qds-settings-card__header'), 'expander header uses the card anatomy').toHaveText('Accent color')
+      await expect(expander.locator('.q-expansion-item__container > .q-item .ods-settings-card__header'), 'expander header uses the card anatomy').toHaveText('Accent color')
       expect.soft(await expander.locator('.q-expansion-item__content').evaluate((content) => getComputedStyle(content).backgroundColor), 'expander content sits on the card fill').toBe(fill)
       const swatches = expander.locator('.q-expansion-item__content [role="radio"]')
       await expect(swatches, 'expander content is attached and open').toHaveCount(7)
@@ -231,7 +231,7 @@ test.describe('forms', () => {
       await expect(swatches.first(), 'expander reopens').toBeVisible()
       await swatches.nth(3).click()
       await expect(swatches.nth(3)).toHaveAttribute('aria-checked', 'true')
-      await expect(expander.locator('.qds-settings-card__action')).toHaveText('Green')
+      await expect(expander.locator('.ods-settings-card__action')).toHaveText('Green')
     })
   }
 
@@ -295,17 +295,17 @@ test.describe('forms', () => {
     for (const hook of ['qds-forms-required', 'qds-forms-required-aria', 'qds-forms-required-class']) {
       expect.soft(await pseudoContent(page, `${byHook(hook)} .q-field__label`), `${hook} label shows a required mark`).toContain('*')
     }
-    expect.soft(await pseudoContent(page, `${byHook('qds-forms-anatomy-field')} .qds-form-field__label`), 'required form field label shows a mark').toContain('*')
+    expect.soft(await pseudoContent(page, `${byHook('qds-forms-anatomy-field')} .ods-form-field__label`), 'required form field label shows a mark').toContain('*')
     expect.soft(await pseudoContent(page, `${byHook('qds-forms-state-rest')} .q-field__label`), 'optional field has no mark').not.toContain('*')
-    expect.soft(await pseudoContent(page, `${byHook('qds-forms-anatomy-error')} .qds-form-field__label`), 'optional form field has no mark').not.toContain('*')
+    expect.soft(await pseudoContent(page, `${byHook('qds-forms-anatomy-error')} .ods-form-field__label`), 'optional form field has no mark').not.toContain('*')
   })
 
   test('sizes follow the 24 / 32 / 40 ramp', async ({ page }) => {
     await openForms(page, 'light')
     const tokens = {
-      dense: await tokenLength(page, '--qds-field-size-sm'),
-      default: await tokenLength(page, '--qds-field-size-md'),
-      lg: await tokenLength(page, '--qds-field-size-lg'),
+      dense: await tokenLength(page, '--ods-field-size-sm'),
+      default: await tokenLength(page, '--ods-field-size-md'),
+      lg: await tokenLength(page, '--ods-field-size-lg'),
     }
     if (!(await coarsePointer(page))) expect(tokens, 'fine-pointer Fluent ramp').toEqual({ dense: 24, default: 32, lg: 40 })
     for (const variant of ['outlined', 'filled', 'standout', 'ghost', 'borderless']) {
@@ -341,15 +341,15 @@ test.describe('forms', () => {
         // QLayout swaps the persistent drawer for an overlay on a debounced resize, so the row
         // keeps the previous content width until that lands. Wait for the measured group itself
         // to hold the same geometry across consecutive frames before reading the seam.
-        await page.evaluate(() => { delete (window as unknown as Record<string, unknown>).__qdsSeamPrev })
+        await page.evaluate(() => { delete (window as unknown as Record<string, unknown>).__odsSeamPrev })
         await page.waitForFunction((selector) => {
           const element = document.querySelector(selector)
           if (!element) return false
           const box = element.getBoundingClientRect()
           const current = `${Math.round(box.left)}:${Math.round(box.width)}`
           const store = window as unknown as Record<string, unknown>
-          const previous = store.__qdsSeamPrev
-          store.__qdsSeamPrev = current
+          const previous = store.__odsSeamPrev
+          store.__odsSeamPrev = current
           return previous === current
         }, byHook(hook))
         const [first, last] = await group.evaluate((element) =>
@@ -380,7 +380,7 @@ test.describe('forms', () => {
     test(`field group joins its children (${variant})`, async ({ page }) => {
       await openForms(page, 'light', variant)
       const group = page.locator(byHook('qds-forms-field-group'))
-      await expect(group).toHaveClass(/qds-field-group/)
+      await expect(group).toHaveClass(/ods-field-group/)
       const measure = () =>
         group.evaluate((element) =>
           [...element.children].map((child) => {
@@ -464,8 +464,8 @@ test.describe('forms', () => {
         }
       }),
     )
-    expect(caps.some((cap) => cap.className.includes('qds-kbd')), 'demo has .qds-kbd caps').toBe(true)
-    expect(caps.some((cap) => !cap.className.includes('qds-kbd')), 'demo has a bare kbd').toBe(true)
+    expect(caps.some((cap) => cap.className.includes('ods-kbd')), 'demo has .ods-kbd caps').toBe(true)
+    expect(caps.some((cap) => !cap.className.includes('ods-kbd')), 'demo has a bare kbd').toBe(true)
     for (const cap of caps) {
       expect.soft(cap.border, `${cap.className || 'kbd'} has a keycap border`).toBeGreaterThan(0)
       expect.soft(cap.radius, `${cap.className || 'kbd'} is rounded`).toBeGreaterThan(0)
@@ -476,12 +476,12 @@ test.describe('forms', () => {
   test('anatomy places hint, description, help and error', async ({ page }, testInfo) => {
     await openForms(page, 'light')
     const anatomy = byHook('qds-forms-anatomy-field')
-    const header = await rect(page, `${anatomy} .qds-form-field__header`)
-    const label = await rect(page, `${anatomy} .qds-form-field__label`)
-    const hint = await rect(page, `${anatomy} .qds-form-field__hint`)
-    const description = await rect(page, `${anatomy} .qds-form-field__description`)
+    const header = await rect(page, `${anatomy} .ods-form-field__header`)
+    const label = await rect(page, `${anatomy} .ods-form-field__label`)
+    const hint = await rect(page, `${anatomy} .ods-form-field__hint`)
+    const description = await rect(page, `${anatomy} .ods-form-field__description`)
     const control = await rect(page, `${anatomy} .q-field__control`)
-    const help = await rect(page, `${anatomy} .qds-form-field__help`)
+    const help = await rect(page, `${anatomy} .ods-form-field__help`)
     expect.soft(Math.abs(hint.right - header.right), 'hint sits at the header end').toBeLessThanOrEqual(1)
     expect.soft(Math.abs((hint.top + hint.bottom) / 2 - (label.top + label.bottom) / 2), 'hint shares the label row').toBeLessThanOrEqual(label.height / 2)
     expect.soft(description.top, 'description follows the label').toBeGreaterThanOrEqual(label.bottom - 0.5)
@@ -489,21 +489,21 @@ test.describe('forms', () => {
     expect.soft(help.top, 'help follows the control').toBeGreaterThanOrEqual(control.bottom - 0.5)
 
     const errorBlock = byHook('qds-forms-anatomy-error')
-    await expect(page.locator(`${errorBlock} .qds-form-field__help`), 'error replaces help').toBeHidden()
-    await expect(page.locator(`${errorBlock} .qds-form-field__error`)).toBeVisible()
-    const negative = await resolvedColor(page, '--qds-color-negative')
-    const text = await resolvedColor(page, '--qds-fg-default')
-    const errorColor = await page.locator(`${errorBlock} .qds-form-field__error`).evaluate((element) => getComputedStyle(element).color)
+    await expect(page.locator(`${errorBlock} .ods-form-field__help`), 'error replaces help').toBeHidden()
+    await expect(page.locator(`${errorBlock} .ods-form-field__error`)).toBeVisible()
+    const negative = await resolvedColor(page, '--ods-color-negative')
+    const text = await resolvedColor(page, '--ods-fg-default')
+    const errorColor = await page.locator(`${errorBlock} .ods-form-field__error`).evaluate((element) => getComputedStyle(element).color)
     expect.soft(distance(errorColor, negative), `error text ${errorColor} is negative-toned`).toBeLessThan(distance(errorColor, text))
 
     const slot = byHook('qds-forms-label-hint')
-    const slotHint = await rect(page, `${slot} .qds-field__hint`)
+    const slotHint = await rect(page, `${slot} .ods-field__hint`)
     const slotControl = await rect(page, `${slot} .q-field__control`)
     expect.soft(Math.abs(slotHint.right - slotControl.right), 'label-slot hint aligns to the field end').toBeLessThanOrEqual(2)
     expect.soft(slotHint.bottom, 'label-slot hint stays above the control').toBeLessThanOrEqual(slotControl.top + 1)
 
     const horizontal = byHook('qds-forms-horizontal')
-    const hLabel = await rect(page, `${horizontal} .qds-form-field__label`)
+    const hLabel = await rect(page, `${horizontal} .ods-form-field__label`)
     const hControl = await rect(page, `${horizontal} .q-field__control`)
     if (testInfo.project.name === 'desktop') {
       expect.soft(hLabel.right, 'horizontal label column precedes the control').toBeLessThanOrEqual(hControl.left)

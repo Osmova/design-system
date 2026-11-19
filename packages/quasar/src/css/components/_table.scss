@@ -1,110 +1,110 @@
-$one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
-$term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
+$one: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one)';
+$term: ':is(.ods-ui.ods-variant-term, .ods-ui .ods-variant-term)';
 
-$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
-$win: '.qds-variant-win:is(.qds-ui, .qds-ui *)';
+$glass: '.ods-variant-glass:is(.ods-ui,.ods-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui, .ods-ui *)';
+$win: '.ods-variant-win:is(.ods-ui, .ods-ui *)';
 
 @mixin styles {
   // QMarkupTable carries the same container/card classes, so one anatomy covers both.
-  .qds-ui .q-table__container {
-    --qds-table-bg: var(--qds-bg-card);
-    --qds-table-divider: var(--qds-stroke-subtle);
-    --qds-table-header-bg: transparent;
-    --qds-table-header-text: var(--qds-fg-muted);
-    --qds-table-row-hover-bg: var(--qds-state-hover);
-    --qds-table-selected-bg: var(--qds-state-selected);
+  .ods-ui .q-table__container {
+    --ods-table-bg: var(--ods-bg-card);
+    --ods-table-divider: var(--ods-stroke-subtle);
+    --ods-table-header-bg: transparent;
+    --ods-table-header-text: var(--ods-fg-muted);
+    --ods-table-row-hover-bg: var(--ods-state-hover);
+    --ods-table-selected-bg: var(--ods-state-selected);
 
-    color: var(--qds-fg-default);
-    background: var(--qds-table-bg);
-    border-radius: var(--qds-card-radius);
+    color: var(--ods-fg-default);
+    background: var(--ods-table-bg);
+    border-radius: var(--ods-card-radius);
   }
 
-  .qds-ui .q-table__card { box-shadow: var(--qds-card-shadow); }
-  .qds-ui :is(.q-table__card, .q-table--grid) { border-radius: var(--qds-card-radius); }
-  .qds-ui :is(.q-table--flat, .q-table--grid) { box-shadow: none; }
-  .qds-ui :is(.q-table--bordered, .qds-table--bordered) { border: var(--qds-border-width-control) solid var(--qds-stroke-default); }
+  .ods-ui .q-table__card { box-shadow: var(--ods-card-shadow); }
+  .ods-ui :is(.q-table__card, .q-table--grid) { border-radius: var(--ods-card-radius); }
+  .ods-ui :is(.q-table--flat, .q-table--grid) { box-shadow: none; }
+  .ods-ui :is(.q-table--bordered, .ods-table--bordered) { border: var(--ods-border-width-control) solid var(--ods-stroke-default); }
 
-  .qds-ui .q-table__container :is(.q-table__top, .q-table__bottom, thead, tr, th, td) { border-color: var(--qds-table-divider); }
-  #{$win} .q-table__container { --qds-table-divider: var(--qds-stroke-divider); }
-  .qds-ui :is(.q-table__top, .q-table__bottom) { color: var(--qds-fg-muted); }
-  .qds-ui .q-table { color: inherit; background: transparent; }
-  .qds-ui .q-table thead tr { height: var(--qds-table-header-height); background: var(--qds-table-header-bg); }
-  .qds-ui .q-table tbody td { height: var(--qds-table-row-height); font-size: var(--qds-font-size-body1); }
-  .qds-ui .q-table--dense .q-table :is(thead tr, tbody tr, tbody td) { height: 2rem; }
+  .ods-ui .q-table__container :is(.q-table__top, .q-table__bottom, thead, tr, th, td) { border-color: var(--ods-table-divider); }
+  #{$win} .q-table__container { --ods-table-divider: var(--ods-stroke-divider); }
+  .ods-ui :is(.q-table__top, .q-table__bottom) { color: var(--ods-fg-muted); }
+  .ods-ui .q-table { color: inherit; background: transparent; }
+  .ods-ui .q-table thead tr { height: var(--ods-table-header-height); background: var(--ods-table-header-bg); }
+  .ods-ui .q-table tbody td { height: var(--ods-table-row-height); font-size: var(--ods-font-size-body1); }
+  .ods-ui .q-table--dense .q-table :is(thead tr, tbody tr, tbody td) { height: 2rem; }
 
-  .qds-ui .q-table th {
-    color: var(--qds-table-header-text);
-    font-size: var(--qds-font-size-body2);
-    font-weight: var(--qds-font-weight-semibold);
+  .ods-ui .q-table th {
+    color: var(--ods-table-header-text);
+    font-size: var(--ods-font-size-body2);
+    font-weight: var(--ods-font-weight-semibold);
     letter-spacing: normal;
   }
-  .qds-ui .q-table th:is(.sortable:hover, .sorted) { color: var(--qds-fg-strong); }
+  .ods-ui .q-table th:is(.sortable:hover, .sorted) { color: var(--ods-fg-strong); }
 
   // Quasar paints hover/selection as td pseudo layers above the cell, so both must stay translucent.
-  .qds-ui .q-table tbody td::before { background: var(--qds-table-row-hover-bg); }
-  .qds-ui .q-table tbody td::after { background: var(--qds-table-selected-bg); }
+  .ods-ui .q-table tbody td::before { background: var(--ods-table-row-hover-bg); }
+  .ods-ui .q-table tbody td::after { background: var(--ods-table-selected-bg); }
 
-  .qds-ui .q-table__grid-content { gap: var(--qds-space-md); padding: var(--qds-space-md); }
+  .ods-ui .q-table__grid-content { gap: var(--ods-space-md); padding: var(--ods-space-md); }
 
-  .qds-ui .q-table__container.fullscreen { overflow: auto; background: var(--qds-bg-canvas); border-radius: 0; }
+  .ods-ui .q-table__container.fullscreen { overflow: auto; background: var(--ods-bg-canvas); border-radius: 0; }
 
 
-  #{$one} .q-table__container:where(:not(.q-table--bordered, .qds-table--bordered)) { border-color: transparent; }
+  #{$one} .q-table__container:where(:not(.q-table--bordered, .ods-table--bordered)) { border-color: transparent; }
   #{$one} :is(.q-table__top, .q-table__bottom) { min-height: 3.5rem; }
 
-  #{$term} .q-table__container { border: var(--qds-border-width-control) solid var(--qds-card-stroke); }
+  #{$term} .q-table__container { border: var(--ods-border-width-control) solid var(--ods-card-stroke); }
   #{$term} .q-table th { letter-spacing: 0.045em; text-transform: uppercase; }
 
   // A table composed directly in a card shares the card frame and keeps only row rhythm.
-  .qds-ui .q-card > .q-table__container { background: transparent; border: 0; box-shadow: none; }
-  .qds-ui .q-card > .q-card__section + .q-table__container { border-block-start: var(--qds-border-width-control) solid var(--qds-stroke-divider); }
-  .qds-ui .q-card > .q-table__container:not(:last-child) { border-block-end: var(--qds-border-width-control) solid var(--qds-stroke-divider); }
+  .ods-ui .q-card > .q-table__container { background: transparent; border: 0; box-shadow: none; }
+  .ods-ui .q-card > .q-card__section + .q-table__container { border-block-start: var(--ods-border-width-control) solid var(--ods-stroke-divider); }
+  .ods-ui .q-card > .q-table__container:not(:last-child) { border-block-end: var(--ods-border-width-control) solid var(--ods-stroke-divider); }
 
-  #{$shadcn} .q-table__container { --qds-table-divider: var(--qds-stroke-divider); --qds-table-header-text: var(--qds-fg-default); --qds-table-row-hover-bg: color-mix(in srgb, var(--qds-state-hover) 50%, var(--qds-bg-card)); --qds-table-selected-bg: var(--qds-state-selected); }
-  #{$shadcn} .q-table :is(th, td) { padding: var(--qds-space-sm); }
-  #{$shadcn} .q-table th { font-weight: var(--qds-font-weight-body-strong); }
+  #{$shadcn} .q-table__container { --ods-table-divider: var(--ods-stroke-divider); --ods-table-header-text: var(--ods-fg-default); --ods-table-row-hover-bg: color-mix(in srgb, var(--ods-state-hover) 50%, var(--ods-bg-card)); --ods-table-selected-bg: var(--ods-state-selected); }
+  #{$shadcn} .q-table :is(th, td) { padding: var(--ods-space-sm); }
+  #{$shadcn} .q-table th { font-weight: var(--ods-font-weight-body-strong); }
   #{$shadcn} .q-table :is(th, td):has(.q-checkbox) { padding-inline-end: 0; }
   #{$shadcn} .q-table :is(th, td) > .q-checkbox { vertical-align: middle; }
-  #{$shadcn} .q-table__sort-icon { color: var(--qds-fg-muted); font-size: var(--qds-control-icon-size-md); }
+  #{$shadcn} .q-table__sort-icon { color: var(--ods-fg-muted); font-size: var(--ods-control-icon-size-md); }
   // Paint below text/checkboxes rather than Quasar's opaque cell pseudo overlay.
   #{$shadcn} .q-table tbody td::before, #{$shadcn} .q-table tbody td::after { background: none; }
-  #{$shadcn} .q-table tbody tr.selected { background: var(--qds-table-selected-bg); }
+  #{$shadcn} .q-table tbody tr.selected { background: var(--ods-table-selected-bg); }
   @media (any-hover: hover) {
-    #{$shadcn} .q-table tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no-hover) { background: var(--qds-table-row-hover-bg); }
+    #{$shadcn} .q-table tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no-hover) { background: var(--ods-table-row-hover-bg); }
   }
-  #{$shadcn} .q-table tfoot { color: var(--qds-fg-default); background: color-mix(in srgb, var(--qds-state-selected) 50%, var(--qds-bg-card)); font-weight: var(--qds-font-weight-body-strong); }
-  #{$shadcn} .q-table tfoot td { border-block-start: var(--qds-border-width-control) solid var(--qds-stroke-divider); }
-  #{$shadcn} :is(.q-table__top, .q-table__bottom) { padding: var(--qds-space-sm) var(--qds-space-md); gap: var(--qds-space-sm); font-size: var(--qds-font-size-body); }
-  #{$shadcn} .q-table__title { color: var(--qds-fg-strong); font-size: var(--qds-font-size-body); font-weight: var(--qds-font-weight-semibold); letter-spacing: normal; }
-  #{$shadcn} .q-table__bottom { min-height: var(--qds-table-row-height); }
-  #{$shadcn} .q-table__bottom .q-table__control { gap: var(--qds-space-xs); }
-  #{$shadcn} .q-table__bottom .q-btn:where(:not(.q-btn--round, .q-btn--rounded)) { border-radius: var(--qds-radius-control); }
-  #{$shadcn} .q-table__bottom .q-btn.q-btn--flat:not(.disabled):hover { background: var(--qds-state-hover); }
-  #{$shadcn} .q-table__bottom .q-btn.q-btn--flat:not(.disabled):active { background: var(--qds-state-pressed); }
-  #{$shadcn} .q-table--dense .q-table :is(th, td) { padding: var(--qds-space-xs) var(--qds-space-sm); }
-  #{$shadcn} .q-table__grid-content { gap: 0; padding: var(--qds-space-xs); }
-  #{$shadcn} .q-table__grid-item-card { color: var(--qds-fg-default); background: var(--qds-bg-card); border: var(--qds-border-width-control) solid var(--qds-stroke-divider); padding: var(--qds-space-md); }
+  #{$shadcn} .q-table tfoot { color: var(--ods-fg-default); background: color-mix(in srgb, var(--ods-state-selected) 50%, var(--ods-bg-card)); font-weight: var(--ods-font-weight-body-strong); }
+  #{$shadcn} .q-table tfoot td { border-block-start: var(--ods-border-width-control) solid var(--ods-stroke-divider); }
+  #{$shadcn} :is(.q-table__top, .q-table__bottom) { padding: var(--ods-space-sm) var(--ods-space-md); gap: var(--ods-space-sm); font-size: var(--ods-font-size-body); }
+  #{$shadcn} .q-table__title { color: var(--ods-fg-strong); font-size: var(--ods-font-size-body); font-weight: var(--ods-font-weight-semibold); letter-spacing: normal; }
+  #{$shadcn} .q-table__bottom { min-height: var(--ods-table-row-height); }
+  #{$shadcn} .q-table__bottom .q-table__control { gap: var(--ods-space-xs); }
+  #{$shadcn} .q-table__bottom .q-btn:where(:not(.q-btn--round, .q-btn--rounded)) { border-radius: var(--ods-radius-control); }
+  #{$shadcn} .q-table__bottom .q-btn.q-btn--flat:not(.disabled):hover { background: var(--ods-state-hover); }
+  #{$shadcn} .q-table__bottom .q-btn.q-btn--flat:not(.disabled):active { background: var(--ods-state-pressed); }
+  #{$shadcn} .q-table--dense .q-table :is(th, td) { padding: var(--ods-space-xs) var(--ods-space-sm); }
+  #{$shadcn} .q-table__grid-content { gap: 0; padding: var(--ods-space-xs); }
+  #{$shadcn} .q-table__grid-item-card { color: var(--ods-fg-default); background: var(--ods-bg-card); border: var(--ods-border-width-control) solid var(--ods-stroke-divider); padding: var(--ods-space-md); }
   #{$shadcn} .q-table__grid-item--selected { transform: none; }
-  #{$shadcn} .q-table__grid-item--selected .q-table__grid-item-card { background: var(--qds-state-selected); }
-  #{$shadcn} .q-table__grid-item-title { color: var(--qds-fg-muted); opacity: 1; font-size: var(--qds-font-size-caption); }
-  #{$shadcn} .q-table__grid-item-value { font-size: var(--qds-font-size-body); }
-  #{$shadcn} .q-table__bottom--nodata { min-height: var(--qds-control-size-lg); color: var(--qds-fg-muted); }
-  #{$shadcn} .q-table__bottom-nodata-icon { font-size: var(--qds-control-icon-size-lg); }
-  #{$shadcn} .q-table__linear-progress { height: var(--qds-space-xs); }
-  #{$shadcn} .q-table__container.fullscreen { background: var(--qds-bg-canvas); border-radius: 0; }
+  #{$shadcn} .q-table__grid-item--selected .q-table__grid-item-card { background: var(--ods-state-selected); }
+  #{$shadcn} .q-table__grid-item-title { color: var(--ods-fg-muted); opacity: 1; font-size: var(--ods-font-size-caption); }
+  #{$shadcn} .q-table__grid-item-value { font-size: var(--ods-font-size-body); }
+  #{$shadcn} .q-table__bottom--nodata { min-height: var(--ods-control-size-lg); color: var(--ods-fg-muted); }
+  #{$shadcn} .q-table__bottom-nodata-icon { font-size: var(--ods-control-icon-size-lg); }
+  #{$shadcn} .q-table__linear-progress { height: var(--ods-space-xs); }
+  #{$shadcn} .q-table__container.fullscreen { background: var(--ods-bg-canvas); border-radius: 0; }
   #{$shadcn} .q-table__container.q-table--flat { box-shadow: none; }
   #{$shadcn} .q-table__container.q-table--square { border-radius: 0; }
   #{$shadcn} .q-card > .q-table__container { background: transparent; box-shadow: none; }
 
   // A grouped block: hairline rules and no rule under the last row.
-  #{$glass} .q-table__container { --qds-table-divider: var(--qds-border-subtle); overflow: hidden; }
-  #{$glass} .q-table__card { box-shadow: var(--qds-shadow-sm); }
+  #{$glass} .q-table__container { --ods-table-divider: var(--ods-border-subtle); overflow: hidden; }
+  #{$glass} .q-table__card { box-shadow: var(--ods-shadow-sm); }
   #{$glass} .q-table__container:is(.q-table--flat, .q-table--grid) { box-shadow: none; }
   // Pinned column headers keep the one hard edge; everything else fades.
-  #{$glass} .q-table th { border-bottom-color: var(--qds-border); color: var(--qds-fg-muted); font-size: var(--qds-font-size-caption); font-weight: var(--qds-font-weight-semibold); }
+  #{$glass} .q-table th { border-bottom-color: var(--ods-border); color: var(--ods-fg-muted); font-size: var(--ods-font-size-caption); font-weight: var(--ods-font-weight-semibold); }
   #{$glass} .q-table tbody tr:last-child td { border-bottom-color: transparent; }
-  #{$glass} .q-table__grid-item-card { border-radius: var(--qds-radius-control); border-color: var(--qds-border-subtle); }
+  #{$glass} .q-table__grid-item-card { border-radius: var(--ods-radius-control); border-color: var(--ods-border-subtle); }
   #{$glass} .q-table__container.q-table--square { border-radius: 0; }
   #{$glass} .q-card > .q-table__container { background: transparent; box-shadow: none; }
 

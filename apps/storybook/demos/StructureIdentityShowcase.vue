@@ -27,9 +27,9 @@ const splitter = ref(38)
 </script>
 
 <template>
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QAvatar</h2>
-    <div class="qds-story-row">
+    <div class="ods-story-row">
       <QAvatar color="primary" text-color="white">BV</QAvatar>
       <QAvatar color="accent" text-color="white" size="48px" font-size="20px">QD</QAvatar>
       <QAvatar rounded color="secondary" text-color="white">R</QAvatar>
@@ -38,7 +38,7 @@ const splitter = ref(38)
     </div>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QBar &amp; QToolbar</h2>
     <QCard>
       <QBar>
@@ -56,7 +56,7 @@ const splitter = ref(38)
     </QCard>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QBreadcrumbs</h2>
     <QBreadcrumbs>
       <QBreadcrumbsEl label="Workspace" />
@@ -64,32 +64,32 @@ const splitter = ref(38)
       <QBreadcrumbsEl label="Design system" />
       <QBreadcrumbsEl label="Tokens" />
     </QBreadcrumbs>
-    <QBreadcrumbs separator="/" active-color="accent" class="qds-story-spaced">
+    <QBreadcrumbs separator="/" active-color="accent" class="ods-story-spaced">
       <QBreadcrumbsEl label="Root" />
       <QBreadcrumbsEl label="Current" />
     </QBreadcrumbs>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QSplitter</h2>
     <QSplitter v-model="splitter" style="height: 200px">
       <template #before>
-        <div class="qds-story-pane">Before pane ({{ Math.round(splitter) }}%)</div>
+        <div class="ods-story-pane">Before pane ({{ Math.round(splitter) }}%)</div>
       </template>
       <template #after>
-        <div class="qds-story-pane">After pane</div>
+        <div class="ods-story-pane">After pane</div>
       </template>
     </QSplitter>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QScrollArea</h2>
     <QScrollArea style="height: 160px; max-width: 420px">
-      <div v-for="index in 20" :key="index" class="qds-story-pane">Scrollable row {{ index }}</div>
+      <div v-for="index in 20" :key="index" class="ods-story-pane">Scrollable row {{ index }}</div>
     </QScrollArea>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QLayout, QHeader &amp; QPageScroller</h2>
     <QLayout view="hHh lpR fFf" container style="height: 220px">
       <QHeader>
@@ -99,7 +99,7 @@ const splitter = ref(38)
       </QHeader>
       <QPageContainer>
         <QPage>
-          <div v-for="index in 12" :key="index" class="qds-story-pane">Scroll row {{ index }}</div>
+          <div v-for="index in 12" :key="index" class="ods-story-pane">Scroll row {{ index }}</div>
           <QPageScroller position="bottom-right" :offset="[12, 12]" :scroll-offset="60">
             <QAvatar color="primary" text-color="white" size="36px">&#8593;</QAvatar>
           </QPageScroller>
@@ -108,7 +108,7 @@ const splitter = ref(38)
     </QLayout>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QChatMessage</h2>
     <QChatMessage name="Design" avatar="" :text="['Tokens are the contract.']" />
     <QChatMessage name="Engineering" :text="['Components read them, never a second copy.']" sent bg-color="primary" text-color="white" />

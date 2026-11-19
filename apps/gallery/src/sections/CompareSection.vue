@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useDesignSystem } from '@osmova/quasar-design-system'
+import { useDesignSystem } from '@osmova/ds-quasar'
 
-// Reference oracle: real Fluent 2 web components beside the QDS/Quasar equivalent.
+// Reference oracle: real Fluent 2 web components beside the ODS/Quasar equivalent.
 const ds = useDesignSystem()
 const root = ref<HTMLElement | null>(null)
 const ready = ref(false)
@@ -61,7 +61,7 @@ onMounted(async () => {
   // Same face on both sides so the comparison isolates anatomy, not typography.
   applyTheme = (dark) => {
     if (root.value) {
-      setTheme({ ...(dark ? webDarkTheme : webLightTheme), fontFamilyBase: 'var(--qds-font-family)' }, root.value)
+      setTheme({ ...(dark ? webDarkTheme : webLightTheme), fontFamilyBase: 'var(--ods-font-family)' }, root.value)
     }
   }
   applyTheme(ds.isDark.value)
@@ -80,8 +80,8 @@ function openFluentDialog() {
 <template>
   <div ref="root" class="compare" :class="{ 'compare--ready': ready }">
     <p class="compare__intro">
-      Left: Fluent 2 web components (<code>@fluentui/web-components</code>, official tokens, QDS font).
-      Right: Quasar components with the QDS package defaults. Fluent is the main inspiration, not a pixel target — Swift and One UI refinements are intentional.
+      Left: Fluent 2 web components (<code>@fluentui/web-components</code>, official tokens, ODS font).
+      Right: Quasar components with the ODS package defaults. Fluent is the main inspiration, not a pixel target — Swift and One UI refinements are intentional.
     </p>
 
     <section class="compare__row" data-compare="button">
@@ -183,7 +183,7 @@ function openFluentDialog() {
         </fluent-tablist>
       </div>
       <div class="compare__cell compare__cell--qds">
-        <div class="compare__tab-scroll" :tabindex="termNarrow ? 0 : undefined" :role="termNarrow ? 'region' : undefined" :aria-label="termNarrow ? 'QDS comparison tabs, scroll horizontally for more' : undefined">
+        <div class="compare__tab-scroll" :tabindex="termNarrow ? 0 : undefined" :role="termNarrow ? 'region' : undefined" :aria-label="termNarrow ? 'ODS comparison tabs, scroll horizontally for more' : undefined">
           <q-tabs v-model="tab" no-caps align="left" inline-label>
             <q-tab name="overview" label="Overview" />
             <q-tab name="activity" label="Activity" />
@@ -252,7 +252,7 @@ function openFluentDialog() {
         <q-card class="compare__qds-card">
           <q-card-section>
             <div class="text-subtitle1">Quarterly report</div>
-            <div class="text-body2">Card with the QDS package defaults.</div>
+            <div class="text-body2">Card with the ODS package defaults.</div>
           </q-card-section>
           <q-card-actions>
             <q-btn no-caps unelevated color="primary" size="sm" label="Open" />
@@ -302,7 +302,7 @@ function openFluentDialog() {
           </q-menu>
         </q-btn>
         <q-btn no-caps label="Tooltip">
-          <q-tooltip>QDS tooltip</q-tooltip>
+          <q-tooltip>ODS tooltip</q-tooltip>
         </q-btn>
         <q-btn no-caps label="Dialog" @click="dialogOpen = true" />
         <q-dialog v-model="dialogOpen">
@@ -324,19 +324,19 @@ function openFluentDialog() {
 .compare {
   display: flex;
   flex-direction: column;
-  gap: var(--qds-space-lg);
+  gap: var(--ods-space-lg);
 }
 
 .compare__intro {
   margin: 0;
   max-width: 60rem;
-  color: var(--qds-text-muted);
+  color: var(--ods-text-muted);
 }
 
 .compare__row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--qds-space-sm) var(--qds-space-lg);
+  gap: var(--ods-space-sm) var(--ods-space-lg);
 }
 
 .compare__title {
@@ -353,20 +353,20 @@ function openFluentDialog() {
   flex-wrap: wrap;
   align-items: center;
   align-content: flex-start;
-  gap: var(--qds-space-sm);
+  gap: var(--ods-space-sm);
   min-width: 0;
-  padding: 2rem var(--qds-space-md) var(--qds-space-md);
-  border-radius: var(--qds-radius-md);
-  outline: 1px dashed var(--qds-border-subtle);
+  padding: 2rem var(--ods-space-md) var(--ods-space-md);
+  border-radius: var(--ods-radius-md);
+  outline: 1px dashed var(--ods-border-subtle);
 }
 
 .compare__cell::before {
   position: absolute;
-  inset-block-start: var(--qds-space-sm);
-  inset-inline-start: var(--qds-space-md);
+  inset-block-start: var(--ods-space-sm);
+  inset-inline-start: var(--ods-space-md);
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--qds-text-muted);
+  color: var(--ods-text-muted);
 }
 
 .compare__cell--fluent::before {
@@ -374,7 +374,7 @@ function openFluentDialog() {
 }
 
 .compare__cell--qds::before {
-  content: 'QDS';
+  content: 'ODS';
 }
 
 .compare__cell--fluent {
@@ -443,23 +443,23 @@ function openFluentDialog() {
 
 @media (max-width: 720px) {
   /* Only the confirmed Term/narrow overflow needs an authored demo adaptation. */
-  body.qds-variant-term .compare__tabs {
+  body.ods-variant-term .compare__tabs {
     width: 100%;
     min-width: 0;
   }
 
-  body.qds-variant-term .compare__tabs--fluent {
+  body.ods-variant-term .compare__tabs--fluent {
     flex-wrap: wrap;
   }
 
-  body.qds-variant-term .compare__tab-scroll {
+  body.ods-variant-term .compare__tab-scroll {
     display: block;
     width: 100%;
     min-width: 0;
     overflow-x: auto;
   }
 
-  body.qds-variant-term .compare__tab-scroll > .q-tabs {
+  body.ods-variant-term .compare__tab-scroll > .q-tabs {
     width: max-content;
     min-width: 100%;
   }

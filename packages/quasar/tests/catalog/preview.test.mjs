@@ -29,7 +29,7 @@ const renderer = createRenderer({
 })
 
 test('actual shared scaffold defaults theme controls on and explicitly disables them for Storybook', async () => {
-  const url = new URL('../../catalog/preview/QdsPreviewScaffold.vue', import.meta.url)
+  const url = new URL('../../catalog/preview/OdsPreviewScaffold.vue', import.meta.url)
   const { descriptor } = parse(readFileSync(url, 'utf8'))
   const compiled = compileScript(descriptor, { id: 'scaffold-ssr-test', inlineTemplate: true })
   const code = ts.transpileModule(compiled.content, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText
@@ -68,15 +68,15 @@ test('owned app mount/switch/unmount uses the compiled injection and releases bo
   helper.ownPreviewController(app, controller)
   app.mount({ children: [] })
   assert.equal(result.controller, controller)
-  assert.equal(globalThis.__qdsCatalogController, controller)
-  assert.equal(globalThis.__qdsCatalogPhase(), 'mounted')
+  assert.equal(globalThis.__odsCatalogController, controller)
+  assert.equal(globalThis.__odsCatalogPhase(), 'mounted')
   controller.setMode('dark'); controller.setVariant('shadcn'); controller.setShadcnBaseColor('slate')
   assert.equal(result.controller.state.mode, 'dark')
   assert.equal(result.controller.state.shadcnBaseColor, 'slate')
   app.unmount()
   assert.equal(controller.state.initialized, false)
-  assert.equal('__qdsCatalogController' in globalThis, false)
-  assert.equal('__qdsCatalogPhase' in globalThis, false)
+  assert.equal('__odsCatalogController' in globalThis, false)
+  assert.equal('__odsCatalogPhase' in globalThis, false)
 })
 
 test('late old-app disposal cannot delete newer owned handles', () => {
@@ -89,11 +89,11 @@ test('late old-app disposal cannot delete newer owned handles', () => {
   }
   const old = make(); const fresh = make()
   old.app.unmount()
-  assert.equal(globalThis.__qdsCatalogController, fresh.controller)
-  assert.equal(globalThis.__qdsCatalogPhase(), 'mounted')
+  assert.equal(globalThis.__odsCatalogController, fresh.controller)
+  assert.equal(globalThis.__odsCatalogPhase(), 'mounted')
   fresh.app.unmount()
-  assert.equal('__qdsCatalogController' in globalThis, false)
-  assert.equal('__qdsCatalogPhase' in globalThis, false)
+  assert.equal('__odsCatalogController' in globalThis, false)
+  assert.equal('__odsCatalogPhase' in globalThis, false)
 })
 
 for (const legacy of [false, true]) {
@@ -139,12 +139,12 @@ for (const legacy of [false, true]) {
       const fresh = make({ mode: 'dark', variant: 'shadcn', shadcnBaseColor: 'slate' })
       const assertFreshPaint = () => {
         assert.deepEqual(body.dataset, {
-          author: 'retained', qdsMode: 'dark', qdsResolved: 'dark',
-          qdsVariant: 'shadcn', qdsShadcnBaseColor: 'slate',
+          author: 'retained', odsMode: 'dark', odsResolved: 'dark',
+          odsVariant: 'shadcn', odsShadcnBaseColor: 'slate',
         })
-        assert.deepEqual([...classes].sort(), ['author-class', 'qds-theme-dark', 'qds-ui', 'qds-variant-shadcn'].sort())
-        assert.equal(globalThis.__qdsCatalogController, fresh.controller)
-        assert.equal(globalThis.__qdsCatalogPhase(), 'mounted')
+        assert.deepEqual([...classes].sort(), ['author-class', 'ods-theme-dark', 'ods-ui', 'ods-variant-shadcn'].sort())
+        assert.equal(globalThis.__odsCatalogController, fresh.controller)
+        assert.equal(globalThis.__odsCatalogPhase(), 'mounted')
         assert.equal(fresh.controller.state.initialized, true)
       }
       // Handover must dispose the old owner immediately, without leaking its listener.
@@ -167,8 +167,8 @@ for (const legacy of [false, true]) {
       assert.equal(fresh.controller.state.initialized, false)
       assert.deepEqual(body.dataset, { author: 'retained' })
       assert.deepEqual([...classes], ['author-class'])
-      assert.equal('__qdsCatalogController' in globalThis, false)
-      assert.equal('__qdsCatalogPhase' in globalThis, false)
+      assert.equal('__odsCatalogController' in globalThis, false)
+      assert.equal('__odsCatalogPhase' in globalThis, false)
     } finally {
       for (const app of apps) app.unmount()
       for (const [name, descriptor] of [['window', originalWindow], ['document', originalDocument]]) {
@@ -198,7 +198,7 @@ test('compiled shared button renders reactive loading in plain AND split branche
   const native = dataModule(`import { h } from '${import.meta.resolve('vue')}';
     const component = (name) => ({ name, props: ['label', 'dense', 'icon', 'disable', 'loading'], setup(props) { return () => h('native-' + name, { ...props }) } });
     export const QBtn = component('QBtn'), QBtnDropdown = component('QBtnDropdown'), QList = component('QList'), QItem = component('QItem'), QItemSection = component('QItemSection');`)
-  const url = new URL('../../catalog/demos/QdsButtonDemo.vue', import.meta.url)
+  const url = new URL('../../catalog/demos/OdsButtonDemo.vue', import.meta.url)
   const { descriptor } = parse(readFileSync(url, 'utf8'))
   const compiled = compileScript(descriptor, { id: 'button-test', inlineTemplate: true })
   const code = ts.transpileModule(compiled.content, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText
@@ -227,15 +227,15 @@ test('real CSF exports forward every live arg and share control defaults/options
   const controls = JSON.parse(readFileSync(new URL('../../catalog/control.json', import.meta.url), 'utf8'))
   const manifest = JSON.parse(readFileSync(new URL('../../catalog/manifest.json', import.meta.url), 'utf8'))
   const overrides = {
-    '@qds-catalog/control.json': dataModule(`export default ${JSON.stringify(controls)}`),
-    '@qds-catalog/manifest.json': dataModule(`export default ${JSON.stringify(manifest)}`),
-    '@qds-catalog/preview/QdsPreviewScaffold.vue': dataModule(`import { h } from '${import.meta.resolve('vue')}'; export default { props: ['caseId', 'title', 'themeControls'], setup(props, { slots }) { return () => h('scaffold', { ...props }, slots.default()) } }`),
+    '@ods-catalog/control.json': dataModule(`export default ${JSON.stringify(controls)}`),
+    '@ods-catalog/manifest.json': dataModule(`export default ${JSON.stringify(manifest)}`),
+    '@ods-catalog/preview/OdsPreviewScaffold.vue': dataModule(`import { h } from '${import.meta.resolve('vue')}'; export default { props: ['caseId', 'title', 'themeControls'], setup(props, { slots }) { return () => h('scaffold', { ...props }, slots.default()) } }`),
   }
   for (const entry of manifest.cases) {
     const filename = entry.demo.split('/').pop()
     const name = filename.replace('.vue', '')
-    overrides[`@qds-catalog/demos/${filename}`] = dataModule(`import { h } from '${import.meta.resolve('vue')}'; export default { props: ${JSON.stringify(entry.controls)}, setup(props) { return () => h('${name}', { ...props }) } }`)
-    overrides[`@qds-catalog/demos/${filename}?raw`] = dataModule(`export default ${JSON.stringify(readFileSync(new URL('../../catalog/' + entry.demo, import.meta.url), 'utf8'))}`)
+    overrides[`@ods-catalog/demos/${filename}`] = dataModule(`import { h } from '${import.meta.resolve('vue')}'; export default { props: ${JSON.stringify(entry.controls)}, setup(props) { return () => h('${name}', { ...props }) } }`)
+    overrides[`@ods-catalog/demos/${filename}?raw`] = dataModule(`export default ${JSON.stringify(readFileSync(new URL('../../catalog/' + entry.demo, import.meta.url), 'utf8'))}`)
   }
   const url = new URL('../../../../apps/storybook/stories/catalog-proof.stories.ts', import.meta.url)
   const code = ts.transpileModule(readFileSync(url, 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText
@@ -266,7 +266,7 @@ test('shared field control slot forwards edits and reactive readonly/disabled st
   const native = dataModule(`import { h } from '${import.meta.resolve('vue')}';
     export const QIcon = { render: () => null };
     export const QField = { props: ['modelValue'], emits: ['update:modelValue'], setup(props, { slots, emit }) { return () => h('field', {}, slots.control({ id: 'field-control', modelValue: props.modelValue, emitValue: (v) => emit('update:modelValue', v) })) } };`)
-  const url = new URL('../../catalog/demos/QdsFieldDemo.vue', import.meta.url)
+  const url = new URL('../../catalog/demos/OdsFieldDemo.vue', import.meta.url)
   const { descriptor } = parse(readFileSync(url, 'utf8'))
   const compiled = compileScript(descriptor, { id: 'field-test', inlineTemplate: true })
   const code = ts.transpileModule(compiled.content, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText

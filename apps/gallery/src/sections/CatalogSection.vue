@@ -20,18 +20,18 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 
 <style>
 .catalog-section {
-  gap: var(--qds-space-lg);
+  gap: var(--ods-space-lg);
 }
 
 .catalog-card {
-  border: 1px solid var(--qds-chrome-border);
+  border: 1px solid var(--ods-chrome-border);
 }
 
 .catalog-heading,
 .catalog-grid,
 .catalog-form {
   display: grid;
-  gap: var(--qds-space-md);
+  gap: var(--ods-space-md);
 }
 
 .catalog-heading {
@@ -49,11 +49,11 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 
 .catalog-demo {
   min-width: 0;
-  padding: var(--qds-space-md);
-  border: 1px solid var(--qds-chrome-border-soft);
-  border-radius: var(--qds-radius-lg);
-  background: var(--qds-chrome-surface);
-  box-shadow: var(--qds-chrome-shadow);
+  padding: var(--ods-space-md);
+  border: 1px solid var(--ods-chrome-border-soft);
+  border-radius: var(--ods-radius-lg);
+  background: var(--ods-chrome-surface);
+  box-shadow: var(--ods-chrome-shadow);
 }
 
 .catalog-demo--wide {
@@ -61,16 +61,16 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 }
 
 /* Glass frames a demo with a hairline and a radius concentric with its card, never a second fill. */
-.qds-variant-glass .catalog-demo {
-  border-color: var(--qds-border-subtle);
-  border-radius: var(--qds-radius-control);
+.ods-variant-glass .catalog-demo {
+  border-color: var(--ods-border-subtle);
+  border-radius: var(--ods-radius-control);
   background: transparent;
   box-shadow: none;
 }
 
 .catalog-label {
-  margin-bottom: var(--qds-space-sm);
-  color: var(--qds-text-muted);
+  margin-bottom: var(--ods-space-sm);
+  color: var(--ods-text-muted);
   font-size: 0.875rem;
   font-weight: 650;
 }
@@ -83,13 +83,13 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 .catalog-pull-box,
 .catalog-edit-target,
 .catalog-loading-box {
-  border: 1px solid var(--qds-chrome-border-soft);
-  border-radius: var(--qds-radius-md);
-  background: var(--qds-chrome-surface);
+  border: 1px solid var(--ods-chrome-border-soft);
+  border-radius: var(--ods-radius-md);
+  background: var(--ods-chrome-surface);
 }
 
 .catalog-bar {
-  color: var(--qds-text);
+  color: var(--ods-text);
 }
 
 .catalog-fab-stage {
@@ -108,7 +108,7 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 .catalog-loading-box,
 .catalog-pull-box {
   min-height: 5rem;
-  padding: var(--qds-space-md);
+  padding: var(--ods-space-md);
 }
 
 .catalog-loading-box {
@@ -117,7 +117,7 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 
 .catalog-media {
   overflow: hidden;
-  border-radius: var(--qds-radius-lg);
+  border-radius: var(--ods-radius-lg);
 }
 
 .catalog-video {
@@ -126,14 +126,14 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 }
 
 .catalog-media-caption {
-  padding: var(--qds-space-sm) var(--qds-space-md);
+  padding: var(--ods-space-sm) var(--ods-space-md);
   color: white;
   background: linear-gradient(transparent, rgb(0 0 0 / 0.62));
 }
 
 .catalog-image {
   width: min(100%, 32rem);
-  border-radius: var(--qds-radius-lg);
+  border-radius: var(--ods-radius-lg);
 }
 
 @media (max-width: 960px) {
@@ -150,8 +150,8 @@ import CatalogLoadingData from './catalog/CatalogLoadingData.vue'
 @media (max-width: 640px) {
   /* Leave room for native 290px portrait pickers by reducing wrapper padding,
      not the component's native geometry. */
-  .catalog-section .catalog-card.q-pa-lg { padding: var(--qds-space-sm); }
-  .catalog-section .catalog-demo { padding: var(--qds-space-xs); }
+  .catalog-section .catalog-card.q-pa-lg { padding: var(--ods-space-sm); }
+  .catalog-section .catalog-demo { padding: var(--ods-space-xs); }
   .catalog-heading {
     grid-template-columns: 1fr;
   }

@@ -3,94 +3,94 @@
 
 
 @mixin styles {
-  .qds-ui .q-badge {
+  .ods-ui .q-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--qds-badge-icon-gap);
-    min-height: var(--qds-badge-min-height);
-    padding: var(--qds-badge-padding);
-    color: var(--qds-fg-default);
-    background-color: var(--qds-bg-layer);
-    border: var(--qds-border-width-control) solid var(--qds-stroke-default);
-    border-radius: var(--qds-badge-radius);
-    font-size: var(--qds-font-size-caption);
-    font-weight: var(--qds-font-weight-semibold);
-    letter-spacing: var(--qds-control-letter-spacing);
-    line-height: var(--qds-line-height-caption);
+    gap: var(--ods-badge-icon-gap);
+    min-height: var(--ods-badge-min-height);
+    padding: var(--ods-badge-padding);
+    color: var(--ods-fg-default);
+    background-color: var(--ods-bg-layer);
+    border: var(--ods-border-width-control) solid var(--ods-stroke-default);
+    border-radius: var(--ods-badge-radius);
+    font-size: var(--ods-font-size-caption);
+    font-weight: var(--ods-font-weight-semibold);
+    letter-spacing: var(--ods-control-letter-spacing);
+    line-height: var(--ods-line-height-caption);
     vertical-align: middle;
   }
 
   // Anchored inside the top-end corner so wider counts grow outward, clear of the host label.
-  .qds-ui .q-badge--floating {
+  .ods-ui .q-badge--floating {
     top: 0;
-    inset-inline: calc(100% - var(--qds-space-sm)) auto;
-    min-width: var(--qds-badge-min-height);
-    padding-inline: var(--qds-space-xs);
+    inset-inline: calc(100% - var(--ods-space-sm)) auto;
+    min-width: var(--ods-badge-min-height);
+    padding-inline: var(--ods-space-xs);
     translate: 0 -50%;
   }
 
-  .qds-ui .q-btn-group > .q-btn-item .q-badge--floating { inset-inline: calc(100% - var(--qds-space-sm)) auto; }
-  .qds-ui .q-btn-group > .q-btn-item:has(.q-badge--floating) { z-index: 1; }
+  .ods-ui .q-btn-group > .q-btn-item .q-badge--floating { inset-inline: calc(100% - var(--ods-space-sm)) auto; }
+  .ods-ui .q-btn-group > .q-btn-item:has(.q-badge--floating) { z-index: 1; }
 
-  .qds-ui .q-badge--multi-line {
+  .ods-ui .q-badge--multi-line {
     word-break: normal;
   }
 
-  .qds-ui .q-badge--dense {
-    gap: var(--qds-badge-dense-icon-gap);
+  .ods-ui .q-badge--dense {
+    gap: var(--ods-badge-dense-icon-gap);
   }
 
-  .qds-ui .q-badge--outline {
+  .ods-ui .q-badge--outline {
     background-color: transparent;
-    border-color: var(--qds-stroke-default);
+    border-color: var(--ods-stroke-default);
   }
 
-  .qds-ui .q-badge--transparent {
-    color: var(--qds-fg-muted);
+  .ods-ui .q-badge--transparent {
+    color: var(--ods-fg-muted);
     background-color: transparent;
     border-color: transparent;
     opacity: 1;
   }
 
-  .qds-ui .q-badge.bg-grey {
-    color: var(--qds-fg-default);
-    @include importance.declarations { background-color: var(--qds-bg-layer) !important; }
+  .ods-ui .q-badge.bg-grey {
+    color: var(--ods-fg-default);
+    @include importance.declarations { background-color: var(--ods-bg-layer) !important; }
   }
 
-  .qds-ui .q-badge--outline.text-grey {
-    @include importance.declarations { color: var(--qds-fg-muted) !important; }
+  .ods-ui .q-badge--outline.text-grey {
+    @include importance.declarations { color: var(--ods-fg-muted) !important; }
     border-color: currentColor;
   }
 
   @each $role, $_ in button.$roles {
-    .qds-ui .q-badge.bg-#{$role}:not(.qds-tonal) {
-      color: var(--qds-badge-on-fill, var(--qds-text-on-#{$role}));
-      @include importance.declarations { background-color: var(--qds-badge-fill, var(--qds-color-#{$role})) !important; }
+    .ods-ui .q-badge.bg-#{$role}:not(.ods-tonal) {
+      color: var(--ods-badge-on-fill, var(--ods-text-on-#{$role}));
+      @include importance.declarations { background-color: var(--ods-badge-fill, var(--ods-color-#{$role})) !important; }
       border-color: transparent;
     }
 
-    .qds-ui .q-badge.bg-#{$role}.qds-tonal {
-      color: var(--qds-badge-on-fill, #{button.role-value($role, fg)});
+    .ods-ui .q-badge.bg-#{$role}.ods-tonal {
+      color: var(--ods-badge-on-fill, #{button.role-value($role, fg)});
       @include importance.declarations { background-color: button.role-soft($role) !important; }
       border-color: transparent;
     }
 
-    .qds-ui .q-badge.text-#{$role}, #{button.$shadcn} .q-badge.bg-#{$role} {
-      @include importance.declarations { color: var(--qds-badge-on-fill, #{button.role-value($role, fg)}) !important; }
+    .ods-ui .q-badge.text-#{$role}, #{button.$shadcn} .q-badge.bg-#{$role} {
+      @include importance.declarations { color: var(--ods-badge-on-fill, #{button.role-value($role, fg)}) !important; }
     }
 
-    .qds-ui .q-badge--outline.text-#{$role} {
+    .ods-ui .q-badge--outline.text-#{$role} {
       border-color: currentColor;
     }
   }
-  #{button.$shadcn} .q-badge:where(:not([class*='text-weight-'])) { font-weight: var(--qds-font-weight-medium); }
-  #{button.$shadcn} .q-badge:where(:not([class*='bg-'], [class*='text-'], .q-badge--outline, .q-badge--transparent)) { color: var(--qds-text-on-primary); background-color: var(--qds-badge-fill, var(--qds-color-primary)); border-color: transparent; }
-  #{button.$shadcn} .q-badge:where(:not([class*='bg-'], [class*='text-'], .q-badge--outline, .q-badge--transparent)):is(a, [tabindex]):hover { --qds-badge-fill: var(--qds-color-primary-hover); }
-  #{button.$shadcn} .q-badge:where(:not([class*='bg-'], [class*='text-'], .q-badge--outline, .q-badge--transparent)):is(a, [tabindex]):active { --qds-badge-fill: var(--qds-color-primary-pressed); }
-  #{button.$shadcn} .q-badge:is(a, [tabindex]):focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); }
-  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}):not(.qds-tonal) { --qds-badge-on-fill: var(--_qds-on); }
-  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}).qds-tonal { --qds-badge-on-fill: var(--_qds-fg); }
-  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}):not(.qds-tonal):is(a, [tabindex]):hover { --qds-badge-fill: var(--_qds-hover); }
-  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}):not(.qds-tonal):is(a, [tabindex]):active { --qds-badge-fill: var(--_qds-pressed); }
+  #{button.$shadcn} .q-badge:where(:not([class*='text-weight-'])) { font-weight: var(--ods-font-weight-medium); }
+  #{button.$shadcn} .q-badge:where(:not([class*='bg-'], [class*='text-'], .q-badge--outline, .q-badge--transparent)) { color: var(--ods-text-on-primary); background-color: var(--ods-badge-fill, var(--ods-color-primary)); border-color: transparent; }
+  #{button.$shadcn} .q-badge:where(:not([class*='bg-'], [class*='text-'], .q-badge--outline, .q-badge--transparent)):is(a, [tabindex]):hover { --ods-badge-fill: var(--ods-color-primary-hover); }
+  #{button.$shadcn} .q-badge:where(:not([class*='bg-'], [class*='text-'], .q-badge--outline, .q-badge--transparent)):is(a, [tabindex]):active { --ods-badge-fill: var(--ods-color-primary-pressed); }
+  #{button.$shadcn} .q-badge:is(a, [tabindex]):focus-visible { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus); }
+  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}):not(.ods-tonal) { --ods-badge-on-fill: var(--_ods-on); }
+  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}).ods-tonal { --ods-badge-on-fill: var(--_ods-fg); }
+  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}):not(.ods-tonal):is(a, [tabindex]):hover { --ods-badge-fill: var(--_ods-hover); }
+  #{button.$shadcn} .q-badge:is(#{button.$accent-fills}):not(.ods-tonal):is(a, [tabindex]):active { --ods-badge-fill: var(--_ods-pressed); }
 }

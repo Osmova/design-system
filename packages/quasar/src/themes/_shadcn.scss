@@ -9,7 +9,7 @@
 // Declaration-only reusable emitter. Include at an unlayered component boundary
 // AFTER native local-dark inversion. Palette belongs to the same scope as mode.
 // $palette: 'neutral'|'gray'|'zinc'|'stone'|'slate'; $scheme: light|dark; $bridge: boolean.
-// All upstream primitives: --qds-shadcn-{slot}; native aliases: --qds-* below.
+// All upstream primitives: --ods-shadcn-{slot}; native aliases: --ods-* below.
 @mixin scheme($palette: neutral, $scheme: light, $bridge: true, $state-container: null) {
   @include aliases;
   @include palette($palette, $scheme, $state-container);
@@ -31,28 +31,28 @@
   }
 
   $values: ('color-scheme': $scheme);
-  @each $slot, $value in $profile { $values: map.set($values, '--qds-shadcn-#{$slot}', $value); }
+  @each $slot, $value in $profile { $values: map.set($values, '--ods-shadcn-#{$slot}', $value); }
   // Search from the original source L/C/h, not an RGB round-trip, then recheck
   // the nearest-8-bit candidate against actual source-over backgrounds.
-  $values: map.set($values, '--qds-text-muted', tokens.readable(map.get($source, muted-foreground), $backgrounds, $scheme));
+  $values: map.set($values, '--ods-text-muted', tokens.readable(map.get($source, muted-foreground), $backgrounds, $scheme));
   // The ring is painted at 50% opacity: verify that actual composite, not just
   // its opaque color. Pinned border/input remain decorative, not control proof.
-  $values: map.set($values, '--qds-stroke-strong', tokens.readable(map.get($source, ring), $backgrounds, $scheme, 3, 0.5));
-  $values: map.set($values, '--qds-card-acrylic-tint-rgb', tokens.rgb-channels($card));
+  $values: map.set($values, '--ods-stroke-strong', tokens.readable(map.get($source, ring), $backgrounds, $scheme, 3, 0.5));
+  $values: map.set($values, '--ods-card-acrylic-tint-rgb', tokens.rgb-channels($card));
   @each $role, $fill in $fills {
-    $values: map.set($values, '--qds-color-#{$role}', $fill);
-    $values: map.set($values, '--qds-color-#{$role}-rgb', tokens.rgb-channels($fill));
-    $values: map.set($values, '--qds-text-on-#{$role}', map.get($pairs, $role));
+    $values: map.set($values, '--ods-color-#{$role}', $fill);
+    $values: map.set($values, '--ods-color-#{$role}-rgb', tokens.rgb-channels($fill));
+    $values: map.set($values, '--ods-text-on-#{$role}', map.get($pairs, $role));
     @each $state, $paint in map.get($states, $role) {
-      $values: map.set($values, '--qds-color-#{$role}-#{$state}', $paint);
-      $values: map.set($values, '--qds-color-#{$role}-#{$state}-rgb', tokens.rgb-channels($paint));
+      $values: map.set($values, '--ods-color-#{$role}-#{$state}', $paint);
+      $values: map.set($values, '--ods-color-#{$role}-#{$state}-rgb', tokens.rgb-channels($paint));
     }
     $fg: $fill;
     @if $role == primary { $fg: map.get($source, primary); }
     @if $role == secondary or $role == accent { $fg: map.get($source, '#{$role}-foreground'); }
     @if $role == negative { $fg: map.get($source, destructive); }
     @if map.has-key(tokens.$status, $scheme, $role) { $fg: map.get(tokens.$status, $scheme, $role, fg); }
-    $values: map.set($values, '--qds-fg-#{$role}', tokens.readable($fg, $backgrounds, $scheme));
+    $values: map.set($values, '--ods-fg-#{$role}', tokens.readable($fg, $backgrounds, $scheme));
   }
   @return $values;
 }
@@ -90,8 +90,8 @@
 // Same-element accent selectors. Neutral matches on the accent alone (missing
 // or unknown palettes fall back to Neutral); other palettes add their attribute.
 @function accent-anchor($palette, $accent) {
-  $attr: '[data-qds-shadcn-accent="#{$accent}"]';
-  @if $palette != neutral { $attr: '[data-qds-shadcn-base-color="#{$palette}"]#{$attr}'; }
+  $attr: '[data-ods-shadcn-accent="#{$accent}"]';
+  @if $palette != neutral { $attr: '[data-ods-shadcn-base-color="#{$palette}"]#{$attr}'; }
   @return $attr;
 }
 
@@ -102,31 +102,31 @@
   @each $role in tokens.$roles {
     $values: map.set($values, 'text-on-#{$role}-pressed-mix', 100%);
     $soft: if($role == primary, brand, $role);
-    $values: map.set($values, 'surface-#{$soft}-soft', 'color-mix(in srgb, var(--qds-color-#{$role}) 10%, var(--qds-bg-card))');
+    $values: map.set($values, 'surface-#{$soft}-soft', 'color-mix(in srgb, var(--ods-color-#{$role}) 10%, var(--ods-bg-card))');
   }
   @each $step in light, dark {
-    $values: map.set($values, 'color-primary-#{$step}', 'var(--qds-color-primary)');
-    $values: map.set($values, 'color-primary-#{$step}-rgb', 'var(--qds-color-primary-rgb)');
+    $values: map.set($values, 'color-primary-#{$step}', 'var(--ods-color-primary)');
+    $values: map.set($values, 'color-primary-#{$step}-rgb', 'var(--ods-color-primary-rgb)');
   }
   @each $step in sm, md, lg {
-    @each $kind in button, field { $values: map.set($values, '#{$kind}-size-#{$step}', 'var(--qds-control-size-#{$step})'); }
+    @each $kind in button, field { $values: map.set($values, '#{$kind}-size-#{$step}', 'var(--ods-control-size-#{$step})'); }
   }
   @each $kind in button, field, chip {
-    $values: map.set($values, '#{$kind}-icon-size', 'var(--qds-control-icon-size-md)');
-    $values: map.set($values, '#{$kind}-dense-icon-size', 'var(--qds-control-icon-size-sm)');
+    $values: map.set($values, '#{$kind}-icon-size', 'var(--ods-control-icon-size-md)');
+    $values: map.set($values, '#{$kind}-dense-icon-size', 'var(--ods-control-icon-size-sm)');
   }
-  @each $stroke in default, secondary, top, bottom { $values: map.set($values, 'control-stroke-#{$stroke}', 'var(--qds-shadcn-input)'); }
+  @each $stroke in default, secondary, top, bottom { $values: map.set($values, 'control-stroke-#{$stroke}', 'var(--ods-shadcn-input)'); }
   @each $level in thin, regular, thick {
-    $values: map.set($values, 'material-#{$level}-bg', 'var(--qds-shadcn-popover)');
+    $values: map.set($values, 'material-#{$level}-bg', 'var(--ods-shadcn-popover)');
     $values: map.set($values, 'material-#{$level}-filter', none);
     $values: map.set($values, 'material-#{$level}-blur', 0px);
   }
   @each $name in bg, bg-fallback, bg-readable, bg-opaque, header-bg, header-bg-opaque {
-    $values: map.set($values, 'card-#{$name}', 'var(--qds-shadcn-card)');
+    $values: map.set($values, 'card-#{$name}', 'var(--ods-shadcn-card)');
   }
-  @each $step, $alias in (2: sm, 4: sm, 8: md, 16: lg, 28: lg, 64: lg) { $values: map.set($values, 'shadow-#{$step}', 'var(--qds-shadow-#{$alias})'); }
+  @each $step, $alias in (2: sm, 4: sm, 8: md, 16: lg, 28: lg, 64: lg) { $values: map.set($values, 'shadow-#{$step}', 'var(--ods-shadow-#{$alias})'); }
   $result: ();
-  @each $name, $value in $values { $result: map.set($result, '--qds-#{$name}', $value); }
+  @each $name, $value in $values { $result: map.set($result, '--ods-#{$name}', $value); }
   @return $result;
 }
 
@@ -144,12 +144,12 @@
   @each $name in bg-overlay, control-halo, control-stroke-on-accent-top, control-stroke-on-accent-bottom,
     material-edge, material-saturate, tab-active-rail,
     fill-hover-mix, fill-pressed-mix, text-on-fill-pressed-mix {
-    $needed: map.set($needed, '--qds-#{$name}', true);
+    $needed: map.set($needed, '--ods-#{$name}', true);
   }
-  @each $role in tokens.$roles { $needed: map.set($needed, '--qds-text-on-#{$role}-pressed-mix', true); }
+  @each $role in tokens.$roles { $needed: map.set($needed, '--ods-text-on-#{$role}-pressed-mix', true); }
   @each $level in thin, regular, thick {
-    $needed: map.set($needed, '--qds-material-#{$level}-filter', true);
-    $needed: map.set($needed, '--qds-material-#{$level}-blur', true);
+    $needed: map.set($needed, '--ods-material-#{$level}-filter', true);
+    $needed: map.set($needed, '--ods-material-#{$level}-blur', true);
   }
   $changed: true;
   @while $changed {
@@ -182,7 +182,7 @@
 // alias/bridge block; non-Neutral profiles emit only differing declarations.
 // Supply an isolated $scope when composing independently themed nested roots.
 @mixin local-scopes($boundaries, $scheme: dark,
-  $scope: ':is(.qds-ui.qds-variant-shadcn, .qds-ui .qds-variant-shadcn)', $state-container: null) {
+  $scope: ':is(.ods-ui.ods-variant-shadcn, .ods-ui .ods-variant-shadcn)', $state-container: null) {
   #{selector.nest($scope, $boundaries)} {
     @include boundary-aliases;
     @include bridge;
@@ -190,7 +190,7 @@
   }
   @each $palette in tokens.$base-colors {
     @if $palette != neutral {
-      $anchor: selector.append($scope, '[data-qds-shadcn-base-color="#{$palette}"]');
+      $anchor: selector.append($scope, '[data-ods-shadcn-base-color="#{$palette}"]');
       #{selector.nest($anchor, $boundaries)} { @include palette($palette, $scheme, $state-container, true); }
     }
   }
@@ -203,26 +203,26 @@
 }
 
 @mixin bridge {
-  @each $role in tokens.$roles { --q-#{$role}: var(--qds-color-#{$role}); }
+  @each $role in tokens.$roles { --q-#{$role}: var(--ods-color-#{$role}); }
 }
 
 // Variables-only scope rules, emitted after the existing theme. Unknown/missing
 // palette attributes inherit the same-scope Neutral default, never a parent hue.
 @mixin scopes {
-  // Match the existing body.qds-ui.body--dark token boundary (specificity 3)
+  // Match the existing body.ods-ui.body--dark token boundary (specificity 3)
   // without selector doubling, so a stale Quasar class cannot keep old aliases.
-  $scope: ':is(body.qds-ui.qds-variant-shadcn, .qds-variant-shadcn)';
-  @layer qds.tokens {
+  $scope: ':is(body.ods-ui.ods-variant-shadcn, .ods-variant-shadcn)';
+  @layer ods.tokens {
     #{$scope} { @include scheme; }
     @each $palette in tokens.$base-colors {
       @if $palette != neutral {
-        #{$scope}[data-qds-shadcn-base-color='#{$palette}'] { @include palette($palette, light, null, true); }
+        #{$scope}[data-ods-shadcn-base-color='#{$palette}'] { @include palette($palette, light, null, true); }
       }
     }
     @each $palette in tokens.$base-colors {
-      $attr: if($palette == neutral, '', '[data-qds-shadcn-base-color="#{$palette}"]');
-      #{$scope}#{$attr}:where(.qds-theme-dark, [data-qds-resolved='dark'], body.qds-ui.body--dark):not([data-qds-resolved='light']):not(.qds-theme-light),
-      :where(.qds-theme-dark, body.qds-ui.body--dark) #{$scope}#{$attr}:not([data-qds-resolved='light']):not(.qds-theme-light):not(:where(.qds-theme-light *)) {
+      $attr: if($palette == neutral, '', '[data-ods-shadcn-base-color="#{$palette}"]');
+      #{$scope}#{$attr}:where(.ods-theme-dark, [data-ods-resolved='dark'], body.ods-ui.body--dark):not([data-ods-resolved='light']):not(.ods-theme-light),
+      :where(.ods-theme-dark, body.ods-ui.body--dark) #{$scope}#{$attr}:not([data-ods-resolved='light']):not(.ods-theme-light):not(:where(.ods-theme-light *)) {
         // The common scope already rebinds every native alias on this same
         // element. Only palette-dependent values change at scheme boundaries.
         @include palette($palette, dark, null, $palette != neutral);
@@ -234,13 +234,13 @@
       @each $palette in tokens.$base-colors {
         $attr: accent-anchor($palette, $accent);
         #{$scope}#{$attr} { @include accent($palette, light, $accent); }
-        #{$scope}#{$attr}:where(.qds-theme-dark, [data-qds-resolved='dark'], body.qds-ui.body--dark):not([data-qds-resolved='light']):not(.qds-theme-light),
-        :where(.qds-theme-dark, body.qds-ui.body--dark) #{$scope}#{$attr}:not([data-qds-resolved='light']):not(.qds-theme-light):not(:where(.qds-theme-light *)) {
+        #{$scope}#{$attr}:where(.ods-theme-dark, [data-ods-resolved='dark'], body.ods-ui.body--dark):not([data-ods-resolved='light']):not(.ods-theme-light),
+        :where(.ods-theme-dark, body.ods-ui.body--dark) #{$scope}#{$attr}:not([data-ods-resolved='light']):not(.ods-theme-light):not(:where(.ods-theme-light *)) {
           @include accent($palette, dark, $accent);
         }
       }
     }
   }
   // Quasar owns unlayered root variables; this scoped bridge must be unlayered.
-  .qds-variant-shadcn { @include bridge; }
+  .ods-variant-shadcn { @include bridge; }
 }

@@ -9,20 +9,20 @@ For each `ROLE` in `primary`, `secondary`, `accent`, `positive`, `negative`,
 
 | Token | Use |
 | --- | --- |
-| `--qds-color-ROLE` | Rest fill |
-| `--qds-color-ROLE-hover` | Actual opaque hover fill |
-| `--qds-color-ROLE-pressed` | Actual opaque pressed fill |
-| `--qds-color-ROLE-rgb` | Rest RGB tuple |
-| `--qds-color-ROLE-hover-rgb` | Hover RGB tuple from the same state color |
-| `--qds-color-ROLE-pressed-rgb` | Pressed RGB tuple from the same state color |
-| `--qds-text-on-ROLE` | Unchanged foreground at rest, hover and pressed |
-| `--qds-text-on-ROLE-pressed-mix` | `100%`: bind to generic pressed text mix if needed |
+| `--ods-color-ROLE` | Rest fill |
+| `--ods-color-ROLE-hover` | Actual opaque hover fill |
+| `--ods-color-ROLE-pressed` | Actual opaque pressed fill |
+| `--ods-color-ROLE-rgb` | Rest RGB tuple |
+| `--ods-color-ROLE-hover-rgb` | Hover RGB tuple from the same state color |
+| `--ods-color-ROLE-pressed-rgb` | Pressed RGB tuple from the same state color |
+| `--ods-text-on-ROLE` | Unchanged foreground at rest, hover and pressed |
+| `--ods-text-on-ROLE-pressed-mix` | `100%`: bind to generic pressed text mix if needed |
 
 Component lanes must consume the state tokens directly, not recreate
 `color-mix(... 90%/80% ...)`. Keep the same foreground across states; do not fade
 it or flip white/dark. A component using the generic pressed-text calculation
-must rebind `--qds-text-on-fill-pressed-mix` to
-`var(--qds-text-on-ROLE-pressed-mix)`. Shadcn also emits the generic value as
+must rebind `--ods-text-on-fill-pressed-mix` to
+`var(--ods-text-on-ROLE-pressed-mix)`. Shadcn also emits the generic value as
 `100%`, but a more-specific native component declaration may otherwise replace it.
 Do not apply a further state overlay or opacity to these fills or foregrounds:
 that changes the verified pair. Disabled rendering is a separate contract.
@@ -89,7 +89,7 @@ selector; supply the relative selector or selector list as the first argument:
 ```
 
 Signature: `local-scopes($boundaries, $scheme: dark,
-$scope: ':is(.qds-ui.qds-variant-shadcn, .qds-ui .qds-variant-shadcn)',
+$scope: ':is(.ods-ui.ods-variant-shadcn, .ods-ui .ods-variant-shadcn)',
 $state-container: null)`.
 
 The default scope has sufficient specificity to replace the native unlayered

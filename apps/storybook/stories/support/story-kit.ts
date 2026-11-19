@@ -102,7 +102,7 @@ export function showcase(component: Component, description: string): StoryObj {
   return {
     render: () => ({
       components: { Showcase: component },
-      template: '<main class="qds-story-shell"><Showcase /></main>',
+      template: '<main class="ods-story-shell"><Showcase /></main>',
     }),
     parameters: {
       layout: 'fullscreen',

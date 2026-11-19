@@ -38,32 +38,32 @@ for (const [palette, schemes] of Object.entries(sourceProfiles())) {
   for (const [scheme, slots] of Object.entries(schemes)) {
     for (const [slot, value] of Object.entries(slots)) {
       const expected = rgb(new Color(value))
-      assert.deepEqual(parseRgb(emitted[`${palette}-${scheme}`][`--qds-shadcn-${slot}`]), expected, `${palette}/${scheme}/${slot}`)
+      assert.deepEqual(parseRgb(emitted[`${palette}-${scheme}`][`--ods-shadcn-${slot}`]), expected, `${palette}/${scheme}/${slot}`)
       checked++
     }
     const p = emitted[`${palette}-${scheme}`]
-    const card = parseRgb(p['--qds-shadcn-card'])
+    const card = parseRgb(p['--ods-shadcn-card'])
     for (const role of roles) {
       for (const [state, weight] of [['hover', 0.9], ['pressed', 0.8]]) {
-        assert.deepEqual(parseRgb(p[`--qds-color-${role}-${state}`]), firstPassingFill(parseRgb(p[`--qds-color-${role}`]), parseRgb(p[`--qds-text-on-${role}`]), card, weight), `${palette}/${scheme}/${role}/${state} minimal fill calibration`)
+        assert.deepEqual(parseRgb(p[`--ods-color-${role}-${state}`]), firstPassingFill(parseRgb(p[`--ods-color-${role}`]), parseRgb(p[`--ods-text-on-${role}`]), card, weight), `${palette}/${scheme}/${role}/${state} minimal fill calibration`)
         checked++
       }
     }
-    const backgrounds = ['background', 'card', 'popover', 'muted', 'accent'].map((slot) => parseRgb(p[`--qds-shadcn-${slot}`]))
-    roles.forEach((role) => backgrounds.push(mix(parseRgb(p[`--qds-color-${role}`]), card, 0.1)))
+    const backgrounds = ['background', 'card', 'popover', 'muted', 'accent'].map((slot) => parseRgb(p[`--ods-shadcn-${slot}`]))
+    roles.forEach((role) => backgrounds.push(mix(parseRgb(p[`--ods-color-${role}`]), card, 0.1)))
     const foregroundSources = {
-      '--qds-text-muted': slots['muted-foreground'],
-      '--qds-fg-primary': slots.primary, '--qds-fg-secondary': slots['secondary-foreground'],
-      '--qds-fg-accent': slots['accent-foreground'], '--qds-fg-negative': slots.destructive,
-      '--qds-fg-positive': scheme === 'light' ? '#166534' : '#4ade80',
-      '--qds-fg-warning': scheme === 'light' ? '#92400e' : '#fbbf24',
-      '--qds-fg-info': scheme === 'light' ? '#1d4ed8' : '#93c5fd',
+      '--ods-text-muted': slots['muted-foreground'],
+      '--ods-fg-primary': slots.primary, '--ods-fg-secondary': slots['secondary-foreground'],
+      '--ods-fg-accent': slots['accent-foreground'], '--ods-fg-negative': slots.destructive,
+      '--ods-fg-positive': scheme === 'light' ? '#166534' : '#4ade80',
+      '--ods-fg-warning': scheme === 'light' ? '#92400e' : '#fbbf24',
+      '--ods-fg-info': scheme === 'light' ? '#1d4ed8' : '#93c5fd',
     }
     for (const [alias, source] of Object.entries(foregroundSources)) {
       assert.deepEqual(parseRgb(p[alias]), firstPassing(source, scheme, backgrounds, 4.5), `${palette}/${scheme}/${alias} first passing source-L step`)
       checked++
     }
-    assert.deepEqual(parseRgb(p['--qds-stroke-strong']), firstPassing(slots.ring, scheme, backgrounds, 3, 0.5), `${palette}/${scheme}/painted ring`)
+    assert.deepEqual(parseRgb(p['--ods-stroke-strong']), firstPassing(slots.ring, scheme, backgrounds, 3, 0.5), `${palette}/${scheme}/painted ring`)
     checked++
   }
 }

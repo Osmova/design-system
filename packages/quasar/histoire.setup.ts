@@ -29,7 +29,7 @@ import type { App } from 'vue'
 // proof host — same entrypoint, same injection-identity, one explicit owner
 // per preview document (Histoire shell app lives for the whole iframe
 // document; the runtime controller is destroyed together with it).
-import { configureDesignSystem, qdsIconSet } from './dist/index.js'
+import { configureDesignSystem, odsIconSet } from './dist/index.js'
 import { ownPreviewController } from './catalog/preview/index'
 
 // Legacy underline stories keep importing `../src`; they receive the SAME
@@ -44,7 +44,7 @@ import './src/fonts/inter.css'
 import './src/fonts/selawik.css'
 import './src/css/index.scss'
 import '@quasar/quasar-ui-qwindow/index.css'
-import '@osmova/quasar-design-system/css/extensions/qwindow'
+import '@osmova/ds-quasar/css/extensions/qwindow'
 import '../../apps/storybook/demos/showcase.scss'
 
 type QuasarInstall = (app: App, options: object, ssrContext?: unknown) => void
@@ -72,7 +72,7 @@ export function setupVue3({ app }: { app: App }) {
     directives: {
       ClosePopup,
     },
-    iconSet: qdsIconSet,
+    iconSet: odsIconSet,
     plugins: {
       BottomSheet,
       Dialog,

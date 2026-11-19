@@ -26,7 +26,7 @@ import {
   type ShadcnBaseColor,
   type DesignSystemMode,
   type DesignSystemVariantName,
-} from '@osmova/quasar-design-system'
+} from '@osmova/ds-quasar'
 
 import TokensSection from './sections/TokensSection.vue'
 import TypographySection from './sections/TypographySection.vue'
@@ -415,30 +415,30 @@ watch(tab, revealActiveGalleryTab)
 .gallery-nav {
   --gallery-chrome-font: 'Inter Variable', Inter, system-ui, sans-serif;
   --gallery-title-font: 'Plus Jakarta Sans', 'Inter Variable', Inter, system-ui, sans-serif;
-  --qds-button-min-height: 32px;
-  --qds-button-size-sm: 32px;
-  --qds-button-size-md: 32px;
-  --qds-button-size-lg: 32px;
-  --qds-button-padding-inline: 0px;
-  --qds-button-dense-padding-inline: 0px;
-  --qds-button-radius: 6px;
-  --qds-radius-control: 6px;
-  --qds-control-size-md: 32px;
-  --qds-control-letter-spacing: 0;
-  --qds-control-text-transform: none;
-  --qds-tab-min-height: 34px;
-  --qds-row-min-height: 34px;
+  --ods-button-min-height: 32px;
+  --ods-button-size-sm: 32px;
+  --ods-button-size-md: 32px;
+  --ods-button-size-lg: 32px;
+  --ods-button-padding-inline: 0px;
+  --ods-button-dense-padding-inline: 0px;
+  --ods-button-radius: 6px;
+  --ods-radius-control: 6px;
+  --ods-control-size-md: 32px;
+  --ods-control-letter-spacing: 0;
+  --ods-control-text-transform: none;
+  --ods-tab-min-height: 34px;
+  --ods-row-min-height: 34px;
 }
 
 /* Radius never changes size, so glass may show its capsules here. */
-.qds-variant-glass .gallery-header,
-.qds-variant-glass .gallery-nav {
-  --qds-button-radius: 9999px;
+.ods-variant-glass .gallery-header,
+.ods-variant-glass .gallery-nav {
+  --ods-button-radius: 9999px;
 }
 
 .gallery-page {
   min-height: 0;
-  padding: var(--qds-space-md);
+  padding: var(--ods-space-md);
 }
 
 .gallery-header {
@@ -505,7 +505,7 @@ watch(tab, revealActiveGalleryTab)
   min-height: 32px;
   padding-inline: 0.625rem 0.5rem;
   border: 0;
-  border-radius: var(--qds-button-radius);
+  border-radius: var(--ods-button-radius);
   font-family: var(--gallery-chrome-font);
   font-size: 12px;
   font-weight: 500;
@@ -573,7 +573,7 @@ watch(tab, revealActiveGalleryTab)
 .gallery-nav {
   padding-block: 0.25rem 0.75rem;
   font-family: var(--gallery-chrome-font);
-  color: var(--qds-text);
+  color: var(--ods-text);
 }
 
 .gallery-nav.gallery-nav.gallery-nav {
@@ -609,7 +609,7 @@ watch(tab, revealActiveGalleryTab)
   font-family: var(--gallery-chrome-font);
   margin-inline: 0.5rem;
   padding: 0 0.625rem;
-  border-radius: var(--qds-button-radius);
+  border-radius: var(--ods-button-radius);
   font-size: 13px;
   font-weight: 450;
   letter-spacing: 0;
@@ -621,16 +621,16 @@ watch(tab, revealActiveGalleryTab)
 }
 
 .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {
-  background: color-mix(in srgb, var(--qds-color-primary) 12%, transparent);
+  background: color-mix(in srgb, var(--ods-color-primary) 12%, transparent);
   /* A light-on-light primary (term amber) is unreadable as a label; the tint carries the accent. */
-  color: var(--qds-fg-strong);
+  color: var(--ods-fg-strong);
   font-weight: 560;
 }
 
 /* Ink has no tints: the current page inverts. */
-.qds-variant-ink .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {
-  background: var(--qds-fg-strong);
-  color: var(--qds-bg-card);
+.ods-variant-ink .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {
+  background: var(--ods-fg-strong);
+  color: var(--ods-bg-card);
 }
 
 .gallery-panels :deep(.q-tab-panel) {

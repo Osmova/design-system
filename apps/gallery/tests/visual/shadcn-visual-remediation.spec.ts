@@ -10,7 +10,7 @@ type NativeFixture = {
 }
 async function windowEvidence(page: Page) {
   return page.evaluate(() => {
-    const fixture = (window as unknown as { __qdsNativeTest: NativeFixture }).__qdsNativeTest
+    const fixture = (window as unknown as { __odsNativeTest: NativeFixture }).__odsNativeTest
     const element = document.querySelector('.q-window[aria-label="Floating native window"]')
     const rect = element?.getBoundingClientRect()
     return {
@@ -323,7 +323,7 @@ for (const mode of ['light', 'dark'] as const) {
       reduced.push({ fixture: 'global-loading', ...await matGeometry(globalCircle) })
       await info.attach(`global-loading-${mode}-static`, { body: await page.locator('.q-loading__box').screenshot({ animations: 'allow' }), contentType: 'image/png' })
     } finally {
-      await page.evaluate(() => (window as unknown as { __qdsPluginsTest: { cleanup: () => void } }).__qdsPluginsTest.cleanup())
+      await page.evaluate(() => (window as unknown as { __odsPluginsTest: { cleanup: () => void } }).__odsPluginsTest.cleanup())
     }
     await info.attach(`material-geometry-${mode}`, { body: JSON.stringify({ normal, reduced }), contentType: 'application/json' })
   })
@@ -346,7 +346,7 @@ test('T180 Notify progress is visible normally and intentionally hidden when red
     await expect(notification).toBeVisible()
     await info.attach('notify-reduced-intentionally-hidden-progress', { body: await notification.screenshot({ animations: 'allow' }), contentType: 'image/png' })
   } finally {
-    await page.evaluate(() => (window as unknown as { __qdsPluginsTest: { cleanup: () => void } }).__qdsPluginsTest.cleanup())
+    await page.evaluate(() => (window as unknown as { __odsPluginsTest: { cleanup: () => void } }).__odsPluginsTest.cleanup())
   }
 })
 
@@ -399,8 +399,8 @@ async function selectionPaint(content: Locator) {
       const selected = getComputedStyle(node, '::selection')
       return { tag: node.tagName, foreground: rgba(selected.color), background: rgba(selected.backgroundColor) }
     })
-    const foreground = rgba(s.getPropertyValue('--qds-text-on-primary'))
-    const background = rgba(s.getPropertyValue('--qds-color-primary'))
+    const foreground = rgba(s.getPropertyValue('--ods-text-on-primary'))
+    const background = rgba(s.getPropertyValue('--ods-color-primary'))
     const luminance = (rgb: number[]) => rgb.slice(0, 3).reduce((sum, channel, i) => {
       const n = channel / 255
       return sum + (n <= 0.04045 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4) * [0.2126, 0.7152, 0.0722][i]
@@ -511,8 +511,8 @@ test('T178 selected tabs remain distinct without focus in normal and forced colo
          await inactive.evaluate(element => (element as HTMLElement).blur())
          await expect(inactive).toHaveCSS('outline-width', '2px')
          await expect(active).toHaveCSS('outline-style', 'none')
-         await expect(page.locator('body')).toHaveAttribute('data-qds-resolved', mode)
-         evidence.push({ mode, label, rings, selectedAfterKeyboard: await inactive.getAttribute('aria-selected'), rootMode: await page.locator('body').getAttribute('data-qds-resolved') })
+         await expect(page.locator('body')).toHaveAttribute('data-ods-resolved', mode)
+         evidence.push({ mode, label, rings, selectedAfterKeyboard: await inactive.getAttribute('aria-selected'), rootMode: await page.locator('body').getAttribute('data-ods-resolved') })
          await tabs.scrollIntoViewIfNeeded()
          await info.attach(`tabs-${mode}-forced-keyboard-selected-from-${label}`, { body: await tabs.screenshot({ animations: 'allow' }), contentType: 'image/png' })
          await info.attach(`tabs-${mode}-forced-keyboard-from-${label}`, { body: await page.screenshot({ fullPage: false, animations: 'allow' }), contentType: 'image/png' })
@@ -564,9 +564,9 @@ test('T178 authored parallax caption has a complete contrast-safe scrim', async 
   expect(src).toBeTruthy()
   // The loaded image is an inline SVG; request interception cannot fail a data URI.
   // Exercise a real native image error, without injecting or overriding any styles.
-  await page.route('**/qds-parallax-unavailable.svg', route => route.abort('failed'))
+  await page.route('**/ods-parallax-unavailable.svg', route => route.abort('failed'))
   await applyShadcn(page, 'light', 'neutral')
-  await image.evaluate(element => { (element as HTMLImageElement).src = '/qds-parallax-unavailable.svg' })
+  await image.evaluate(element => { (element as HTMLImageElement).src = '/ods-parallax-unavailable.svg' })
   await expect.poll(() => image.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBe(0)
   expect((await paint(caption)).textContrast).toBeGreaterThanOrEqual(4.5)
   await info.attach('parallax-caption-native-image-fallback', { body: await parallax.screenshot({ animations: 'allow' }), contentType: 'image/png' })

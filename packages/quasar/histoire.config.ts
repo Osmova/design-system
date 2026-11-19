@@ -11,13 +11,13 @@ export default defineConfig({
     autoPropsDisabled: true,
   },
   theme: {
-    title: 'Quasar Design System',
+    title: 'Osmova Design System',
     logo: {
-      square: './public/qds-logo-square.svg',
-      light: './public/qds-logo-light.svg',
-      dark: './public/qds-logo-dark.svg',
+      square: './public/ods-logo-square.svg',
+      light: './public/ods-logo-light.svg',
+      dark: './public/ods-logo-dark.svg',
     },
-    favicon: 'qds-favicon.svg',
+    favicon: 'ods-favicon.svg',
     colors: {
       primary: {
         500: '#005a9e',

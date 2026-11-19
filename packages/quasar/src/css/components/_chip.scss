@@ -10,153 +10,153 @@ $tonal-fills: ();
   $tonal-fills: map.set($tonal-fills, $role, (fg: button.role-value($role, fg), bg: button.role-soft($role)));
 }
 
-$tonal-fills: map.set($tonal-fills, 'grey', (fg: var(--qds-fg-default), bg: var(--qds-bg-layer)));
+$tonal-fills: map.set($tonal-fills, 'grey', (fg: var(--ods-fg-default), bg: var(--ods-bg-layer)));
 
-$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
+$glass: '.ods-variant-glass:is(.ods-ui,.ods-ui *)';
 
 @mixin styles {
-  .qds-ui .q-chip {
-    gap: var(--qds-chip-icon-gap);
+  .ods-ui .q-chip {
+    gap: var(--ods-chip-icon-gap);
     height: auto;
-    min-height: var(--qds-chip-min-height);
-    padding: var(--qds-chip-padding);
-    color: var(--qds-fg-default);
-    background: var(--qds-control-fill-default);
-    border: var(--qds-border-width-control) solid;
+    min-height: var(--ods-chip-min-height);
+    padding: var(--ods-chip-padding);
+    color: var(--ods-fg-default);
+    background: var(--ods-control-fill-default);
+    border: var(--ods-border-width-control) solid;
     @include materials.elevation-border;
-    border-radius: var(--qds-chip-radius);
-    font-weight: var(--qds-font-weight-medium);
-    letter-spacing: var(--qds-control-letter-spacing);
+    border-radius: var(--ods-chip-radius);
+    font-weight: var(--ods-font-weight-medium);
+    letter-spacing: var(--ods-control-letter-spacing);
     transition:
-      background-color var(--qds-motion-fast),
-      border-color var(--qds-motion-fast),
-      box-shadow var(--qds-motion-fast),
-      color var(--qds-motion-fast);
+      background-color var(--ods-motion-fast),
+      border-color var(--ods-motion-fast),
+      box-shadow var(--ods-motion-fast),
+      color var(--ods-motion-fast);
   }
 
-  .qds-ui .q-chip--square {
-    border-radius: var(--qds-radius-sm);
+  .ods-ui .q-chip--square {
+    border-radius: var(--ods-radius-sm);
   }
 
-  .qds-ui .q-chip--dense,
-  .qds-ui .q-field--dense .q-chip {
-    min-height: var(--qds-chip-dense-min-height);
-    padding: var(--qds-chip-dense-padding);
+  .ods-ui .q-chip--dense,
+  .ods-ui .q-field--dense .q-chip {
+    min-height: var(--ods-chip-dense-min-height);
+    padding: var(--ods-chip-dense-padding);
   }
 
-  .qds-ui .q-chip--clickable:where(:not(.q-chip--selected)):hover {
-    background-color: var(--qds-control-fill-hover);
+  .ods-ui .q-chip--clickable:where(:not(.q-chip--selected)):hover {
+    background-color: var(--ods-control-fill-hover);
   }
 
-  .qds-ui .q-chip--clickable:where(:not(.q-chip--selected)):active {
-    background-color: var(--qds-control-fill-pressed);
+  .ods-ui .q-chip--clickable:where(:not(.q-chip--selected)):active {
+    background-color: var(--ods-control-fill-pressed);
   }
 
-  .qds-ui .q-chip:where([class*='bg-']) {
+  .ods-ui .q-chip:where([class*='bg-']) {
     border-color: transparent;
   }
 
-  .qds-ui .q-chip.q-chip--clickable[tabindex]:focus {
+  .ods-ui .q-chip.q-chip--clickable[tabindex]:focus {
     box-shadow: none;
   }
 
-  .qds-ui .q-chip.q-chip--clickable[tabindex]:is(.q-chip--selected, :hover) {
-    box-shadow: var(--qds-control-halo);
+  .ods-ui .q-chip.q-chip--clickable[tabindex]:is(.q-chip--selected, :hover) {
+    box-shadow: var(--ods-control-halo);
   }
 
-  .qds-ui .q-chip--selected:has(> .q-chip__content > svg:first-child) > .q-chip__icon--left { display: none; }
+  .ods-ui .q-chip--selected:has(> .q-chip__content > svg:first-child) > .q-chip__icon--left { display: none; }
 
-  .qds-ui .q-chip:focus-visible {
-    outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus);
-    outline-offset: var(--qds-focus-ring-offset);
+  .ods-ui .q-chip:focus-visible {
+    outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
+    outline-offset: var(--ods-focus-ring-offset);
   }
 
-  .qds-ui .q-chip--selected {
-    color: var(--qds-fg-brand);
-    background-color: var(--qds-surface-brand-soft);
+  .ods-ui .q-chip--selected {
+    color: var(--ods-fg-brand);
+    background-color: var(--ods-surface-brand-soft);
   }
 
-  .qds-ui .q-chip--outline {
+  .ods-ui .q-chip--outline {
     background: transparent;
-    border-color: var(--qds-stroke-default);
+    border-color: var(--ods-stroke-default);
   }
 
-  .qds-ui .q-chip .q-chip__content {
+  .ods-ui .q-chip .q-chip__content {
     align-items: center;
-    gap: var(--qds-chip-icon-gap);
+    gap: var(--ods-chip-icon-gap);
     color: inherit;
-    line-height: var(--qds-control-content-line-height);
+    line-height: var(--ods-control-content-line-height);
   }
 
-  .qds-ui .q-chip--dense,
-  .qds-ui .q-field--dense .q-chip,
-  .qds-ui .q-chip--dense .q-chip__content,
-  .qds-ui .q-field--dense .q-chip .q-chip__content {
-    gap: var(--qds-chip-dense-icon-gap);
+  .ods-ui .q-chip--dense,
+  .ods-ui .q-field--dense .q-chip,
+  .ods-ui .q-chip--dense .q-chip__content,
+  .ods-ui .q-field--dense .q-chip .q-chip__content {
+    gap: var(--ods-chip-dense-icon-gap);
   }
 
-  .qds-ui .q-chip .q-chip__icon {
-    width: var(--qds-chip-icon-size);
-    min-width: var(--qds-chip-icon-size);
-    height: var(--qds-chip-icon-size);
+  .ods-ui .q-chip .q-chip__icon {
+    width: var(--ods-chip-icon-size);
+    min-width: var(--ods-chip-icon-size);
+    height: var(--ods-chip-icon-size);
     margin: 0;
     color: currentColor;
-    font-size: var(--qds-chip-icon-size);
-    opacity: var(--qds-control-icon-opacity);
+    font-size: var(--ods-chip-icon-size);
+    opacity: var(--ods-control-icon-opacity);
   }
 
-  .qds-ui .q-chip--dense .q-chip__icon,
-  .qds-ui .q-field--dense .q-chip .q-chip__icon {
-    width: var(--qds-chip-dense-icon-size);
-    min-width: var(--qds-chip-dense-icon-size);
-    height: var(--qds-chip-dense-icon-size);
-    font-size: var(--qds-chip-dense-icon-size);
+  .ods-ui .q-chip--dense .q-chip__icon,
+  .ods-ui .q-field--dense .q-chip .q-chip__icon {
+    width: var(--ods-chip-dense-icon-size);
+    min-width: var(--ods-chip-dense-icon-size);
+    height: var(--ods-chip-dense-icon-size);
+    font-size: var(--ods-chip-dense-icon-size);
   }
 
-  .qds-ui .q-chip .q-chip__icon--remove {
-    border-radius: var(--qds-radius-full);
+  .ods-ui .q-chip .q-chip__icon--remove {
+    border-radius: var(--ods-radius-full);
   }
 
-  .qds-ui .q-chip .q-chip__icon--remove:focus-visible {
-    outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus);
+  .ods-ui .q-chip .q-chip__icon--remove:focus-visible {
+    outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
     opacity: 1;
   }
 
   @each $fill, $tone in $tonal-fills {
-    .qds-ui .q-chip.bg-#{$fill}:not(.qds-solid) {
+    .ods-ui .q-chip.bg-#{$fill}:not(.ods-solid) {
       @include importance.declarations { color: map.get($tone, fg) !important; background-color: map.get($tone, bg) !important; }
     }
 
     @if map.has-key(button.$roles, $fill) {
-      .qds-ui .q-chip.bg-#{$fill}.qds-solid {
-        @include importance.declarations { color: var(--qds-chip-on-fill, var(--qds-text-on-#{$fill})) !important; background-color: var(--qds-chip-fill, var(--qds-color-#{$fill})) !important; }
+      .ods-ui .q-chip.bg-#{$fill}.ods-solid {
+        @include importance.declarations { color: var(--ods-chip-on-fill, var(--ods-text-on-#{$fill})) !important; background-color: var(--ods-chip-fill, var(--ods-color-#{$fill})) !important; }
       }
 
-      .qds-ui .q-chip.text-#{$fill} {
-        @include importance.declarations { color: var(--qds-chip-on-fill, #{button.role-value($fill, fg)}) !important; }
+      .ods-ui .q-chip.text-#{$fill} {
+        @include importance.declarations { color: var(--ods-chip-on-fill, #{button.role-value($fill, fg)}) !important; }
       }
 
-      .qds-ui .q-chip--outline.text-#{$fill} {
+      .ods-ui .q-chip--outline.text-#{$fill} {
         border-color: currentColor;
       }
     }
   }
 
   @media (forced-colors: active) {
-    .qds-ui .q-chip {
+    .ods-ui .q-chip {
       border-color: ButtonText;
     }
   }
 
-  #{button.$shadcn} .q-chip { border-color: var(--qds-card-stroke); box-shadow: none; }
-  #{button.$shadcn} .q-chip--clickable:where(:not([class*='bg-'])), #{button.$shadcn} .q-chip--clickable.qds-solid:is(.bg-secondary, .bg-accent):not(.disabled) { border-color: var(--qds-control-stroke-strong); }
-  #{button.$shadcn} .q-chip .q-chip__icon--remove:hover { background: var(--qds-state-hover); opacity: 1; }
+  #{button.$shadcn} .q-chip { border-color: var(--ods-card-stroke); box-shadow: none; }
+  #{button.$shadcn} .q-chip--clickable:where(:not([class*='bg-'])), #{button.$shadcn} .q-chip--clickable.ods-solid:is(.bg-secondary, .bg-accent):not(.disabled) { border-color: var(--ods-control-stroke-strong); }
+  #{button.$shadcn} .q-chip .q-chip__icon--remove:hover { background: var(--ods-state-hover); opacity: 1; }
   #{button.$shadcn} .q-chip.q-chip--clickable[tabindex]:is(.q-chip--selected, :hover) { box-shadow: none; }
-  #{button.$shadcn} .q-chip:is(#{button.$accent-fills}).qds-solid { --qds-chip-on-fill: var(--_qds-on); border-color: transparent; }
-  #{button.$shadcn} .q-chip:is(#{button.$accent-fills}).qds-solid.q-chip--clickable:not(.disabled):hover { --qds-chip-fill: var(--_qds-hover); }
-  #{button.$shadcn} .q-chip:is(#{button.$accent-fills}).qds-solid.q-chip--clickable:not(.disabled):active { --qds-chip-fill: var(--_qds-pressed); }
+  #{button.$shadcn} .q-chip:is(#{button.$accent-fills}).ods-solid { --ods-chip-on-fill: var(--_ods-on); border-color: transparent; }
+  #{button.$shadcn} .q-chip:is(#{button.$accent-fills}).ods-solid.q-chip--clickable:not(.disabled):hover { --ods-chip-fill: var(--_ods-hover); }
+  #{button.$shadcn} .q-chip:is(#{button.$accent-fills}).ods-solid.q-chip--clickable:not(.disabled):active { --ods-chip-fill: var(--_ods-pressed); }
   @media (forced-colors: active) { #{button.$shadcn} .q-chip { border-color: ButtonText; } }
 
   // A label identifies the chip, so its edge is a hairline rather than a 3:1 ring.
-  #{$glass} .q-chip:where(:not([class*='bg-'], .q-chip--outline)) { border-color: var(--qds-material-stroke); }
+  #{$glass} .q-chip:where(:not([class*='bg-'], .q-chip--outline)) { border-color: var(--ods-material-stroke); }
 }

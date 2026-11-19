@@ -55,7 +55,7 @@ async function open(page: Page, id: string, globals: Globals) {
   const encoded = Object.entries(globals).map(([key, value]) => `${key}:${value}`).join(';')
   await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=${encoded}`)
   await page.waitForFunction((variant) => {
-    const controller = (window as unknown as { __qdsCatalogController?: { state: { initialized: boolean, variant: string } } }).__qdsCatalogController
+    const controller = (window as unknown as { __odsCatalogController?: { state: { initialized: boolean, variant: string } } }).__odsCatalogController
     const render = (window as unknown as { __STORYBOOK_PREVIEW__?: { currentRender?: { phase?: string } } }).__STORYBOOK_PREVIEW__?.currentRender
     return render?.phase === 'finished' && controller?.state.initialized && controller.state.variant === variant
   }, globals.variant)
@@ -72,10 +72,10 @@ async function setGlobals(page: Page, globals: Globals) {
 
 async function expectPainted(page: Page, globals: Globals) {
   const body = page.locator('body')
-  if (globals.variant) await expect(body).toHaveAttribute('data-qds-variant', globals.variant)
-  if (globals.scheme) await expect(body).toHaveAttribute('data-qds-resolved', globals.scheme)
-  if (globals.ink && globals.variant === 'ink') await expect(body).toHaveAttribute('data-qds-ink', globals.ink)
-  if (globals.palette && globals.variant === 'shadcn') await expect(body).toHaveAttribute('data-qds-shadcn-base-color', globals.palette)
+  if (globals.variant) await expect(body).toHaveAttribute('data-ods-variant', globals.variant)
+  if (globals.scheme) await expect(body).toHaveAttribute('data-ods-resolved', globals.scheme)
+  if (globals.ink && globals.variant === 'ink') await expect(body).toHaveAttribute('data-ods-ink', globals.ink)
+  if (globals.palette && globals.variant === 'shadcn') await expect(body).toHaveAttribute('data-ods-shadcn-base-color', globals.palette)
 }
 
 async function seriousViolations(page: Page, known: string[] = []): Promise<string[]> {
@@ -147,18 +147,18 @@ test.describe('runtime controller', () => {
     await open(page, 'components-actions--button', { variant: 'zen', scheme: 'dark' })
     const origin = await page.evaluate(() => {
       const holder = window as unknown as Record<string, unknown>
-      holder.__smokePrevious = holder.__qdsCatalogController
+      holder.__smokePrevious = holder.__odsCatalogController
       const channel = holder.__STORYBOOK_ADDONS_CHANNEL__ as { emit: (event: string, payload: unknown) => void }
       channel.emit('forceRemount', { storyId: 'components-actions--button' })
       return performance.timeOrigin
     })
     await page.waitForFunction(() => {
       const holder = window as unknown as Record<string, { state: { initialized: boolean } } | undefined>
-      return holder.__qdsCatalogController !== holder.__smokePrevious && holder.__qdsCatalogController?.state.initialized
+      return holder.__odsCatalogController !== holder.__smokePrevious && holder.__odsCatalogController?.state.initialized
     })
     const state = await page.evaluate(() => {
       const holder = window as unknown as Record<string, { state: { initialized: boolean, variant: string, resolvedMode: string } } | undefined>
-      return { origin: performance.timeOrigin, previous: holder.__smokePrevious?.state.initialized, current: holder.__qdsCatalogController?.state }
+      return { origin: performance.timeOrigin, previous: holder.__smokePrevious?.state.initialized, current: holder.__odsCatalogController?.state }
     })
     expect(state.origin, 'same preview document').toBe(origin)
     expect(state.previous, 'previous controller destroyed').toBe(false)

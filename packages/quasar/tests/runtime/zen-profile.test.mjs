@@ -30,8 +30,8 @@ test('every Zen rule is scoped to the Zen profile and borrows no other profile s
   const css = compile(`@use 'src/css/components/variants/zen';
     @include zen.styles;`)
   for (const [path] of flattenRules(css)) {
-    assert.match(path, /\.qds-variant-zen/, `unscoped Zen rule: ${path}`)
-    assert.doesNotMatch(path, /qds-variant-(fluent|ink|one|term|shadcn|glass)/, `Zen borrowed another profile scope: ${path}`)
+    assert.match(path, /\.ods-variant-zen/, `unscoped Zen rule: ${path}`)
+    assert.doesNotMatch(path, /ods-variant-(fluent|ink|one|term|shadcn|glass)/, `Zen borrowed another profile scope: ${path}`)
   }
 })
 
@@ -53,13 +53,13 @@ test('Zen declares no inherited Fluent focus bar, rail, acrylic or Ink sketch tr
 
 // Reading presentation is an explicit class, removes decorative depth and
 // motion, and keeps every boundary. It claims nothing about e-paper hardware.
-test('the .qds-reading modifier removes depth and motion while every Zen boundary survives', () => {
+test('the .ods-reading modifier removes depth and motion while every Zen boundary survives', () => {
   const css = compile(`@use 'src/css/components/variants/zen';
     @include zen.styles;`)
-  const reading = flattenRules(css).filter(([path]) => path.includes('.qds-reading'))
+  const reading = flattenRules(css).filter(([path]) => path.includes('.ods-reading'))
   assert.ok(reading.length >= 3)
   for (const [path] of reading) {
-    assert.match(path, /\.qds-variant-zen\.qds-reading/, `reading rules stay scoped to Zen: ${path}`)
+    assert.match(path, /\.ods-variant-zen\.ods-reading/, `reading rules stay scoped to Zen: ${path}`)
   }
   const declarations = reading.map(([, body]) => body).join(';')
   for (const removed of ['box-shadow:none', 'transition:none', 'animation:none', 'backdrop-filter:none', 'background-image:none']) {
@@ -90,7 +90,7 @@ function zenTokens(scheme) {
   return Object.fromEntries([...css.matchAll(/--([\w-]+):\s*([^;}]+)/g)].map((match) => [match[1], match[2].trim()]))
 }
 
-// qds-variant-scheme pins hover/pressed fills to these mixes over fg-strong,
+// ods-variant-scheme pins hover/pressed fills to these mixes over fg-strong,
 // and keeps the on-fill text unmixed at pressed (text-on-fill-pressed-mix 100%).
 const FILL_STATES = { default: 1, hover: 0.88, pressed: 0.76 }
 const ROLE_FG_MIX = 0.8
@@ -161,15 +161,15 @@ const zenProgram = (extra = '') => `@use 'src/css/components/variants/zen';
 
 test('a deliberately cross-profile-corrupted control fails the Zen scope check', () => {
   const corrupt = compile(zenProgram(`
-    :is(.qds-ui.qds-variant-fluent, .qds-ui .qds-variant-fluent) .q-btn { border-radius: 12px; }
-    .qds-ui .q-tab__indicator { background: red; }`))
+    :is(.ods-ui.ods-variant-fluent, .ods-ui .ods-variant-fluent) .q-btn { border-radius: 12px; }
+    .ods-ui .q-tab__indicator { background: red; }`))
   const paths = flattenRules(corrupt).map(([path]) => path)
-  assert.ok(paths.some((path) => !/\.qds-variant-zen/.test(path)), 'the corrupted control must contain an unscoped rule')
-  assert.ok(paths.some((path) => /qds-variant-fluent/.test(path)), 'the corrupted control must borrow another profile scope')
+  assert.ok(paths.some((path) => !/\.ods-variant-zen/.test(path)), 'the corrupted control must contain an unscoped rule')
+  assert.ok(paths.some((path) => /ods-variant-fluent/.test(path)), 'the corrupted control must borrow another profile scope')
   assert.throws(() => {
     for (const path of paths) {
-      assert.match(path, /\.qds-variant-zen/)
-      assert.doesNotMatch(path, /qds-variant-(fluent|ink|one|term|shadcn|glass)/)
+      assert.match(path, /\.ods-variant-zen/)
+      assert.doesNotMatch(path, /ods-variant-(fluent|ink|one|term|shadcn|glass)/)
     }
   }, 'the scope check must reject the corrupted control')
 })
@@ -183,18 +183,18 @@ test('a Zen partial that depended on the compatibility grammar would fail the re
 })
 
 // A `dark` prop on a light page inverts by rebinding the alias tokens and
-// treats --qds-surface-N as the value it inverts from. A profile that paints
-// straight from --qds-surface-N therefore keeps its light face under a
+// treats --ods-surface-N as the value it inverts from. A profile that paints
+// straight from --ods-surface-N therefore keeps its light face under a
 // local-dark surface while the text flips, which measured 1.00:1 before this
 // gate existed.
-test('Zen paints every surface through a rebindable alias, never a raw --qds-surface-N', () => {
+test('Zen paints every surface through a rebindable alias, never a raw --ods-surface-N', () => {
   const bundle = compile("@use 'src/css/index.scss';")
   const offenders = []
   for (const [path, declarations] of flattenRules(bundle)) {
-    if (!/\.qds-variant-zen/.test(path)) continue
+    if (!/\.ods-variant-zen/.test(path)) continue
     for (const declaration of declarations.split(';')) {
-      if (!/^(background|background-color|--_qds-zen-face)\s*:/.test(declaration.trim())) continue
-      if (/var\(--qds-surface-[0-9]/.test(declaration)) offenders.push(`${path}{${declaration.trim()}}`)
+      if (!/^(background|background-color|--_ods-zen-face)\s*:/.test(declaration.trim())) continue
+      if (/var\(--ods-surface-[0-9]/.test(declaration)) offenders.push(`${path}{${declaration.trim()}}`)
     }
   }
   assert.deepEqual(offenders, [])
@@ -203,9 +203,9 @@ test('Zen paints every surface through a rebindable alias, never a raw --qds-sur
 test('with the compatibility grammar removed the Zen field still paints its own well in every state', () => {
   const css = compile(zenProgram())
   for (const expected of [
-    /\.q-field__control\{[^}]*background:var\(--qds-bg-surface-1\)/,
-    /\.q-field__control:hover\{background:var\(--qds-bg-surface-1\)\}/,
-    /\.q-field--focused \.q-field__control\{[^}]*background:var\(--qds-bg-surface-1\)/,
+    /\.q-field__control\{[^}]*background:var\(--ods-bg-surface-1\)/,
+    /\.q-field__control:hover\{background:var\(--ods-bg-surface-1\)\}/,
+    /\.q-field--focused \.q-field__control\{[^}]*background:var\(--ods-bg-surface-1\)/,
   ]) assert.match(css, expected)
 })
 
@@ -215,18 +215,18 @@ test('with the compatibility grammar removed the Zen field still paints its own 
 const tokenCss = compile("@use 'src/themes/default';")
 function zenScope(dark) {
   const blocks = [...tokenCss.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
-    .filter(([, selector]) => dark ? /\.qds-theme-dark\.qds-variant-zen/.test(selector) : selector.trim() === '.qds-variant-zen')
+    .filter(([, selector]) => dark ? /\.ods-theme-dark\.ods-variant-zen/.test(selector) : selector.trim() === '.ods-variant-zen')
   return Object.fromEntries(blocks.flatMap(([, , body]) => [...body.matchAll(/(--[\w-]+):([^;]+)/g)].map((m) => [m[1], m[2].trim()])))
 }
 
 for (const dark of [false, true]) {
   test(`Zen ${dark ? 'dark' : 'light'} depth tokens: lifts are outset, wells and press are inset`, () => {
     const scope = zenScope(dark)
-    for (const lift of ['--qds-shadow-sm', '--_qds-zen-lift-2', '--_qds-zen-lift-3', '--qds-shadow-md', '--qds-shadow-lg']) {
+    for (const lift of ['--ods-shadow-sm', '--_ods-zen-lift-2', '--_ods-zen-lift-3', '--ods-shadow-md', '--ods-shadow-lg']) {
       assert.ok(scope[lift], `${lift} is emitted`)
       assert.doesNotMatch(scope[lift], /inset/, `${lift} lifts`)
     }
-    for (const recess of ['--_qds-zen-inset', '--_qds-zen-press', '--_qds-zen-edge']) {
+    for (const recess of ['--_ods-zen-inset', '--_ods-zen-press', '--_ods-zen-edge']) {
       assert.ok(scope[recess], `${recess} is emitted`)
       for (const layer of scope[recess].split(/,(?![^(]*\))/)) assert.match(layer, /inset/, `${recess} recesses: ${layer}`)
     }
@@ -239,14 +239,14 @@ test('Zen pressed states recede: an inset shadow and no upward travel', () => {
   assert.ok(pressed.length >= 4)
   for (const [path, body] of pressed) {
     assert.doesNotMatch(body, /translateY\(-/, `pressed must not lift: ${path}`)
-    assert.doesNotMatch(body, /--_qds-zen-lift|--qds-shadow-(md|lg)/, `pressed must not add elevation: ${path}`)
+    assert.doesNotMatch(body, /--_ods-zen-lift|--ods-shadow-(md|lg)/, `pressed must not add elevation: ${path}`)
   }
-  assert.match(css, /\.q-btn:not\(\.disabled\):active\{[^}]*--_qds-zen-depth: ?var\(--_qds-zen-press\)/)
+  assert.match(css, /\.q-btn:not\(\.disabled\):active\{[^}]*--_ods-zen-depth: ?var\(--_ods-zen-press\)/)
 })
 
 test('Zen focus pairs the glow with a real outline or boundary, never the glow alone', () => {
   const rules = flattenRules(compile(zenProgram()))
-  const glows = rules.filter(([, body]) => /0 0 0 0?\.25rem color-mix\(in srgb, ?var\(--qds-stroke-(focus|error)\)/.test(body))
+  const glows = rules.filter(([, body]) => /0 0 0 0?\.25rem color-mix\(in srgb, ?var\(--ods-stroke-(focus|error)\)/.test(body))
   assert.ok(glows.length >= 2)
   for (const [path, body] of glows) {
     // QBtn already carries the shared 2px outline through the importance channel.

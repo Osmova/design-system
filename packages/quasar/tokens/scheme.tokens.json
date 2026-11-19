@@ -173,7 +173,7 @@
   "light-role-fg": {
     "$description": "Text-safe role foregrounds: 4.5:1 on surface-0/1/2 and on the role soft wash.",
     "primary": {
-      "$value": "var(--qds-fg-brand)"
+      "$value": "var(--ods-fg-brand)"
     },
     "secondary": {
       "$type": "color",
@@ -203,7 +203,7 @@
   "dark-role-fg": {
     "$description": "Text-safe role foregrounds: 4.5:1 on surface-0/1/2 and on the role soft wash.",
     "primary": {
-      "$value": "var(--qds-fg-brand)"
+      "$value": "var(--ods-fg-brand)"
     },
     "secondary": {
       "$type": "color",
@@ -300,7 +300,7 @@
     }
   },
   "light-semantic": {
-    "$description": "Semantic aliases emitted as --qds-fg-*, --qds-bg-*, --qds-stroke-*, --qds-state-* and --qds-control-*.",
+    "$description": "Semantic aliases emitted as --ods-fg-*, --ods-bg-*, --ods-stroke-*, --ods-state-* and --ods-control-*.",
     "fg-default": {
       "$type": "color",
       "$value": "#242424"
@@ -322,7 +322,7 @@
       "$value": "#ffffff"
     },
     "fg-brand": {
-      "$value": "var(--qds-color-primary)"
+      "$value": "var(--ods-color-primary)"
     },
     "bg-canvas": {
       "$type": "color",
@@ -369,7 +369,7 @@
       "$value": "#616161"
     },
     "stroke-focus": {
-      "$value": "var(--qds-color-primary)"
+      "$value": "var(--ods-color-primary)"
     },
     "stroke-error": {
       "$type": "color",
@@ -388,14 +388,14 @@
       "$value": "rgba(0, 0, 0, 0.08)"
     },
     "state-selected": {
-      "$value": "color-mix(in srgb, var(--qds-color-primary) calc(var(--qds-tonal-bg-opacity) * 100%), transparent)"
+      "$value": "color-mix(in srgb, var(--ods-color-primary) calc(var(--ods-tonal-bg-opacity) * 100%), transparent)"
     },
     "state-disabled": {
       "$type": "color",
       "$value": "rgba(0, 0, 0, 0.04)"
     },
     "state-focus-indicator": {
-      "$value": "var(--qds-color-primary)"
+      "$value": "var(--ods-color-primary)"
     },
     "control-fill-default": {
       "$type": "color",
@@ -430,10 +430,10 @@
       "$value": "rgba(0, 0, 0, 0.446)"
     },
     "control-stroke-top": {
-      "$value": "var(--qds-control-stroke-default)"
+      "$value": "var(--ods-control-stroke-default)"
     },
     "control-stroke-bottom": {
-      "$value": "var(--qds-control-stroke-secondary)"
+      "$value": "var(--ods-control-stroke-secondary)"
     },
     "control-stroke-on-accent-top": {
       "$type": "color",
@@ -452,10 +452,10 @@
       "$value": "rgba(0, 0, 0, 0.058)"
     },
     "segmented-track-bg": {
-      "$value": "var(--qds-bg-surface-2)"
+      "$value": "var(--ods-bg-surface-2)"
     },
     "segmented-thumb-bg": {
-      "$value": "var(--qds-control-fill-default)"
+      "$value": "var(--ods-control-fill-default)"
     },
     "bar-dark-bg": {
       "$type": "color",
@@ -467,7 +467,7 @@
     }
   },
   "dark-semantic": {
-    "$description": "Semantic aliases emitted as --qds-fg-*, --qds-bg-*, --qds-stroke-*, --qds-state-* and --qds-control-*.",
+    "$description": "Semantic aliases emitted as --ods-fg-*, --ods-bg-*, --ods-stroke-*, --ods-state-* and --ods-control-*.",
     "fg-default": {
       "$type": "color",
       "$value": "#f5f5f5"
@@ -489,7 +489,7 @@
       "$value": "#ffffff"
     },
     "fg-brand": {
-      "$value": "color-mix(in srgb, var(--qds-color-primary-light) 85%, var(--qds-text-strong))"
+      "$value": "color-mix(in srgb, var(--ods-color-primary-light) 85%, var(--ods-text-strong))"
     },
     "bg-canvas": {
       "$type": "color",
@@ -536,7 +536,7 @@
       "$value": "#adadad"
     },
     "stroke-focus": {
-      "$value": "var(--qds-color-primary)"
+      "$value": "var(--ods-color-primary)"
     },
     "stroke-error": {
       "$type": "color",
@@ -555,14 +555,14 @@
       "$value": "rgba(255, 255, 255, 0.10)"
     },
     "state-selected": {
-      "$value": "color-mix(in srgb, var(--qds-color-primary) calc(var(--qds-tonal-bg-opacity) * 100%), transparent)"
+      "$value": "color-mix(in srgb, var(--ods-color-primary) calc(var(--ods-tonal-bg-opacity) * 100%), transparent)"
     },
     "state-disabled": {
       "$type": "color",
       "$value": "rgba(255, 255, 255, 0.04)"
     },
     "state-focus-indicator": {
-      "$value": "var(--qds-color-primary)"
+      "$value": "var(--ods-color-primary)"
     },
     "control-fill-default": {
       "$type": "color",
@@ -597,10 +597,10 @@
       "$value": "rgba(255, 255, 255, 0.544)"
     },
     "control-stroke-top": {
-      "$value": "var(--qds-control-stroke-secondary)"
+      "$value": "var(--ods-control-stroke-secondary)"
     },
     "control-stroke-bottom": {
-      "$value": "var(--qds-control-stroke-default)"
+      "$value": "var(--ods-control-stroke-default)"
     },
     "control-stroke-on-accent-top": {
       "$type": "color",
@@ -619,16 +619,16 @@
       "$value": "rgba(0, 0, 0, 0.1)"
     },
     "segmented-track-bg": {
-      "$value": "var(--qds-bg-surface-1)"
+      "$value": "var(--ods-bg-surface-1)"
     },
     "segmented-thumb-bg": {
-      "$value": "var(--qds-bg-layer)"
+      "$value": "var(--ods-bg-layer)"
     },
     "bar-dark-bg": {
-      "$value": "var(--qds-bg-surface-1)"
+      "$value": "var(--ods-bg-surface-1)"
     },
     "bar-dark-fg": {
-      "$value": "var(--qds-fg-default)"
+      "$value": "var(--ods-fg-default)"
     }
   },
   "materials": {

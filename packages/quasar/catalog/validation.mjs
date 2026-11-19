@@ -181,7 +181,7 @@ export function validateCatalog(snapshot, { complete = false } = {}) {
     check(demoMap.get(entry.id) === demoName, `histoire demo mapping drift: ${entry.id}`)
   }
   check(histoire?.elements.some((e) => e.tag === 'component' && e.props.some((p) => p.type === 7 && p.name === 'bind' && !p.arg && p.exp?.content === 'state')), 'histoire reactive state binding missing')
-  check(histoire?.elements.some((e) => e.tag === 'QdsPreviewScaffold'), 'histoire shared scaffold missing')
+  check(histoire?.elements.some((e) => e.tag === 'OdsPreviewScaffold'), 'histoire shared scaffold missing')
   const layout = histoire?.elements.find((e) => e.tag === 'Story')?.props.find((p) => p.type === 7 && p.name === 'bind' && p.arg?.content === 'layout')?.exp?.loc.source
   let isolated = false
   if (layout) walkTs(ts.createSourceFile('layout.ts', `const layout = ${layout}`, ts.ScriptTarget.Latest, true), (node) => {

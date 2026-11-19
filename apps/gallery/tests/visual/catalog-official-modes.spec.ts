@@ -49,14 +49,14 @@ function durationInMs(value: string): number {
   return Number.parseFloat(trimmed)
 }
 
-test.describe('QDS official stable data and layout modes', () => {
+test.describe('ODS official stable data and layout modes', () => {
   test('QTable exposes dark, custom controls, visible columns, fullscreen, and chrome-free modes', async ({ page }) => {
     await openComponents(page)
     await applyTheme(page, 'light', 'win')
 
     const table = page.locator('[data-test="qds-table-official-modes"]')
     await expect(table).toHaveClass(/q-table--dark/)
-    await expect(table).toHaveCSS('background-color', await resolvedColor(page, '--qds-text-strong'))
+    await expect(table).toHaveCSS('background-color', await resolvedColor(page, '--ods-text-strong'))
     await expect(table.getByLabel('Visible table columns')).toBeVisible()
     await expect(table.getByRole('button', { name: 'View table fullscreen' })).toBeVisible()
     await expect(table.locator('.q-table__top')).toContainText('Explicit dark mode')
@@ -97,10 +97,10 @@ test.describe('QDS official stable data and layout modes', () => {
 
       const table = page.locator('[data-test="qds-table-official-modes"]')
       await expect(table).toHaveClass(/q-table--dark/)
-      await expect(table).toHaveCSS('background-color', await resolvedColor(page, '--qds-text-strong'))
+      await expect(table).toHaveCSS('background-color', await resolvedColor(page, '--ods-text-strong'))
       const darkHeaderBackground = await table.evaluate((element) => {
         const sample = document.createElement('div')
-        sample.style.backgroundColor = getComputedStyle(element).getPropertyValue('--qds-table-header-bg')
+        sample.style.backgroundColor = getComputedStyle(element).getPropertyValue('--ods-table-header-bg')
         element.append(sample)
         const color = getComputedStyle(sample).backgroundColor
         sample.remove()
@@ -109,7 +109,7 @@ test.describe('QDS official stable data and layout modes', () => {
       await expect(table.locator('thead tr')).toHaveCSS('background-color', darkHeaderBackground)
       const darkHeaderText = await table.evaluate((element) => {
         const sample = document.createElement('div')
-        sample.style.color = getComputedStyle(element).getPropertyValue('--qds-table-header-text')
+        sample.style.color = getComputedStyle(element).getPropertyValue('--ods-table-header-text')
         element.append(sample)
         const color = getComputedStyle(sample).color
         sample.remove()
@@ -124,7 +124,7 @@ test.describe('QDS official stable data and layout modes', () => {
         'border-bottom-color',
         await table.locator('td').first().evaluate((element) => getComputedStyle(element).borderBottomColor),
       )
-      await expect(table.locator('td').first()).toHaveCSS('color', await resolvedColor(page, '--qds-surface-0'))
+      await expect(table.locator('td').first()).toHaveCSS('color', await resolvedColor(page, '--ods-surface-0'))
 
       if (variant === 'term') {
         // Local dark inverts Term's light-page tokens; it is not the global Term dark palette.
@@ -143,8 +143,8 @@ test.describe('QDS official stable data and layout modes', () => {
       await openCatalog(page)
       const tree = page.locator('[data-test="qds-tree-dark-no-connectors"]')
       await expect(tree).toHaveClass(/q-tree--dark/)
-      await expect(tree).toHaveCSS('background-color', await resolvedColor(page, '--qds-text-strong'))
-      await expect(tree.locator('.q-tree__node-header').first()).toHaveCSS('color', await resolvedColor(page, '--qds-surface-0'))
+      await expect(tree).toHaveCSS('background-color', await resolvedColor(page, '--ods-text-strong'))
+      await expect(tree.locator('.q-tree__node-header').first()).toHaveCSS('color', await resolvedColor(page, '--ods-surface-0'))
       if (variant === 'term') {
         await expect(tree).toHaveCSS('background-color', 'rgb(14, 13, 11)')
         await expect(tree.locator('.q-tree__node-header').first()).toHaveCSS('color', 'rgb(248, 246, 240)')
@@ -154,7 +154,7 @@ test.describe('QDS official stable data and layout modes', () => {
     })
   }
 
-  test('QPagination input mode changes page and keeps QDS geometry in One', async ({ page }) => {
+  test('QPagination input mode changes page and keeps ODS geometry in One', async ({ page }) => {
     await openComponents(page)
     await applyTheme(page, 'light', 'one')
 
@@ -168,14 +168,14 @@ test.describe('QDS official stable data and layout modes', () => {
     await expect(input).toHaveAttribute('placeholder', '5 / 7')
     await expect(pagination, 'QPagination has no track; buttons carry the geometry').toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
     await expect(pagination.locator('.q-btn').first(), 'One pagination buttons keep the 44px touch height').toHaveCSS('height', '44px')
-    await expect(pagination.locator('.q-btn').first(), 'One input-mode buttons use the button radius').toHaveCSS('border-top-left-radius', await resolvedRadius(page, '--qds-button-radius'))
-    await expect(input).toHaveCSS('color', await resolvedColor(page, '--qds-text'))
+    await expect(pagination.locator('.q-btn').first(), 'One input-mode buttons use the button radius').toHaveCSS('border-top-left-radius', await resolvedRadius(page, '--ods-button-radius'))
+    await expect(input).toHaveCSS('color', await resolvedColor(page, '--ods-text'))
 
     await applyTheme(page, 'light', 'win')
     for (const button of await pagination.locator('.q-btn').all()) {
-      await expect(button, 'Fluent input-mode buttons use the 6px control radius').toHaveCSS('border-top-left-radius', await resolvedRadius(page, '--qds-radius-control'))
+      await expect(button, 'Fluent input-mode buttons use the 6px control radius').toHaveCSS('border-top-left-radius', await resolvedRadius(page, '--ods-radius-control'))
     }
-    await expect(page.locator('[data-test="qds-pagination"] .q-btn[aria-current="page"]'), 'Fluent selected page keeps the control radius').toHaveCSS('border-top-left-radius', await resolvedRadius(page, '--qds-radius-control'))
+    await expect(page.locator('[data-test="qds-pagination"] .q-btn[aria-current="page"]'), 'Fluent selected page keeps the control radius').toHaveCSS('border-top-left-radius', await resolvedRadius(page, '--ods-radius-control'))
   })
 
   test('drawer containers preserve seamless and mini-to-overlay states without behavior automation', async ({ page }) => {

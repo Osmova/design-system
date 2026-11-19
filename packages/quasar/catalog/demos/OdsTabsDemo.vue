@@ -19,10 +19,10 @@ const model = ref('tab-1')
 </script>
 
 <template>
-  <div class="qds-catalog-demo-tabs">
+  <div class="ods-catalog-demo-tabs">
     <QTabs
       v-model="model"
-      class="qds-catalog-demo__control qds-catalog-demo-tabs__row"
+      class="ods-catalog-demo__control ods-catalog-demo-tabs__row"
       align="left"
       :dense="dense"
       inline-label
@@ -37,12 +37,12 @@ const model = ref('tab-1')
       </QTab>
     </QTabs>
 
-    <QTabPanels v-model="model" class="qds-catalog-demo-tabs__panels" animated>
+    <QTabPanels v-model="model" class="ods-catalog-demo-tabs__panels" animated>
       <QTabPanel
         v-for="index in count"
         :key="'tab-panel-' + index"
         :name="'tab-' + index"
-        class="qds-catalog-demo-tabs__panel"
+        class="ods-catalog-demo-tabs__panel"
       >
         Panel {{ index }} content
       </QTabPanel>
@@ -51,7 +51,7 @@ const model = ref('tab-1')
 </template>
 
 <style scoped>
-.qds-catalog-demo-tabs {
+.ods-catalog-demo-tabs {
   /* Width-capped block wrapper: the QTabs row always fills this box, so the
      native scrollable/arrow detection engages deterministically whenever the
      host canvas is narrower than 26rem (no grid-track min-width trap). */
@@ -61,17 +61,17 @@ const model = ref('tab-1')
   max-width: 26rem;
 }
 
-.qds-catalog-demo-tabs__row {
+.ods-catalog-demo-tabs__row {
   width: 100%;
   min-width: 0;
 }
 
-.qds-catalog-demo-tabs__panels {
+.ods-catalog-demo-tabs__panels {
   width: 100%;
   min-height: 4rem;
 }
 
-.qds-catalog-demo-tabs__panel {
+.ods-catalog-demo-tabs__panel {
   padding: 0.5rem 0.75rem;
 }
 </style>

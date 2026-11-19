@@ -1,4 +1,4 @@
-// Computed-paint proof for Ink: real Quasar controls, the real compiled QDS bundle,
+// Computed-paint proof for Ink: real Quasar controls, the real compiled ODS bundle,
 // every selectable ink in light and dark, measured contrast and the e-ink promises
 // (one ink plus one danger red, no blur or tint, inverted selection, print face by default).
 // INK_SHOTS=<dir> also writes a review board per ink and scheme there.
@@ -31,12 +31,12 @@ const assets = {
   }).css.replace(/^﻿/, '').replace(/^@charset "[^"]*";/, ''),
 }
 
-const fixture = `body { margin: 0; padding: 28px 32px 48px; background: var(--qds-surface-1); }
+const fixture = `body { margin: 0; padding: 28px 32px 48px; background: var(--ods-surface-1); }
   #app { width: 900px; display: grid; gap: 22px; }
   .row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 20px; }
-  h6 { margin: 0 0 -8px; font-size: 0.8125rem; color: var(--qds-fg-muted); }
-  .note { margin: 0; max-width: 640px; font-size: 0.9375rem; line-height: 1.55; color: var(--qds-fg-default); }
+  h6 { margin: 0 0 -8px; font-size: 0.8125rem; color: var(--ods-fg-muted); }
+  .note { margin: 0; max-width: 640px; font-size: 0.9375rem; line-height: 1.55; color: var(--ods-fg-default); }
   .split { display: grid; grid-template-columns: 1fr 220px; gap: 24px; align-items: start; }`
 
 const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
@@ -48,7 +48,7 @@ const HATCH = 0.18
 async function mount(browser, bodyClass, ink, options = {}) {
   const page = await browser.newPage({ viewport: { width: 964, height: 1100 }, reducedMotion: options.reducedMotion ?? 'reduce', forcedColors: options.forcedColors ?? 'none' })
   await page.setContent(`<style>${fontFaces}</style><style>${assets.quasarCss}</style><style>${assets.qds}</style><style>${fixture}</style>`
-    + `<body class="${bodyClass}" data-qds-ink="${ink}"><div id="app"></div></body>`)
+    + `<body class="${bodyClass}" data-ods-ink="${ink}"><div id="app"></div></body>`)
   await page.addScriptTag({ content: assets.vue })
   await page.addScriptTag({ content: assets.quasar })
   await page.evaluate((roleNames) => {
@@ -57,9 +57,9 @@ async function mount(browser, bodyClass, ink, options = {}) {
     const state = reactive({ value: 'Ruled paper', tab: 'notes', side: 'pens', menu: false, on: true, off: false })
     const field = (id, props) => h('div', { id }, h(QInput, { modelValue: state.value, 'onUpdate:modelValue': (v) => { state.value = v }, ...props }))
     const app = createApp({ setup: () => () => [
-      h('div', { id: 'display', class: 'text-h4 qds-display' }, 'Field notes'),
+      h('div', { id: 'display', class: 'text-h4 ods-display' }, 'Field notes'),
       h('h2', { id: 'heading', style: 'margin:0;font-size:1.5rem' }, 'Section heading'),
-      h('p', { id: 'note', class: 'note' }, ['Reading text stays in the print face. ', h('em', { id: 'em' }, 'An aside'), ' and ', h('span', { id: 'hand', class: 'qds-hand' }, 'a handwritten note'), ' are opt-in.']),
+      h('p', { id: 'note', class: 'note' }, ['Reading text stays in the print face. ', h('em', { id: 'em' }, 'An aside'), ' and ', h('span', { id: 'hand', class: 'ods-hand' }, 'a handwritten note'), ' are opt-in.']),
       h('h6', 'Buttons'),
       h('div', { class: 'row' }, [
         h(QBtn, { id: 'button', label: 'Default', noCaps: true }),
@@ -173,14 +173,14 @@ const INKS = ['charcoal', 'black', 'navy']
 const shots = process.env.INK_SHOTS
 const browser = await chromium.launch()
 try {
-  for (const ink of INKS) for (const [scheme, bodyClass] of [['light', 'qds-ui qds-variant-ink qds-theme-light'], ['dark', 'qds-ui qds-variant-ink qds-theme-dark body--dark']]) {
+  for (const ink of INKS) for (const [scheme, bodyClass] of [['light', 'ods-ui ods-variant-ink ods-theme-light'], ['dark', 'ods-ui ods-variant-ink ods-theme-dark body--dark']]) {
     const at = `${ink}/${scheme}`
     const page = await mount(browser, bodyClass, ink)
     try {
-      const tokens = await read(page, 'body', ['--qds-text-strong', '--qds-surface-0', '--qds-fg-negative', 'background-color'])
-      const inkPaint = hex(tokens['--qds-text-strong'].trim())
-      const paper = hex(tokens['--qds-surface-0'].trim())
-      const danger = hex(tokens['--qds-fg-negative'].trim())
+      const tokens = await read(page, 'body', ['--ods-text-strong', '--ods-surface-0', '--ods-fg-negative', 'background-color'])
+      const inkPaint = hex(tokens['--ods-text-strong'].trim())
+      const paper = hex(tokens['--ods-surface-0'].trim())
+      const danger = hex(tokens['--ods-fg-negative'].trim())
       const pageFill = opaque(tokens['background-color'], `${at} page`)
       assert.deepEqual(pageFill.slice(0, 3), paper.slice(0, 3), `${at} page and sheets are the same flat paper`)
       record(at, 'ink on paper', contrast(inkPaint, paper), 7)
@@ -331,7 +331,7 @@ try {
       for (const [label, sample] of [['button', s.button], ['field', s.fieldNative], ['menu item', s.menuIdle], ['menu header', s.menuHeader], ['tab', s.tabLabel], ['heading', s.heading], ['reading text', s.note]]) {
         assert.match(sample['font-family'], /^"?Atkinson Hyperlegible Next/, `${at} ${label} uses the print face`)
       }
-      for (const [label, sample] of [['display title', s.display], ['qds-hand', s.hand], ['em (italic-hand)', s.em]]) {
+      for (const [label, sample] of [['display title', s.display], ['ods-hand', s.hand], ['em (italic-hand)', s.em]]) {
         assert.match(sample['font-family'], /Caveat/, `${at} ${label} is handwritten`)
       }
 
@@ -351,7 +351,7 @@ try {
     } finally { await page.close() }
   }
 
-  const forced = await mount(browser, 'qds-ui qds-variant-ink qds-theme-light', 'charcoal', { forcedColors: 'active' })
+  const forced = await mount(browser, 'ods-ui ods-variant-ink ods-theme-light', 'charcoal', { forcedColors: 'active' })
   try {
     await forced.evaluate(() => window.ink.set({ menu: true }))
     await forced.waitForSelector('.q-menu', { state: 'visible' })
@@ -359,7 +359,7 @@ try {
     assert.equal((await read(forced, '#tabs .q-tab--active', ['forced-color-adjust']))['forced-color-adjust'], 'none', 'forced colours keep the inverted selection as Highlight')
     assert.equal((await read(forced, '#button', ['background-image'], '::before'))['background-image'], 'none', 'forced colours drop the pattern layers')
   } finally { await forced.close() }
-  const still = await mount(browser, 'qds-ui qds-variant-ink qds-theme-light', 'charcoal', { reducedMotion: 'reduce' })
+  const still = await mount(browser, 'ods-ui ods-variant-ink ods-theme-light', 'charcoal', { reducedMotion: 'reduce' })
   try {
     for (const selector of ['#button', '#tabs .q-tab']) {
       assert.equal((await read(still, selector, ['transition-property']))['transition-property'], 'none', `reduced motion stills ${selector}`)

@@ -10,10 +10,10 @@ const initState = () => ({ mode: 'light' as DesignSystemMode, variant: 'win' as 
 
 <template>
   <Story title="Design System / Overview" :layout="{ type: 'single', iframe: true }" :init-state="initState">
-    <Variant title="QDS catalog">
+    <Variant title="ODS catalog">
       <template #default="{ state }">
         <StoryShell
-          title="Quasar Design System"
+          title="Osmova Design System"
           description="Neutral-first components over Quasar 2 primitives."
           :mode="state.mode"
           :variant="state.variant"

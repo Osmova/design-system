@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { createHash } from 'node:crypto'
-import { qdsIconSet } from '../../dist/icons/quasar-icon-set.js'
+import { odsIconSet } from '../../dist/icons/quasar-icon-set.js'
 import { compilePilot, root } from './grammar-fixture.mjs'
 
 // Explicit one-worker native-DOM proof; never connects to a gallery/server.
@@ -20,12 +20,12 @@ const assets = {
 }
 // Consume the mandatory build's real package artifact. Playwright must receive
 // plain SVG data, not Node imports/functions or a font-dependent fallback set.
-const iconData = JSON.parse(JSON.stringify(qdsIconSet))
-assert.deepEqual(iconData, qdsIconSet, 'compiled QDS icon set must be losslessly JSON serializable')
-const cpuThrottleRate = Number(process.env.QDS_GRAMMAR_CPU_RATE ?? 1)
-assert.ok([1, 4].includes(cpuThrottleRate), 'QDS_GRAMMAR_CPU_RATE must be 1 or 4')
+const iconData = JSON.parse(JSON.stringify(odsIconSet))
+assert.deepEqual(iconData, odsIconSet, 'compiled ODS icon set must be losslessly JSON serializable')
+const cpuThrottleRate = Number(process.env.ODS_GRAMMAR_CPU_RATE ?? 1)
+assert.ok([1, 4].includes(cpuThrottleRate), 'ODS_GRAMMAR_CPU_RATE must be 1 or 4')
 const fixture = `body { margin: 24px; } #app { width: 600px; display: grid; gap: 24px; }
-  .qds-compatibility-host { position: absolute; left: 650px; top: 24px; width: 220px; }
+  .ods-compatibility-host { position: absolute; left: 650px; top: 24px; width: 220px; }
   #tabs { width: 250px; } #vertical { width: 180px; height: 160px; }
   *, *::before, *::after { transition: none !important; animation: none !important; }`
 
@@ -35,7 +35,7 @@ async function mount(browser, css) {
     const cdp = await page.context().newCDPSession(page)
     await cdp.send('Emulation.setCPUThrottlingRate', { rate: cpuThrottleRate })
   }
-  await page.setContent(`<style>${assets.css}</style><style>${css}</style><style>${fixture}</style><body class="qds-ui"><div id="app" class="qds-ui qds-grammar-pilot"></div><aside class="qds-compatibility-host"><div id="legacy" class="qds-ui"></div></aside></body>`)
+  await page.setContent(`<style>${assets.css}</style><style>${css}</style><style>${fixture}</style><body class="ods-ui"><div id="app" class="ods-ui ods-grammar-pilot"></div><aside class="ods-compatibility-host"><div id="legacy" class="ods-ui"></div></aside></body>`)
   await page.addScriptTag({ content: assets.vue })
   await page.addScriptTag({ content: assets.quasar })
   await page.evaluate((icons) => {
@@ -52,7 +52,7 @@ async function mount(browser, css) {
     app = createApp({ setup: () => () => [
       h('div', { style: 'display:flex;gap:24px' }, [
         h(QBtn, { id: 'button', label: 'Action', icon, loading: state.loading, disable: state.disabled }),
-        h(QBtnDropdown, { id: 'dropdown', label: 'Options', contentClass: 'qds-pilot-portal' }, () => h('div', 'Native dropdown')),
+        h(QBtnDropdown, { id: 'dropdown', label: 'Options', contentClass: 'ods-pilot-portal' }, () => h('div', 'Native dropdown')),
       ]),
       h(QInput, { id: 'native-input', class: 'field-fixture', modelValue: state.value, 'onUpdate:modelValue': (v) => { state.value = v },
         label: 'Independent label', outlined: true, clearable: true, counter: true, maxlength: 20, hint: 'Native help',
@@ -60,7 +60,7 @@ async function mount(browser, css) {
       }, { prepend: () => h(QIcon, { name: icon }), append: () => h(QIcon, { name: icon }) }),
       tabs(), tabs(true),
       h(QBtn, { id: 'menu-anchor', label: 'Open menu', onClick: () => { state.menu = true } }, () => h(QMenu, {
-        id: 'portal-menu', class: 'qds-pilot-portal', noParentEvent: true, modelValue: state.menu, 'onUpdate:modelValue': (v) => { state.menu = v }, transitionDuration: 0,
+        id: 'portal-menu', class: 'ods-pilot-portal', noParentEvent: true, modelValue: state.menu, 'onUpdate:modelValue': (v) => { state.menu = v }, transitionDuration: 0,
       }, () => h(QList, {}, () => [
         h(QItem, { id: 'menu-item', clickable: true }, () => h(QItemSection, {}, () => 'Native item')),
         h(QSeparator, { id: 'menu-separator' }),
@@ -202,7 +202,7 @@ async function assertNativeIcons(page, state) {
     if (name === 'button' && state === 'loading') continue
     if (name === 'clear' && !actual.specific.clear) continue
     assert.ok(actual.specific[name], `${state}: native ${name} icon must exist`)
-    assert.deepEqual(actual.specific[name].paths, paths(data), `${state}: ${name} must use its compiled QDS SVG mapping`)
+    assert.deepEqual(actual.specific[name].paths, paths(data), `${state}: ${name} must use its compiled ODS SVG mapping`)
   }
   if (state === 'rest') assert.ok(actual.specific.clear, 'rest: actual clear-action SVG is required')
   if (state === 'error') assert.ok(actual.field.some((icon) => JSON.stringify(icon.paths) === JSON.stringify(paths(iconData.field.error))), 'error: actual native error SVG is required')

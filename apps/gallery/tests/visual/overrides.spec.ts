@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { QDS_TOKENS } from '../../../../packages/quasar/src/tokens'
+import { ODS_TOKENS } from '../../../../packages/quasar/src/tokens'
 import { applyTheme, waitForThemePaint, LEGACY_VARIANTS as CANONICAL_VARIANTS, coarsePointer, computed, customProperty, MATRIX_VARIANTS, resolvedColor, resolvedShadow, type Mode, type LegacyVariant as Variant } from './helpers'
 
 type Rgba = readonly [number, number, number, number]
@@ -82,7 +82,7 @@ const EXPECTED: Record<Mode, Record<Variant, { surface: string; primary: string;
   },
 }
 
-test.describe('QDS override gate', () => {
+test.describe('ODS override gate', () => {
   for (const mode of ['light', 'dark'] as const) {
     for (const variant of MATRIX_VARIANTS) {
       test(`${mode} / ${variant} renders the catalog family with its resolved system`, async ({ page }) => {
@@ -91,9 +91,9 @@ test.describe('QDS override gate', () => {
         const expected = EXPECTED[mode][variant]
         const panel = '.q-tab-panel'
 
-        expect.soft(await customProperty(page, '--qds-surface-0'), 'surface token tracks the requested mode and variant').toBe(expected.surface)
-        expect.soft(await resolvedColor(page, '--qds-color-primary'), 'primary color resolves from source tokens').toBe(expected.primary)
-        expect.soft(await customProperty(page, '--qds-radius-control'), 'control radius token tracks the variant').toBe(expected.controlRadius)
+        expect.soft(await customProperty(page, '--ods-surface-0'), 'surface token tracks the requested mode and variant').toBe(expected.surface)
+        expect.soft(await resolvedColor(page, '--ods-color-primary'), 'primary color resolves from source tokens').toBe(expected.primary)
+        expect.soft(await customProperty(page, '--ods-radius-control'), 'control radius token tracks the variant').toBe(expected.controlRadius)
         expect.soft(await computed(page, `${panel} .q-card`, 'border-radius'), 'QCard consumes the resolved card radius').toBe(expected.cardRadius)
         expect.soft(await computed(page, `${panel} .q-field--outlined .q-field__control`, 'border-radius'), 'QField consumes the resolved control geometry').toBe(variant === 'one' ? '18px' : variant === 'ink' ? INK_HAND_MD : expected.controlRadius)
         expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'QCard has a rendered surface').not.toBe('rgba(0, 0, 0, 0)')
@@ -107,25 +107,25 @@ test.describe('QDS override gate', () => {
         if (variant === 'win') {
           expect.soft(await computed(page, `${panel} .q-card`, 'backdrop-filter'), 'Fluent content has no blur').toBe('none')
           expect.soft(await computed(page, `${panel} .q-card`, 'box-shadow'), 'Fluent card is a flat Win11 layer').toBe('none')
-          expect.soft(await computed(page, `${panel} .q-card`, 'border-top-color'), 'Fluent card stroke is the card stroke token').toBe(await resolvedColor(page, '--qds-card-stroke'))
+          expect.soft(await computed(page, `${panel} .q-card`, 'border-top-color'), 'Fluent card stroke is the card stroke token').toBe(await resolvedColor(page, '--ods-card-stroke'))
         }
         if (variant === 'ink') {
-          expect.soft(await customProperty(page, '--qds-surface-negative-soft'), 'Ink has no tinted wash: the soft surface is the paper').toBe(expected.surface)
+          expect.soft(await customProperty(page, '--ods-surface-negative-soft'), 'Ink has no tinted wash: the soft surface is the paper').toBe(expected.surface)
           expect.soft(await computed(page, `${panel} .q-card`, 'backdrop-filter'), 'Ink content has no blur').toBe('none')
           expect.soft(await computed(page, `${panel} .q-card`, 'box-shadow'), 'Ink content stays flat').toBe('none')
-          expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'Ink card is a paper sheet').toBe(await resolvedColor(page, '--qds-surface-0'))
-          expect.soft(await computed(page, `${panel} .q-card`, 'border-top-color'), 'Ink card hairline is the card stroke token').toBe(await resolvedColor(page, '--qds-card-stroke'))
-          expect.soft(await computed(page, `${panel} .qds-display`, 'font-family'), 'Ink display titles are handwritten').toMatch(/Caveat/)
+          expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'Ink card is a paper sheet').toBe(await resolvedColor(page, '--ods-surface-0'))
+          expect.soft(await computed(page, `${panel} .q-card`, 'border-top-color'), 'Ink card hairline is the card stroke token').toBe(await resolvedColor(page, '--ods-card-stroke'))
+          expect.soft(await computed(page, `${panel} .ods-display`, 'font-family'), 'Ink display titles are handwritten').toMatch(/Caveat/)
         }
         if (variant === 'one') {
-          expect.soft(await customProperty(page, '--qds-surface-focus-block'), 'One focus-block token differs by mode').toBe(mode === 'light' ? '#efefef' : '#242424')
-          expect.soft(await customProperty(page, '--qds-button-padding-inline'), 'One button padding token is emitted').toBe('1rem')
-          expect.soft(await customProperty(page, '--qds-button-dense-min-height'), 'One dense button size token is emitted').toBe('2.5rem')
-          expect.soft(await customProperty(page, '--qds-button-dense-padding-inline'), 'One dense button padding token is emitted').toBe('.875rem')
-          expect.soft(await customProperty(page, '--qds-button-round-size'), 'One round button size token is emitted').toBe('2.75rem')
-          expect.soft(await customProperty(page, '--qds-field-label-size'), 'One field label token is emitted').toBe('.8125rem')
+          expect.soft(await customProperty(page, '--ods-surface-focus-block'), 'One focus-block token differs by mode').toBe(mode === 'light' ? '#efefef' : '#242424')
+          expect.soft(await customProperty(page, '--ods-button-padding-inline'), 'One button padding token is emitted').toBe('1rem')
+          expect.soft(await customProperty(page, '--ods-button-dense-min-height'), 'One dense button size token is emitted').toBe('2.5rem')
+          expect.soft(await customProperty(page, '--ods-button-dense-padding-inline'), 'One dense button padding token is emitted').toBe('.875rem')
+          expect.soft(await customProperty(page, '--ods-button-round-size'), 'One round button size token is emitted').toBe('2.75rem')
+          expect.soft(await customProperty(page, '--ods-field-label-size'), 'One field label token is emitted').toBe('.8125rem')
           expect.soft(await computed(page, `${panel} .q-btn--unelevated:not(.q-btn--dense)`, 'min-height'), 'One controls meet 44px touch target').toBe('44px')
-          expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'One groups content on an opaque block surface').toBe(await resolvedColor(page, '--qds-surface-0'))
+          expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'One groups content on an opaque block surface').toBe(await resolvedColor(page, '--ods-surface-0'))
         }
       })
     }
@@ -135,10 +135,10 @@ test.describe('QDS override gate', () => {
     await page.goto('/#components')
     await applyTheme(page, 'dark', 'term')
     const panel = '.q-tab-panel'
-    expect.soft(await customProperty(page, '--qds-font-family'), 'Term font token').toContain('ui-monospace')
+    expect.soft(await customProperty(page, '--ods-font-family'), 'Term font token').toContain('ui-monospace')
     expect.soft(await computed(page, `${panel} .q-btn--unelevated:not(.q-btn--dense, .q-btn--no-uppercase)`, 'text-transform'), 'Term controls uppercase').toBe('uppercase')
     expect.soft(await computed(page, `${panel} .q-btn--unelevated:not(.q-btn--dense)`, 'min-height'), 'Term controls remain compact').toBe('32px')
-    expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'Term card has visible contrast surface').not.toBe(await resolvedColor(page, '--qds-text-strong'))
+    expect.soft(await computed(page, `${panel} .q-card`, 'background-color'), 'Term card has visible contrast surface').not.toBe(await resolvedColor(page, '--ods-text-strong'))
   })
 
   test('semantic solid foregrounds resolve for every scheme and role', async ({ page }) => {
@@ -172,13 +172,13 @@ test.describe('QDS override gate', () => {
 
           return roles.map((role) => {
             const action = document.createElement('button')
-            action.className = `q-btn qds-solid bg-${role}`
+            action.className = `q-btn ods-solid bg-${role}`
             document.body.append(action)
             const actionStyles = getComputedStyle(action)
             const result = {
               role,
-              fillToken: resolve(`--qds-color-${role}`, 'backgroundColor'),
-              foregroundToken: resolve(`--qds-text-on-${role}`, 'color'),
+              fillToken: resolve(`--ods-color-${role}`, 'backgroundColor'),
+              foregroundToken: resolve(`--ods-text-on-${role}`, 'color'),
               actionFill: actionStyles.backgroundColor,
               actionForeground: actionStyles.color,
             }
@@ -215,11 +215,11 @@ test.describe('QDS override gate', () => {
         for (const role of roles) {
           const fixture = page.locator(`[data-test="qds-semantic-foreground-${role}"]`)
           await expect(fixture, `${mode}/${variant} ${role} utility fixture is visible`).toBeVisible()
-          await expect(fixture, `${mode}/${variant} ${role} utility class is public`).toHaveClass(new RegExp(`qds-text-on-${role}`))
+          await expect(fixture, `${mode}/${variant} ${role} utility class is public`).toHaveClass(new RegExp(`ods-text-on-${role}`))
           expect.soft(
             await computed(page, `[data-test="qds-semantic-foreground-${role}"]`, 'color'),
             `${mode}/${variant} ${role} utility uses its semantic foreground`,
-          ).toBe(await resolvedColor(page, `--qds-text-on-${role}`))
+          ).toBe(await resolvedColor(page, `--ods-text-on-${role}`))
         }
       }
     }
@@ -267,8 +267,8 @@ test.describe('QDS override gate', () => {
             ).toBe('1px')
             expect.soft(
               await computed(page, `[data-test="qds-neutral-badge-${badge}"]`, 'border-top-color'),
-              `${mode}/${variant} neutral tint badge stroke uses --qds-stroke-default`,
-            ).toBe(await resolvedColor(page, '--qds-stroke-default'))
+              `${mode}/${variant} neutral tint badge stroke uses --ods-stroke-default`,
+            ).toBe(await resolvedColor(page, '--ods-stroke-default'))
           }
         }
 
@@ -288,7 +288,7 @@ test.describe('QDS override gate', () => {
         expect.soft(
           await computed(page, '[data-test="qds-button-solid-primary"]', 'color'),
           `${mode}/${variant} primary solid button retains its on-fill foreground`,
-        ).toBe(await resolvedColor(page, '--qds-text-on-primary'))
+        ).toBe(await resolvedColor(page, '--ods-text-on-primary'))
 
         expect.soft(
           await renderedContrast(page, '[data-test="qds-active-item"]', '[data-test="qds-active-item-surface"]'),
@@ -305,10 +305,10 @@ test.describe('QDS override gate', () => {
       const visit = (rules: CSSRuleList, withinTokenLayer = false) => {
         for (const rule of rules) {
           const groupingRule = rule as CSSRule & { cssRules?: CSSRuleList; name?: string }
-          const inTokenLayer = withinTokenLayer || groupingRule.name === 'qds.tokens'
+          const inTokenLayer = withinTokenLayer || groupingRule.name === 'ods.tokens'
           if (inTokenLayer && rule instanceof CSSStyleRule) {
             for (const property of rule.style) {
-              if (property.startsWith('--qds-')) tokens.add(property)
+              if (property.startsWith('--ods-')) tokens.add(property)
             }
           }
           if (groupingRule.cssRules) visit(groupingRule.cssRules, inTokenLayer)
@@ -324,15 +324,15 @@ test.describe('QDS override gate', () => {
       return [...tokens].sort()
     })
 
-    expect(new Set(QDS_TOKENS).size, 'QDS_TOKENS has no duplicate public names').toBe(QDS_TOKENS.length)
+    expect(new Set(ODS_TOKENS).size, 'ODS_TOKENS has no duplicate public names').toBe(ODS_TOKENS.length)
 
-    const sortedInventory = [...QDS_TOKENS].sort()
-    expect(sortedInventory, 'QDS_TOKENS matches fallback/default layer emission exactly').toEqual(emittedTokens)
+    const sortedInventory = [...ODS_TOKENS].sort()
+    expect(sortedInventory, 'ODS_TOKENS matches fallback/default layer emission exactly').toEqual(emittedTokens)
   })
 
   test('horizontal card header round action retains its tokenized end inset', async ({ page }) => {
     await page.goto('/#components')
-    const header = page.locator('[data-test="qds-card-header-action"] .qds-card__header')
+    const header = page.locator('[data-test="qds-card-header-action"] .ods-card__header')
     const action = header.locator('.q-btn--round')
 
     for (const mode of ['light', 'dark'] as const) {
@@ -358,14 +358,14 @@ test.describe('QDS override gate', () => {
     ] as const
     for (const [input, canonical] of aliases) {
       const state = await page.evaluate(({ input, canonical }) => {
-        const ds = (window as unknown as { __qdsGallery: { setVariant: (value: string) => string; variant: { value: string } } }).__qdsGallery
+        const ds = (window as unknown as { __odsGallery: { setVariant: (value: string) => string; variant: { value: string } } }).__odsGallery
         const returned = ds.setVariant(input)
         return {
           returned,
           value: ds.variant.value,
-          canonicalClass: document.body.classList.contains(`qds-variant-${canonical}`),
-          oldClass: document.body.classList.contains(`qds-variant-${input}`),
-          dataVariant: document.body.dataset.qdsVariant,
+          canonicalClass: document.body.classList.contains(`ods-variant-${canonical}`),
+          oldClass: document.body.classList.contains(`ods-variant-${input}`),
+          dataVariant: document.body.dataset.odsVariant,
         }
       }, { input, canonical })
       await page.locator('[data-test="qds-variant-switcher"]').click()
@@ -378,7 +378,7 @@ test.describe('QDS override gate', () => {
       expect.soft(state.value, `${input} stores canonical value`).toBe(canonical)
       expect.soft(state.canonicalClass, `${input} writes canonical class`).toBe(true)
       expect.soft(state.oldClass, `${input} old class is absent`).toBe(false)
-      expect.soft(state.dataVariant, `${input} writes the canonical data-qds-variant`).toBe(canonical)
+      expect.soft(state.dataVariant, `${input} writes the canonical data-ods-variant`).toBe(canonical)
       expect.soft(labels.map((label) => label.trim()), `${input} exposes only canonical switcher entries`).toEqual(['Win', 'Ink', 'One', 'Term', 'Shadcn', 'Zen', 'Glass'])
     }
   })
@@ -387,10 +387,10 @@ test.describe('QDS override gate', () => {
     for (const mode of ['light', 'dark'] as const) {
       await page.goto('/#catalog')
       await applyTheme(page, mode, 'ink')
-      expect.soft(await resolvedShadow(page, '--qds-elevation-card'), `${mode}/ink card elevation is matte`).toBe('none')
+      expect.soft(await resolvedShadow(page, '--ods-elevation-card'), `${mode}/ink card elevation is matte`).toBe('none')
       await page.locator('[data-test="qds-catalog-color"]').scrollIntoViewIfNeeded()
       expect.soft(await computed(page, '[data-test="qds-catalog-color"]', 'box-shadow'), `${mode}/ink QColor has no shadow`).toBe('none')
-      expect.soft(await resolvedColor(page, '--qds-control-stroke-top'), `${mode}/ink control edge is one hairline`).toBe(await resolvedColor(page, '--qds-control-stroke-bottom'))
+      expect.soft(await resolvedColor(page, '--ods-control-stroke-top'), `${mode}/ink control edge is one hairline`).toBe(await resolvedColor(page, '--ods-control-stroke-bottom'))
       const rowHeight = await page.locator('body').evaluate((body) => {
         const probe = document.createElement('div')
         probe.className = 'q-item'
@@ -407,7 +407,7 @@ test.describe('QDS override gate', () => {
       await trigger.click()
       const menu = page.locator('.q-menu').first()
       await expect(menu).toBeVisible()
-      expect.soft(await menu.evaluate((el) => getComputedStyle(el).borderTopColor), `${mode}/ink menu takes the crisp overlay rule`).toBe(await resolvedColor(page, '--qds-stroke-strong'))
+      expect.soft(await menu.evaluate((el) => getComputedStyle(el).borderTopColor), `${mode}/ink menu takes the crisp overlay rule`).toBe(await resolvedColor(page, '--ods-stroke-strong'))
       await page.keyboard.press('Escape')
     }
   })
@@ -417,25 +417,25 @@ test.describe('QDS override gate', () => {
     for (const mode of ['light', 'dark'] as const) {
       await page.goto('/#catalog')
       await applyTheme(page, mode, 'term')
-      expect.soft(await resolvedShadow(page, '--qds-elevation-card'), `${mode}/term cards are flat`).toBe('none')
-      expect.soft(await resolvedShadow(page, '--qds-shadow-8'), `${mode}/term has no glow or drop shadow`).toBe('none')
-      expect.soft(await resolvedColor(page, '--qds-control-stroke-top'), `${mode}/term control edge is one hairline`).toBe(await resolvedColor(page, '--qds-control-stroke-bottom'))
-      expect.soft(await resolvedColor(page, '--qds-control-stroke-default'), `${mode}/term control stroke is the border hairline`).toBe(await resolvedColor(page, '--qds-border'))
+      expect.soft(await resolvedShadow(page, '--ods-elevation-card'), `${mode}/term cards are flat`).toBe('none')
+      expect.soft(await resolvedShadow(page, '--ods-shadow-8'), `${mode}/term has no glow or drop shadow`).toBe('none')
+      expect.soft(await resolvedColor(page, '--ods-control-stroke-top'), `${mode}/term control edge is one hairline`).toBe(await resolvedColor(page, '--ods-control-stroke-bottom'))
+      expect.soft(await resolvedColor(page, '--ods-control-stroke-default'), `${mode}/term control stroke is the border hairline`).toBe(await resolvedColor(page, '--ods-border'))
       expect.soft(await computed(page, '.q-card', 'background-image'), `${mode}/term card has no amber wash`).toBe('none')
-      expect.soft(await computed(page, '.q-card', 'background-color'), `${mode}/term card is an opaque pane`).toBe(await resolvedColor(page, '--qds-surface-0'))
-      for (const surface of ['--qds-surface-0', '--qds-surface-1', '--qds-surface-2']) {
-        expect.soft(await ratio('--qds-text-muted', surface), `${mode}/term muted text on ${surface}`).toBeGreaterThanOrEqual(4.5)
-        expect.soft(await ratio('--qds-border', surface), `${mode}/term control stroke on ${surface}`).toBeGreaterThanOrEqual(3)
+      expect.soft(await computed(page, '.q-card', 'background-color'), `${mode}/term card is an opaque pane`).toBe(await resolvedColor(page, '--ods-surface-0'))
+      for (const surface of ['--ods-surface-0', '--ods-surface-1', '--ods-surface-2']) {
+        expect.soft(await ratio('--ods-text-muted', surface), `${mode}/term muted text on ${surface}`).toBeGreaterThanOrEqual(4.5)
+        expect.soft(await ratio('--ods-border', surface), `${mode}/term control stroke on ${surface}`).toBeGreaterThanOrEqual(3)
       }
-      for (const surface of ['--qds-surface-0', '--qds-surface-1']) {
-        expect.soft(await ratio('--qds-stroke-focus', surface), `${mode}/term focus ring on ${surface}`).toBeGreaterThanOrEqual(3)
-        expect.soft(await ratio('--qds-fg-brand', surface), `${mode}/term brand text on ${surface}`).toBeGreaterThanOrEqual(4.5)
+      for (const surface of ['--ods-surface-0', '--ods-surface-1']) {
+        expect.soft(await ratio('--ods-stroke-focus', surface), `${mode}/term focus ring on ${surface}`).toBeGreaterThanOrEqual(3)
+        expect.soft(await ratio('--ods-fg-brand', surface), `${mode}/term brand text on ${surface}`).toBeGreaterThanOrEqual(4.5)
       }
 
       const toggle = '[data-test="qds-btn-toggle"]'
       expect.soft(await renderedContrast(page, `${toggle} .q-btn[aria-pressed="false"]`, toggle), `${mode}/term inactive segment text`).toBeGreaterThanOrEqual(4.5)
       const checkbox = '[data-test="qds-catalog-checkbox"] .q-checkbox__bg'
-      expect.soft(await computed(page, checkbox, 'border-top-color'), `${mode}/term checked box is ruled in its on-fill ink`).toBe(await resolvedColor(page, '--qds-text-on-primary'))
+      expect.soft(await computed(page, checkbox, 'border-top-color'), `${mode}/term checked box is ruled in its on-fill ink`).toBe(await resolvedColor(page, '--ods-text-on-primary'))
       if (mode === 'light') expect.soft(await renderedBoundaryContrast(page, checkbox, '.q-card'), 'light/term checked box boundary on cream').toBeGreaterThanOrEqual(3)
 
       const rowHeight = await page.locator('body').evaluate((body) => {
@@ -455,7 +455,7 @@ test.describe('QDS override gate', () => {
       const menu = page.locator('.q-menu').first()
       await expect(menu).toBeVisible()
       expect.soft(await menu.evaluate((el) => getComputedStyle(el).backdropFilter), `${mode}/term menu keeps its acrylic`).toContain('blur')
-      expect.soft(await menu.evaluate((el) => getComputedStyle(el).borderTopColor), `${mode}/term menu takes the crisp hairline`).toBe(await resolvedColor(page, '--qds-border'))
+      expect.soft(await menu.evaluate((el) => getComputedStyle(el).borderTopColor), `${mode}/term menu takes the crisp hairline`).toBe(await resolvedColor(page, '--ods-border'))
       await page.keyboard.press('Escape')
 
       const cdp = await page.context().newCDPSession(page)
@@ -466,7 +466,7 @@ test.describe('QDS override gate', () => {
       await trigger.click()
       await expect(menu).toBeVisible()
       expect.soft(await menu.evaluate((el) => getComputedStyle(el).backdropFilter), `${mode}/term menu turns solid under reduced transparency`).toBe('none')
-      expect.soft(await menu.evaluate((el) => getComputedStyle(el).backgroundColor), `${mode}/term solid menu is the pane surface`).toBe(await resolvedColor(page, '--qds-surface-0'))
+      expect.soft(await menu.evaluate((el) => getComputedStyle(el).backgroundColor), `${mode}/term solid menu is the pane surface`).toBe(await resolvedColor(page, '--ods-surface-0'))
       await page.keyboard.press('Escape')
       await cdp.send('Emulation.setEmulatedMedia', { features: [] })
 
@@ -474,7 +474,7 @@ test.describe('QDS override gate', () => {
       await applyTheme(page, mode, 'term')
       for (const state of ['positive', 'warning', 'error']) {
         const stroke = parseColor(await computed(page, `[data-test="qds-forms-state-${state}"] .q-field__control`, 'border-top-color', '::before'))
-        for (const surface of ['--qds-surface-0', '--qds-surface-1', '--qds-surface-2']) {
+        for (const surface of ['--ods-surface-0', '--ods-surface-1', '--ods-surface-2']) {
           expect.soft(contrast(stroke, parseColor(await resolvedColor(page, surface))), `${mode}/term ${state} field stroke on ${surface}`).toBeGreaterThanOrEqual(3)
         }
       }
@@ -496,23 +496,23 @@ test.describe('QDS override gate', () => {
     for (const mode of ['light', 'dark'] as const) {
       await page.goto('/#catalog')
       await applyTheme(page, mode, 'one')
-      expect.soft(await customProperty(page, '--qds-surface-1'), `${mode}/one page is neutral grey or true black`).toBe(mode === 'light' ? '#f2f2f2' : '#000000')
+      expect.soft(await customProperty(page, '--ods-surface-1'), `${mode}/one page is neutral grey or true black`).toBe(mode === 'light' ? '#f2f2f2' : '#000000')
       expect.soft(await computed(page, 'body', 'background-image', '::before'), `${mode}/one page has no tinted backdrop`).toBe('none')
-      for (const token of ['--qds-surface-0', '--qds-surface-focus-block', '--qds-surface-transient']) {
+      for (const token of ['--ods-surface-0', '--ods-surface-focus-block', '--ods-surface-transient']) {
         const [red, green, blue] = parseColor(await resolvedColor(page, token))
         expect.soft(Math.max(red, green, blue) - Math.min(red, green, blue), `${mode}/one ${token} has no lavender cast`).toBe(0)
       }
-      const [red, green, blue] = parseColor(await resolvedColor(page, '--qds-color-primary'))
+      const [red, green, blue] = parseColor(await resolvedColor(page, '--ods-color-primary'))
       expect.soft(blue > green && green > red, `${mode}/one primary is a calm blue, not purple`).toBe(true)
       expect.soft(await computed(page, '.q-card', 'background-image'), `${mode}/one card has no tonal wash`).toBe('none')
-      expect.soft(await computed(page, '.q-card', 'background-color'), `${mode}/one card is an opaque block`).toBe(await resolvedColor(page, '--qds-surface-0'))
-      for (const surface of ['--qds-surface-0', '--qds-surface-1', '--qds-surface-2', '--qds-surface-focus-block', '--qds-surface-brand-soft']) {
-        expect.soft(await ratio('--qds-text-muted', surface), `${mode}/one muted text on ${surface}`).toBeGreaterThanOrEqual(4.5)
-        expect.soft(await ratio('--qds-fg-brand', surface), `${mode}/one brand text on ${surface}`).toBeGreaterThanOrEqual(4.5)
+      expect.soft(await computed(page, '.q-card', 'background-color'), `${mode}/one card is an opaque block`).toBe(await resolvedColor(page, '--ods-surface-0'))
+      for (const surface of ['--ods-surface-0', '--ods-surface-1', '--ods-surface-2', '--ods-surface-focus-block', '--ods-surface-brand-soft']) {
+        expect.soft(await ratio('--ods-text-muted', surface), `${mode}/one muted text on ${surface}`).toBeGreaterThanOrEqual(4.5)
+        expect.soft(await ratio('--ods-fg-brand', surface), `${mode}/one brand text on ${surface}`).toBeGreaterThanOrEqual(4.5)
       }
-      expect.soft(await ratio('--qds-text-muted', '--qds-control-fill-hover'), `${mode}/one placeholder on a hovered field`).toBeGreaterThanOrEqual(4.5)
-      for (const surface of ['--qds-surface-0', '--qds-surface-1']) {
-        expect.soft(await ratio('--qds-stroke-focus', surface), `${mode}/one focus ring on ${surface}`).toBeGreaterThanOrEqual(3)
+      expect.soft(await ratio('--ods-text-muted', '--ods-control-fill-hover'), `${mode}/one placeholder on a hovered field`).toBeGreaterThanOrEqual(4.5)
+      for (const surface of ['--ods-surface-0', '--ods-surface-1']) {
+        expect.soft(await ratio('--ods-stroke-focus', surface), `${mode}/one focus ring on ${surface}`).toBeGreaterThanOrEqual(3)
       }
       expect.soft(await computed(page, '[data-test="qds-btn-toggle"] .q-btn', 'border-top-left-radius'), `${mode}/one segments are pills`).toBe('9999px')
       const toggle = '[data-test="qds-btn-toggle"]'
@@ -532,20 +532,20 @@ test.describe('QDS override gate', () => {
       await applyTheme(page, mode, 'one')
       for (const state of ['positive', 'warning', 'error']) {
         const stroke = parseColor(await computed(page, `[data-test="qds-forms-state-${state}"] .q-field__control`, 'border-top-color', '::before'))
-        for (const surface of ['--qds-surface-0', '--qds-surface-focus-block']) {
+        for (const surface of ['--ods-surface-0', '--ods-surface-focus-block']) {
           expect.soft(contrast(stroke, parseColor(await resolvedColor(page, surface))), `${mode}/one ${state} field stroke on ${surface}`).toBeGreaterThanOrEqual(3)
         }
       }
 
       const restStroke = parseColor(await computed(page, '[data-test="qds-forms-state-rest"] .q-field__control', 'border-top-color', '::before'))
-      for (const surface of ['--qds-surface-0', '--qds-surface-focus-block']) {
+      for (const surface of ['--ods-surface-0', '--ods-surface-focus-block']) {
         expect.soft(contrast(restStroke, parseColor(await resolvedColor(page, surface))), `${mode}/one rest field boundary on ${surface}`).toBeGreaterThanOrEqual(3)
       }
       await page.locator('[data-test="qds-forms-focus-trigger"]').click()
       const focused = '[data-test="qds-forms-state-focus"] .q-field__control'
       await expect(page.locator('[data-test="qds-forms-state-focus"] .q-field')).toHaveClass(/q-field--highlighted/)
       expect.soft(await computed(page, focused, 'border-top-width', '::before'), `${mode}/one focus draws a 2px perimeter`).toBe('2px')
-      const focusStroke = await resolvedColor(page, '--qds-stroke-focus')
+      const focusStroke = await resolvedColor(page, '--ods-stroke-focus')
       await expect.soft.poll(async () => computed(page, focused, 'border-top-color', '::before'), `${mode}/one focus perimeter is the brand stroke`).toBe(focusStroke)
       expect.soft(await computed(page, focused, 'display', '::after'), `${mode}/one focus has no underline bar`).toBe('none')
 
@@ -617,7 +617,7 @@ test.describe('QDS override gate', () => {
       const endpointContrast = contrast(parseColor(endpoint.foreground), activeFill)
       expect.soft(endpointContrast, `${mode}/one active nav label contrast`).toBeGreaterThanOrEqual(4.5)
       await info.attach(`one-${mode}-settled-native-endpoint`, { body: JSON.stringify({ mode, fluentCard, oneCard, gutterDelta: Math.abs(oneCard.x - fluentCard.x), widthDelta: Math.abs(oneCard.width - fluentCard.width), ...endpoint, contrast: endpointContrast }), contentType: 'application/json' })
-      expect.soft(await computed(page, '[data-test="qds-apps-subpage-panels"] .qds-settings-card', 'background-color'), `${mode}/one nested settings card takes the nested block tone`).toBe(await resolvedColor(page, '--qds-surface-focus-block'))
+      expect.soft(await computed(page, '[data-test="qds-apps-subpage-panels"] .ods-settings-card', 'background-color'), `${mode}/one nested settings card takes the nested block tone`).toBe(await resolvedColor(page, '--ods-surface-focus-block'))
 
       await page.goto('/#scenes')
       await applyTheme(page, mode, 'term')
@@ -650,27 +650,27 @@ test.describe('QDS override gate', () => {
         if (variant === 'term') expect.soft(field, `${cell} dense controls follow the pointer`).toBe((await coarsePointer(page)) ? 32 : 24)
         const chip = '[data-test="qds-chip-grey"]'
         expect.soft(await renderedContrast(page, chip, '.q-card'), `${cell} grey chip text contrasts with its fill`).toBeGreaterThanOrEqual(4.5)
-        expect.soft(await computed(page, chip, 'background-color'), `${cell} grey chip is the neutral layer`).toBe(await resolvedColor(page, '--qds-bg-layer'))
+        expect.soft(await computed(page, chip, 'background-color'), `${cell} grey chip is the neutral layer`).toBe(await resolvedColor(page, '--ods-bg-layer'))
 
         await page.goto('/#typography')
         await applyTheme(page, mode, variant)
         expect.soft(await computed(page, '[data-test="qds-type-subtitle-bold"]', 'font-weight'), `${cell} text-weight-bold beats the type scale`).toBe('700')
-        expect.soft(await computed(page, '[data-test="qds-type-subtitle"]', 'font-weight'), `${cell} subtitle keeps its scale weight`).toBe(await customProperty(page, '--qds-font-weight-subtitle1'))
+        expect.soft(await computed(page, '[data-test="qds-type-subtitle"]', 'font-weight'), `${cell} subtitle keeps its scale weight`).toBe(await customProperty(page, '--ods-font-weight-subtitle1'))
         expect.soft(await computed(page, '[data-test="qds-type-overline-capitalize"]', 'text-transform'), `${cell} text-capitalize beats the overline case`).toBe('capitalize')
         const link = '[data-test="qds-type-link"]'
-        expect.soft(await computed(page, link, 'color'), `${cell} prose link takes the brand ink`).toBe(await resolvedColor(page, '--qds-fg-brand'))
+        expect.soft(await computed(page, link, 'color'), `${cell} prose link takes the brand ink`).toBe(await resolvedColor(page, '--ods-fg-brand'))
         expect.soft(await computed(page, link, 'text-decoration-line'), `${cell} prose link keeps an underline`).toBe('underline')
-        expect.soft(contrast(parseColor(await computed(page, link, 'color')), parseColor(await resolvedColor(page, '--qds-surface-0'))), `${cell} prose link contrast`).toBeGreaterThanOrEqual(4.5)
+        expect.soft(contrast(parseColor(await computed(page, link, 'color')), parseColor(await resolvedColor(page, '--ods-surface-0'))), `${cell} prose link contrast`).toBeGreaterThanOrEqual(4.5)
         for (const anchor of await page.locator('[data-test="qds-type-anchors"] a').all()) {
           expect.soft(await anchor.evaluate((el) => getComputedStyle(el).textDecorationLine), `${cell} Quasar anchor components keep no underline`).toBe('none')
           // Ink has a single ink, so the brand foreground and an anchor's own colour coincide there.
-          if (variant !== 'ink') expect.soft(await anchor.evaluate((el) => getComputedStyle(el).color), `${cell} Quasar anchor components keep their own ink`).not.toBe(await resolvedColor(page, '--qds-fg-brand'))
+          if (variant !== 'ink') expect.soft(await anchor.evaluate((el) => getComputedStyle(el).color), `${cell} Quasar anchor components keep their own ink`).not.toBe(await resolvedColor(page, '--ods-fg-brand'))
         }
-        const focusStroke = await resolvedColor(page, variant === 'win' ? '--_qds-win-focus-outer' : '--qds-stroke-focus')
+        const focusStroke = await resolvedColor(page, variant === 'win' ? '--_ods-win-focus-outer' : '--ods-stroke-focus')
         for (const target of [link, '[data-test="qds-type-role-button"]']) {
           const focus = await ring(target)
           expect.soft(focus.visible, `${cell} ${target} shows focus-visible`).toBe(true)
-          expect.soft([focus.style, focus.width, focus.color], `${cell} ${target} takes the QDS ring`).toEqual(['solid', '2px', focusStroke])
+          expect.soft([focus.style, focus.width, focus.color], `${cell} ${target} takes the ODS ring`).toEqual(['solid', '2px', focusStroke])
           const offset = Number.parseFloat(focus.offset)
           if (target === link) expect.soft(offset, `${cell} prose link ring sits outside the text`).toBeGreaterThan(0)
           else expect.soft(offset, `${cell} custom control ring is inset so full-width rows keep all four sides`).toBeLessThan(0)
@@ -691,8 +691,8 @@ test.describe('QDS override gate', () => {
     await page.emulateMedia({ colorScheme: 'light' })
     await page.goto('/')
     const setSystem = () => page.evaluate(() => {
-      const ds = (window as unknown as { __qdsGallery: { setMode: (value: 'system') => string; resolvedMode: { value: string } } }).__qdsGallery
-      return { returned: ds.setMode('system'), resolved: ds.resolvedMode.value, body: document.body.dataset.qdsResolved }
+      const ds = (window as unknown as { __odsGallery: { setMode: (value: 'system') => string; resolvedMode: { value: string } } }).__odsGallery
+      return { returned: ds.setMode('system'), resolved: ds.resolvedMode.value, body: document.body.dataset.odsResolved }
     })
     expect(await setSystem()).toMatchObject({ returned: 'system', resolved: 'light', body: 'light' })
     await page.emulateMedia({ colorScheme: 'dark' })

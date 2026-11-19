@@ -14,12 +14,12 @@ export const catalogLinks: CatalogLink[] = [
     name: 'histoire',
     label: 'Histoire',
     description: 'Histoire component catalog',
-    href: env.VITE_QDS_HISTOIRE_URL || 'histoire/',
+    href: env.VITE_ODS_HISTOIRE_URL || 'histoire/',
   },
   {
     name: 'storybook',
     label: 'Storybook',
     description: 'Storybook component catalog',
-    href: env.VITE_QDS_STORYBOOK_URL || 'storybook/',
+    href: env.VITE_ODS_STORYBOOK_URL || 'storybook/',
   },
 ]

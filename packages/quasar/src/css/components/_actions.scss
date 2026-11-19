@@ -1,187 +1,187 @@
 @use '../importance';
 $banner-roles: (positive: positive, negative: negative, warning: warning, info: info);
-$term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
-$one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
+$term: ':is(.ods-ui.ods-variant-term, .ods-ui .ods-variant-term)';
+$one: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one)';
 
-$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
-$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
+$glass: '.ods-variant-glass:is(.ods-ui,.ods-ui *)';
+$win: '.ods-variant-win:is(.ods-ui,.ods-ui *)';
 
 @mixin styles {
-  .qds-ui .q-breadcrumbs { color: var(--qds-fg-muted); font-size: var(--qds-font-size-body1); }
-  .qds-ui .q-breadcrumbs .q-breadcrumbs__el { color: var(--qds-fg-muted); }
+  .ods-ui .q-breadcrumbs { color: var(--ods-fg-muted); font-size: var(--ods-font-size-body1); }
+  .ods-ui .q-breadcrumbs .q-breadcrumbs__el { color: var(--ods-fg-muted); }
 
-  .qds-ui .q-breadcrumbs a.q-breadcrumbs__el {
-    padding: 0.125rem var(--qds-space-xs);
-    color: var(--qds-fg-default);
-    border-radius: var(--qds-radius-sm);
+  .ods-ui .q-breadcrumbs a.q-breadcrumbs__el {
+    padding: 0.125rem var(--ods-space-xs);
+    color: var(--ods-fg-default);
+    border-radius: var(--ods-radius-sm);
     text-decoration: none;
   }
 
-  .qds-ui .q-breadcrumbs a.q-breadcrumbs__el:hover { color: var(--qds-fg-strong); background: var(--qds-state-hover); }
-  .qds-ui .q-breadcrumbs a.q-breadcrumbs__el:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); }
+  .ods-ui .q-breadcrumbs a.q-breadcrumbs__el:hover { color: var(--ods-fg-strong); background: var(--ods-state-hover); }
+  .ods-ui .q-breadcrumbs a.q-breadcrumbs__el:focus-visible { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus); }
 
   // Inline flow so a wrapped line breaks before a separator, never after it.
-  .qds-ui .q-breadcrumbs > div {
+  .ods-ui .q-breadcrumbs > div {
     display: block;
     margin: 0;
-    line-height: var(--qds-control-size-md);
+    line-height: var(--ods-control-size-md);
   }
 
-  .qds-ui .q-breadcrumbs > div > :not(.q-breadcrumbs__separator) {
+  .ods-ui .q-breadcrumbs > div > :not(.q-breadcrumbs__separator) {
     display: inline-flex;
     margin: 0;
-    line-height: var(--qds-line-height-body1);
+    line-height: var(--ods-line-height-body1);
     vertical-align: middle;
     white-space: nowrap;
   }
 
-  .qds-ui .q-breadcrumbs .q-breadcrumbs__separator {
+  .ods-ui .q-breadcrumbs .q-breadcrumbs__separator {
     display: inline;
-    margin: 0 var(--qds-space-sm);
-    color: var(--qds-fg-disabled);
+    margin: 0 var(--ods-space-sm);
+    color: var(--ods-fg-disabled);
     white-space: nowrap;
   }
 
-  .qds-ui .q-breadcrumbs .q-breadcrumbs__separator::before { content: '\200B'; }
-  .qds-ui .q-breadcrumbs .q-breadcrumbs__separator::after { content: '\2060'; }
+  .ods-ui .q-breadcrumbs .q-breadcrumbs__separator::before { content: '\200B'; }
+  .ods-ui .q-breadcrumbs .q-breadcrumbs__separator::after { content: '\2060'; }
 
-  .qds-ui .q-btn-group { border-radius: var(--qds-button-radius); box-shadow: none; }
+  .ods-ui .q-btn-group { border-radius: var(--ods-button-radius); box-shadow: none; }
 
-  .qds-ui .q-btn-group:where(:not(.q-btn-toggle)) > .q-btn-item + .q-btn-item {
-    margin-inline-start: calc(var(--qds-border-width-control) * -1);
+  .ods-ui .q-btn-group:where(:not(.q-btn-toggle)) > .q-btn-item + .q-btn-item {
+    margin-inline-start: calc(var(--ods-border-width-control) * -1);
     border-inline-start-color: color-mix(in srgb, currentColor 24%, transparent);
   }
 
-  .qds-ui .q-btn-group > .q-btn-item:is(:hover, :focus-visible) { z-index: 1; }
+  .ods-ui .q-btn-group > .q-btn-item:is(:hover, :focus-visible) { z-index: 1; }
   // Joined segments ring inside their own edge; on a role fill the ring takes the on-fill ink.
-  .qds-ui .q-btn-group:where(:not(.q-btn-toggle)) > .q-btn-item:focus-visible { outline-offset: calc((var(--qds-focus-ring-width) + var(--qds-border-width-control)) * -1); }
-  .qds-ui .q-btn-group:where(:not(.q-btn-toggle)) > .q-btn-item[class*='bg-']:focus-visible { --qds-stroke-focus: currentColor; }
-  .qds-ui .q-btn-dropdown--split > .q-btn-dropdown__arrow-container { padding-inline: var(--qds-space-sm); }
-  .qds-ui .q-btn-dropdown--split .q-btn-dropdown__arrow { margin-inline-start: 0; }
+  .ods-ui .q-btn-group:where(:not(.q-btn-toggle)) > .q-btn-item:focus-visible { outline-offset: calc((var(--ods-focus-ring-width) + var(--ods-border-width-control)) * -1); }
+  .ods-ui .q-btn-group:where(:not(.q-btn-toggle)) > .q-btn-item[class*='bg-']:focus-visible { --ods-stroke-focus: currentColor; }
+  .ods-ui .q-btn-dropdown--split > .q-btn-dropdown__arrow-container { padding-inline: var(--ods-space-sm); }
+  .ods-ui .q-btn-dropdown--split .q-btn-dropdown__arrow { margin-inline-start: 0; }
 
-  .qds-ui .q-btn-toggle {
+  .ods-ui .q-btn-toggle {
     gap: 0.125rem;
     padding: 0.125rem;
-    background: var(--qds-segmented-track-bg);
-    border-radius: calc(var(--qds-button-radius) + 0.125rem);
+    background: var(--ods-segmented-track-bg);
+    border-radius: calc(var(--ods-button-radius) + 0.125rem);
   }
 
-  .qds-ui .q-btn-toggle > .q-btn.q-btn-item {
-    min-height: calc(var(--qds-button-min-height) - 0.25rem);
+  .ods-ui .q-btn-toggle > .q-btn.q-btn-item {
+    min-height: calc(var(--ods-button-min-height) - 0.25rem);
     margin: 0;
     @include importance.declarations { background-color: transparent !important; }
     border-color: transparent;
-    border-radius: var(--qds-button-radius);
+    border-radius: var(--ods-button-radius);
   }
 
-  .qds-ui .q-btn-toggle > .q-btn.q-btn-item:where(:not(.disabled)) { @include importance.declarations { color: var(--qds-fg-muted) !important; } }
+  .ods-ui .q-btn-toggle > .q-btn.q-btn-item:where(:not(.disabled)) { @include importance.declarations { color: var(--ods-fg-muted) !important; } }
 
   #{$term} .q-btn-toggle > .q-btn.q-btn-item { border-color: transparent; }
-  #{$term} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) { border-color: var(--qds-control-stroke-default); }
+  #{$term} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .ods-active) { border-color: var(--ods-control-stroke-default); }
 
-  .qds-ui .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) {
-    @include importance.declarations { color: var(--qds-fg-strong) !important; background-color: var(--qds-segmented-thumb-bg) !important; }
-    box-shadow: var(--qds-shadow-2);
+  .ods-ui .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .ods-active) {
+    @include importance.declarations { color: var(--ods-fg-strong) !important; background-color: var(--ods-segmented-thumb-bg) !important; }
+    box-shadow: var(--ods-shadow-2);
   }
 
   // Toolkit Segmented: idle labels stay primary and the selected segment carries a 16 x 3px accent pill.
-  #{$win} .q-btn-toggle > .q-btn.q-btn-item:where(:not(.disabled)) { --qds-fg-muted: var(--qds-fg-default); }
-  #{$win} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active)::after {
+  #{$win} .q-btn-toggle > .q-btn.q-btn-item:where(:not(.disabled)) { --ods-fg-muted: var(--ods-fg-default); }
+  #{$win} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .ods-active)::after {
     position: absolute;
     inset: auto calc(50% - 0.5rem) 0;
     height: 3px;
     content: '';
-    background: var(--qds-tab-active-rail);
-    border-radius: var(--qds-radius-full);
+    background: var(--ods-tab-active-rail);
+    border-radius: var(--ods-radius-full);
   }
 
-  .qds-ui .q-fab .q-fab__actions { gap: var(--qds-space-xs); }
+  .ods-ui .q-fab .q-fab__actions { gap: var(--ods-space-xs); }
 
-  .qds-ui .q-avatar {
-    color: var(--qds-fg-default);
-    background: var(--qds-bg-layer);
-    border-radius: var(--qds-radius-full);
-    font-weight: var(--qds-font-weight-semibold);
+  .ods-ui .q-avatar {
+    color: var(--ods-fg-default);
+    background: var(--ods-bg-layer);
+    border-radius: var(--ods-radius-full);
+    font-weight: var(--ods-font-weight-semibold);
   }
 
-  .qds-ui .q-avatar .q-avatar__content:not(:has(> .q-icon)) { font-size: var(--qds-avatar-initials-scale); }
-  .qds-ui .q-avatar--square { border-radius: var(--qds-radius-control); }
+  .ods-ui .q-avatar .q-avatar__content:not(:has(> .q-icon)) { font-size: var(--ods-avatar-initials-scale); }
+  .ods-ui .q-avatar--square { border-radius: var(--ods-radius-control); }
 
   @each $role in primary, secondary, accent, positive, negative, warning, info {
-    .qds-ui .q-avatar.bg-#{$role} { @include importance.declarations { color: var(--qds-text-on-#{$role}) !important; } }
+    .ods-ui .q-avatar.bg-#{$role} { @include importance.declarations { color: var(--ods-text-on-#{$role}) !important; } }
   }
 
-  .qds-ui .q-avatar--rounded { border-radius: var(--qds-radius-md); }
-  .qds-ui .q-avatar img { border-radius: inherit; }
+  .ods-ui .q-avatar--rounded { border-radius: var(--ods-radius-md); }
+  .ods-ui .q-avatar img { border-radius: inherit; }
 
-  .qds-ui .q-banner {
+  .ods-ui .q-banner {
     align-items: flex-start;
     min-height: 0;
     padding-block: 0.75rem;
-    font-size: var(--qds-font-size-body2);
-    line-height: var(--qds-line-height-body2);
-    color: var(--qds-fg-default);
-    background: var(--qds-bg-surface-2);
-    border: var(--qds-border-width-control) solid var(--qds-stroke-subtle);
-    border-radius: var(--qds-radius-md);
+    font-size: var(--ods-font-size-body2);
+    line-height: var(--ods-line-height-body2);
+    color: var(--ods-fg-default);
+    background: var(--ods-bg-surface-2);
+    border: var(--ods-border-width-control) solid var(--ods-stroke-subtle);
+    border-radius: var(--ods-radius-md);
   }
 
-  .qds-ui .q-banner--dense { padding-block: var(--qds-space-sm); }
+  .ods-ui .q-banner--dense { padding-block: var(--ods-space-sm); }
 
   // Avatar and inline actions take one text line so they centre on the first line of copy.
-  .qds-ui .q-banner .q-banner__avatar {
+  .ods-ui .q-banner .q-banner__avatar {
     align-self: flex-start;
     align-content: center;
     height: 1lh;
-    color: var(--qds-fg-muted);
+    color: var(--ods-fg-muted);
   }
 
-  .qds-ui .q-banner .q-banner__avatar:has(> .q-avatar, > img) { height: auto; }
-  .qds-ui .q-banner .q-banner__actions { flex-wrap: wrap; justify-content: flex-end; gap: var(--qds-space-xs); }
-  .qds-ui .q-banner .q-banner__actions.col-auto { align-content: center; height: 1lh; }
+  .ods-ui .q-banner .q-banner__avatar:has(> .q-avatar, > img) { height: auto; }
+  .ods-ui .q-banner .q-banner__actions { flex-wrap: wrap; justify-content: flex-end; gap: var(--ods-space-xs); }
+  .ods-ui .q-banner .q-banner__actions.col-auto { align-content: center; height: 1lh; }
 
   // Flat actions bleed into the end padding so their labels align with the copy edge.
-  .qds-ui .q-banner .q-banner__actions.col-all {
+  .ods-ui .q-banner .q-banner__actions.col-all {
     flex: none;
-    width: calc(100% + var(--qds-space-sm));
-    margin-inline-end: calc(-1 * var(--qds-space-sm));
-    padding-block-start: var(--qds-space-sm);
+    width: calc(100% + var(--ods-space-sm));
+    margin-inline-end: calc(-1 * var(--ods-space-sm));
+    padding-block-start: var(--ods-space-sm);
   }
 
-  .qds-ui .q-banner .q-banner__actions > .q-btn-item { margin: 0; }
+  .ods-ui .q-banner .q-banner__actions > .q-btn-item { margin: 0; }
 
   // Narrow rows bleed into both paddings and tighten labels so the actions stay on one end-aligned line.
   @media (max-width: 599.98px) {
-    .qds-ui .q-banner .q-banner__actions.col-all { width: calc(100% + 2 * var(--qds-space-sm)); margin-inline-start: calc(-1 * var(--qds-space-sm)); }
-    .qds-ui .q-banner .q-banner__actions.col-all > .q-btn-item:not(.q-btn--round) { padding-inline: var(--qds-space-sm); }
+    .ods-ui .q-banner .q-banner__actions.col-all { width: calc(100% + 2 * var(--ods-space-sm)); margin-inline-start: calc(-1 * var(--ods-space-sm)); }
+    .ods-ui .q-banner .q-banner__actions.col-all > .q-btn-item:not(.q-btn--round) { padding-inline: var(--ods-space-sm); }
   }
 
   @each $role, $soft in $banner-roles {
-    .qds-ui .q-banner:is(.bg-#{$role}, .text-#{$role}) {
-      @include importance.declarations { color: var(--qds-fg-default) !important; background: var(--qds-surface-#{$soft}-soft) !important; }
-      border-color: color-mix(in srgb, var(--qds-color-#{$role}) 32%, transparent);
-      border-inline-start: 0.1875rem solid var(--qds-color-#{$role});
+    .ods-ui .q-banner:is(.bg-#{$role}, .text-#{$role}) {
+      @include importance.declarations { color: var(--ods-fg-default) !important; background: var(--ods-surface-#{$soft}-soft) !important; }
+      border-color: color-mix(in srgb, var(--ods-color-#{$role}) 32%, transparent);
+      border-inline-start: 0.1875rem solid var(--ods-color-#{$role});
     }
 
-    .qds-ui .q-banner:is(.bg-#{$role}, .text-#{$role}) .q-banner__avatar { color: var(--qds-color-#{$role}); }
+    .ods-ui .q-banner:is(.bg-#{$role}, .text-#{$role}) .q-banner__avatar { color: var(--ods-color-#{$role}); }
   }
 
   #{$one} .q-btn-toggle { padding: 0.25rem; }
-  #{$one} .q-btn-toggle > .q-btn-item { min-height: var(--qds-button-min-height); }
+  #{$one} .q-btn-toggle > .q-btn-item { min-height: var(--ods-button-min-height); }
 
-  .qds-variant-shadcn:is(.qds-ui,.qds-ui *) {
-    .q-btn-toggle { border-radius: var(--qds-radius-control); }
-    .q-btn-toggle > .q-btn-item { --qds-button-on-fill: var(--qds-fg-default); box-shadow: none; }
-    .q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) { box-shadow: var(--qds-shadow-sm); }
-    .q-fab .q-fab__actions .q-btn { box-shadow: var(--qds-shadow-sm); }
-    .q-avatar:where(:not([class*='text-weight-'])) { font-weight: var(--qds-font-weight-medium); }
-    .q-breadcrumbs .q-breadcrumbs__separator { color: var(--qds-fg-muted); }
-    .q-breadcrumbs .q-breadcrumbs__el:is([aria-current='page'], :not(a)) { color: var(--qds-fg-default); }
-    .q-banner { background: var(--qds-bg-card); border-color: var(--qds-card-stroke); }
-    .q-banner .q-banner__avatar { color: var(--qds-fg-default); }
+  .ods-variant-shadcn:is(.ods-ui,.ods-ui *) {
+    .q-btn-toggle { border-radius: var(--ods-radius-control); }
+    .q-btn-toggle > .q-btn-item { --ods-button-on-fill: var(--ods-fg-default); box-shadow: none; }
+    .q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn--active, .ods-active) { box-shadow: var(--ods-shadow-sm); }
+    .q-fab .q-fab__actions .q-btn { box-shadow: var(--ods-shadow-sm); }
+    .q-avatar:where(:not([class*='text-weight-'])) { font-weight: var(--ods-font-weight-medium); }
+    .q-breadcrumbs .q-breadcrumbs__separator { color: var(--ods-fg-muted); }
+    .q-breadcrumbs .q-breadcrumbs__el:is([aria-current='page'], :not(a)) { color: var(--ods-fg-default); }
+    .q-banner { background: var(--ods-bg-card); border-color: var(--ods-card-stroke); }
+    .q-banner .q-banner__avatar { color: var(--ods-fg-default); }
     @each $role, $soft in $banner-roles {
-      .q-banner:is(.bg-#{$role}, .text-#{$role}) { border-inline-start-width: var(--qds-border-width-control); }
-      .q-banner:is(.bg-#{$role}, .text-#{$role}) .q-banner__avatar { color: var(--qds-fg-#{$role}); }
+      .q-banner:is(.bg-#{$role}, .text-#{$role}) { border-inline-start-width: var(--ods-border-width-control); }
+      .q-banner:is(.bg-#{$role}, .text-#{$role}) .q-banner__avatar { color: var(--ods-fg-#{$role}); }
     }
   }
 

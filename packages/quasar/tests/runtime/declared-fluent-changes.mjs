@@ -5,36 +5,36 @@
 
 // F01: the on-fill label no longer dilutes into the fill it sits on. Only Fluent
 // reads this emission; every other profile re-declares 100% right after it.
-const ON_FILL = ['--qds-text-on-fill-pressed-mix: 90%', '--qds-text-on-fill-pressed-mix: 100%']
+const ON_FILL = ['--ods-text-on-fill-pressed-mix: 90%', '--ods-text-on-fill-pressed-mix: 100%']
 
 // F02: the field clear/password action carries Quasar's no-outline utility, so
 // its focus ring needs the same importance channel QBtn already uses. The
 // unlayered bundle keeps the declaration inline; the layered bundle routes it
-// into the earliest `qds-important` layer, which leaves the original rule
+// into the earliest `ods-important` layer, which leaves the original rule
 // holding only its offset and adds one rule matched by ADDED_IMPORTANT_RULE.
-const FOCUS_RING = /(\.q-field__focusable-action:focus-visible\{)outline:var\(--qds-focus-ring-width\) solid var\(--qds-stroke-focus\);(outline-offset:)/g
+const FOCUS_RING = /(\.q-field__focusable-action:focus-visible\{)outline:var\(--ods-focus-ring-width\) solid var\(--ods-stroke-focus\);(outline-offset:)/g
 
 // S01: the shadcn switch follows the v4 Switch (input track, primary when on, scheme-aware thumb).
-const S = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) .q-toggle'
+const S = '.ods-variant-shadcn:is(.ods-ui,.ods-ui *) .q-toggle'
 const SWITCH_BEFORE = [
-  `${S} .q-toggle__track{border-color:var(--qds-control-stroke-strong);background:var(--qds-control-fill-hover)}`,
-  `${S} .q-toggle__thumb::after{background:var(--qds-bg-canvas);box-shadow:var(--qds-shadow-sm)}`,
-  `${S} .q-toggle__inner--indet{color:var(--qds-color-primary)}`,
+  `${S} .q-toggle__track{border-color:var(--ods-control-stroke-strong);background:var(--ods-control-fill-hover)}`,
+  `${S} .q-toggle__thumb::after{background:var(--ods-bg-canvas);box-shadow:var(--ods-shadow-sm)}`,
+  `${S} .q-toggle__inner--indet{color:var(--ods-color-primary)}`,
   `${S} .q-toggle__inner--indet .q-toggle__track{background:currentColor;border-color:currentColor}`,
-  `${S} .q-toggle__inner--indet .q-toggle__thumb::after{background:var(--qds-selection-on, var(--qds-text-on-primary))}`,
-  `${S} :is(.q-toggle__inner--truthy,.q-toggle__inner--indet) .q-toggle__track{border-color:var(--qds-control-stroke-strong)}`,
+  `${S} .q-toggle__inner--indet .q-toggle__thumb::after{background:var(--ods-selection-on, var(--ods-text-on-primary))}`,
+  `${S} :is(.q-toggle__inner--truthy,.q-toggle__inner--indet) .q-toggle__track{border-color:var(--ods-control-stroke-strong)}`,
 ].join('')
 const SWITCH_AFTER = [
-  `${S} .q-toggle__track{border-color:rgba(0,0,0,0);background:var(--qds-shadcn-input)}`,
+  `${S} .q-toggle__track{border-color:rgba(0,0,0,0);background:var(--ods-shadcn-input)}`,
   `${S}:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track{border-color:rgba(0,0,0,0)}`,
-  `${S} .q-toggle__thumb::after{background:var(--qds-bg-canvas);box-shadow:none}`,
-  `${S} .q-toggle__inner--falsy .q-toggle__thumb::after{box-shadow:0 0 0 1px var(--qds-text-muted)}`,
-  `${S} .q-toggle__inner--indet{color:var(--qds-color-primary)}`,
+  `${S} .q-toggle__thumb::after{background:var(--ods-bg-canvas);box-shadow:none}`,
+  `${S} .q-toggle__inner--falsy .q-toggle__thumb::after{box-shadow:0 0 0 1px var(--ods-text-muted)}`,
+  `${S} .q-toggle__inner--indet{color:var(--ods-color-primary)}`,
   `${S} :is(.q-toggle__inner--truthy,.q-toggle__inner--indet) .q-toggle__track{background:currentColor;border-color:rgba(0,0,0,0)}`,
-  `${S} :is(.q-toggle__inner--truthy,.q-toggle__inner--indet) .q-toggle__thumb::after{background:var(--qds-selection-on, var(--qds-text-on-primary))}`,
+  `${S} :is(.q-toggle__inner--truthy,.q-toggle__inner--indet) .q-toggle__thumb::after{background:var(--ods-selection-on, var(--ods-text-on-primary))}`,
 ].join('')
-const SWITCH_FOCUS = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) :is(.q-checkbox,.q-radio,.q-toggle):focus-visible :is(.q-checkbox__inner,.q-radio__inner,.q-toggle__inner){box-shadow:var(--qds-field-focus-halo);outline-width:var(--qds-border-width-control)}'
-const SWITCH_SCHEME = `@supports(color: light-dark(#000, #fff)){${S} .q-toggle__track{background:light-dark(var(--qds-shadcn-input), color-mix(in srgb, var(--qds-shadcn-input) 80%, transparent))}${S} .q-toggle__inner--falsy .q-toggle__thumb::after{background:light-dark(var(--qds-shadcn-background), var(--qds-shadcn-foreground));box-shadow:0 0 0 1px light-dark(var(--qds-text-muted), transparent)}}`
+const SWITCH_FOCUS = '.ods-variant-shadcn:is(.ods-ui,.ods-ui *) :is(.q-checkbox,.q-radio,.q-toggle):focus-visible :is(.q-checkbox__inner,.q-radio__inner,.q-toggle__inner){box-shadow:var(--ods-field-focus-halo);outline-width:var(--ods-border-width-control)}'
+const SWITCH_SCHEME = `@supports(color: light-dark(#000, #fff)){${S} .q-toggle__track{background:light-dark(var(--ods-shadcn-input), color-mix(in srgb, var(--ods-shadcn-input) 80%, transparent))}${S} .q-toggle__inner--falsy .q-toggle__thumb::after{background:light-dark(var(--ods-shadcn-background), var(--ods-shadcn-foreground));box-shadow:0 0 0 1px light-dark(var(--ods-text-muted), transparent)}}`
 
 export function applyDeclaredShadcnChanges(css) {
   if (!css.includes(SWITCH_BEFORE) || !css.includes(SWITCH_FOCUS)) throw new Error('S01: shadcn switch baseline rules not found')
@@ -46,33 +46,33 @@ export function applyDeclaredShadcnChanges(css) {
 // on rules that 150d952 already froze, so the alias block and the bar rule are
 // characterised here rather than rewritten in place.
 const CARD_CHROME = [
-  '--qds-surface-brand-soft: color-mix(in srgb, var(--qds-color-primary) 36%, var(--qds-text-strong));',
-  '--qds-toolbar-bg: var(--qds-bg-card);--qds-mica-alt: var(--qds-bg-card);--qds-segmented-track-bg: var(--qds-bg-surface-2);--qds-segmented-thumb-bg: var(--qds-control-fill-default);--qds-surface-focus-block: var(--qds-bg-surface-2);',
+  '--ods-surface-brand-soft: color-mix(in srgb, var(--ods-color-primary) 36%, var(--ods-text-strong));',
+  '--ods-toolbar-bg: var(--ods-bg-card);--ods-mica-alt: var(--ods-bg-card);--ods-segmented-track-bg: var(--ods-bg-surface-2);--ods-segmented-thumb-bg: var(--ods-control-fill-default);--ods-surface-focus-block: var(--ods-bg-surface-2);',
 ]
-const TERM_BAR = /((?:\.qds-variant-term\)\) )?\.q-bar:not\(\.q-bar--dark\)\{background:)var\(--qds-surface-0\)(\})/g
+const TERM_BAR = /((?:\.ods-variant-term\)\) )?\.q-bar:not\(\.q-bar--dark\)\{background:)var\(--ods-surface-0\)(\})/g
 
-// F04: bare headings drop to element specificity. `body.qds-ui :where(h3)` was
+// F04: bare headings drop to element specificity. `body.ods-ui :where(h3)` was
 // (0,1,1) and overrode every class-styled heading in consuming apps (a card
-// title class rendered at the h3 size). `:where(body.qds-ui) h3` is (0,0,1): it
+// title class rendered at the h3 size). `:where(body.ods-ui) h3` is (0,0,1): it
 // still beats Quasar's bare `h3` by source order and loses to any class.
-const HEADING_FAMILY = ['body.qds-ui :where(h1,h2,h3,h4,h5,h6),', ':where(body.qds-ui) :is(h1,h2,h3,h4,h5,h6),']
-const HEADING_WEIGHT = /body\.qds-ui :where\((h[1-6])(:not\([^)]*\))\)/g
-const HEADING_STEP = /body\.qds-ui :where\((h[1-6])\)\{/g
-const headingChanges = (css) => css.replace(HEADING_FAMILY[0], HEADING_FAMILY[1]).replace(HEADING_WEIGHT, ':where(body.qds-ui) $1:where($2)').replace(HEADING_STEP, ':where(body.qds-ui) $1{')
+const HEADING_FAMILY = ['body.ods-ui :where(h1,h2,h3,h4,h5,h6),', ':where(body.ods-ui) :is(h1,h2,h3,h4,h5,h6),']
+const HEADING_WEIGHT = /body\.ods-ui :where\((h[1-6])(:not\([^)]*\))\)/g
+const HEADING_STEP = /body\.ods-ui :where\((h[1-6])\)\{/g
+const headingChanges = (css) => css.replace(HEADING_FAMILY[0], HEADING_FAMILY[1]).replace(HEADING_WEIGHT, ':where(body.ods-ui) $1:where($2)').replace(HEADING_STEP, ':where(body.ods-ui) $1{')
 
 // F05: the WinUI fidelity rules (buttons, selection, toggle, slider, tabs,
 // dialogs, dividers, disabled and subtle fills) are additions scoped to the
 // win variant class, never edits of a frozen rule, so every other profile
 // keeps its baseline paint. A matching rule may name no other variant.
-export const ADDED_WIN_RULE = /^(?!.*qds-variant-(?!win\b)).*qds-variant-win\b/
+export const ADDED_WIN_RULE = /^(?!.*ods-variant-(?!win\b)).*ods-variant-win\b/
 
-export const ADDED_IMPORTANT_RULE = /^@layer qds-important\|[^|]*\.q-field__focusable-action:focus-visible\{outline:[^}]*!important\}$/
+export const ADDED_IMPORTANT_RULE = /^@layer ods-important\|[^|]*\.q-field__focusable-action:focus-visible\{outline:[^}]*!important\}$/
 
 export function applyDeclaredFluentChanges(css, { layered = false } = {}) {
   const text = headingChanges(css.replaceAll(ON_FILL[0], ON_FILL[1]).replace(CARD_CHROME[0], CARD_CHROME.join('')))
   return layered
-    ? text.replace(FOCUS_RING, '$1$2').replace(TERM_BAR, '$1var(--qds-bg-card)$2')
-    : text.replace(FOCUS_RING, '$1outline:var(--qds-focus-ring-width) solid var(--qds-stroke-focus) !important;$2').replace(TERM_BAR, '$1var(--qds-bg-card)$2')
+    ? text.replace(FOCUS_RING, '$1$2').replace(TERM_BAR, '$1var(--ods-bg-card)$2')
+    : text.replace(FOCUS_RING, '$1outline:var(--ods-focus-ring-width) solid var(--ods-stroke-focus) !important;$2').replace(TERM_BAR, '$1var(--ods-bg-card)$2')
 }
 
 // The inverse of the enumerated changes, for gates that hash the historical
@@ -82,8 +82,8 @@ export function applyDeclaredFluentChanges(css, { layered = false } = {}) {
 export function revertDeclaredFluentChanges(css) {
   return css.split('}').map(block => block.replace(ON_FILL[1], ON_FILL[0])).join('}')
     .replace(CARD_CHROME.join(''), CARD_CHROME[0])
-    .replace(TERM_BAR, '$1var(--qds-surface-0)$2')
+    .replace(TERM_BAR, '$1var(--ods-surface-0)$2')
     .replace(HEADING_FAMILY[1], HEADING_FAMILY[0])
-    .replace(/:where\(body\.qds-ui\) (h[1-6]):where\((:not\([^)]*\))\)/g, 'body.qds-ui :where($1$2)')
-    .replace(/:where\(body\.qds-ui\) (h[1-6])\{/g, 'body.qds-ui :where($1){')
+    .replace(/:where\(body\.ods-ui\) (h[1-6]):where\((:not\([^)]*\))\)/g, 'body.ods-ui :where($1$2)')
+    .replace(/:where\(body\.ods-ui\) (h[1-6])\{/g, 'body.ods-ui :where($1){')
 }

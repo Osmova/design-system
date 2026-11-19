@@ -49,7 +49,7 @@ export function useCatalogPreviewController(): CatalogControllerResolution {
   return { controller: injected, reason: '' }
 }
 
-export const CATALOG_PREVIEW_CONTROLLER_HANDLE = '__qdsCatalogController'
+export const CATALOG_PREVIEW_CONTROLLER_HANDLE = '__odsCatalogController'
 
 /**
  * Host setup files register the controller on `globalThis` under this handle so
@@ -63,10 +63,10 @@ export function exposePreviewHandle(controller: DesignSystemController): () => v
   const holder = globalThis as unknown as Record<string, unknown>
   holder[CATALOG_PREVIEW_CONTROLLER_HANDLE] = controller
   const phase = () => 'mounted'
-  holder['__qdsCatalogPhase'] = phase
+  holder['__odsCatalogPhase'] = phase
   return () => {
     if (holder[CATALOG_PREVIEW_CONTROLLER_HANDLE] === controller) delete holder[CATALOG_PREVIEW_CONTROLLER_HANDLE]
-    if (holder.__qdsCatalogPhase === phase) delete holder.__qdsCatalogPhase
+    if (holder.__odsCatalogPhase === phase) delete holder.__odsCatalogPhase
   }
 }
 

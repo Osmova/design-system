@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { PhFileArrowUp, PhFolderOpen } from '@phosphor-icons/vue'
-import { useDesignSystem } from '@osmova/quasar-design-system'
+import { useDesignSystem } from '@osmova/ds-quasar'
 
 const ds = useDesignSystem()
 
@@ -12,17 +12,17 @@ const radio = ref('ink')
 const toggle = ref(true)
 const file = ref<File | null>(null)
 const affordanceFile = ref<File | null>(null)
-const selectedFile = ref<File | null>(new File(['QDS fixture'], 'brand-guidelines.pdf', { type: 'application/pdf' }))
+const selectedFile = ref<File | null>(new File(['ODS fixture'], 'brand-guidelines.pdf', { type: 'application/pdf' }))
 const selectedFiles = ref<File[]>([
-  new File(['QDS fixture'], 'component-inventory.csv', { type: 'text/csv' }),
-  new File(['QDS fixture'], 'theme-preview.png', { type: 'image/png' }),
+  new File(['ODS fixture'], 'component-inventory.csv', { type: 'text/csv' }),
+  new File(['ODS fixture'], 'theme-preview.png', { type: 'image/png' }),
 ])
 const progressFiles = ref<File[]>([
-  new File(['QDS fixture'], 'token-audit.json', { type: 'application/json' }),
-  new File(['QDS fixture'], 'release-notes.md', { type: 'text/markdown' }),
+  new File(['ODS fixture'], 'token-audit.json', { type: 'application/json' }),
+  new File(['ODS fixture'], 'release-notes.md', { type: 'text/markdown' }),
 ])
-const readonlyFile = ref<File | null>(new File(['QDS fixture'], 'approved-brief.pdf', { type: 'application/pdf' }))
-const disabledFile = ref<File | null>(new File(['QDS fixture'], 'archived-token.json', { type: 'application/json' }))
+const readonlyFile = ref<File | null>(new File(['ODS fixture'], 'approved-brief.pdf', { type: 'application/pdf' }))
+const disabledFile = ref<File | null>(new File(['ODS fixture'], 'archived-token.json', { type: 'application/json' }))
 const inputReadonly = ref('Tokenized readonly input')
 const inputError = ref('Needs attention')
 const inputDisabled = ref('Disabled input')
@@ -86,7 +86,7 @@ const checkboxChoices = [
 
 <template>
   <q-card class="catalog-card q-pa-lg">
-    <div class="text-h6 qds-display q-mb-md">Forms, pickers &amp; editing</div>
+    <div class="text-h6 ods-display q-mb-md">Forms, pickers &amp; editing</div>
     <q-form class="catalog-form">
       <div class="catalog-grid catalog-grid--three">
         <div class="catalog-demo">
@@ -128,7 +128,7 @@ const checkboxChoices = [
             <div data-test="qds-catalog-select-no-options">
               <q-select v-model="selectNoOptions" name="catalog-select-no-options" :options="emptySelectOptions" label="No options" outlined behavior="menu">
                 <template #no-option>
-                  <q-item><q-item-section class="qds-text-muted">No options available</q-item-section></q-item>
+                  <q-item><q-item-section class="ods-text-muted">No options available</q-item-section></q-item>
                 </template>
               </q-select>
             </div>

@@ -1,7 +1,7 @@
-// Layer order declaration. Tokens live in qds.tokens in both bundles. In the
+// Layer order declaration. Tokens live in ods.tokens in both bundles. In the
 // default ./css bundle the component/base/utility overrides are emitted
-// UNLAYERED (so they beat Quasar's unlayered CSS); the qds.base/utilities/quasar
+// UNLAYERED (so they beat Quasar's unlayered CSS); the ods.base/utilities/quasar
 // layers are only populated by the optional ./css/layered bundle.
 @use 'importance';
-@if importance.$layered { @layer qds-important; }
-@layer qds.reset, qds.tokens, qds.base, qds.utilities, qds.quasar, qds.overrides;
+@if importance.$layered { @layer ods-important; }
+@layer ods.reset, ods.tokens, ods.base, ods.utilities, ods.quasar, ods.overrides;

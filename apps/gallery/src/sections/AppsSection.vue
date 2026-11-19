@@ -241,8 +241,8 @@ function backDialog() {
 <template>
   <div class="column no-wrap" style="gap: 1.5rem">
     <q-card class="q-pa-lg" data-test="qds-apps-split">
-      <div class="text-h6 qds-display q-mb-xs">Split button</div>
-      <div class="qds-text-muted q-mb-md">
+      <div class="text-h6 ods-display q-mb-xs">Split button</div>
+      <div class="ods-text-muted q-mb-md">
         The primary segment runs the last chosen action; the chevron opens rich menu rows. Arrow keys move between rows (Tab also works), Enter activates, Escape closes and returns focus.
       </div>
       <div class="row items-center q-gutter-md">
@@ -265,35 +265,35 @@ function backDialog() {
               v-close-popup
               clickable
               role="menuitemradio"
-              class="qds-menu-row"
+              class="ods-menu-row"
               :active="deployTarget === target.value"
               :aria-checked="deployTarget === target.value ? 'true' : 'false'"
               @click="chooseDeploy(target.value)"
             >
-              <q-item-section avatar class="qds-menu-row__icon">
+              <q-item-section avatar class="ods-menu-row__icon">
                 <q-avatar v-if="'avatar' in target" size="1.25rem" font-size="0.5625rem" color="primary" text-color="white">{{ target.avatar }}</q-avatar>
                 <component :is="target.icon" v-else :size="20" weight="duotone" />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="qds-menu-row__title">{{ target.label }}</q-item-label>
-                <q-item-label caption class="qds-menu-row__caption">{{ target.caption }}</q-item-label>
-                <q-item-label class="qds-menu-row__description">{{ target.description }}</q-item-label>
+                <q-item-label class="ods-menu-row__title">{{ target.label }}</q-item-label>
+                <q-item-label caption class="ods-menu-row__caption">{{ target.caption }}</q-item-label>
+                <q-item-label class="ods-menu-row__description">{{ target.description }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-separator role="separator" />
-            <q-item v-close-popup clickable role="menuitem" class="qds-menu-row" @click="deployStatus = 'Rollback started.'">
-              <q-item-section avatar class="qds-menu-row__icon"><PhArrowCounterClockwise :size="20" weight="duotone" /></q-item-section>
-              <q-item-section><q-item-label class="qds-menu-row__title">Roll back</q-item-label></q-item-section>
+            <q-item v-close-popup clickable role="menuitem" class="ods-menu-row" @click="deployStatus = 'Rollback started.'">
+              <q-item-section avatar class="ods-menu-row__icon"><PhArrowCounterClockwise :size="20" weight="duotone" /></q-item-section>
+              <q-item-section><q-item-label class="ods-menu-row__title">Roll back</q-item-label></q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <span class="qds-text-muted" role="status" data-test="qds-apps-split-status">{{ deployStatus }}</span>
+        <span class="ods-text-muted" role="status" data-test="qds-apps-split-status">{{ deployStatus }}</span>
       </div>
     </q-card>
 
     <q-card class="q-pa-lg" data-test="qds-apps-nav-card">
-      <div class="text-h6 qds-display q-mb-xs">Compact navigation</div>
-      <div class="qds-text-muted q-mb-md">NavigationView with nested destinations; the mini rail keeps every child named, focusable and labelled by a tooltip.</div>
+      <div class="text-h6 ods-display q-mb-xs">Compact navigation</div>
+      <div class="ods-text-muted q-mb-md">NavigationView with nested destinations; the mini rail keeps every child named, focusable and labelled by a tooltip.</div>
       <div class="apps-nav" data-test="qds-apps-nav">
         <q-layout view="lHh Lpr lFf" container class="apps-nav__layout" :style="{ height: `max(16rem, ${navHeight + 2}px)` }">
           <q-drawer :model-value="true" behavior="desktop" :mini="navMini" :width="232" :mini-width="48" bordered data-test="qds-apps-nav-drawer">
@@ -374,8 +374,8 @@ function backDialog() {
           </q-drawer>
           <q-page-container>
             <q-page class="apps-nav__page">
-              <h3 class="apps-nav__title qds-display" data-test="qds-apps-nav-title">{{ navActiveLabel }}</h3>
-              <p class="qds-text-muted q-mb-none">Destination content for the selected page.</p>
+              <h3 class="apps-nav__title ods-display" data-test="qds-apps-nav-title">{{ navActiveLabel }}</h3>
+              <p class="ods-text-muted q-mb-none">Destination content for the selected page.</p>
             </q-page>
           </q-page-container>
         </q-layout>
@@ -383,9 +383,9 @@ function backDialog() {
     </q-card>
 
     <q-card class="q-pa-lg" data-test="qds-apps-subpage">
-      <div class="text-h6 qds-display q-mb-xs">Settings subpage</div>
-      <div class="qds-text-muted q-mb-md">Four related subpages behind a 36px underline tab row. Arrow keys move between tabs.</div>
-      <q-tabs v-model="subpage" class="qds-subpage-tabs" align="left" no-caps outside-arrows mobile-arrows aria-label="Workspace settings" data-test="qds-apps-subpage-tabs">
+      <div class="text-h6 ods-display q-mb-xs">Settings subpage</div>
+      <div class="ods-text-muted q-mb-md">Four related subpages behind a 36px underline tab row. Arrow keys move between tabs.</div>
+      <q-tabs v-model="subpage" class="ods-subpage-tabs" align="left" no-caps outside-arrows mobile-arrows aria-label="Workspace settings" data-test="qds-apps-subpage-tabs">
         <q-tab
           v-for="page in subpages"
           :id="`apps-subpage-tab-${page.name}`"
@@ -397,48 +397,48 @@ function backDialog() {
       </q-tabs>
       <q-tab-panels v-model="subpage" class="apps-subpage__panels" data-test="qds-apps-subpage-panels">
         <q-tab-panel name="general" id="apps-subpage-panel-general" aria-labelledby="apps-subpage-tab-general">
-          <div class="qds-settings-group">
-            <div class="qds-settings-card">
-              <div class="qds-settings-card__icon"><PhGlobe :size="20" weight="duotone" /></div>
-              <div class="qds-settings-card__header">Workspace name</div>
-              <div class="qds-settings-card__description">Shown in the console header and in email.</div>
-              <div class="qds-settings-card__action"><q-input v-model="workspaceName" name="apps-workspace-name" outlined aria-label="Workspace name" /></div>
+          <div class="ods-settings-group">
+            <div class="ods-settings-card">
+              <div class="ods-settings-card__icon"><PhGlobe :size="20" weight="duotone" /></div>
+              <div class="ods-settings-card__header">Workspace name</div>
+              <div class="ods-settings-card__description">Shown in the console header and in email.</div>
+              <div class="ods-settings-card__action"><q-input v-model="workspaceName" name="apps-workspace-name" outlined aria-label="Workspace name" /></div>
             </div>
           </div>
         </q-tab-panel>
         <q-tab-panel name="notifications" id="apps-subpage-panel-notifications" aria-labelledby="apps-subpage-tab-notifications">
-          <div class="qds-settings-group">
-            <div class="qds-settings-card">
-              <div class="qds-settings-card__icon"><PhBell :size="20" weight="duotone" /></div>
-              <div class="qds-settings-card__header">Daily digest</div>
-              <div class="qds-settings-card__description">A summary of incidents and deployments at 08:00.</div>
-              <div class="qds-settings-card__action"><q-toggle v-model="digest" name="apps-digest" aria-label="Daily digest" /></div>
+          <div class="ods-settings-group">
+            <div class="ods-settings-card">
+              <div class="ods-settings-card__icon"><PhBell :size="20" weight="duotone" /></div>
+              <div class="ods-settings-card__header">Daily digest</div>
+              <div class="ods-settings-card__description">A summary of incidents and deployments at 08:00.</div>
+              <div class="ods-settings-card__action"><q-toggle v-model="digest" name="apps-digest" aria-label="Daily digest" /></div>
             </div>
-            <div class="qds-settings-card">
-              <div class="qds-settings-card__icon"><PhWarningOctagon :size="20" weight="duotone" /></div>
-              <div class="qds-settings-card__header">Page the on-call owner</div>
-              <div class="qds-settings-card__description">Critical alerts page immediately.</div>
-              <div class="qds-settings-card__action"><q-toggle v-model="pageOnCall" name="apps-page-on-call" aria-label="Page the on-call owner" /></div>
+            <div class="ods-settings-card">
+              <div class="ods-settings-card__icon"><PhWarningOctagon :size="20" weight="duotone" /></div>
+              <div class="ods-settings-card__header">Page the on-call owner</div>
+              <div class="ods-settings-card__description">Critical alerts page immediately.</div>
+              <div class="ods-settings-card__action"><q-toggle v-model="pageOnCall" name="apps-page-on-call" aria-label="Page the on-call owner" /></div>
             </div>
           </div>
         </q-tab-panel>
         <q-tab-panel name="access" id="apps-subpage-panel-access" aria-labelledby="apps-subpage-tab-access">
-          <div class="qds-settings-group">
-            <div class="qds-settings-card">
-              <div class="qds-settings-card__icon"><PhKey :size="20" weight="duotone" /></div>
-              <div class="qds-settings-card__header">Require single sign-on</div>
-              <div class="qds-settings-card__description">Members sign in through the identity provider.</div>
-              <div class="qds-settings-card__action"><q-toggle v-model="enforceSso" name="apps-sso" aria-label="Require single sign-on" /></div>
+          <div class="ods-settings-group">
+            <div class="ods-settings-card">
+              <div class="ods-settings-card__icon"><PhKey :size="20" weight="duotone" /></div>
+              <div class="ods-settings-card__header">Require single sign-on</div>
+              <div class="ods-settings-card__description">Members sign in through the identity provider.</div>
+              <div class="ods-settings-card__action"><q-toggle v-model="enforceSso" name="apps-sso" aria-label="Require single sign-on" /></div>
             </div>
           </div>
         </q-tab-panel>
         <q-tab-panel name="advanced" id="apps-subpage-panel-advanced" aria-labelledby="apps-subpage-tab-advanced">
-          <div class="qds-settings-group">
-            <div class="qds-settings-card">
-              <div class="qds-settings-card__icon"><PhDatabase :size="20" weight="duotone" /></div>
-              <div class="qds-settings-card__header">Audit log retention</div>
-              <div class="qds-settings-card__description">Older entries are archived.</div>
-              <div class="qds-settings-card__action"><q-select v-model="auditRetention" name="apps-retention" :options="retentionOptions" outlined aria-label="Audit log retention" /></div>
+          <div class="ods-settings-group">
+            <div class="ods-settings-card">
+              <div class="ods-settings-card__icon"><PhDatabase :size="20" weight="duotone" /></div>
+              <div class="ods-settings-card__header">Audit log retention</div>
+              <div class="ods-settings-card__description">Older entries are archived.</div>
+              <div class="ods-settings-card__action"><q-select v-model="auditRetention" name="apps-retention" :options="retentionOptions" outlined aria-label="Audit log retention" /></div>
             </div>
           </div>
         </q-tab-panel>
@@ -446,8 +446,8 @@ function backDialog() {
     </q-card>
 
     <q-card class="q-pa-lg" data-test="qds-apps-table-card">
-      <div class="text-h6 qds-display q-mb-xs">Dense table controls</div>
-      <div class="qds-text-muted q-mb-md">32px rows with segmented filters and per-row switchers, then expandable incident details.</div>
+      <div class="text-h6 ods-display q-mb-xs">Dense table controls</div>
+      <div class="ods-text-muted q-mb-md">32px rows with segmented filters and per-row switchers, then expandable incident details.</div>
       <q-table
         dense
         flat
@@ -464,7 +464,7 @@ function backDialog() {
             <span class="text-subtitle2">Services</span>
             <q-btn-toggle
               v-model="serviceFilter"
-              class="qds-table-segmented"
+              class="ods-table-segmented"
               dense
               no-caps
               role="group"
@@ -486,7 +486,7 @@ function backDialog() {
           <q-td :props="props">
             <q-btn-toggle
               v-model="traffic[props.row.name]"
-              class="qds-table-segmented"
+              class="ods-table-segmented"
               dense
               no-caps
               role="group"
@@ -514,30 +514,30 @@ function backDialog() {
 
     <q-card class="apps-screen" data-test="qds-apps-dashboard">
       <header class="apps-screen__bar">
-        <h2 class="apps-screen__title qds-display">Operations overview</h2>
+        <h2 class="apps-screen__title ods-display">Operations overview</h2>
         <div class="apps-screen__commands">
           <q-btn flat dense no-caps><PhArrowsClockwise :size="16" weight="regular" class="q-mr-xs" />Refresh</q-btn>
           <q-btn unelevated dense no-caps color="primary" label="New alert" />
         </div>
       </header>
-      <div class="qds-tile-grid" role="list" aria-label="Service health" data-test="qds-apps-tiles">
+      <div class="ods-tile-grid" role="list" aria-label="Service health" data-test="qds-apps-tiles">
         <div
           v-for="tile in tiles"
           :key="tile.label"
           role="listitem"
-          class="qds-tile"
-          :class="tile.tone ? `qds-tile--${tile.tone}` : undefined"
+          class="ods-tile"
+          :class="tile.tone ? `ods-tile--${tile.tone}` : undefined"
           data-test="qds-apps-tile"
         >
-          <span class="qds-tile__icon"><component :is="tile.icon" :size="20" weight="duotone" aria-hidden="true" /></span>
-          <div class="qds-tile__label">{{ tile.label }}</div>
-          <div class="qds-tile__value">{{ tile.value }}</div>
-          <div class="qds-tile__meta">{{ tile.meta }}</div>
-          <div class="qds-tile__spark">
+          <span class="ods-tile__icon"><component :is="tile.icon" :size="20" weight="duotone" aria-hidden="true" /></span>
+          <div class="ods-tile__label">{{ tile.label }}</div>
+          <div class="ods-tile__value">{{ tile.value }}</div>
+          <div class="ods-tile__meta">{{ tile.meta }}</div>
+          <div class="ods-tile__spark">
             <svg viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
               <polyline :points="sparkPoints(tile.trend)" />
             </svg>
-            <span class="qds-sr-only">Trend: {{ tile.summary }}</span>
+            <span class="ods-sr-only">Trend: {{ tile.summary }}</span>
           </div>
         </div>
       </div>
@@ -557,7 +557,7 @@ function backDialog() {
 
     <q-card class="apps-screen" data-test="qds-apps-list-detail">
       <header class="apps-screen__bar">
-        <h2 class="apps-screen__title qds-display">Services</h2>
+        <h2 class="apps-screen__title ods-display">Services</h2>
       </header>
       <div class="apps-list-detail" :class="{ 'apps-list-detail--detail': detailOpen }">
         <div ref="masterList" class="apps-list-detail__master" role="group" aria-label="Services" data-test="qds-apps-list-detail-master">
@@ -582,7 +582,7 @@ function backDialog() {
           <q-btn flat dense no-caps class="apps-list-detail__back" data-test="qds-apps-list-detail-back" @click="closeService">
             <PhArrowLeft :size="16" weight="regular" class="q-mr-xs" />All services
           </q-btn>
-          <h3 id="apps-detail-title" ref="detailHeading" tabindex="-1" class="apps-list-detail__heading qds-display">{{ selectedService.name }}</h3>
+          <h3 id="apps-detail-title" ref="detailHeading" tabindex="-1" class="apps-list-detail__heading ods-display">{{ selectedService.name }}</h3>
           <dl class="apps-list-detail__facts">
             <dt>Region</dt><dd>{{ selectedService.region }}</dd>
             <dt>Status</dt>
@@ -600,20 +600,20 @@ function backDialog() {
 
     <q-card class="apps-screen" data-test="qds-apps-dialog-flow">
       <header class="apps-screen__bar">
-        <h2 class="apps-screen__title qds-display">Add a service</h2>
+        <h2 class="apps-screen__title ods-display">Add a service</h2>
         <div class="apps-screen__commands">
           <q-btn unelevated dense no-caps color="primary" data-test="qds-apps-dialog-trigger" @click="openDialog">
             <PhPlus :size="16" weight="regular" class="q-mr-xs" />Add service
           </q-btn>
         </div>
       </header>
-      <p class="qds-text-muted q-px-lg q-pb-lg q-mb-none" role="status" data-test="qds-apps-dialog-result">{{ dialogResult || 'A three-step dialog: source, configuration and review.' }}</p>
+      <p class="ods-text-muted q-px-lg q-pb-lg q-mb-none" role="status" data-test="qds-apps-dialog-result">{{ dialogResult || 'A three-step dialog: source, configuration and review.' }}</p>
 
       <q-dialog v-model="dialogOpen" aria-labelledby="apps-dialog-title">
         <q-card class="apps-dialog" data-test="qds-apps-dialog">
           <q-card-section class="q-pb-none">
-            <div id="apps-dialog-title" class="text-h6 qds-display">Add service</div>
-            <div v-if="narrow" class="qds-text-muted text-caption" aria-live="polite" data-test="qds-apps-dialog-step-caption">
+            <div id="apps-dialog-title" class="text-h6 ods-display">Add service</div>
+            <div v-if="narrow" class="ods-text-muted text-caption" aria-live="polite" data-test="qds-apps-dialog-step-caption">
               Step {{ dialogStep }} of {{ dialogSteps.length }} · {{ dialogSteps[dialogStep - 1] }}
             </div>
           </q-card-section>
@@ -649,12 +649,12 @@ function backDialog() {
 
 .apps-nav__layout {
   overflow: hidden;
-  border: 1px solid var(--qds-stroke-subtle);
-  border-radius: var(--qds-card-radius);
+  border: 1px solid var(--ods-stroke-subtle);
+  border-radius: var(--ods-card-radius);
 }
 
 .apps-nav__head {
-  padding: var(--qds-space-xs) var(--qds-space-sm) 0;
+  padding: var(--ods-space-xs) var(--ods-space-sm) 0;
 }
 
 /* Contains the list's margins so the measured height includes them. */
@@ -663,7 +663,7 @@ function backDialog() {
 }
 
 .apps-nav__section > .q-item {
-  margin-block-start: var(--qds-row-gap);
+  margin-block-start: var(--ods-row-gap);
 }
 
 .apps-nav__section:first-child > .q-item:first-child {
@@ -671,11 +671,11 @@ function backDialog() {
 }
 
 .apps-nav__page {
-  padding: var(--qds-space-lg);
+  padding: var(--ods-space-lg);
 }
 
 .apps-nav__title {
-  margin: 0 0 var(--qds-space-xs);
+  margin: 0 0 var(--ods-space-xs);
   font-size: 1.5rem;
   line-height: 1.3;
 }
@@ -689,7 +689,7 @@ function backDialog() {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--qds-space-sm);
+  gap: var(--ods-space-sm);
   width: 100%;
 }
 
@@ -700,22 +700,22 @@ function backDialog() {
 }
 
 .apps-status__label {
-  color: var(--qds-fg-default);
+  color: var(--ods-fg-default);
 }
 
 .apps-incidents {
   display: flex;
   flex-direction: column;
-  gap: var(--qds-space-xs);
+  gap: var(--ods-space-xs);
 }
 
 .apps-incidents__body {
-  padding: var(--qds-space-xs) 0.75rem var(--qds-space-md);
-  color: var(--qds-fg-muted);
+  padding: var(--ods-space-xs) 0.75rem var(--ods-space-md);
+  color: var(--ods-fg-muted);
 }
 
-:global(.qds-variant-one .apps-incidents__body) {
-  padding-inline: var(--qds-space-md);
+:global(.ods-variant-one .apps-incidents__body) {
+  padding-inline: var(--ods-space-md);
 }
 
 .apps-screen__bar {
@@ -723,8 +723,8 @@ function backDialog() {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--qds-space-sm);
-  padding: var(--qds-space-md) var(--qds-space-lg);
+  gap: var(--ods-space-sm);
+  padding: var(--ods-space-md) var(--ods-space-lg);
 }
 
 .apps-screen__title {
@@ -735,30 +735,30 @@ function backDialog() {
 
 .apps-screen__commands {
   display: flex;
-  gap: var(--qds-space-xs);
+  gap: var(--ods-space-xs);
 }
 
-.apps-screen > .qds-tile-grid {
-  padding-inline: var(--qds-space-lg);
+.apps-screen > .ods-tile-grid {
+  padding-inline: var(--ods-space-lg);
 }
 
 .apps-activity {
-  padding: var(--qds-space-md) var(--qds-space-lg) var(--qds-space-lg);
+  padding: var(--ods-space-md) var(--ods-space-lg) var(--ods-space-lg);
 }
 
 .apps-list-detail {
   display: grid;
   grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
-  border-block-start: 1px solid var(--qds-stroke-divider);
+  border-block-start: 1px solid var(--ods-stroke-divider);
 }
 
 .apps-list-detail__master {
-  padding: var(--qds-space-sm);
-  border-inline-end: 1px solid var(--qds-stroke-divider);
+  padding: var(--ods-space-sm);
+  border-inline-end: 1px solid var(--ods-stroke-divider);
 }
 
 .apps-list-detail__detail {
-  padding: var(--qds-space-md) var(--qds-space-lg) var(--qds-space-lg);
+  padding: var(--ods-space-md) var(--ods-space-lg) var(--ods-space-lg);
 }
 
 .apps-list-detail__back {
@@ -770,7 +770,7 @@ function backDialog() {
 }
 
 .apps-list-detail__heading {
-  margin: 0 0 var(--qds-space-md);
+  margin: 0 0 var(--ods-space-md);
   font-size: 1.25rem;
   line-height: 1.4;
 }
@@ -778,12 +778,12 @@ function backDialog() {
 .apps-list-detail__facts {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  gap: var(--qds-space-xs) var(--qds-space-lg);
+  gap: var(--ods-space-xs) var(--ods-space-lg);
   margin: 0;
 }
 
 .apps-list-detail__facts dt {
-  color: var(--qds-fg-muted);
+  color: var(--ods-fg-muted);
 }
 
 .apps-list-detail__facts dd {
@@ -810,7 +810,7 @@ function backDialog() {
 
   .apps-list-detail__back {
     display: inline-flex;
-    margin-block-end: var(--qds-space-sm);
+    margin-block-end: var(--ods-space-sm);
   }
 }
 </style>

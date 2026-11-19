@@ -1,126 +1,126 @@
 @use '../materials';
 @use '../importance';
 
-$one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
-$term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
-$shadcn: ':is(.qds-ui.qds-variant-shadcn, .qds-ui .qds-variant-shadcn)';
-$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
+$one: ':is(.ods-ui.ods-variant-one, .ods-ui .ods-variant-one)';
+$term: ':is(.ods-ui.ods-variant-term, .ods-ui .ods-variant-term)';
+$shadcn: ':is(.ods-ui.ods-variant-shadcn, .ods-ui .ods-variant-shadcn)';
+$win: '.ods-variant-win:is(.ods-ui,.ods-ui *)';
 
 @mixin styles {
-  .qds-ui :is(.q-ajax-bar, .q-loading-bar) { background: var(--qds-color-primary); box-shadow: none; }
+  .ods-ui :is(.q-ajax-bar, .q-loading-bar) { background: var(--ods-color-primary); box-shadow: none; }
 
   // Quasar sizes the bar in em, so the size prop still wins inline.
-  .qds-ui .q-linear-progress { font-size: 2px; color: var(--qds-color-primary); border-radius: var(--qds-radius-full); }
-  .qds-ui .q-linear-progress__track { background: var(--qds-stroke-subtle); opacity: 1; }
-  .qds-ui .q-linear-progress__model { border-radius: inherit; }
+  .ods-ui .q-linear-progress { font-size: 2px; color: var(--ods-color-primary); border-radius: var(--ods-radius-full); }
+  .ods-ui .q-linear-progress__track { background: var(--ods-stroke-subtle); opacity: 1; }
+  .ods-ui .q-linear-progress__model { border-radius: inherit; }
 
   // Role fills use the text-safe foreground so charcoal/grey roles keep 3:1 against the track.
   @each $role in primary, secondary, accent, positive, negative, warning, info {
-    .qds-ui :is(.q-linear-progress, .q-circular-progress__circle).text-#{$role},
-    #{$shadcn} .q-spinner.text-#{$role} { @include importance.declarations { color: var(--qds-fg-#{$role}) !important; } }
+    .ods-ui :is(.q-linear-progress, .q-circular-progress__circle).text-#{$role},
+    #{$shadcn} .q-spinner.text-#{$role} { @include importance.declarations { color: var(--ods-fg-#{$role}) !important; } }
   }
   // WinUI ProgressRing draws in the accent fill, not the darker accent text.
-  #{$win} .q-spinner.text-primary { --qds-fg-primary: var(--qds-color-primary); }
+  #{$win} .q-spinner.text-primary { --ods-fg-primary: var(--ods-color-primary); }
 
-  .qds-ui .q-circular-progress { color: var(--qds-color-primary); }
-  .qds-ui .q-circular-progress__text { color: var(--qds-fg-default); }
+  .ods-ui .q-circular-progress { color: var(--ods-color-primary); }
+  .ods-ui .q-circular-progress__text { color: var(--ods-fg-default); }
 
-  .qds-ui .q-inner-loading {
-    color: var(--qds-fg-default);
-    background: color-mix(in srgb, var(--qds-bg-canvas) 80%, transparent);
+  .ods-ui .q-inner-loading {
+    color: var(--ods-fg-default);
+    background: color-mix(in srgb, var(--ods-bg-canvas) 80%, transparent);
     @include materials.backdrop(blur(0.25rem));
   }
 
-  .qds-ui .q-skeleton { background: var(--qds-bg-layer); }
-  .qds-ui .q-skeleton:not(.q-skeleton--square, .q-skeleton--type-circle, .q-skeleton--type-QAvatar, .q-skeleton--type-QChip, .q-skeleton--type-QCheckbox, .q-skeleton--type-QRadio, .q-skeleton--type-QToggle) { border-radius: var(--qds-radius-control); }
-  .qds-ui .q-skeleton--bordered { border: var(--qds-border-width-control) solid var(--qds-stroke-subtle); }
+  .ods-ui .q-skeleton { background: var(--ods-bg-layer); }
+  .ods-ui .q-skeleton:not(.q-skeleton--square, .q-skeleton--type-circle, .q-skeleton--type-QAvatar, .q-skeleton--type-QChip, .q-skeleton--type-QCheckbox, .q-skeleton--type-QRadio, .q-skeleton--type-QToggle) { border-radius: var(--ods-radius-control); }
+  .ods-ui .q-skeleton--bordered { border: var(--ods-border-width-control) solid var(--ods-stroke-subtle); }
 
-  .qds-ui .q-tree {
-    --qds-tree-pad: var(--qds-space-sm);
-    --qds-tree-arrow-size: var(--qds-control-icon-size-md);
-    --qds-tree-arrow-gap: var(--qds-space-xs);
-    --qds-tree-lead: calc(var(--qds-tree-pad) + var(--qds-tree-arrow-size) + var(--qds-tree-arrow-gap));
-    --qds-tree-indent: 1.5rem;
-    color: var(--qds-fg-default);
+  .ods-ui .q-tree {
+    --ods-tree-pad: var(--ods-space-sm);
+    --ods-tree-arrow-size: var(--ods-control-icon-size-md);
+    --ods-tree-arrow-gap: var(--ods-space-xs);
+    --ods-tree-lead: calc(var(--ods-tree-pad) + var(--ods-tree-arrow-size) + var(--ods-tree-arrow-gap));
+    --ods-tree-indent: 1.5rem;
+    color: var(--ods-fg-default);
   }
-  .qds-ui.qds-theme-light .q-tree--dark { padding: var(--qds-space-xs); background: var(--qds-bg-card); border-radius: var(--qds-radius-md); }
-  .qds-ui .q-tree__node { padding: 0; }
-  .qds-ui .q-tree__node-header {
+  .ods-ui.ods-theme-light .q-tree--dark { padding: var(--ods-space-xs); background: var(--ods-bg-card); border-radius: var(--ods-radius-md); }
+  .ods-ui .q-tree__node { padding: 0; }
+  .ods-ui .q-tree__node-header {
     position: relative;
     min-height: 2rem;
-    margin-block-start: var(--qds-row-gap);
-    padding-block: var(--qds-space-xs);
-    padding-inline: var(--qds-tree-pad) var(--qds-space-sm);
-    border-radius: var(--qds-radius-control);
+    margin-block-start: var(--ods-row-gap);
+    padding-block: var(--ods-space-xs);
+    padding-inline: var(--ods-tree-pad) var(--ods-space-sm);
+    border-radius: var(--ods-radius-control);
   }
-  .qds-ui .q-tree__node--child > .q-tree__node-header { padding-inline-start: var(--qds-tree-lead); }
-  .qds-ui .q-tree__node-header:hover { background: var(--qds-state-hover); }
-  .qds-ui .q-tree__node-header:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: calc(-1 * var(--qds-focus-ring-width)); }
-  .qds-ui .q-tree__node-header .q-focus-helper { display: none; }
-  .qds-ui .q-tree__node--selected { background: var(--qds-surface-brand-soft); }
-  .qds-ui .q-tree__node--selected::after {
+  .ods-ui .q-tree__node--child > .q-tree__node-header { padding-inline-start: var(--ods-tree-lead); }
+  .ods-ui .q-tree__node-header:hover { background: var(--ods-state-hover); }
+  .ods-ui .q-tree__node-header:focus-visible { outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus); outline-offset: calc(-1 * var(--ods-focus-ring-width)); }
+  .ods-ui .q-tree__node-header .q-focus-helper { display: none; }
+  .ods-ui .q-tree__node--selected { background: var(--ods-surface-brand-soft); }
+  .ods-ui .q-tree__node--selected::after {
     position: absolute;
     inset-block: max(0.5rem, calc(50% - 0.625rem));
     inset-inline-start: 0;
     width: 3px;
     content: '';
-    background: var(--qds-tab-active-rail);
-    border-radius: var(--qds-radius-full);
+    background: var(--ods-tab-active-rail);
+    border-radius: var(--ods-radius-full);
   }
-  .qds-ui .q-tree__node--selected .q-tree__node-header-content { color: var(--qds-fg-strong); }
-  .qds-ui .q-tree__node--disabled { cursor: not-allowed; }
-  .qds-ui :is(.q-tree__arrow, .q-tree__icon, .q-tree__spinner) { color: var(--qds-fg-muted); }
-  .qds-ui :is(.q-tree__arrow, .q-tree__spinner) { font-size: var(--qds-tree-arrow-size); margin-inline: 0 var(--qds-tree-arrow-gap); }
-  .qds-ui .q-tree__arrow { transition: transform var(--qds-motion-base); }
-  .qds-ui .q-tree__tickbox { margin-inline: 0 var(--qds-space-sm); }
-  .qds-ui .q-tree__node-body { padding-block: var(--qds-space-xs) var(--qds-space-sm); padding-inline: var(--qds-tree-lead) 0; }
-  .qds-ui .q-tree__node-collapsible > .q-tree__node-body { padding-inline: var(--qds-tree-lead) 0; }
-  .qds-ui .q-tree__children { position: relative; padding-inline: var(--qds-tree-indent) 0; }
-  .qds-ui .q-tree__children::before {
+  .ods-ui .q-tree__node--selected .q-tree__node-header-content { color: var(--ods-fg-strong); }
+  .ods-ui .q-tree__node--disabled { cursor: not-allowed; }
+  .ods-ui :is(.q-tree__arrow, .q-tree__icon, .q-tree__spinner) { color: var(--ods-fg-muted); }
+  .ods-ui :is(.q-tree__arrow, .q-tree__spinner) { font-size: var(--ods-tree-arrow-size); margin-inline: 0 var(--ods-tree-arrow-gap); }
+  .ods-ui .q-tree__arrow { transition: transform var(--ods-motion-base); }
+  .ods-ui .q-tree__tickbox { margin-inline: 0 var(--ods-space-sm); }
+  .ods-ui .q-tree__node-body { padding-block: var(--ods-space-xs) var(--ods-space-sm); padding-inline: var(--ods-tree-lead) 0; }
+  .ods-ui .q-tree__node-collapsible > .q-tree__node-body { padding-inline: var(--ods-tree-lead) 0; }
+  .ods-ui .q-tree__children { position: relative; padding-inline: var(--ods-tree-indent) 0; }
+  .ods-ui .q-tree__children::before {
     position: absolute;
     inset-block: 0;
-    inset-inline-start: calc(var(--qds-tree-pad) + (var(--qds-tree-arrow-size) - var(--qds-border-width-control)) / 2);
-    width: var(--qds-border-width-control);
+    inset-inline-start: calc(var(--ods-tree-pad) + (var(--ods-tree-arrow-size) - var(--ods-border-width-control)) / 2);
+    width: var(--ods-border-width-control);
     content: '';
-    background: var(--qds-stroke-subtle);
+    background: var(--ods-stroke-subtle);
   }
-  .qds-ui .q-tree__node::after,
-  .qds-ui .q-tree__node-header::before,
-  .qds-ui .q-tree__node-collapsible > .q-tree__node-body::after,
-  .qds-ui .q-tree--no-connectors .q-tree__children::before { display: none; }
-  .qds-ui :is(.q-virtual-scroll__padding, .q-virtual-scroll__slice) { border-color: var(--qds-stroke-subtle); }
+  .ods-ui .q-tree__node::after,
+  .ods-ui .q-tree__node-header::before,
+  .ods-ui .q-tree__node-collapsible > .q-tree__node-body::after,
+  .ods-ui .q-tree--no-connectors .q-tree__children::before { display: none; }
+  .ods-ui :is(.q-virtual-scroll__padding, .q-virtual-scroll__slice) { border-color: var(--ods-stroke-subtle); }
 
   #{$one} .q-tree__node-header { min-height: 2.75rem; }
   #{$term} .q-linear-progress { border-radius: 0; }
-  #{$term} .q-inner-loading { @include materials.solid(var(--qds-surface-0)); }
+  #{$term} .q-inner-loading { @include materials.solid(var(--ods-surface-0)); }
 
   #{$shadcn} {
-    :is(.q-ajax-bar, .q-loading-bar) { background: var(--qds-color-primary); }
-    .q-linear-progress { color: var(--qds-fg-primary); border-radius: var(--qds-radius-full); }
-    .q-linear-progress__track { background: var(--qds-bg-surface-2); opacity: 1; }
+    :is(.q-ajax-bar, .q-loading-bar) { background: var(--ods-color-primary); }
+    .q-linear-progress { color: var(--ods-fg-primary); border-radius: var(--ods-radius-full); }
+    .q-linear-progress__track { background: var(--ods-bg-surface-2); opacity: 1; }
     .q-linear-progress__stripe { background-color: transparent; }
-    .q-circular-progress { color: var(--qds-fg-primary); }
-    .q-circular-progress__text { color: var(--qds-fg-default); }
-    .q-inner-loading { @include materials.solid(var(--qds-bg-card)); color: var(--qds-fg-default); }
-    .q-inner-loading > .q-spinner { color: var(--qds-fg-primary); }
-    .q-skeleton { background: var(--qds-bg-surface-2); }
-    .q-skeleton--anim-wave::after { background: linear-gradient(90deg, transparent, var(--qds-bg-layer), transparent); }
-    .q-tree { --qds-tree-pad: var(--qds-space-sm); color: var(--qds-fg-default); }
-    .q-tree__node--selected { background: var(--qds-state-selected); }
+    .q-circular-progress { color: var(--ods-fg-primary); }
+    .q-circular-progress__text { color: var(--ods-fg-default); }
+    .q-inner-loading { @include materials.solid(var(--ods-bg-card)); color: var(--ods-fg-default); }
+    .q-inner-loading > .q-spinner { color: var(--ods-fg-primary); }
+    .q-skeleton { background: var(--ods-bg-surface-2); }
+    .q-skeleton--anim-wave::after { background: linear-gradient(90deg, transparent, var(--ods-bg-layer), transparent); }
+    .q-tree { --ods-tree-pad: var(--ods-space-sm); color: var(--ods-fg-default); }
+    .q-tree__node--selected { background: var(--ods-state-selected); }
     .q-tree__node--selected::after { display: none; }
-    .q-tree__node-header:active { background: var(--qds-state-pressed); }
-    .q-tree__node--disabled { color: var(--qds-fg-disabled); }
+    .q-tree__node-header:active { background: var(--ods-state-pressed); }
+    .q-tree__node--disabled { color: var(--ods-fg-disabled); }
     .q-tree__node-header.q-tree__node--disabled { background: transparent; }
-    :is(.q-tree__arrow, .q-tree__icon, .q-tree__spinner) { color: var(--qds-fg-muted); }
-    .q-tree__children::before { background: var(--qds-stroke-divider); }
-    .q-tree__tickbox { color: var(--qds-fg-primary); }
-    .q-virtual-scroll__slice { color: var(--qds-fg-default); background: var(--qds-bg-canvas); }
-    .q-virtual-scroll__slice > :is(.q-item, tr) { border-color: var(--qds-stroke-divider); }
+    :is(.q-tree__arrow, .q-tree__icon, .q-tree__spinner) { color: var(--ods-fg-muted); }
+    .q-tree__children::before { background: var(--ods-stroke-divider); }
+    .q-tree__tickbox { color: var(--ods-fg-primary); }
+    .q-virtual-scroll__slice { color: var(--ods-fg-default); background: var(--ods-bg-canvas); }
+    .q-virtual-scroll__slice > :is(.q-item, tr) { border-color: var(--ods-stroke-divider); }
     @each $role in primary, secondary, accent, positive, negative, warning, info {
-      .q-ajax-bar.bg-#{$role} { background: var(--qds-color-#{$role}); }
+      .q-ajax-bar.bg-#{$role} { background: var(--ods-color-#{$role}); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .q-spinner-mat > .path { stroke-dasharray: var(--qds-spinner-static-arc); stroke-dashoffset: var(--qds-spinner-static-offset); }
+      .q-spinner-mat > .path { stroke-dasharray: var(--ods-spinner-static-arc); stroke-dashoffset: var(--ods-spinner-static-offset); }
       .q-skeleton::after, .q-spinner, .q-spinner * { animation-duration: 0s; }
       .q-skeleton--anim { animation: none; }
     }

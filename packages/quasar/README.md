@@ -1,10 +1,10 @@
-# Quasar Design System
+# Osmova Design System
 
 Opinionated Quasar 2 design system inspired by Microsoft Fluent 2, Apple's Human Interface Guidelines, and Samsung One UI.
 
-Published as `@osmova/quasar-design-system`. It contains only generic visual language — no business logic, models, or app-specific assumptions.
+Published as `@osmova/ds-quasar`. It contains only generic visual language — no business logic, models, or app-specific assumptions.
 
-Previously published as `@bastvi/quasar-design-system`. Existing releases remain available; migrate the package dependency and import paths to `@osmova/quasar-design-system`. The exported API and visual styling are unchanged by the scope migration.
+Previously published as `@bastvi/quasar-design-system`. Existing releases remain available; migrate the package dependency and import paths to `@osmova/ds-quasar`. The exported API and visual styling are unchanged by the scope migration.
 
 [Live gallery](https://qds.osmova.com/) · [Component catalog](https://qds.osmova.com/histoire/)
 
@@ -30,7 +30,7 @@ The default language is Microsoft Fluent 2-inspired and neutral-first: colour ma
 ## Install
 
 ```bash
-pnpm add @osmova/quasar-design-system
+pnpm add @osmova/ds-quasar
 ```
 
 > **Built TS + source SCSS.** TypeScript runtime entrypoints ship pre-compiled as ESM
@@ -45,13 +45,13 @@ Import Quasar's own CSS first, then the design-system CSS:
 
 ```ts
 import 'quasar/src/css/index.sass'
-import '@osmova/quasar-design-system/css'
+import '@osmova/ds-quasar/css'
 ```
 
 `./css` is the shared grammar plus the default `win` variant. To use another variant, import its bundle **instead of** `./css` (each one already contains the shared grammar), so an app only ships the variant it uses:
 
 ```ts
-import '@osmova/quasar-design-system/css/variants/zen' // instead of './css'
+import '@osmova/ds-quasar/css/variants/zen' // instead of './css'
 ```
 
 Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 25 KB and a variant bundle is 26–43 KB, against about 70 KB for everything. A variant file **replaces** `./css`: importing both applies the default rules twice and lets them override the variant.
@@ -59,44 +59,44 @@ Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itsel
 An app that switches variants at runtime either imports every variant at once:
 
 ```ts
-import '@osmova/quasar-design-system/css/all' // SCSS source, every variant; instead of './css'
+import '@osmova/ds-quasar/css/all' // SCSS source, every variant; instead of './css'
 ```
 
 or keeps exactly one variant stylesheet loaded and swaps it before calling `setVariant` (Vite `?url` imports shown):
 
 ```ts
-import winUrl from '@osmova/quasar-design-system/css?url'
-import zenUrl from '@osmova/quasar-design-system/css/variants/zen?url'
+import winUrl from '@osmova/ds-quasar/css?url'
+import zenUrl from '@osmova/ds-quasar/css/variants/zen?url'
 
 const urls = { win: winUrl, zen: zenUrl } // one entry per variant the app offers
 
 async function switchVariant(name: keyof typeof urls) {
-  const previous = document.getElementById('qds-css')! // <link id="qds-css" rel="stylesheet" href="…">
+  const previous = document.getElementById('ods-css')! // <link id="ods-css" rel="stylesheet" href="…">
   const next = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: urls[name] })
   previous.after(next)
   await new Promise((resolve, reject) => { next.onload = resolve; next.onerror = reject })
   previous.remove()
-  next.id = 'qds-css'
+  next.id = 'ods-css'
   designSystem.setVariant(name)
 }
 ```
 
-The initial `<link id="qds-css">` must come after Quasar's CSS. In development the runtime warns once when the active variant's stylesheet is not loaded.
+The initial `<link id="ods-css">` must come after Quasar's CSS. In development the runtime warns once when the active variant's stylesheet is not loaded.
 
-The default `./css` bundle is **unlayered** and must be imported **after** Quasar's CSS — Quasar ships unlayered CSS, so the overrides win on cascade order plus specificity, not on `@layer`. If your app deliberately places Quasar's CSS in a lower `@layer`, use the advanced `@osmova/quasar-design-system/css/layered` bundle instead. Mixing the layered bundle with unlayered Quasar CSS is unsupported (a layer cannot beat unlayered rules).
+The default `./css` bundle is **unlayered** and must be imported **after** Quasar's CSS — Quasar ships unlayered CSS, so the overrides win on cascade order plus specificity, not on `@layer`. If your app deliberately places Quasar's CSS in a lower `@layer`, use the advanced `@osmova/ds-quasar/css/layered` bundle instead. Mixing the layered bundle with unlayered Quasar CSS is unsupported (a layer cannot beat unlayered rules).
 
-For the layered path, declare the order **before** importing either framework or skin. Normal rules prefer the later `qds` layer; important rules reverse that order, so the same QDS important declarations live in the earliest `qds-important` layer:
+For the layered path, declare the order **before** importing either framework or skin. Normal rules prefer the later `ods` layer; important rules reverse that order, so the same ODS important declarations live in the earliest `ods-important` layer:
 
 ```css
 /* quasar-layered.css */
-@layer qds-important, quasar, qds;
+@layer ods-important, quasar, ods;
 @import 'quasar/dist/quasar.css' layer(quasar);
 ```
 
 ```ts
 import './quasar-layered.css'
-import '@osmova/quasar-design-system/css/layered'
-// or, for another variant instead of the layered core: '@osmova/quasar-design-system/css/layered/variants/zen'
+import '@osmova/ds-quasar/css/layered'
+// or, for another variant instead of the layered core: '@osmova/ds-quasar/css/layered/variants/zen'
 ```
 
 Choose one adoption path; do not combine the default and layered exports in the same Sass compilation. Inline author important declarations still win over stylesheet declarations.
@@ -104,7 +104,7 @@ Choose one adoption path; do not combine the default and layered exports in the 
 For a deeper Quasar integration, use the package Sass variable bridge from your app-level `quasar.variables.scss`:
 
 ```scss
-@use '@osmova/quasar-design-system/quasar-variables' as *;
+@use '@osmova/ds-quasar/quasar-variables' as *;
 ```
 
 This is the first styling layer: it overrides Quasar Sass defaults where Quasar exposes variables. The runtime CSS then defines design tokens, and direct component selectors are only used for behavior or polish that Quasar variables cannot express.
@@ -112,7 +112,7 @@ This is the first styling layer: it overrides Quasar Sass defaults where Quasar 
 Configure the runtime theme controller during app startup:
 
 ```ts
-import { configureDesignSystem } from '@osmova/quasar-design-system'
+import { configureDesignSystem } from '@osmova/ds-quasar'
 
 configureDesignSystem(app, {
   mode: 'system',
@@ -121,31 +121,31 @@ configureDesignSystem(app, {
 })
 ```
 
-Add `qds-ui` to the body automatically through `configureDesignSystem()`. The class scopes the stronger Quasar overrides.
+Add `ods-ui` to the body automatically through `configureDesignSystem()`. The class scopes the stronger Quasar overrides.
 
 ## Optional Modules
 
-Optional modules stay out of the default runtime and CSS bundle. Install their native peer explicitly, import the native CSS first, then import the QDS extension stylesheet.
+Optional modules stay out of the default runtime and CSS bundle. Install their native peer explicitly, import the native CSS first, then import the ODS extension stylesheet.
 
 ### QWindow
 
-`QdsWindow` wraps `@quasar/quasar-ui-qwindow` with QDS BEM chrome (`.qds-window`, `.qds-window__*`, `.qds-window--*`) while passing QWindow props, slots, methods, and events through to the native component.
+`OdsWindow` wraps `@quasar/quasar-ui-qwindow` with ODS BEM chrome (`.ods-window`, `.ods-window__*`, `.ods-window--*`) while passing QWindow props, slots, methods, and events through to the native component.
 
 ```bash
-pnpm add @quasar/quasar-ui-qwindow @osmova/quasar-design-system
+pnpm add @quasar/quasar-ui-qwindow @osmova/ds-quasar
 ```
 
 ```ts
 import '@quasar/quasar-ui-qwindow/index.css'
-import '@osmova/quasar-design-system/css/extensions/qwindow'
-import { QdsWindow } from '@osmova/quasar-design-system/qwindow'
+import '@osmova/ds-quasar/css/extensions/qwindow'
+import { OdsWindow } from '@osmova/ds-quasar/qwindow'
 ```
 
-For layered Quasar setups, use `@osmova/quasar-design-system/css/extensions/qwindow/layered` instead. Do not import either QWindow stylesheet unless the native QWindow peer is installed and used.
+For layered Quasar setups, use `@osmova/ds-quasar/css/extensions/qwindow/layered` instead. Do not import either QWindow stylesheet unless the native QWindow peer is installed and used.
 
 When using that layered extension, also import the native QWindow stylesheet into `layer(quasar)` in the CSS file above, rather than importing it unlayered. Consumer `titlebarStyle`, colors, and other authored paint are preserved. Consumers own text and focus contrast on arbitrary authored backgrounds; the library's palette contrast guarantees do not extend to arbitrary color combinations.
 
-> **Native QWindow minimize caveat:** `@quasar/quasar-ui-qwindow@3.0.0` exposes a `minimize` action/method, but that native action currently throws in its internal state guard. `QdsWindow` therefore treats `minimized` as a consumer-controlled visual state and filters `minimize` out of the native action list. Use your application state layer, such as a taskbar/window store, to hide and restore minimized windows until the peer fixes this action.
+> **Native QWindow minimize caveat:** `@quasar/quasar-ui-qwindow@3.0.0` exposes a `minimize` action/method, but that native action currently throws in its internal state guard. `OdsWindow` therefore treats `minimized` as a consumer-controlled visual state and filters `minimize` out of the native action list. Use your application state layer, such as a taskbar/window store, to hide and restore minimized windows until the peer fixes this action.
 
 ## Buttons, Badges, and Chips
 
@@ -156,16 +156,16 @@ Neutral comes first; add `color` when the control carries meaning.
 <q-btn unelevated color="primary" label="Save" />            <!-- solid: primary CTA -->
 <q-btn outline color="primary" label="Edit" />               <!-- outlined -->
 <q-btn flat label="More" />                                  <!-- subtle: no fill until hover -->
-<q-btn unelevated class="qds-tonal" color="primary" label="Preview" />  <!-- opt-in tonal wash -->
+<q-btn unelevated class="ods-tonal" color="primary" label="Preview" />  <!-- opt-in tonal wash -->
 ```
 
 | Component | No `color` | With `color` | Opt-in |
 | --- | --- | --- | --- |
-| `QBtn` | neutral | solid role fill | `.qds-tonal` soft wash |
-| `QBadge` | neutral tint | solid role fill | `.qds-tonal` soft wash |
-| `QChip` | neutral tint | soft role tint | `.qds-solid` solid fill |
+| `QBtn` | neutral | solid role fill | `.ods-tonal` soft wash |
+| `QBadge` | neutral tint | solid role fill | `.ods-tonal` soft wash |
+| `QChip` | neutral tint | soft role tint | `.ods-solid` solid fill |
 
-Chips stay soft by default because they usually sit in groups; `.qds-solid` is only meaningful on chips. Buttons sit on the 24/32/40px scale (`size="sm"`, default, `size="lg"`); `dense` uses the 24px step.
+Chips stay soft by default because they usually sit in groups; `.ods-solid` is only meaningful on chips. Buttons sit on the 24/32/40px scale (`size="sm"`, default, `size="lg"`); `dense` uses the 24px step.
 
 ## Fields
 
@@ -173,9 +173,9 @@ Chips stay soft by default because they usually sit in groups; `.qds-solid` is o
 
 Older layouts stay available per field:
 
-- `qds-field--float` — Quasar's floating label inside a 48px control
-- `qds-field--stacked-animated` — label animates to the top edge inside the control
-- `qds-form--label-start` + `qds-field--start` — labels in a shared side column on wide screens, collapsing to label-above on narrow ones
+- `ods-field--float` — Quasar's floating label inside a 48px control
+- `ods-field--stacked-animated` — label animates to the top edge inside the control
+- `ods-form--label-start` + `ods-field--start` — labels in a shared side column on wide screens, collapsing to label-above on narrow ones
 
 ## Icons
 
@@ -183,9 +183,9 @@ Icons use Phosphor through a Quasar icon-set (no Material Icons):
 
 ```ts
 import { Quasar } from 'quasar'
-import { qdsIconSet } from '@osmova/quasar-design-system'
+import { odsIconSet } from '@osmova/ds-quasar'
 
-app.use(Quasar, { iconSet: qdsIconSet })
+app.use(Quasar, { iconSet: odsIconSet })
 ```
 
 For content icons, use `@phosphor-icons/vue` (duotone for feature icons, line weight for controls).
@@ -195,15 +195,15 @@ For content icons, use `@phosphor-icons/vue` (duotone for feature icons, line we
 Inter (body and display), Open Sans (compatibility/body alternative), and Selawik (an optional display face an app may enable) ship as optional CSS — import what you need:
 
 ```ts
-import '@osmova/quasar-design-system/fonts/inter.css'
-import '@osmova/quasar-design-system/fonts/open-sans.css'
-import '@osmova/quasar-design-system/fonts/selawik.css'
+import '@osmova/ds-quasar/fonts/inter.css'
+import '@osmova/ds-quasar/fonts/open-sans.css'
+import '@osmova/ds-quasar/fonts/selawik.css'
 ```
 
-The display stack follows the body stack (Inter) by default. Selawik is not part of any default stack; to use it for display text, import its CSS and set the token after the QDS CSS:
+The display stack follows the body stack (Inter) by default. Selawik is not part of any default stack; to use it for display text, import its CSS and set the token after the ODS CSS:
 
 ```css
-:root { --qds-font-family-display: 'Selawik', var(--qds-font-family); }
+:root { --ods-font-family-display: 'Selawik', var(--ods-font-family); }
 ```
 
 The core CSS only declares the font stack, so skipping these still yields a sane system fallback. An accent font token is reserved for future use.
@@ -212,16 +212,16 @@ The core CSS only declares the font stack, so skipping these still yields a sane
 
 Overlays use Windows 11-style acrylic materials: menus, popups, pickers, and notifications use the
 regular material; dialogs and the bottom sheet the thick one; tooltips the thin one. The page sits on a Mica backdrop
-(`--qds-backdrop`, painted on a fixed `body::before` layer), and the header, drawer, and toolbars use the opaque
-`--qds-mica-alt` tint. Cards stay solid; add `qds-material` (or `qds-material--thin` /
-`qds-material--thick`) to opt an element into a material.
+(`--ods-backdrop`, painted on a fixed `body::before` layer), and the header, drawer, and toolbars use the opaque
+`--ods-mica-alt` tint. Cards stay solid; add `ods-material` (or `ods-material--thin` /
+`ods-material--thick`) to opt an element into a material.
 
 Materials fall back to solid surfaces without `backdrop-filter` support, under `prefers-reduced-transparency: reduce`,
 and in forced-colors mode. The `ink` variant is always solid; `term` keeps acrylic only on menus and opt-in materials;
 `one` keeps acrylic menus, tooltips and popups on a flat page (no Mica tint), with solid dialogs and bottom sheets.
 
-Tokens: `--qds-material-{thin,regular,thick}-{bg,blur,filter}`, `--qds-material-saturate`, `--qds-material-stroke`,
-`--qds-material-edge`, `--qds-mica-alt`, `--qds-backdrop` (a full `background` value, not a colour).
+Tokens: `--ods-material-{thin,regular,thick}-{bg,blur,filter}`, `--ods-material-saturate`, `--ods-material-stroke`,
+`--ods-material-edge`, `--ods-mica-alt`, `--ods-backdrop` (a full `background` value, not a colour).
 
 ## Variants
 
@@ -231,8 +231,8 @@ The package is structured around `src/themes/`. For now there is one real theme,
 - `ink`: a single-ink e-ink interface. One ink on flat paper (charcoal by default, or black or navy), dark is the same ink inverted, roles read as solid ink, outline, double stroke or fill patterns, selection inverts, one red marks errors and destructive actions, and media renders greyscale.
 - `one`: Samsung One UI-inspired neutral grey or true-black pages, rounded blocks, pill controls, a calm blue accent, and touch-friendly rhythm.
 - `term`: opaque amber developer UI on warm cream or near-black panes, with crisp hairline rules, amber fills carrying dark ink, and a monospace-forward feel.
-- `zen`: linen paper with sage controls and a quiet reading rhythm — warm linen surfaces, a muted sage primary, 12px control and 20px block radii, gentle diffuse depth, and an essential 1px edge on every control so nothing depends on a shadow alone. The opt-in `.qds-reading` class strips decorative depth and motion while every boundary survives.
-- `glass`: inspired by Apple's design language. Controls and bars float on a translucent functional layer above opaque content: bars carry no fill of their own and gain a soft scroll edge once content scrolls under them, the sidebar and sheets float inset, and menus open with a short spring. Prominent controls are capsules, dense ones rounded rectangles, and nested shapes are concentric with their container. Tint is reserved for role fills and selection. It uses the native system font stack and ships no Apple font, symbol or artwork. Translucency is decoration only: without `backdrop-filter`, under reduced transparency, forced colours or increased contrast it resolves to opaque surfaces, and increased contrast restores a 3:1 edge on every control. Fields, selection controls, slider tracks, outline buttons and the selected tab or segment keep a 3:1 boundary; labelled buttons, chips and bars use a hairline. Toolbars inside content stay plain; add `qds-glass-bar` to a `QToolbar` to float its buttons on glass.
+- `zen`: linen paper with sage controls and a quiet reading rhythm — warm linen surfaces, a muted sage primary, 12px control and 20px block radii, gentle diffuse depth, and an essential 1px edge on every control so nothing depends on a shadow alone. The opt-in `.ods-reading` class strips decorative depth and motion while every boundary survives.
+- `glass`: inspired by Apple's design language. Controls and bars float on a translucent functional layer above opaque content: bars carry no fill of their own and gain a soft scroll edge once content scrolls under them, the sidebar and sheets float inset, and menus open with a short spring. Prominent controls are capsules, dense ones rounded rectangles, and nested shapes are concentric with their container. Tint is reserved for role fills and selection. It uses the native system font stack and ships no Apple font, symbol or artwork. Translucency is decoration only: without `backdrop-filter`, under reduced transparency, forced colours or increased contrast it resolves to opaque surfaces, and increased contrast restores a 3:1 edge on every control. Fields, selection controls, slider tracks, outline buttons and the selected tab or segment keep a 3:1 boundary; labelled buttons, chips and bars use a hairline. Toolbars inside content stay plain; add `ods-glass-bar` to a `QToolbar` to float its buttons on glass.
 - `shadcn`: opaque New York-inspired native Quasar controls with Neutral (default), Gray, Zinc, Stone, and Slate base palettes, compact 36px regular controls, 8px control radii, and 14px card radii. No Tailwind or Reka dependency is required by the package.
 
 They are not separate brands — deliberate overlays over the same token system.
@@ -250,13 +250,13 @@ Legacy inputs `fluent`, `air` and `studio` resolve to `win` (`glass` did too bef
 
 ### Shadcn adoption and compatibility
 
-The new `shadcn` styling requires **Quasar 2.35 or newer**. The package's existing `quasar: ^2.0.0` peer range is unchanged for existing variants; this is not a claim that shadcn is tested on every Quasar 2 release. These changes ship in `@osmova/quasar-design-system` `0.8.0` on the stable `latest` channel; the legacy `@bastvi/quasar-design-system` package remains on `0.7.0` and receives no further releases.
+The new `shadcn` styling requires **Quasar 2.35 or newer**. The package's existing `quasar: ^2.0.0` peer range is unchanged for existing variants; this is not a claim that shadcn is tested on every Quasar 2 release. These changes ship in `@osmova/ds-quasar` `0.8.0` on the stable `latest` channel; the legacy `@bastvi/quasar-design-system` package remains on `0.7.0` and receives no further releases.
 
 ```ts
 import {
   configureDesignSystem, SHADCN_BASE_COLORS,
   type ShadcnBaseColor,
-} from '@osmova/quasar-design-system'
+} from '@osmova/ds-quasar'
 
 const theme = configureDesignSystem(app, {
   mode: 'system', variant: 'shadcn', shadcnBaseColor: 'zinc', persist: true,
@@ -267,18 +267,18 @@ theme.setShadcnBaseColor(nextPalette)
 // theme.shadcnBaseColor.value and theme.state.shadcnBaseColor expose the selection.
 ```
 
-Mode, variant, and `shadcnBaseColor` persist together under the existing storage key (`bastvi.quasar-design-system.theme` by default). A valid stored palette wins over configuration; an older stored record without that field keeps the configured palette, or Neutral. Invalid JavaScript/storage palette values normalize to Neutral. Switching to another variant retains the palette selection but removes `data-qds-shadcn-base-color`; returning to shadcn restores it. `destroy()` removes owned attributes/classes and the system-theme listener. The controller can be created without a DOM for SSR; select deterministic server markup and initialize on the client to apply system preference and persistence.
+Mode, variant, and `shadcnBaseColor` persist together under the existing storage key (`osmova.ds.theme` by default). A valid stored palette wins over configuration; an older stored record without that field keeps the configured palette, or Neutral. Invalid JavaScript/storage palette values normalize to Neutral. Switching to another variant retains the palette selection but removes `data-ods-shadcn-base-color`; returning to shadcn restores it. `destroy()` removes owned attributes/classes and the system-theme listener. The controller can be created without a DOM for SSR; select deterministic server markup and initialize on the client to apply system preference and persistence.
 
 The ink variant has its own ink colour (`charcoal`, `black` or `navy`; charcoal by default), with the same model:
 
 ```ts
-import { configureDesignSystem, INK_COLORS, type InkColor } from '@osmova/quasar-design-system'
+import { configureDesignSystem, INK_COLORS, type InkColor } from '@osmova/ds-quasar'
 
 const theme = configureDesignSystem(app, { variant: 'ink', inkColor: 'navy' })
 theme.setInkColor('black')
 ```
 
-It persists with the mode and variant, and the runtime writes `data-qds-ink` only while ink is active (CSS-only: put `data-qds-ink="navy"` next to `qds-variant-ink`; missing or invalid values use charcoal). Ink renders media greyscale; add `qds-media-color` (always in colour), `qds-media-color-hover` (colour on hover or focus) or `qds-media-color-reveal` (fades to colour once it appears, static under reduced motion) to the media or any ancestor. Handwriting is opt-in through `.qds-hand` / `.text-hand`, display titles and `<em>`/`<i>`; load the faces with `@osmova/quasar-design-system/fonts/ink.css`.
+It persists with the mode and variant, and the runtime writes `data-ods-ink` only while ink is active (CSS-only: put `data-ods-ink="navy"` next to `ods-variant-ink`; missing or invalid values use charcoal). Ink renders media greyscale; add `ods-media-color` (always in colour), `ods-media-color-hover` (colour on hover or focus) or `ods-media-color-reveal` (fades to colour once it appears, static under reduced motion) to the media or any ancestor. Handwriting is opt-in through `.ods-hand` / `.text-hand`, display titles and `<em>`/`<i>`; load the faces with `@osmova/ds-quasar/fonts/ink.css`.
 
 Use the default **body target** for Quasar's teleported dialogs, menus, tooltips, notifications, and loading plugins. A custom `target` scopes descendant controls only: portals mounted elsewhere do not inherit it, and body typography/backdrop rules are not relocated to that subtree. Supported visual scoping is a single body root or an isolated custom root; sibling roots can be themed independently when their scopes do not overlap. Put the variant, palette, and mode on the **same element**.
 
@@ -289,17 +289,17 @@ Within a supported single body or isolated custom root, local dark classes emitt
 CSS-only usage needs no controller:
 
 ```html
-<body class="qds-ui qds-variant-shadcn qds-theme-light"
-      data-qds-shadcn-base-color="neutral">
+<body class="ods-ui ods-variant-shadcn ods-theme-light"
+      data-ods-shadcn-base-color="neutral">
 ```
 
-Use `qds-theme-dark` for dark mode, or a consistent `data-qds-resolved="light|dark"`; an explicit resolved light value takes precedence over stale dark classes. Within a supported body or isolated root, missing/invalid palette attributes use Neutral. CSS-only mode does not synchronize Quasar's Dark plugin, follow system preference, or persist choices: those remain the consumer's responsibility.
+Use `ods-theme-dark` for dark mode, or a consistent `data-ods-resolved="light|dark"`; an explicit resolved light value takes precedence over stale dark classes. Within a supported body or isolated root, missing/invalid palette attributes use Neutral. CSS-only mode does not synchronize Quasar's Dark plugin, follow system preference, or persist choices: those remain the consumer's responsibility.
 
-Keep QDS after Quasar for the default export. For the layered export, layer Quasar deliberately; **important declarations reverse layer order**, so audit consumer important overrides separately from normal declarations. The theme already bridges the seven Quasar role variables (`--q-primary`, `--q-secondary`, `--q-accent`, `--q-positive`, `--q-negative`, `--q-warning`, `--q-info`) within shadcn and local scheme boundaries; it does not mutate global Quasar colors or `--q-dark`. Unlayered consumer overrides after QDS are supported. Primitive overrides inside a component must also rebind the semantic aliases that consume them, because inherited custom properties can already be resolved at their parent scope.
+Keep ODS after Quasar for the default export. For the layered export, layer Quasar deliberately; **important declarations reverse layer order**, so audit consumer important overrides separately from normal declarations. The theme already bridges the seven Quasar role variables (`--q-primary`, `--q-secondary`, `--q-accent`, `--q-positive`, `--q-negative`, `--q-warning`, `--q-info`) within shadcn and local scheme boundaries; it does not mutate global Quasar colors or `--q-dark`. Unlayered consumer overrides after ODS are supported. Primitive overrides inside a component must also rebind the semantic aliases that consume them, because inherited custom properties can already be resolved at their parent scope.
 
-To rebrand, override `--qds-color-*` on the body (or the variant class, e.g. `.qds-variant-win`), not only on `:root`: `win`, `zen` and `glass` set their palettes on the variant class, which wins over `:root`.
+To rebrand, override `--ods-color-*` on the body (or the variant class, e.g. `.ods-variant-win`), not only on `:root`: `win`, `zen` and `glass` set their palettes on the variant class, which wins over `:root`.
 
-Unlike Fluent, an ordinary uncolored filled shadcn button is a primary action; contextual picker, pagination, toggle, and editor controls retain their native grammar. Flat, outline, push, dense, rounded/square, loading, literal palette colors, and explicit sizes remain distinct. Semantic solid fills own their on-fill foreground even with `text-color="white"` or normal inline text color; inline **important** author color wins. Literal combinations such as `color="red-7" text-color="white"` stay native. Use `.qds-tonal` for a soft button/badge and `.qds-solid` for a solid chip. `.qds-button--link` supplies a link-like visual treatment but does not change button semantics. Shadcn fields use perimeter strokes/focus halos rather than Fluent's focus bar, and surfaces remain opaque rather than acrylic.
+Unlike Fluent, an ordinary uncolored filled shadcn button is a primary action; contextual picker, pagination, toggle, and editor controls retain their native grammar. Flat, outline, push, dense, rounded/square, loading, literal palette colors, and explicit sizes remain distinct. Semantic solid fills own their on-fill foreground even with `text-color="white"` or normal inline text color; inline **important** author color wins. Literal combinations such as `color="red-7" text-color="white"` stay native. Use `.ods-tonal` for a soft button/badge and `.ods-solid` for a solid chip. `.ods-button--link` supplies a link-like visual treatment but does not change button semantics. Shadcn fields use perimeter strokes/focus halos rather than Fluent's focus bar, and surfaces remain opaque rather than acrylic.
 
 ### Reference provenance
 
@@ -307,17 +307,17 @@ Shadcn values and geometry reference the MIT-licensed [unovue/shadcn-vue](https:
 
 ## Component Coverage
 
-QDS skins visible Quasar chrome — buttons, cards, inputs, toolbars, drawers, lists, expansion items, and similar surfaces that carry tokenized visual treatment. The release gallery and Histoire catalog exercise the high-value sub-elements across forms/pickers, data/navigation/layout, media/complex/loading, and overlays/plugins.
+ODS skins visible Quasar chrome — buttons, cards, inputs, toolbars, drawers, lists, expansion items, and similar surfaces that carry tokenized visual treatment. The release gallery and Histoire catalog exercise the high-value sub-elements across forms/pickers, data/navigation/layout, media/complex/loading, and overlays/plugins.
 
-Public QDS-owned component classes use strict namespaced BEM for new optional modules: block `.qds-window`, elements such as `.qds-window__titlebar`, and modifiers such as `.qds-window--embedded`. Utility hooks such as `.qds-ui`, `.qds-tonal`, `.qds-solid`, and variant classes remain intentionally semantic rather than component blocks.
+Public ODS-owned component classes use strict namespaced BEM for new optional modules: block `.ods-window`, elements such as `.ods-window__titlebar`, and modifiers such as `.ods-window--embedded`. Utility hooks such as `.ods-ui`, `.ods-tonal`, `.ods-solid`, and variant classes remain intentionally semantic rather than component blocks.
 
 It intentionally does **not** add CSS for behavior-only, SSR, observer, or composable surfaces. These inherit Quasar's own defaults or have no visual representation at all:
 
 - **SSR/layout helpers:** `QNoSSR`, `QResponsive`, `QSpace`, `QSlideTransition`
 - **Observer helpers:** `QIntersection`, `QResizeObserver`, `QScrollObserver`
-- **Icon component:** `QIcon` itself is not separately skinned — QDS provides the Phosphor `qdsIconSet` and font guidance instead
+- **Icon component:** `QIcon` itself is not separately skinned — ODS provides the Phosphor `odsIconSet` and font guidance instead
 - **Nonvisual plugins:** AddressbarColor, AppFullscreen, AppVisibility, Cookies, Dark, Meta, Local/Session Storage
-- **Behavior directives:** `v-close-popup`, `v-intersection`, `v-mutation`, `v-morph`, `v-scroll`, `v-scroll-fire`, `v-touch-*`; Material Ripple is intentionally suppressed in QDS surfaces
+- **Behavior directives:** `v-close-popup`, `v-intersection`, `v-mutation`, `v-morph`, `v-scroll`, `v-scroll-fire`, `v-touch-*`; Material Ripple is intentionally suppressed in ODS surfaces
 - **Composables and utilities:** no CSS added unless visual behavior is directly affected
 
 Layout helpers that carry visible chrome (header, footer, toolbar, sticky child controls) are covered through the gallery examples and visual tests; scroll/position observers remain behavior-only unless an app adds visible child controls.

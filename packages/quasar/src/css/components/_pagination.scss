@@ -1,61 +1,61 @@
 @use '../importance';
-$shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
+$shadcn: '.ods-variant-shadcn:is(.ods-ui, .ods-ui *)';
 
 @mixin styles {
-  .qds-ui .q-pagination {
-    --qds-pagination-active-bg: var(--qds-state-selected);
-    --qds-pagination-active-border: transparent;
-    --qds-pagination-active-text: var(--qds-fg-brand);
+  .ods-ui .q-pagination {
+    --ods-pagination-active-bg: var(--ods-state-selected);
+    --ods-pagination-active-border: transparent;
+    --ods-pagination-active-text: var(--ods-fg-brand);
     max-width: 100%;
-    color: var(--qds-fg-default);
+    color: var(--ods-fg-default);
   }
 
   // Pages stay on one row and shrink toward Quasar's inline 2em minimum instead of wrapping.
-  .qds-ui :is(.q-pagination__content, .q-pagination__middle) {
+  .ods-ui :is(.q-pagination__content, .q-pagination__middle) {
     flex-wrap: nowrap;
     min-width: 0;
   }
 
-  .qds-ui .q-pagination .q-btn {
-    flex: 0 1 var(--qds-button-min-height);
-    height: var(--qds-button-min-height);
-    @include importance.declarations { color: var(--qds-pagination-text, var(--qds-fg-default)) !important; background-color: var(--qds-pagination-bg, transparent) !important; }
+  .ods-ui .q-pagination .q-btn {
+    flex: 0 1 var(--ods-button-min-height);
+    height: var(--ods-button-min-height);
+    @include importance.declarations { color: var(--ods-pagination-text, var(--ods-fg-default)) !important; background-color: var(--ods-pagination-bg, transparent) !important; }
     border-color: transparent;
-    font-weight: var(--qds-font-weight-regular);
+    font-weight: var(--ods-font-weight-regular);
   }
 
   // Quasar 2.25+ marks the active page button with `aria-current="page"` (was "true").
-  .qds-ui .q-pagination .q-btn[aria-current='page'] {
-    @include importance.declarations { color: var(--qds-pagination-active-text) !important; background-color: var(--qds-pagination-active-bg) !important; }
-    border-color: var(--qds-pagination-active-border);
-    font-weight: var(--qds-font-weight-semibold);
+  .ods-ui .q-pagination .q-btn[aria-current='page'] {
+    @include importance.declarations { color: var(--ods-pagination-active-text) !important; background-color: var(--ods-pagination-active-bg) !important; }
+    border-color: var(--ods-pagination-active-border);
+    font-weight: var(--ods-font-weight-semibold);
   }
 
-  .qds-ui .qds-variant-one .q-pagination .q-btn,
-  .qds-ui.qds-variant-one .q-pagination .q-btn {
+  .ods-ui .ods-variant-one .q-pagination .q-btn,
+  .ods-ui.ods-variant-one .q-pagination .q-btn {
     flex-basis: 2.75rem;
     height: 2.75rem;
   }
 
-  .qds-ui .qds-variant-term .q-pagination .q-btn,
-  .qds-ui.qds-variant-term .q-pagination .q-btn {
-    border-radius: var(--qds-radius-sm);
+  .ods-ui .ods-variant-term .q-pagination .q-btn,
+  .ods-ui.ods-variant-term .q-pagination .q-btn {
+    border-radius: var(--ods-radius-sm);
   }
 
-  #{$shadcn} .q-pagination { --qds-pagination-active-text: var(--qds-fg-default); --qds-pagination-active-bg: var(--qds-bg-canvas); --qds-pagination-active-border: var(--qds-stroke-default); }
-  #{$shadcn} .q-pagination .q-btn { border: var(--qds-border-width-control) solid transparent; box-shadow: none; }
-  #{$shadcn} .q-pagination .q-btn:where(:not(.q-btn--round, .q-btn--rounded)) { border-radius: var(--qds-radius-control); }
-  #{$shadcn} .q-pagination .q-btn[aria-current='page'] { border-color: var(--qds-pagination-active-border); }
+  #{$shadcn} .q-pagination { --ods-pagination-active-text: var(--ods-fg-default); --ods-pagination-active-bg: var(--ods-bg-canvas); --ods-pagination-active-border: var(--ods-stroke-default); }
+  #{$shadcn} .q-pagination .q-btn { border: var(--ods-border-width-control) solid transparent; box-shadow: none; }
+  #{$shadcn} .q-pagination .q-btn:where(:not(.q-btn--round, .q-btn--rounded)) { border-radius: var(--ods-radius-control); }
+  #{$shadcn} .q-pagination .q-btn[aria-current='page'] { border-color: var(--ods-pagination-active-border); }
   #{$shadcn} .q-pagination .q-btn::before { box-shadow: none; }
   #{$shadcn} .q-pagination .q-btn > .q-focus-helper { display: none; }
-  #{$shadcn} .q-pagination .q-btn:not(.disabled):hover { --qds-pagination-bg: var(--qds-state-hover); }
-  #{$shadcn} .q-pagination .q-btn:not(.disabled):active { --qds-pagination-bg: var(--qds-state-pressed); }
-  #{$shadcn} .q-pagination .q-btn[aria-current='page']:not(.disabled):hover { --qds-pagination-active-bg: var(--qds-state-hover); }
-  #{$shadcn} .q-pagination .q-btn[aria-current='page']:not(.disabled):active { --qds-pagination-active-bg: var(--qds-state-pressed); }
-  #{$shadcn} .q-pagination .q-btn:focus-visible::before { box-shadow: 0 0 0 var(--qds-focus-ring-width) color-mix(in srgb, var(--qds-stroke-focus) calc(var(--qds-focus-ring-opacity) * 100%), transparent); }
-  #{$shadcn} .q-pagination .q-btn.disabled { --qds-pagination-text: var(--qds-fg-disabled); }
-  #{$shadcn} .q-pagination .q-field { min-width: var(--qds-control-size-lg); font-size: var(--qds-font-size-body); }
+  #{$shadcn} .q-pagination .q-btn:not(.disabled):hover { --ods-pagination-bg: var(--ods-state-hover); }
+  #{$shadcn} .q-pagination .q-btn:not(.disabled):active { --ods-pagination-bg: var(--ods-state-pressed); }
+  #{$shadcn} .q-pagination .q-btn[aria-current='page']:not(.disabled):hover { --ods-pagination-active-bg: var(--ods-state-hover); }
+  #{$shadcn} .q-pagination .q-btn[aria-current='page']:not(.disabled):active { --ods-pagination-active-bg: var(--ods-state-pressed); }
+  #{$shadcn} .q-pagination .q-btn:focus-visible::before { box-shadow: 0 0 0 var(--ods-focus-ring-width) color-mix(in srgb, var(--ods-stroke-focus) calc(var(--ods-focus-ring-opacity) * 100%), transparent); }
+  #{$shadcn} .q-pagination .q-btn.disabled { --ods-pagination-text: var(--ods-fg-disabled); }
+  #{$shadcn} .q-pagination .q-field { min-width: var(--ods-control-size-lg); font-size: var(--ods-font-size-body); }
   @media (forced-colors: active) {
-    #{$shadcn} .q-pagination .q-btn:focus-visible::before { outline: var(--qds-focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--qds-focus-ring-width)); }
+    #{$shadcn} .q-pagination .q-btn:focus-visible::before { outline: var(--ods-focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--ods-focus-ring-width)); }
   }
 }

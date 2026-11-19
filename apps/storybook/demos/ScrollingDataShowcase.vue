@@ -39,9 +39,9 @@ const tableColumns = [
   { name: 'value', label: 'Value', field: 'value', align: 'right' as const },
 ]
 const tableRows = [
-  { token: '--qds-radius-control', scope: 'Fluent', value: '4px' },
-  { token: '--qds-radius-control', scope: 'One', value: '14px' },
-  { token: '--qds-radius-control', scope: 'Term', value: '6px' },
+  { token: '--ods-radius-control', scope: 'Fluent', value: '4px' },
+  { token: '--ods-radius-control', scope: 'One', value: '14px' },
+  { token: '--ods-radius-control', scope: 'Term', value: '6px' },
 ]
 
 const virtualRows = Array.from({ length: 400 }, (_, index) => ({ id: index, label: `Row ${index + 1}` }))
@@ -56,7 +56,7 @@ function loadMore(index: number, done: (stop?: boolean) => void) {
 </script>
 
 <template>
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QTree</h2>
     <QTree
       v-model:expanded="expanded"
@@ -67,21 +67,21 @@ function loadMore(index: number, done: (stop?: boolean) => void) {
     />
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QMarkupTable</h2>
     <QMarkupTable flat bordered>
       <thead>
         <tr><th class="text-left">Token</th><th class="text-left">Scope</th><th class="text-right">Value</th></tr>
       </thead>
       <tbody>
-        <tr><td>--qds-radius-control</td><td>Fluent</td><td class="text-right">4px</td></tr>
-        <tr><td>--qds-radius-control</td><td>One</td><td class="text-right">14px</td></tr>
-        <tr><td>--qds-radius-control</td><td>Term</td><td class="text-right">6px</td></tr>
+        <tr><td>--ods-radius-control</td><td>Fluent</td><td class="text-right">4px</td></tr>
+        <tr><td>--ods-radius-control</td><td>One</td><td class="text-right">14px</td></tr>
+        <tr><td>--ods-radius-control</td><td>Term</td><td class="text-right">6px</td></tr>
       </tbody>
     </QMarkupTable>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QTable with a QTd body cell</h2>
     <QTable flat bordered :rows="tableRows" :columns="tableColumns" row-key="token" hide-pagination :pagination="{ rowsPerPage: 0 }">
       <template #body-cell-value="props">
@@ -90,7 +90,7 @@ function loadMore(index: number, done: (stop?: boolean) => void) {
     </QTable>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QVirtualScroll</h2>
     <QVirtualScroll :items="virtualRows" style="max-height: 200px" separator>
       <template #default="{ item, index }">
@@ -101,7 +101,7 @@ function loadMore(index: number, done: (stop?: boolean) => void) {
     </QVirtualScroll>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QInfiniteScroll</h2>
     <div style="max-height: 220px; overflow: auto" tabindex="0" aria-label="Infinite list">
       <QInfiniteScroll :offset="120" @load="loadMore">
@@ -111,17 +111,17 @@ function loadMore(index: number, done: (stop?: boolean) => void) {
           </QItem>
         </QList>
         <template #loading>
-          <div class="qds-story-row"><QSpinnerDots size="24px" /><QSpinnerGears size="24px" /></div>
+          <div class="ods-story-row"><QSpinnerDots size="24px" /><QSpinnerGears size="24px" /></div>
         </template>
       </QInfiniteScroll>
     </div>
   </section>
 
-  <section class="qds-story-section">
+  <section class="ods-story-section">
     <h2>QAjaxBar</h2>
     <QCard>
       <QAjaxBar ref="ajaxBar" position="top" color="primary" size="4px" skip-hijack />
-      <QCardSection class="qds-story-row">
+      <QCardSection class="ods-story-row">
         <QBtn no-caps label="Start" @click="ajaxBar?.start()" />
         <QBtn no-caps label="Stop" @click="ajaxBar?.stop()" />
       </QCardSection>

@@ -12,7 +12,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Tokens, type, icons and fonts. Every value is a `--qds-*` custom property that the toolbar globals repaint.',
+        component: 'Tokens, type, icons and fonts. Every value is a `--ods-*` custom property that the toolbar globals repaint.',
       },
     },
   },
@@ -21,5 +21,5 @@ export default {
 export const Overview = showcase(OverviewShowcase, 'A compact overview of neutral-first components over Quasar 2 primitives.')
 export const Tokens = showcase(TokensSection, 'Role colours, surfaces, text, borders and the other semantic tokens.')
 export const Typography = showcase(TypographySection, 'The type ramp from display to caption.')
-export const Icons = showcase(IconsSection, 'Phosphor icon set wired into Quasar through `qdsIconSet`.')
-export const Fonts = showcase(FontsSection, 'Optional font faces shipped under `@osmova/quasar-design-system/fonts/*`.')
+export const Icons = showcase(IconsSection, 'Phosphor icon set wired into Quasar through `odsIconSet`.')
+export const Fonts = showcase(FontsSection, 'Optional font faces shipped under `@osmova/ds-quasar/fonts/*`.')
