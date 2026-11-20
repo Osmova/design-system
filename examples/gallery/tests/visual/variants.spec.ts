@@ -1,5 +1,5 @@
-import { expect, test } from '@playwright/test'
-import { CANONICAL_VARIANTS, applyTheme, computed, customProperty, expectGalleryPage, resolvedColor } from './helpers'
+import { expect, test, type Locator } from '@playwright/test'
+import { CANONICAL_VARIANTS, applyTheme, computed, customProperty, expectGalleryPage, resolvedColor, waitForThemePaint } from './helpers'
 
 test.describe('QDS variant distinctiveness lab', () => {
   test('mounts five canonical comparison cards with deliberate visual systems', async ({ page }) => {
@@ -44,7 +44,7 @@ test.describe('QDS variant distinctiveness lab', () => {
     expect.soft(await glass.evaluate((el) => getComputedStyle(el).getPropertyValue('--qds-font-family').trim()), 'Glass uses the native system stack').toContain('-apple-system')
     const glassRow = await glass.locator('.q-list .q-item').first().evaluate((el) => getComputedStyle(el).minHeight)
     expect.soft(parseFloat(glassRow), 'Glass grouped rows stay roomy').toBeGreaterThanOrEqual(44)
-    expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .q-item.q-item--active', 'background-color'), 'Glass active row takes the brand wash').toBe('rgb(228, 238, 252)')
+    expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .q-item.q-item--active', 'background-color'), 'Glass active row takes a neutral wash').toBe('rgba(120, 120, 128, 0.16)')
     expect.soft(await computed(page, '[data-test="qds-variant-card-glass"] .variant-card__nested', 'box-shadow'), 'Glass content nests without a second drop').toBe('none')
     expect.soft(await glass.evaluate((el) => getComputedStyle(el).getPropertyValue('--_qds-glass-knob').trim()), 'Glass keeps a light switch knob').toBe('#ffffff')
 
@@ -85,7 +85,7 @@ test.describe('QDS variant distinctiveness lab', () => {
 
       expect.soft(await customProperty(page, '--qds-material-regular-filter'), 'no blur behind controls').toBe('none')
       expect.soft(await resolvedColor(page, '--qds-color-primary'), 'the accent moves to its increased-contrast value').toBe(mode === 'light' ? 'rgb(0, 64, 221)' : 'rgb(140, 195, 255)')
-      expect.soft(await resolvedColor(page, '--qds-stroke-strong'), 'control edges take the muted text colour').toBe(await resolvedColor(page, '--qds-text-muted'))
+      expect.soft(await resolvedColor(page, '--qds-control-stroke-default'), 'control edges take the muted text colour').toBe(await resolvedColor(page, '--qds-text-muted'))
     })
   }
 
@@ -152,39 +152,114 @@ test.describe('QDS variant distinctiveness lab', () => {
     expect.soft(ratios.segmentActiveText, 'selected segment label on its thumb').toBeGreaterThanOrEqual(4.5)
   })
 
-  test('glass edges: boxed fields only, hairline labelled buttons, plain content toolbars', async ({ page }) => {
-    await page.goto('/#forms?variant=glass')
+  for (const mode of ['light', 'dark'] as const) {
+    test(`glass ${mode} control edges are soft at rest and legible in contrast modes`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme: mode })
+      await page.goto('/#forms?variant=glass')
+      await applyTheme(page, mode, 'glass')
+      const field = (name: string) => page.locator(`[data-test="qds-forms-variant-${name}-default"] .q-field__control`)
+      const fields = ['outlined', 'filled', 'standout', 'borderless', 'ghost'] as const
+      const [outlined, filled, standout, borderless, ghost] = await Promise.all(fields.map(name => glassPaint(field(name))))
+      for (const [name, paint] of Object.entries({ outlined, filled, standout })) {
+        expect.soft(paint.borderWidth, `${name} keeps its sizing slot`).toBe('1px')
+        expect.soft(paint.edgeContrast, `${name} edge at rest`).toBeLessThan(3)
+      }
+      expect.soft(outlined.fill).toBe('rgba(0, 0, 0, 0)')
+      expect.soft(outlined.border).toBe(mode === 'light' ? 'rgba(60, 60, 67, 0.12)' : 'rgba(235, 235, 245, 0.1)')
+      expect.soft(filled.fill).not.toBe(outlined.fill)
+      expect.soft(standout.fill).not.toBe(filled.fill)
+      for (const paint of [borderless, ghost]) {
+        expect.soft(paint.fill).toBe(outlined.fill)
+        expect.soft(paint.borderWidth).toBe('0px')
+      }
+
+      await field('standout').locator('input').focus()
+      await waitForThemePaint(page)
+      const focused = await glassPaint(field('standout'))
+      expect.soft(focused.outlineWidth, 'the keyboard focus ring is visible').not.toBe('0px')
+      expect.soft(focused.outlineContrast, 'the focus ring reads against the field and surrounding paint').toBeGreaterThanOrEqual(3)
+      await field('standout').locator('input').blur()
+      const error = page.locator('[data-test="qds-forms-state-error"] .q-field__control')
+      expect.soft((await glassPaint(error)).outlineContrast, 'the unfocused error ring stays visible').toBeGreaterThanOrEqual(3)
+      await expect.soft(error.locator('.q-field__append .q-icon')).toBeVisible()
+
+      const outlines = [
+        { contrast: 'more', forcedColors: 'none' },
+        { contrast: 'no-preference', forcedColors: 'active' },
+      ] as const
+      for (const media of outlines) {
+        await page.emulateMedia(media)
+        await waitForThemePaint(page)
+        for (const name of fields) {
+          const paint = await glassPaint(field(name))
+          expect.soft(paint.borderWidth, `${name} ${JSON.stringify(media)} edge width`).toBe('1px')
+          expect.soft(paint.edgeContrast, `${name} ${JSON.stringify(media)} edge contrast`).toBeGreaterThanOrEqual(3)
+        }
+      }
+
+      await page.emulateMedia({ contrast: 'no-preference', forcedColors: 'none' })
+      await page.goto('/#components?variant=glass')
+      await applyTheme(page, mode, 'glass')
+      const button = (label: string) => page.locator('.qds-button-row').first().getByRole('button', { name: label, exact: true })
+      const [standard, outline, disabled] = await Promise.all(['Default', 'Outline', 'Disabled'].map(label => glassPaint(button(label))))
+      expect.soft(standard.fill).not.toBe(outline.fill)
+      expect.soft(standard.edgeContrast, 'the neutral capsule has a transparent edge').toBe(1)
+      expect.soft(standard.shadow).toBe('none')
+      expect.soft(outline.fill).toBe('rgba(0, 0, 0, 0)')
+      expect.soft(outline.borderWidth).toBe('1px')
+      expect.soft(outline.border).toContain('/ 0.45')
+      expect.soft(disabled.edgeContrast, 'the disabled capsule only has a fill').toBe(1)
+      expect.soft(disabled.shadow).toBe('none')
+      expect.soft(await computed(page, '.q-toolbar.qds-card .q-btn--flat', 'backdrop-filter'), 'toolbars inside content stay plain').toBe('none')
+      expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'backdrop-filter'), 'bar buttons float on glass').not.toBe('none')
+      expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'border-radius'), 'the shell follows glass capsules').toBe('9999px')
+
+      const session = await page.context().newCDPSession(page)
+      await session.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }] })
+      await waitForThemePaint(page)
+      expect.soft(await customProperty(page, '--qds-material-regular-filter')).toBe('none')
+      expect.soft((await glassPaint(button('Default'))).edgeContrast, 'reduced transparency keeps soft edges').toBe(1)
+      await session.send('Emulation.setEmulatedMedia', { features: [] })
+      await session.detach()
+      for (const media of outlines) {
+        await page.emulateMedia(media)
+        await waitForThemePaint(page)
+        for (const label of ['Default', 'Outline', 'Subtle', 'Disabled']) {
+          const paint = await glassPaint(button(label))
+          expect.soft(paint.borderWidth, `${label} ${JSON.stringify(media)} edge width`).toBe('1px')
+          expect.soft(paint.edgeContrast, `${label} ${JSON.stringify(media)} edge contrast`).toBeGreaterThanOrEqual(3)
+        }
+      }
+    })
+  }
+
+  test('glass marks selected tabs and segments with system highlight under forced colors', async ({ page }) => {
+    await page.goto('/#components?variant=glass')
     await applyTheme(page, 'light', 'glass')
-    const control = (name: string) => `[data-test="qds-forms-variant-${name}-default"] .q-field__control`
-    await expect(page.locator(control('outlined'))).toBeVisible()
-    expect.soft(await computed(page, control('outlined'), 'border-top-width'), 'boxed fields keep their edge').toBe('1px')
-    for (const name of ['borderless', 'ghost']) {
-      expect.soft(await computed(page, control(name), 'border-top-style'), `${name} fields carry no glass box`).toBe('none')
+    const tab = '[data-test="qds-tabs-horizontal"] .q-tab--active'
+    const segment = '[data-test="qds-toggle-color"] > .q-btn[aria-pressed="true"]'
+    const accent = await resolvedColor(page, '--_qds-glass-selection-label')
+    for (const selector of [tab, segment]) {
+      expect.soft(await computed(page, selector, 'color')).toBe(accent)
+      expect.soft(await computed(page, selector, 'font-weight')).toBe('600')
+      expect.soft(await computed(page, selector, 'box-shadow')).not.toContain('inset')
     }
 
-    await page.goto('/#components?variant=glass')
-    await applyTheme(page, 'light', 'glass')
-    const button = (label: string) => page.locator('.qds-button-row').first().locator('.q-btn', { hasText: label })
-    const style = (label: string) => button(label).evaluate((el) => {
-      const s = getComputedStyle(el)
-      return { border: s.borderTopColor, background: s.backgroundColor }
-    })
-    const [standard, outline, disabled] = [await style('Default'), await style('Outline'), await style('Disabled')]
-    expect.soft(standard.border, 'Default and Outline differ in edge').not.toBe(outline.border)
-    expect.soft(standard.background, 'Default and Outline differ in fill').not.toBe(outline.background)
-    expect.soft(outline.border, 'the outline keeps its 3:1 stroke').toBe(await resolvedColor(page, '--qds-stroke-strong'))
-    expect.soft(disabled.border, 'a disabled button drops to the plain border').toBe(await resolvedColor(page, '--qds-border'))
-    expect.soft(await computed(page, '.q-toolbar.qds-card .q-btn--flat', 'backdrop-filter'), 'toolbars inside content stay plain').toBe('none')
-    expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'backdrop-filter'), 'bar buttons float on glass').not.toBe('none')
-    expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'border-radius'), 'the shell follows glass capsules').toBe('9999px')
-  })
-
-  test('glass marks the selected tab and segment with a system outline under forced colors', async ({ page }) => {
-    await page.goto('/#components?variant=glass')
-    await applyTheme(page, 'light', 'glass')
     await page.emulateMedia({ forcedColors: 'active' })
-    expect.soft(await computed(page, '[data-test="qds-tabs-horizontal"] .q-tab--active', 'outline-style'), 'selected tab').toBe('solid')
-    expect.soft(await computed(page, '[data-test="qds-toggle-color"] > .q-btn[aria-pressed="true"]', 'border-top-style', '::after'), 'selected segment').toBe('solid')
+    await waitForThemePaint(page)
+    const highlight = await page.evaluate(() => {
+      const sample = document.createElement('span')
+      sample.style.cssText = 'forced-color-adjust: none; background-color: Highlight; color: HighlightText'
+      document.body.append(sample)
+      const style = getComputedStyle(sample)
+      const pair = { fill: style.backgroundColor, label: style.color }
+      sample.remove()
+      return pair
+    })
+    for (const selector of [tab, segment]) {
+      await expect.soft(page.locator(selector)).toHaveCSS('background-color', highlight.fill)
+      await expect.soft(page.locator(selector)).toHaveCSS('color', highlight.label)
+    }
   })
 
   // Both of these were silently dead once; this is their regression gate.
@@ -207,3 +282,40 @@ test.describe('QDS variant distinctiveness lab', () => {
     expect.soft(on, 'the on track resolves to glass primary').toBe('rgb(8, 96, 204)')
   })
 })
+
+function glassPaint(locator: Locator) {
+  return locator.evaluate((el) => {
+    const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true })!
+    context.fillStyle = 'Canvas'
+    context.fillRect(0, 0, 1, 1)
+    const paint = (color: string) => {
+      context.fillStyle = color
+      context.fillRect(0, 0, 1, 1)
+      const [r, g, b] = Array.from(context.getImageData(0, 0, 1, 1).data).map(value => {
+        const channel = value / 255
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+      })
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b
+    }
+    const ratio = (a: number, b: number) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+    const ancestors: Element[] = []
+    for (let parent = el.parentElement; parent; parent = parent.parentElement) ancestors.unshift(parent)
+    let surface = 0
+    for (const ancestor of ancestors) surface = paint(getComputedStyle(ancestor).backgroundColor)
+    const style = getComputedStyle(el)
+    const fill = paint(style.backgroundColor)
+    const fillPixel = context.getImageData(0, 0, 1, 1)
+    const edge = paint(style.borderTopColor)
+    context.putImageData(fillPixel, 0, 0)
+    const outline = paint(style.outlineColor)
+    return {
+      fill: style.backgroundColor,
+      shadow: style.boxShadow,
+      border: style.borderTopColor,
+      borderWidth: style.borderTopWidth,
+      outlineWidth: style.outlineWidth,
+      edgeContrast: ratio(edge, fill),
+      outlineContrast: Math.min(ratio(outline, fill), ratio(outline, surface)),
+    }
+  })
+}

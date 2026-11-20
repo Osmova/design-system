@@ -72,7 +72,8 @@ test('no-filter, reduced transparency, forced colours and increased contrast all
   const contrastRules = rules.filter(([path]) => /@media ?\(prefers-contrast:more\)\|/.test(path))
   assert.ok(contrastRules.some(([, body]) => body.includes('--qds-color-primary:#0040dd')), 'light increased-contrast accent')
   assert.ok(contrastRules.some(([, body]) => body.includes('--qds-color-primary:#8cc3ff')), 'dark increased-contrast accent')
-  assert.ok(contrastRules.every(([, body]) => body.includes('--qds-material-stroke:var(--qds-stroke-strong)')), 'increased contrast restores the 3:1 ring on every glass edge')
+  assert.ok(contrastRules.some(([, body]) => body.includes('--_qds-glass-control-edge:var(--qds-text-muted)')), 'increased contrast restores the strong control edge')
+  assert.ok(rules.filter(([path]) => /prefers-reduced-transparency:reduce/.test(path)).every(([, body]) => !body.includes('--_qds-glass-control-edge:')), 'opacity alone leaves decorative edges soft')
 })
 
 // ── Contrast is a hard gate, computed from the shipped token values ──────────
@@ -83,6 +84,8 @@ function glassTokens(scheme) {
     ...[0, 1, 2, 3].map((step) => [`surface-${step}`, `${prefix}surface-${step}`]),
     ['text', `${prefix}text`], ['text-strong', `${prefix}text-strong`], ['text-muted', `${prefix}text-muted`],
     ['stroke-strong', `${prefix}stroke-strong`], ['hc-primary', `${prefix}hc-primary`],
+    ...['button-fill', 'field-fill', 'standout-fill', 'field-label', 'selection-fill', 'selection-label', 'segmented-thumb']
+      .map((name) => [name, `${prefix}${name}`]),
     ...roles.map((role) => [role, `${palette}${role}`]),
     ['primary-dark', `${palette}primary-dark`],
     ...['brand', 'accent', 'positive', 'warning', 'negative', 'info'].map((wash) => [`soft-${wash}`, `${palette}soft-${wash}`]),
@@ -122,7 +125,7 @@ export function glassPairs(scheme) {
     if (token[`soft-${wash}`]) add('role text', `fg-${role}/soft-${wash}`, foreground, token[`soft-${wash}`], 4.5)
     add('control edge', `${role} fill/surface-0`, fill, token['surface-0'], 3)
   }
-  // Control boundaries: the stroke must read on every surface and on glass over every surface.
+  // Strong strokes still draw state indicators and must read on glass and opaque surfaces.
   for (const [name, surface] of surfaces) {
     add('control edge', `stroke/${name}`, token['stroke-strong'], surface, 3)
     add('control edge', `stroke/glass over ${name}`, token['stroke-strong'], mix(token[scheme === 'dark' ? 'surface-2' : 'surface-0'], surface, MATERIAL[scheme]), 3)
@@ -137,8 +140,28 @@ export function glassPairs(scheme) {
   // The empty slider track is the stroke colour, so it reads on the surfaces a slider sits on.
   for (const name of ['surface-0', 'surface-1']) add('state indicator', `slider track/${name}`, token['stroke-strong'], token[name], 3)
   add('state indicator', 'slider thumb/empty track', parseRgb('#ffffff'), token['stroke-strong'], 3)
-  // Increased contrast: the edge becomes the muted text colour and the accent deepens.
-  for (const [name, surface] of surfaces) add('increased contrast', `edge/${name}`, token['text-muted'], surface, 4.5)
+  for (const [name, surface] of surfaces) {
+    add('increased contrast', `edge/${name}`, token['text-muted'], surface, 4.5)
+    for (const [fill, ink] of [['button-fill', 'text'], ['field-fill', 'field-label'], ['standout-fill', 'field-label'], ['selection-fill', 'selection-label']]) {
+      const paint = mix(token[fill], surface, token[fill][3])
+      const pair = `${fill}/${name}`
+      add('text', `${ink}/${pair}`, token[ink], paint, 4.5)
+      add('focus indicator', `focus/${pair}`, token.primary, paint, 3)
+      add('increased contrast', `edge/${pair}`, token['text-muted'], paint, 3)
+      add('increased contrast', `focus/${pair}`, token['hc-primary'], paint, 3)
+      if (ink === 'field-label') add('state indicator', `error/${pair}`, mix(token.negative, token['text-strong'], ROLE_FG_MIX), paint, 3)
+    }
+    add('text', `field label/${name}`, token['field-label'], surface, 4.5)
+    add('focus indicator', `focus/${name}`, token.primary, surface, 3)
+  }
+  const thumb = token['segmented-thumb']
+  add('text', 'selected label/thumb', token['selection-label'], thumb, 4.5)
+  // The selected segment also uses a semibold accent label. Its raised fill only needs to differ from the track.
+  add('selection cue', 'thumb/track', thumb, token['surface-2'], 1)
+  add('focus indicator', 'focus/thumb', token.primary, thumb, 3)
+  add('increased contrast', 'edge/thumb', token['text-muted'], thumb, 3)
+  const contrastTrack = scheme === 'dark' ? mix(token['hc-primary'], token['surface-0'], 0.7) : token['hc-primary']
+  add('increased contrast', 'white knob/on track', parseRgb('#ffffff'), contrastTrack, 3)
   add('increased contrast', 'on-primary/hc fill', token['on-primary'], token['hc-primary'], 7)
   return pairs
 }
@@ -148,6 +171,7 @@ for (const scheme of ['light', 'dark']) {
     const pairs = glassPairs(scheme)
     const failures = pairs.filter(({ ratio, minimum }) => ratio < minimum).map(({ pair, ratio, minimum }) => `${pair}: ${ratio.toFixed(2)} < ${minimum}`)
     assert.deepEqual(failures, [], `${pairs.length} ${scheme} pairings checked`)
+    assert.ok(pairs.find(({ pair }) => pair === 'thumb/track').ratio > 1, 'the raised thumb differs from its track')
     assert.ok(pairs.length >= 82, `${pairs.length} pairings`)
   })
 }

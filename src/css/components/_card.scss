@@ -1,5 +1,6 @@
 @use '../materials';
 @use '../../themes/shadcn';
+@use '../../themes/default' as theme;
 
 $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
 $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
@@ -131,15 +132,14 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
   // Glass's own tokens resolved on the light root, so a dark block re-points them at its inverted surfaces.
   .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} {
     --qds-stroke-strong: color-mix(in srgb, var(--qds-surface-0) 48%, var(--qds-text-strong));
-    @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, control-stroke-strong {
-      --qds-#{$token}: var(--qds-stroke-strong);
-    }
+    @include theme.qds-glass-paint(dark);
+    --qds-stroke-focus: var(--_qds-glass-highlight, #{theme.qds-variant-token(glass, dark-primary)});
+    --qds-stroke-error: #{theme.qds-variant-token(glass, dark-negative)};
     --qds-segmented-track-bg: var(--qds-bg-surface-2);
-    --qds-segmented-thumb-bg: var(--qds-bg-layer);
     --_qds-glass-nested: var(--qds-bg-surface-2);
     --_qds-glass-on-track: color-mix(in srgb, currentColor 85%, var(--qds-surface-0));
   }
-  @media (prefers-contrast: more) { .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} { --qds-material-stroke: var(--qds-stroke-strong); } }
+  @media (prefers-contrast: more) { .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} { --_qds-glass-control-edge: var(--qds-fg-muted); } }
 
 
   #{$shadcn} :is(.q-card, .qds-card, .qds-tile) { color: var(--qds-shadcn-card-foreground); }
