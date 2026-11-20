@@ -639,6 +639,12 @@ watch(tab, revealActiveGalleryTab)
   font-weight: 560;
 }
 
+.qds-variant-glass .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {
+  background: var(--_qds-glass-selection-fill);
+  color: var(--_qds-glass-selection-label);
+  font-weight: var(--qds-font-weight-semibold);
+}
+
 /* Ink has no tints: the current page inverts. */
 .qds-variant-ink .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {
   background: var(--qds-fg-strong);

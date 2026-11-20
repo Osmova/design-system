@@ -122,7 +122,7 @@ $rail: ".qds-ui .q-item:is(.q-item--active, [aria-selected='true'])::before, .qd
   #{$glass} .q-list--separator > .q-item-type + .q-item-type { margin-inline-start: var(--qds-space-md); padding-inline-start: 0; }
   #{$glass} .q-item { padding-inline: var(--qds-space-md); border-radius: var(--qds-radius-control); }
   #{$glass} :is(.q-list--bordered, .q-list--separator, .q-virtual-scroll__content) > .q-item { border-radius: 0; }
-  #{$glass} .q-item:is(.q-item--active, [aria-selected='true']) { color: var(--qds-fg-brand); background-color: var(--qds-surface-brand-soft); }
+  #{$glass} .q-item:is(.q-item--active, [aria-selected='true']) { color: var(--_qds-glass-selection-label); background-color: var(--_qds-glass-selection-fill); font-weight: var(--qds-font-weight-semibold); }
   #{$glass} .q-item:is(.q-item--active, [aria-selected='true'])::before,
   #{$glass} #{$nav-parent}::before { display: none; }
   #{$glass} .q-list .q-item__label--header { padding: var(--qds-space-md) var(--qds-space-md) var(--qds-space-xs); color: var(--qds-fg-muted); font-size: var(--qds-font-size-caption); font-weight: var(--qds-font-weight-semibold); }

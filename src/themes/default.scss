@@ -381,16 +381,24 @@
   }
 }
 
-// Glass: controls and bars float on a translucent functional layer above content.
+@mixin qds-glass-paint($scheme) {
+  --qds-border-subtle: var(--_qds-glass-control-edge, #{qds-variant-token(glass, '#{$scheme}-edge')});
+  @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, material-stroke, menu-border {
+    --qds-#{$token}: var(--qds-border-subtle);
+  }
+  @each $token in button-fill, field-fill, standout-fill, field-label {
+    --_qds-glass-#{$token}: #{qds-variant-token(glass, '#{$scheme}-#{$token}')};
+  }
+  --_qds-glass-selection-fill: var(--_qds-glass-highlight, #{qds-variant-token(glass, '#{$scheme}-selection-fill')});
+  --_qds-glass-selection-label: var(--_qds-glass-highlight-text, #{qds-variant-token(glass, '#{$scheme}-selection-label')});
+  --qds-control-stroke-strong: var(--qds-stroke-strong);
+  --qds-segmented-thumb-bg: var(--_qds-glass-highlight, #{qds-variant-token(glass, '#{$scheme}-segmented-thumb')});
+}
+
 // Translucency is decoration only; every affordance must survive the opaque fallback.
 @mixin qds-glass-material($scheme) {
   --qds-stroke-strong: #{qds-variant-token(glass, '#{$scheme}-stroke-strong')};
-  @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, control-stroke-strong {
-    --qds-#{$token}: var(--qds-stroke-strong);
-  }
-  @each $token in material-stroke, menu-border {
-    --qds-#{$token}: #{qds-variant-token(glass, '#{$scheme}-border')};
-  }
+  @include qds-glass-paint($scheme);
   --qds-bg-overlay: #{qds-variant-token(glass, '#{$scheme}-scrim')};
   --qds-fg-disabled: #{qds-variant-token(glass, '#{$scheme}-fg-disabled')};
   --qds-fg-on-brand: var(--qds-text-on-primary);
@@ -403,9 +411,8 @@
     --qds-fg-#{$role}: color-mix(in srgb, var(--qds-color-#{$role}) 86%, var(--qds-text-strong));
   }
   --qds-stroke-error: var(--qds-fg-negative);
-  --qds-stroke-focus: var(--qds-color-primary);
+  --qds-stroke-focus: var(--_qds-glass-highlight, var(--qds-color-primary));
   --qds-segmented-track-bg: var(--qds-surface-2);
-  --qds-segmented-thumb-bg: var(--qds-surface-0);
   --qds-row-radius: var(--qds-radius-control);
   --qds-button-radius: var(--qds-radius-full);
   --qds-menu-radius: #{qds-variant-token(glass, menu-radius)};
@@ -463,9 +470,6 @@
 }
 
 @mixin qds-glass-contrast($scheme) {
-  --qds-stroke-strong: var(--qds-text-muted);
-  --qds-border-subtle: var(--qds-stroke-strong);
-  --qds-material-stroke: var(--qds-stroke-strong);
   --qds-color-primary: #{qds-variant-token(glass, '#{$scheme}-hc-primary')};
   --qds-color-primary-rgb: #{qds-variant-token(glass, '#{$scheme}-hc-primary-rgb')};
 }
@@ -504,8 +508,18 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
   }
 
   @media (prefers-contrast: more) {
-    .qds-variant-glass { @include qds-glass-contrast(light); }
+    .qds-variant-glass { --_qds-glass-control-edge: var(--qds-text-muted); @include qds-glass-contrast(light); }
     #{$glass-dark} { @include qds-glass-contrast(dark); }
+  }
+
+  @media (forced-colors: active) {
+    .qds-variant-glass {
+      --_qds-glass-forced-button: ButtonText;
+      --_qds-glass-forced-edge: CanvasText;
+      --_qds-glass-highlight: Highlight;
+      --_qds-glass-canvas: Canvas;
+      --_qds-glass-highlight-text: HighlightText;
+    }
   }
   }
 }
