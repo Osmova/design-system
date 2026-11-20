@@ -110,7 +110,7 @@ test.describe('Fluent foundation contract', () => {
         expect.soft(lighter * (luminance(pressed.fill) - luminance(hover.fill)), `${mode} ${role} press moves further toward the layer`).toBeGreaterThan(0)
         expect.soft(rest.ratio, `${mode} ${role} rest text contrast`).toBeGreaterThanOrEqual(4.5)
         expect.soft(hover.ratio, `${mode} ${role} hover text contrast`).toBeGreaterThanOrEqual(4.5)
-        expect.soft(pressed.ratio, `${mode} ${role} pressed secondary text contrast`).toBeGreaterThanOrEqual(3)
+        expect.soft(pressed.ratio, `${mode} ${role} pressed text contrast`).toBeGreaterThanOrEqual(4.5)
       }
     }
 
