@@ -582,9 +582,7 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
   }
 }
 
-// Win's WinUI deltas live on its own variant class, isolated in one mixin
-// like zen/atrium, so the frozen theme hash stays verifiable and every other
-// profile keeps the shared semantic values.
+// WinUI deltas leave the shared semantic maps unchanged.
 @mixin qds-win-scopes {
   $dark: '.qds-theme-dark.qds-variant-win, .qds-theme-dark .qds-variant-win, .qds-variant-win .qds-theme-dark, body.qds-ui.body--dark.qds-variant-win, body.qds-ui.body--dark .qds-variant-win';
   @layer qds.tokens {
@@ -615,6 +613,16 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
 
   @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
     .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; --qds-backdrop: var(--qds-surface-1); }
+  }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    .qds-variant-win, #{$dark} {
+      @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, control-stroke-strong, control-stroke-on-accent-top, control-stroke-on-accent-bottom, card-stroke, material-stroke, stroke-default, stroke-subtle {
+        --qds-#{$token}: var(--qds-stroke-strong);
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .qds-variant-win, #{$dark} { --qds-stroke-strong: CanvasText; --qds-stroke-focus: Highlight; }
   }
   }
 }
