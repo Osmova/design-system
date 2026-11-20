@@ -47,7 +47,10 @@ import { galleryHash, parseGalleryHash, type GalleryTab } from './gallery-url'
 const $q = useQuasar()
 const ds = useDesignSystem()
 
-const tab = ref<GalleryTab>(parseGalleryHash(typeof window === 'undefined' ? '' : window.location.hash).tab)
+const config = parseGalleryHash(typeof window === 'undefined' ? '' : window.location.hash)
+const tab = ref<GalleryTab>(config.tab)
+// Frames of the gallery used by the Compare page: chrome and URL writes belong to the host page.
+const embedded = config.embed
 let applyingUrl = false
 
 const modes: DesignSystemMode[] = ['light', 'dark', 'system']
@@ -140,7 +143,7 @@ function onInkColor(color: InkColor) {
 }
 
 function syncUrl() {
-  if (typeof window === 'undefined' || applyingUrl) return
+  if (typeof window === 'undefined' || applyingUrl || embedded) return
   const nextHash = galleryHash(tab.value, ds.variant.value, window.location.hash)
   if (window.location.hash !== nextHash) {
     window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}${nextHash}`)
@@ -154,6 +157,9 @@ function onHashChange() {
     tab.value = next.tab
     // Page-only/invalid in-session links retain the ongoing selection.
     if (next.variant) ds.setVariant(next.variant)
+    if (next.mode) ds.setMode(next.mode)
+    if (next.ink) ds.setInkColor(next.ink)
+    if (next.palette) ds.setShadcnBaseColor(next.palette)
   } finally {
     applyingUrl = false
   }
@@ -193,8 +199,8 @@ watch(tab, revealActiveGalleryTab)
 </script>
 
 <template>
-  <q-layout view="hHh LpR fFf">
-    <q-header class="gallery-header">
+  <q-layout view="hHh LpR fFf" :class="{ 'gallery--embedded': embedded }">
+    <q-header v-if="!embedded" class="gallery-header">
       <q-toolbar>
         <q-btn
           flat
@@ -362,6 +368,7 @@ watch(tab, revealActiveGalleryTab)
     </q-header>
 
     <q-drawer
+      v-if="!embedded"
       id="gallery-nav"
       v-model="drawerOpen"
       show-if-above
@@ -439,6 +446,11 @@ watch(tab, revealActiveGalleryTab)
 .gallery-page {
   min-height: 0;
   padding: var(--qds-space-md);
+}
+
+/* A compare frame is content only: it keeps a tighter margin than the hosted page. */
+.gallery--embedded .gallery-page {
+  padding: var(--qds-space-sm);
 }
 
 .gallery-header {

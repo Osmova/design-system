@@ -23,7 +23,8 @@ import {
 import App from './App.vue'
 import { parseGalleryHash } from './gallery-url'
 
-const initialVariant = parseGalleryHash(window.location.hash).variant ?? 'win'
+// Every hash parameter configures the controller before mount so the first paint is already themed.
+const initial = parseGalleryHash(window.location.hash)
 
 const app = createApp(App)
 
@@ -43,8 +44,10 @@ app.use(Quasar, {
 // `persist: false` keeps the visual gate deterministic (no localStorage carry-over
 // of mode/variant between matrix cells).
 const ds = configureDesignSystem(app, {
-  mode: 'system',
-  variant: initialVariant,
+  mode: initial.mode ?? 'system',
+  variant: initial.variant ?? 'win',
+  inkColor: initial.ink,
+  shadcnBaseColor: initial.palette,
   persist: false,
 })
 
