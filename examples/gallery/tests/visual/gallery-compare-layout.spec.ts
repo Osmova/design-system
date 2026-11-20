@@ -8,7 +8,8 @@ for (const variant of CANONICAL_VARIANTS) for (const mode of ['light', 'dark'] a
     const termNarrow = variant === 'term' && info.project.name === 'mobile'
     await page.setViewportSize(info.project.name === 'mobile'
       ? { width: 393, height: 851 } : { width: 1440, height: 1000 })
-    await page.goto('/#compare')
+    // The Fluent 2 oracle is now an optional reference source: opt in through the URL.
+    await page.goto('/#compare?ref=fluent')
     await applyTheme(page, mode, variant)
     await expect(page.locator('.compare--ready')).toBeVisible()
     await waitForThemePaint(page)
