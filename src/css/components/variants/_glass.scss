@@ -10,6 +10,7 @@ $segment-selected: ".q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn
   backdrop-filter: var(--qds-material-regular-filter);
   -webkit-backdrop-filter: var(--qds-material-regular-filter);
   box-shadow: var(--qds-material-edge), 0 0 0 1px var(--qds-material-stroke), var(--qds-shadow-sm);
+  @media (forced-colors: active) { border: 1px solid ButtonText; }
 }
 
 @mixin button {
@@ -86,14 +87,7 @@ $boxed: ':where(:not(.q-field--borderless, .qds-field--ghost))';
   #{$glass} .q-tabs--horizontal.q-tabs--scrollable.q-tabs__arrows--outside:not(body.mobile .q-tabs--mobile-without-arrows) { padding-inline: 36px; }
   #{$glass} :is(.q-header, .q-footer, .qds-glass-bar) .q-tabs--horizontal,
   #{$glass} .q-tabs--horizontal.qds-glass-bar { @include material; }
-  #{$glass} .q-tab {
-    min-height: var(--qds-tab-min-height, 2.125rem);
-    padding-inline: 0.875rem;
-    border-radius: var(--qds-radius-full);
-    color: var(--qds-text-muted);
-    font-weight: var(--qds-font-weight-medium);
-    text-transform: none;
-  }
+  #{$glass} .q-tab { min-height: var(--qds-tab-min-height, 2.125rem); padding-inline: 0.875rem; border-radius: var(--qds-radius-full); color: var(--qds-text-muted); font-weight: var(--qds-font-weight-medium); text-transform: none; }
   #{$glass} .q-tabs--vertical .q-tab { border-radius: var(--qds-radius-control); }
   #{$glass} .q-tabs .q-tab.q-tab--active { background: var(--_qds-glass-selection-fill); color: var(--_qds-glass-selection-label); }
   #{$glass} .q-tabs--horizontal:not(.q-color-picker *, .q-header *, .q-footer *, .qds-glass-bar, .qds-glass-bar *) .q-tab.q-tab--active { background: var(--qds-segmented-thumb-bg); box-shadow: var(--qds-shadow-sm); }
