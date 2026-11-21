@@ -45,6 +45,9 @@ const drawerMiniToOverlayOpen = ref(true)
 const drawerMini = ref(true)
 const page = ref(3)
 const inputPage = ref(3)
+const outlinePage = ref(2)
+const pushPage = ref(2)
+const unelevatedPage = ref(2)
 const checkbox = ref(true)
 const radio = ref('comfortable')
 const toggle = ref(true)
@@ -496,6 +499,14 @@ function notify(type: 'positive' | 'negative' | 'warning' | 'info') {
           color="primary"
         />
         <div class="qds-text-muted q-mt-xs" data-test="qds-pagination-input-current-page">Current page: {{ inputPage }}</div>
+      </div>
+      <div class="q-mt-md" role="group" aria-label="Active design pagination">
+        <div class="row q-col-gutter-sm items-center">
+          <q-pagination v-model="outlinePage" :max="5" active-design="outline" color="primary" data-test="qds-pagination-outline" />
+          <q-pagination v-model="pushPage" :max="5" active-design="push" color="primary" data-test="qds-pagination-push" />
+          <q-pagination v-model="unelevatedPage" :max="5" active-design="unelevated" color="primary" data-test="qds-pagination-unelevated" />
+        </div>
+        <div class="qds-text-muted q-mt-xs">Explicit <code>active-design</code> keeps the button grammar: outline stays a stroke, push and unelevated stay solid.</div>
       </div>
     </q-card>
 
