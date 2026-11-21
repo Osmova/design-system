@@ -139,7 +139,12 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
     --_qds-glass-nested: var(--qds-bg-surface-2);
     --_qds-glass-on-track: color-mix(in srgb, currentColor 85%, var(--qds-surface-0));
   }
-  @media (prefers-contrast: more) { .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} { --_qds-glass-control-edge: var(--qds-fg-muted); } }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$glass} :is(.q-card, .qds-card, .qds-tile) { border: var(--qds-border-width-control) solid var(--_qds-glass-forced-edge, var(--_qds-glass-control-edge)); }
+  }
+  @media (prefers-contrast: more) {
+    .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} { --_qds-glass-control-edge: var(--qds-fg-muted); --qds-stroke-strong: var(--qds-fg-muted); --_qds-glass-knob-edge: var(--qds-bg-card); }
+  }
 
 
   #{$shadcn} :is(.q-card, .qds-card, .qds-tile) { color: var(--qds-shadcn-card-foreground); }

@@ -73,6 +73,7 @@ test('no-filter, reduced transparency, forced colours and increased contrast all
   assert.ok(contrastRules.some(([, body]) => body.includes('--qds-color-primary:#0040dd')), 'light increased-contrast accent')
   assert.ok(contrastRules.some(([, body]) => body.includes('--qds-color-primary:#8cc3ff')), 'dark increased-contrast accent')
   assert.ok(contrastRules.some(([, body]) => body.includes('--_qds-glass-control-edge:var(--qds-text-muted)')), 'increased contrast restores the strong control edge')
+  assert.ok(contrastRules.filter(([, body]) => body.includes('--qds-color-primary:')).every(([, body]) => body.includes('--qds-stroke-strong:var(--qds-text-muted)')), 'both increased-contrast schemes also strengthen indicators')
   assert.ok(rules.filter(([path]) => /prefers-reduced-transparency:reduce/.test(path)).every(([, body]) => !body.includes('--_qds-glass-control-edge:')), 'opacity alone leaves decorative edges soft')
 })
 
@@ -140,6 +141,7 @@ export function glassPairs(scheme) {
   // The empty slider track is the stroke colour, so it reads on the surfaces a slider sits on.
   for (const name of ['surface-0', 'surface-1']) add('state indicator', `slider track/${name}`, token['stroke-strong'], token[name], 3)
   add('state indicator', 'slider thumb/empty track', parseRgb('#ffffff'), token['stroke-strong'], 3)
+  add('increased contrast', 'off switch knob and slider thumb edge/empty track', scheme === 'dark' ? token['surface-0'] : parseRgb('#ffffff'), token['text-muted'], 3)
   for (const [name, surface] of surfaces) {
     add('increased contrast', `edge/${name}`, token['text-muted'], surface, 4.5)
     for (const [fill, ink] of [['button-fill', 'text'], ['field-fill', 'field-label'], ['standout-fill', 'field-label'], ['selection-fill', 'selection-label']]) {
