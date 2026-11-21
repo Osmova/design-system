@@ -412,6 +412,7 @@ $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive
     .q-toggle:not(.disabled):active :is(.q-toggle__inner--truthy, .q-toggle__inner--indet)#{$shadcn-roles} { --qds-selection-fill: var(--_qds-text-pressed); }
   }
   @media (forced-colors: active) {
-    .qds-variant-win:is(.qds-ui,.qds-ui *) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg { --qds-selection-on: HighlightText; color: HighlightText; background: Highlight; border-color: Highlight; forced-color-adjust: none; }
+    .qds-variant-win:is(.qds-ui,.qds-ui *) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg { --qds-selection-on: HighlightText; color: Highlight; forced-color-adjust: none; }
+    .qds-variant-win:is(.qds-ui,.qds-ui *) .q-checkbox.disabled .q-checkbox__bg { color: GrayText; }
   }
 }

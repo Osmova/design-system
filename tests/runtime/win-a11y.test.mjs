@@ -41,7 +41,7 @@ async function fixture(browser, layered, mode, width = 1280) {
     fixture.dispose()
     document.querySelector('#app').remove()
     const { createApp, h, reactive } = Vue
-    const { QLinearProgress, QSelect, QInput, QCheckbox, QCard, QItem } = Quasar
+    const { QLinearProgress, QSelect, QInput, QCheckbox, QCard, QItem, QList, QBtn } = Quasar
     const state = reactive({ selected: null, value: 'Clear this value', checked: true, mixed: null, unchecked: false })
     const root = document.createElement('main')
     root.id = 'accessibility'
@@ -53,10 +53,14 @@ async function fixture(browser, layered, mode, width = 1280) {
       h(QSelect, { for: 'options', label: 'Keyboard options', outlined: true, modelValue: state.selected, options: ['First option', 'Second option', 'Third option'], 'onUpdate:modelValue': v => { state.selected = v }, behavior: 'menu' }),
       h(QInput, { for: 'clearable', label: 'Clearable field', outlined: true, clearable: true, modelValue: state.value, 'onUpdate:modelValue': v => { state.value = v } }),
       h('section', {}, ['checked', 'mixed', 'unchecked'].map(name => h(QCheckbox, { id: name, label: name, modelValue: state[name], 'onUpdate:modelValue': v => { state[name] = v } }))),
+      h(QCheckbox, { id: 'disabled-checked', label: 'disabled checked', modelValue: true, disable: true }),
       h(QCard, { id: 'local-dark', dark: true, style: 'padding:12px' }, () => [
         h(QItem, { id: 'dark-command', clickable: true }, () => 'Local dark command'),
         h(QCard, { id: 'nested-dark', tabindex: 0, style: 'padding:12px' }, () => 'Nested interactive card'),
+        h(QInput, { class: 'dark-field', label: 'Dark field', outlined: true, dark: true, modelValue: 'Value' }),
+        h(QBtn, { id: 'dark-outline', outline: true, label: 'Dark outline' }),
       ]),
+      h('div', { class: 'bg-dark', style: 'padding:12px' }, h(QList, { id: 'dark-list', dark: true, bordered: true }, () => h(QItem, {}, () => 'Dark list item'))),
       h(QCard, { id: 'outer-card', style: 'padding:12px' }, () => [
         h(QCard, { id: 'nested-card', tabindex: 0, style: 'padding:12px' }, () => 'Nested interactive card'),
         h('div', { id: 'nested-tile', class: 'qds-tile', role: 'button', tabindex: 0, style: 'padding:12px' }, 'Nested interactive tile'),
@@ -215,5 +219,29 @@ if (process.env.QDS_WIN_CAPTURES) {
       }
       assert.equal((await style(page, '#static-card', ['borderTopWidth'])).borderTopWidth, '0px')
     }
+  }))
+
+  test('Win contrast modes restore control and list strokes inside every local-dark scope in both deliveries', () => cases(async page => {
+    for (const settings of [mediaCases.contrast, mediaCases.forced]) {
+      await page.emulateMedia(settings); await settle(page)
+      for (const [selector, pseudo, surfaceOf] of [['.dark-field .q-field__control', '::before', '#local-dark'], ['#dark-outline', null, '#local-dark'], ['#dark-list', null, '#dark-list']]) {
+        const s = await style(page, selector, ['borderTopWidth', 'borderTopStyle', 'borderTopColor'], pseudo)
+        assert.equal(s.borderTopWidth, '1px', selector)
+        assert.equal(s.borderTopStyle, 'solid', selector)
+        const bg = await surface(page, surfaceOf)
+        assert.ok(contrast(over(s.borderTopColor, bg), bg) >= 3, `${selector} ${JSON.stringify(settings)}: ${JSON.stringify(s)} / ${bg}`)
+      }
+    }
+  }))
+
+  test('Win forced-colour disabled checked checkbox paints GrayText in both deliveries', () => cases(async page => {
+    await page.emulateMedia(mediaCases.forced); await settle(page)
+    const gray = await systemColor(page, 'GrayText')
+    const bg = await style(page, '#disabled-checked .q-checkbox__bg', ['backgroundColor', 'borderTopColor'])
+    const mark = await style(page, '#disabled-checked .q-checkbox__svg', ['color'])
+    assert.equal(bg.backgroundColor, gray, JSON.stringify(bg))
+    assert.equal(bg.borderTopColor, gray, JSON.stringify(bg))
+    assert.ok(contrast(mark.color, bg.backgroundColor) >= 3, JSON.stringify({ bg, mark }))
+    assert.equal(await page.locator('#disabled-checked').getAttribute('aria-disabled'), 'true')
   }))
 }
