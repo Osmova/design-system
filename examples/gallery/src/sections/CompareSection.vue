@@ -28,7 +28,7 @@ const schemes: { label: string, value: GalleryScheme }[] = [
 ]
 const keys: CompareKey[] = ['a', 'b']
 
-// Explicit picks live in the URL; anything unpicked follows the page the visitor is already on.
+// Unpicked sides follow the host theme.
 const selection = reactive(parseCompareSelection(typeof window === 'undefined' ? '' : window.location.hash))
 
 const host = computed(() => ({
@@ -71,7 +71,7 @@ const reference = computed<boolean>({
 })
 
 function pick(key: CompareKey, field: keyof CompareSide, value: string | null) {
-  // The side selects only ever emit the enumerated values typed by CompareSide.
+  // Side selects only emit values typed by CompareSide.
   ;(selection.sides[key] as Record<string, string | null>)[field] = value
   writeUrl()
 }
@@ -96,15 +96,7 @@ function frameSrc(key: CompareKey): string {
   )
 }
 
-// Captured once: the attribute never changes, so a frame cannot add host back/forward entries.
-const initialSrc: Record<CompareKey, string> = { a: frameSrc('a'), b: frameSrc('b') }
-const frames = shallowRef<Record<CompareKey, HTMLIFrameElement | null>>({ a: null, b: null })
-
-function setFrame(key: CompareKey, element: Element | null) {
-  frames.value[key] = element as HTMLIFrameElement | null
-}
-
-// Own writes use replaceState and never fire this; back/forward and pasted addresses do.
+// Back/forward and edited addresses resync the sides; own writes use replaceState and never fire this.
 function onHashChange() {
   Object.assign(selection, parseCompareSelection(window.location.hash))
 }
@@ -112,26 +104,31 @@ function onHashChange() {
 onMounted(() => window.addEventListener('hashchange', onHashChange))
 onBeforeUnmount(() => window.removeEventListener('hashchange', onHashChange))
 
-// Each frame navigates itself by replacement: a src attribute change would push an entry onto the
-// joint session history and take the Back button away from the gallery.
+const frameUrls = computed<Record<CompareKey, string>>(() => ({ a: frameSrc('a'), b: frameSrc('b') }))
+// Captured once: the src attribute never changes, so frames cannot push host history entries.
+const initialSrc: Record<CompareKey, string> = { a: frameUrls.value.a, b: frameUrls.value.b }
+const frames = shallowRef<Record<CompareKey, HTMLIFrameElement | null>>({ a: null, b: null })
+// Stable identities: a fresh inline ref function per render would detach and reattach each frame.
+const frameRef: Record<CompareKey, (element: unknown) => void> = {
+  a: element => { frames.value.a = element as HTMLIFrameElement | null },
+  b: element => { frames.value.b = element as HTMLIFrameElement | null },
+}
+
+// A src attribute change would push onto the joint session history and steal Back from the gallery.
 watch(
-  () => keys.map(key => frameSrc(key)),
-  (urls) => {
-    keys.forEach((key, index) => {
+  frameUrls,
+  urls => {
+    keys.forEach(key => {
       const frame = frames.value[key]
-      const url = urls[index]!
-      if (!frame) return
-      // Mirrored for tooling: the src attribute itself stays on the address the frame loaded with.
-      frame.setAttribute('data-qds-frame-url', url)
-      if (frame.contentWindow && frame.contentWindow.location.href !== url) {
-        frame.contentWindow.location.replace(url)
-      }
+      if (!frame?.contentWindow) return
+      const href = new URL(urls[key], window.location.href).href
+      if (frame.contentWindow.location.href !== href) frame.contentWindow.location.replace(urls[key])
     })
   },
   { flush: 'post' },
 )
 
-// Written only after an explicit pick: loading a link must never rewrite the address bar.
+// Only explicit picks write the address; loading a link must never rewrite it.
 function writeUrl() {
   if (typeof window === 'undefined') return
   const next = compareHash(window.location.hash, {
@@ -148,8 +145,8 @@ function writeUrl() {
 <template>
   <div class="compare-ab" data-test="qds-compare-ab">
     <p class="compare-ab__intro">
-      The same gallery page rendered twice, once per variant. Pick any two of the seven variants, give each side its
-      own scheme, and the address bar keeps the exact pair shareable.
+      The same gallery page rendered twice, once per variant. Pick any two of the {{ variants.length }} variants, give
+      each side its own scheme, and the address bar keeps the exact pair shareable.
     </p>
 
     <div class="compare-ab__bar">
@@ -164,7 +161,7 @@ function writeUrl() {
         outlined
         behavior="menu"
         label="Page"
-        aria-label="Compared page"
+        aria-label="Page (applies to both sides)"
         class="compare-ab__field"
         data-test="qds-compare-page"
       >
@@ -186,7 +183,14 @@ function writeUrl() {
     </div>
 
     <div class="compare-ab__grid">
-      <section v-for="key in keys" :key="key" class="compare-ab__side" :data-compare-side="key">
+      <section
+        v-for="key in keys"
+        :key="key"
+        role="group"
+        :aria-label="`Side ${key.toUpperCase()}`"
+        class="compare-ab__side"
+        :data-compare-side="key"
+      >
         <header class="compare-ab__head">
           <span class="compare-ab__tag">{{ key.toUpperCase() }}</span>
 
@@ -200,7 +204,7 @@ function writeUrl() {
             dense
             outlined
             behavior="menu"
-            aria-label="Variant"
+            :aria-label="`Side ${key.toUpperCase()} variant`"
             class="compare-ab__field compare-ab__variant"
             :data-test="`qds-compare-variant-${key}`"
             @update:model-value="pick(key, 'variant', $event)"
@@ -221,7 +225,8 @@ function writeUrl() {
             unelevated
             no-caps
             toggle-size="sm"
-            aria-label="Scheme"
+            role="group"
+            :aria-label="`Side ${key.toUpperCase()} scheme`"
             class="compare-ab__scheme"
             :data-test="`qds-compare-scheme-${key}`"
             @update:model-value="pick(key, 'mode', $event)"
@@ -239,7 +244,7 @@ function writeUrl() {
             outlined
             behavior="menu"
             label="Ink colour"
-            aria-label="Ink colour"
+            :aria-label="`Side ${key.toUpperCase()} ink colour`"
             class="compare-ab__field"
             :data-test="`qds-compare-ink-${key}`"
             @update:model-value="pick(key, 'ink', $event)"
@@ -265,7 +270,7 @@ function writeUrl() {
             outlined
             behavior="menu"
             label="Base palette"
-            aria-label="Base palette"
+            :aria-label="`Side ${key.toUpperCase()} base palette`"
             class="compare-ab__field"
             :data-test="`qds-compare-palette-${key}`"
             @update:model-value="pick(key, 'palette', $event)"
@@ -282,11 +287,11 @@ function writeUrl() {
 
         <iframe
           class="compare-ab__frame"
-          :ref="element => setFrame(key, element as Element | null)"
+          :ref="frameRef[key]"
           :src="initialSrc[key]"
           :title="`Side ${key.toUpperCase()}: ${caption(key)}`"
           :data-test="`qds-compare-frame-${key}`"
-          :data-qds-frame-url="initialSrc[key]"
+          :data-qds-frame-url="frameUrls[key]"
         />
       </section>
     </div>

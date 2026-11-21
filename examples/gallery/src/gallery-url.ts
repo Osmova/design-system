@@ -26,7 +26,7 @@ export interface GalleryConfig {
   params: URLSearchParams
 }
 
-// Enumerable metadata contains only canonical variants, not legacy aliases.
+// Metadata lists canonical variants only, not legacy aliases.
 function canonicalVariant(value: string | null): DesignSystemVariantName | undefined {
   return CANONICAL_VARIANTS.find(item => item.name === (value === 'fluent' ? 'win' : value))?.name
 }
@@ -67,7 +67,7 @@ export function parseGalleryHash(hash: string): GalleryConfig {
 
 export function galleryHash(tab: GalleryTab, variant: DesignSystemVariantName, hash: string): string {
   const { params } = parseGalleryHash(hash)
-  // Win keeps the legacy page-only shape. Unknown parameters remain author-owned.
+  // Win keeps the legacy page-only shape; unknown params stay author-owned.
   params.delete('variant')
   if (variant !== 'win') params.set('variant', variant)
   const query = params.toString()
@@ -81,7 +81,7 @@ export interface CompareSide {
   palette: ShadcnBaseColor | null
 }
 
-// A field is null when the author has not picked it: the side then follows the host theme.
+// Null means unpicked: the side then follows the host theme.
 export interface CompareSelection {
   page: GalleryTab | null
   reference: boolean
@@ -118,14 +118,14 @@ export function parseCompareSelection(hash: string): CompareSelection {
   })
   const frame = page(params.get('page'))
   return {
-    // `compare` frames the gallery, so it is never offered as a frame page.
+    // Compare frames the gallery, so it is never offered as a frame page.
     page: frame && frame !== 'compare' ? frame : null,
     reference: params.get('ref') === 'fluent',
     sides: { a: side('a'), b: side('b') },
   }
 }
 
-// Compare owns its own keys and leaves every other author parameter untouched.
+// Compare owns its keys and leaves other author parameters untouched.
 export function compareHash(hash: string, selection: ResolvedCompareSelection): string {
   const { params } = parseGalleryHash(hash)
   for (const key of COMPARE_KEYS) params.delete(key)

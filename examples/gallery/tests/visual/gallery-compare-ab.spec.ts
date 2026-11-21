@@ -1,8 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { CANONICAL_VARIANTS } from './helpers'
-
-// Every gallery page except compare is offered to the frames.
-const CANONICAL_PAGE_OPTIONS = 12
+import { CANONICAL_VARIANTS, GALLERY_PAGES } from './helpers'
 
 // Each side is the gallery itself, embedded and themed from its own frame hash.
 const frame = (page: Page, key: 'a' | 'b') => page.frameLocator(`[data-test="qds-compare-frame-${key}"]`)
@@ -90,7 +87,21 @@ test.describe('compare A/B', () => {
     await expect(page.locator('[data-test="qds-compare-page"]')).toHaveValue('Forms')
     // Compare itself is never offered as a frame page: it would embed the compare page in itself.
     await page.locator('[data-test="qds-compare-page"]').click()
-    await expect(page.locator('[data-test^="qds-compare-page-option-"]')).toHaveCount(CANONICAL_PAGE_OPTIONS)
+    await expect(page.locator('[data-test^="qds-compare-page-option-"]')).toHaveCount(GALLERY_PAGES.length - 1)
+    await expect(page.locator('[data-test="qds-compare-page-option-compare"]')).toHaveCount(0)
+  })
+
+  test('per-side controls carry unique accessible names', async ({ page }) => {
+    await page.goto('/#compare?a=ink&b=shadcn')
+    for (const key of ['a', 'b'] as const) {
+      const side = key.toUpperCase()
+      await expect(page.getByRole('group', { name: `Side ${side}`, exact: true })).toHaveCount(1)
+      await expect(page.getByLabel(`Side ${side} variant`)).toBeVisible()
+      await expect(page.getByLabel(`Side ${side} scheme`)).toBeVisible()
+      await expect(page.getByLabel(`Side ${side} ${key === 'a' ? 'ink colour' : 'base palette'}`)).toBeVisible()
+    }
+    // The page select's accessible name starts with its visible label (WCAG 2.5.3).
+    await expect(page.getByLabel(/^Page \(/)).toBeVisible()
   })
 
   test('a shared address configures every side before any interaction', async ({ page }) => {

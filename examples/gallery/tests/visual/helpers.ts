@@ -6,6 +6,8 @@ export type LegacyVariant = Exclude<Variant, 'shadcn'>
 export type BaseColor = 'neutral' | 'gray' | 'zinc' | 'stone' | 'slate'
 
 export const CANONICAL_VARIANTS: Variant[] = ['win', 'ink', 'one', 'term', 'shadcn', 'zen', 'glass']
+// Every page offered by the gallery nav, matching the App.vue tab set.
+export const GALLERY_PAGES = ['tokens', 'typography', 'compare', 'components', 'forms', 'apps', 'catalog', 'variants', 'scenes', 'plugins', 'window', 'icons', 'fonts'] as const
 // Existing grammar tests deliberately keep their four-variant expectations.
 export const LEGACY_VARIANTS: LegacyVariant[] = ['win', 'ink', 'one', 'term']
 export const MATRIX_VARIANTS: Exclude<LegacyVariant, 'term'>[] = ['win', 'ink', 'one']
