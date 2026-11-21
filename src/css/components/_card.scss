@@ -7,6 +7,7 @@ $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
+$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
 $framed: '.q-card--bordered, .qds-card--readable, .qds-card--contrast, .qds-card--opaque, .qds-card--solid';
 $local-dark: ':is(.q-card--dark, .q-table--dark, .q-tree--dark, .q-stepper--dark, .q-list--dark, .q-menu--dark, .q-uploader--dark, .q-date--dark, .q-time--dark)';
 $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
@@ -91,6 +92,8 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
     border-radius: var(--qds-card-radius);
     box-shadow: var(--qds-card-shadow);
   }
+
+  #{$win} :is(.q-card, .qds-card, .qds-tile):focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); }
 
   .qds-ui .q-card--bordered,
   .qds-ui :is(.q-card, .qds-card):is(.qds-card--readable, .qds-card--contrast, .qds-card--opaque, .qds-card--solid) { border: var(--qds-border-width-control) solid var(--qds-stroke-default); }

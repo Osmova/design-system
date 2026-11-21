@@ -768,11 +768,17 @@ test.describe('apps', () => {
     for (const width of [initial.width, 768, 393]) {
       await page.setViewportSize({ width, height: initial.height })
       await settle(page)
-      const overflow = await grid.evaluate((element) => ({
+      const readOverflow = () => grid.evaluate((element) => ({
         grid: element.scrollWidth - element.clientWidth,
         page: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         tiles: [...element.children].map((tile) => tile.scrollWidth - tile.clientWidth),
       }))
+      // Quasar debounces layout resizing before its CSS transition starts.
+      await expect.poll(async () => {
+        const overflow = await readOverflow()
+        return Math.max(overflow.grid, overflow.page, ...overflow.tiles)
+      }, { message: `${width}px responsive layout finishes without overflow` }).toBeLessThanOrEqual(0)
+      const overflow = await readOverflow()
       expect.soft(overflow.grid, `${width}px grid does not scroll horizontally`).toBeLessThanOrEqual(0)
       expect.soft(overflow.page, `${width}px page does not scroll horizontally`).toBeLessThanOrEqual(0)
       for (const [index, tile] of overflow.tiles.entries()) expect.soft(tile, `${width}px tile ${index} does not overflow`).toBeLessThanOrEqual(0)
