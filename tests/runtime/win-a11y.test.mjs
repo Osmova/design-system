@@ -40,9 +40,10 @@ async function fixture(browser, layered, mode, width = 1280) {
   await page.evaluate(() => {
     fixture.dispose()
     document.querySelector('#app').remove()
-    const { createApp, h, reactive } = Vue
-    const { QLinearProgress, QSelect, QInput, QCheckbox, QCard, QItem, QList, QBtn } = Quasar
+    const { createApp, h, reactive, ref } = Vue
+    const { QLinearProgress, QSelect, QInput, QCheckbox, QCard, QItem, QList, QBtn, QDialog, QCardSection, QCardActions } = Quasar
     const state = reactive({ selected: null, value: 'Clear this value', checked: true, mixed: null, unchecked: false })
+    const dialogOpen = ref(false)
     const root = document.createElement('main')
     root.id = 'accessibility'
     root.style.cssText = 'display:grid;gap:24px;max-width:600px;margin:24px auto;padding:12px'
@@ -66,6 +67,13 @@ async function fixture(browser, layered, mode, width = 1280) {
         h('div', { id: 'nested-tile', class: 'qds-tile', role: 'button', tabindex: 0, style: 'padding:12px' }, 'Nested interactive tile'),
         h(QCard, { id: 'static-card' }, () => 'Non-interactive well'),
       ]),
+      h(QBtn, { id: 'open-dark-dialog', label: 'Open local dark dialog', onClick: () => { dialogOpen.value = true } }),
+      h(QDialog, { modelValue: dialogOpen.value, 'onUpdate:modelValue': v => { dialogOpen.value = v } }, () =>
+        h(QCard, { id: 'dark-dialog', dark: true }, () => [
+          h(QCardSection, {}, () => 'Local dark dialog'),
+          h(QCardActions, { align: 'right' }, () =>
+            h(QBtn, { id: 'dark-dialog-action', label: 'Close', flat: true, onClick: () => { dialogOpen.value = false } })),
+        ])),
     ] }).use(Quasar).mount(root)
     window.a11yState = state
   })
@@ -92,6 +100,17 @@ async function options(page) {
   const active = await page.locator('#options').getAttribute('aria-activedescendant')
   assert.ok(active, 'native aria-activedescendant')
   return `[id="${active}"]`
+}
+
+async function openDarkDialog(page) {
+  await page.locator('#open-dark-dialog').focus()
+  await page.keyboard.press('Enter')
+  const dialog = page.locator('#dark-dialog')
+  await dialog.waitFor()
+  await settle(page)
+  await page.keyboard.press('Tab')
+  assert.equal(await page.locator('#dark-dialog-action').evaluate(el => el === document.activeElement && el.matches(':focus-visible')), true)
+  return dialog
 }
 
 async function cases(check) {
@@ -132,6 +151,48 @@ if (process.env.QDS_WIN_CAPTURES) {
     } finally { await browser.close() }
   })
 } else {
+  test('Win local-dark dialog action has contrasting keyboard focus against both surfaces', async t => {
+    const browser = await chromium.launch({ headless: true })
+    try {
+      for (const layered of [false, true]) {
+        for (const media of ['normal', 'contrast']) {
+          await t.test(`${layered ? 'layered' : 'default'}/${media}`, async subtest => {
+            const page = await fixture(browser, layered, 'light')
+            try {
+              await page.emulateMedia(mediaCases[media])
+              const dialog = await openDarkDialog(page)
+              const footerY = await dialog.locator('.q-card__actions').evaluate(el => el.offsetTop + el.offsetHeight / 2)
+              const screenshot = await dialog.screenshot({ animations: 'disabled' })
+              const fills = await page.evaluate(async ({ png, footerY }) => {
+                const image = new Image()
+                image.src = `data:image/png;base64,${png}`
+                await image.decode()
+                const canvas = document.createElement('canvas')
+                canvas.width = image.width
+                canvas.height = image.height
+                const context = canvas.getContext('2d')
+                context.drawImage(image, 0, 0)
+                return [12, Math.floor(footerY)].map(y => Array.from(context.getImageData(12, y, 1, 1).data).slice(0, 3))
+              }, { png: screenshot.toString('base64'), footerY })
+              const outline = await style(page, '#dark-dialog-action', ['outlineColor', 'outlineStyle', 'outlineWidth'])
+              assert.equal(outline.outlineStyle, 'solid')
+              assert.equal(outline.outlineWidth, '2px')
+              const [body, footer] = fills.map(rgb => new Color('srgb', rgb.map(channel => channel / 255)))
+              const ratios = [body, footer].map(fill => contrast(over(outline.outlineColor, fill), fill))
+              const result = `dialog / footer focus contrast: ${ratios.map(ratio => ratio.toFixed(2)).join(' / ')}`
+              assert.ok(ratios.every(ratio => ratio >= 3), result)
+              subtest.diagnostic(result)
+              if (media === 'contrast') {
+                const { borderTopColor } = await style(page, '#dark-dialog', ['borderTopColor'])
+                assert.ok(contrast(over(borderTopColor, body), body) >= 3, `dialog stroke ${borderTopColor} / ${body}`)
+              }
+            } finally { await page.close() }
+          })
+        }
+      }
+    } finally { await browser.close() }
+  })
+
   test('Win progress preserves model/track contrast with increased contrast and forced colours in both deliveries', () => cases(async page => {
     for (const settings of Object.values(mediaCases)) {
       await page.emulateMedia(settings); await settle(page)
