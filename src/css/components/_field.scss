@@ -275,7 +275,7 @@ $one-field: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one) :is(.q-field
   .qds-ui .q-field--error.q-field--highlighted .q-field__control::before { border-color: var(--qds-stroke-error); }
   .qds-ui .q-field--error .q-field__control::after { border-bottom-color: var(--qds-stroke-error); transform: scaleX(1); }
   @media (prefers-contrast: more), (forced-colors: active) {
-    .qds-variant-win:is(.qds-ui,.qds-ui *) .q-field .q-field__control::before { border-width: var(--qds-border-width-control); }
+    .qds-variant-win:is(.qds-ui,.qds-ui *) .q-field .q-field__control::before { border-width: var(--qds-border-width-control); border-color: var(--qds-stroke-strong); }
   }
 
   .qds-ui .qds-field--positive { --qds-field-tone: var(--qds-color-positive); --qds-field-tone-fg: var(--qds-fg-positive); }
