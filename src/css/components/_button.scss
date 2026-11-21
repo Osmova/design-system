@@ -204,8 +204,7 @@ $role-texts: ();
   }
 
   @each $role, $_ in $roles {
-    #{$win} .q-btn.bg-#{$role}:not(.qds-tonal) { --_qds-win-pressed: #{role-value($role, pressed)}; }
-    #{$win} .q-btn.bg-#{$role}.qds-tonal { --_qds-win-pressed: color-mix(in srgb, #{role-soft($role)}, var(--qds-color-#{$role}) 18%); }
+    #{$win} .q-btn.bg-#{$role} { --_qds-win-role: var(--qds-color-#{$role}); --_qds-win-soft: #{role-soft($role)}; }
     .qds-ui .q-btn.text-#{$role} {
       @include importance.declarations { color: role-value($role, fg) !important; }
     }
@@ -308,10 +307,12 @@ $role-texts: ();
   }
 
   .qds-ui:where(.qds-variant-win, .qds-variant-win *) .q-btn { font-weight: var(--qds-font-weight-regular); }
+  #{$win} .q-btn { --_qds-win-pressed: color-mix(in srgb, var(--_qds-win-role) var(--qds-fill-pressed-mix), var(--qds-fill-state-base)); }
+  #{$win} .q-btn.qds-tonal { --_qds-win-pressed: color-mix(in srgb, var(--_qds-win-soft), var(--_qds-win-role) 18%); }
+  #{$win} .q-btn.bg-primary:not(.qds-tonal) { --_qds-win-pressed: var(--qds-color-primary-pressed); }
   #{$win} .q-btn--outline:where(:not([class*='text-'], .disabled)) { border-color: var(--qds-control-stroke-default); }
-  #{$win} .q-btn#{$filled}#{$win-standalone}:not(.disabled):is(:active, .q-btn--active) { border-bottom-color: var(--qds-control-stroke-default); }
+  #{$win} .q-btn#{$filled}#{$win-standalone}:not(.disabled):is(:active, .q-btn--active) { border-bottom-color: var(--qds-control-stroke-default); --qds-button-fill: var(--_qds-win-pressed, var(--qds-control-fill-pressed)); color: var(--qds-fg-muted); }
   #{$win} .q-btn#{$win-standalone}:not(.disabled).q-btn--active { --qds-button-state: var(--qds-state-pressed); }
-  #{$win} .q-btn#{$filled}#{$win-standalone}:not(.disabled).q-btn--active { --qds-button-fill: var(--_qds-win-pressed, var(--qds-control-fill-pressed)); color: var(--qds-fg-muted); }
   #{$win} .q-btn#{$filled}:is(#{$accent-fills}):not(.qds-tonal) {
     --qds-button-disabled-fill: var(--_qds-win-accent-fill-disabled);
     --qds-button-disabled-fg: var(--_qds-win-text-on-accent-disabled);

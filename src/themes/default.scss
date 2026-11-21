@@ -623,7 +623,7 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
     }
   }
   @media (forced-colors: active) {
-    .qds-variant-win, #{$dark} { --qds-stroke-strong: CanvasText; --qds-stroke-focus: Highlight; }
+    .qds-variant-win, #{$dark} { --qds-stroke-strong: CanvasText; --qds-stroke-focus: Highlight; --_qds-win-focus-system: Highlight; }
   }
   }
 }
