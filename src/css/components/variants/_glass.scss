@@ -35,7 +35,7 @@ $segment-selected: ".q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn
   #{$glass} .q-btn-toggle { padding: 0.1875rem; gap: 0.125rem; border-radius: var(--qds-radius-full); background: var(--qds-segmented-track-bg); box-shadow: inset 0 0 0 1px var(--qds-material-stroke); }
   #{$glass} .q-btn-toggle > .q-btn-item { border-radius: var(--qds-radius-full); box-shadow: none; background: transparent; font-weight: var(--qds-font-weight-medium); }
   #{$glass} #{$segment-selected} { --qds-fg-strong: var(--_qds-glass-selection-label); background: var(--qds-segmented-thumb-bg); box-shadow: var(--qds-shadow-sm); color: var(--qds-fg-strong); font-weight: var(--qds-font-weight-semibold); }
-  #{$glass} #{$segment-selected} .q-btn__content:has(> :is(.q-icon, svg))::after {
+  #{$glass} #{$segment-selected} .q-btn__content:has(> :is(.q-icon, svg)):not(:has(> .block))::after {
     content: ''; position: absolute; inset: auto auto 2px 50%; translate: -50% 0; inline-size: 0.5rem; border-block-end: 2px solid currentColor; pointer-events: none;
   }
   @media (prefers-contrast: more), (forced-colors: active) {
@@ -59,6 +59,7 @@ $boxed: ':where(:not(.q-field--borderless, .qds-field--ghost))';
   #{$glass} .q-field--outlined { --_qds-glass-well: transparent; --_qds-glass-field-edge: var(--qds-control-stroke-default); }
   #{$glass} .q-field--standout { --_qds-glass-well: var(--_qds-glass-standout-fill); }
   #{$glass} .q-field.q-field--readonly { --_qds-glass-well: var(--qds-bg-surface-2); --_qds-glass-field-edge: var(--qds-control-stroke-default); }
+  #{$glass} .q-field.q-field--readonly:is(.q-field--filled, .q-field--standout) { --_qds-glass-field-edge: var(--_qds-glass-field-label); }
   #{$glass} :is(.qds-pin .q-field, .q-field:has(input[autocomplete~='one-time-code' i])) .q-field__control { border: 1px solid var(--_qds-glass-forced-edge, var(--_qds-glass-field-label)); }
   #{$glass} .q-field#{$boxed}.q-field--auto-height .q-field__native { min-height: calc(var(--qds-field-height) - 2px); }
   #{$glass} .q-field#{$boxed} .q-field__control .q-field__marginal { height: calc(var(--qds-field-height) - 2px); }
@@ -94,7 +95,7 @@ $boxed: ':where(:not(.q-field--borderless, .qds-field--ghost))';
     text-transform: none;
   }
   #{$glass} .q-tabs--vertical .q-tab { border-radius: var(--qds-radius-control); }
-  #{$glass} .q-tabs .q-tab.q-tab--active { background: var(--_qds-glass-selection-fill); color: var(--_qds-glass-selection-label); font-weight: var(--qds-font-weight-semibold); }
+  #{$glass} .q-tabs .q-tab.q-tab--active { background: var(--_qds-glass-selection-fill); color: var(--_qds-glass-selection-label); }
   #{$glass} .q-tabs--horizontal:not(.q-color-picker *, .q-header *, .q-footer *, .qds-glass-bar, .qds-glass-bar *) .q-tab.q-tab--active { background: var(--qds-segmented-thumb-bg); box-shadow: var(--qds-shadow-sm); }
   #{$glass} .q-tab--active .q-tab__label { font-weight: var(--qds-font-weight-semibold); }
   #{$glass} .q-tab__indicator { display: none; }
