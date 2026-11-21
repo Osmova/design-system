@@ -175,7 +175,7 @@ function notify(type: 'positive' | 'negative' | 'warning' | 'info') {
         <q-chip label="Neutral" />
         <q-chip color="primary" label="Primary" />
         <q-chip color="positive"><PhCheck :size="16" weight="regular" /> Done</q-chip>
-        <q-chip color="warning" label="Removable" removable />
+        <q-chip color="warning" label="Removable" removable remove-aria-label="Remove Removable chip" />
         <q-chip outline color="accent" label="Outline" />
         <q-chip clickable color="info" label="Clickable" />
         <q-chip dense color="info"><PhInfo :size="14" weight="regular" /> Dense</q-chip>
@@ -701,10 +701,10 @@ function notify(type: 'positive' | 'negative' | 'warning' | 'info') {
         </div>
         <div class="col-12 col-md-7">
           <div class="text-subtitle2 qds-text-muted q-mb-sm">Slider</div>
-          <q-slider v-model="slider" name="components-slider" :min="0" :max="100" label color="primary" />
+          <q-slider v-model="slider" name="components-slider" :min="0" :max="100" label color="primary" aria-label="Density slider" />
           <div class="qds-text-muted">Current value: {{ slider }}</div>
           <div class="text-subtitle2 qds-text-muted q-mt-md q-mb-sm">Range</div>
-          <q-range v-model="range" name="components-range" :min="0" :max="100" label color="primary" />
+          <q-range v-model="range" name="components-range" :min="0" :max="100" label color="primary" aria-label="Density range" />
         </div>
       </div>
     </q-card>

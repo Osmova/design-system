@@ -136,6 +136,9 @@ $shadcn-roles: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-ne
   .qds-ui :is(.q-time__clock-position--disable, .q-date.disabled .q-date__calendar-item) { opacity: var(--qds-disabled-opacity); cursor: not-allowed; }
   .qds-ui .q-time__now-button { box-shadow: none; }
 
+  .qds-ui .q-color-picker__header input { font: inherit; color: var(--qds-fg-default); background: var(--qds-bg-flyout); border: var(--qds-border-width-control) solid var(--qds-control-stroke-strong); border-radius: var(--qds-radius-sm); }
+  .qds-ui .q-color-picker__header input:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); }
+
   .qds-ui :is(.q-color-picker__header-tabs, .q-color-picker__footer) {
     height: auto;
     padding: var(--qds-space-sm);
@@ -181,8 +184,10 @@ $shadcn-roles: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-ne
 
   .qds-ui :is(.q-color-picker__sliders, .q-color-picker__tune-tab, .q-color-picker__palette-rows) { padding: var(--qds-space-sm) var(--qds-space-md); }
 
-  // Hides Quasar's pinned raster checker and draws a token checker under the alpha ramp.
-  .qds-ui .q-color-picker__alpha .q-slider__track { @include importance.declarations { background-color: transparent !important; background-size: 0 0 !important; } }
+  // Only the inline raster needs the important; the opaque ::before carries the token checker.
+  .qds-ui .q-color-picker__alpha .q-slider__track {
+    @include importance.declarations { background-size: 0 0 !important; }
+  }
 
   .qds-ui .q-color-picker__alpha .q-slider__track::before {
     background:
@@ -264,8 +269,6 @@ $shadcn-roles: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-ne
     .q-time__now-button { color: var(--qds-text-on-primary); background: var(--qds-color-primary); }
     .q-color-picker .q-tab--active { box-shadow: var(--qds-shadow-sm); }
     .q-color-picker__header-content { background: var(--qds-bg-flyout); color: var(--qds-fg-default); }
-    .q-color-picker__header input { font: inherit; color: var(--qds-fg-default); background: var(--qds-control-fill-default); border: var(--qds-border-width-control) solid var(--qds-control-stroke-strong); border-radius: var(--qds-radius-sm); }
-    .q-color-picker__header input:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); }
     .q-color-picker__tune-tab input { border-color: var(--qds-control-stroke-strong); }
     .q-color-picker__error-icon { color: var(--qds-fg-negative); }
     .q-color-picker__sliders .q-slider__thumb { color: var(--qds-control-stroke-strong); }

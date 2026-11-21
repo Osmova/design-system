@@ -44,8 +44,8 @@ onBeforeUnmount(() => { completeRefresh(); finishInfinite?.(true); infinite.valu
       <q-file v-model="files" multiple use-chips clearable counter outlined label="Selected files" />
     </div>
     <div data-native="slider-states" style="display: flex; gap: 24px; flex-wrap: wrap">
-      <q-slider v-model="slider" readonly label label-always style="width: 200px" /><q-slider v-model="slider" disable style="width: 200px" />
-      <q-slider v-model="slider" vertical label label-always markers style="height: 180px" /><q-range v-model="range" vertical label label-always style="height: 180px" />
+      <q-slider v-model="slider" readonly label label-always style="width: 200px" aria-label="Readonly slider" /><q-slider v-model="slider" disable style="width: 200px" aria-label="Disabled slider" />
+      <q-slider v-model="slider" vertical label label-always markers style="height: 180px" aria-label="Vertical slider" /><q-range v-model="range" vertical label label-always style="height: 180px" aria-label="Vertical range" />
     </div>
     <q-list bordered data-native="list-states"><q-item clickable active><q-item-section avatar><q-avatar>AM</q-avatar></q-item-section><q-item-section><q-item-label>Active</q-item-label><q-item-label caption>Caption</q-item-label></q-item-section><q-item-section side><q-icon :name="ppPlus" /></q-item-section></q-item><q-item dense disable><q-item-section>Disabled dense</q-item-section></q-item><q-expansion-item v-model="expanded" label="Expandable"><q-item><q-item-section>Expanded content</q-item-section></q-item></q-expansion-item></q-list>
     <q-btn no-caps label="Table grid" @click="tableGrid = !tableGrid" /><q-btn no-caps label="Table fullscreen" @click="tableFullscreen = !tableFullscreen" />
@@ -60,7 +60,7 @@ onBeforeUnmount(() => { completeRefresh(); finishInfinite?.(true); infinite.valu
       <q-footer><q-toolbar><q-toolbar-title>Native footer</q-toolbar-title></q-toolbar></q-footer>
     </q-layout>
     <q-splitter v-model="split" style="height: 160px" data-native="state-splitter"><template #before>Before</template><template #after>After</template></q-splitter>
-    <q-knob v-model="knob" show-value size="64px" data-native="state-knob" />
+    <q-knob v-model="knob" show-value size="64px" data-native="state-knob" aria-label="Native knob" />
     <div id="native-refresh-scroll" data-native="refresh-scroll" style="height: 180px; overflow-y: auto">
       <q-pull-to-refresh scroll-target="#native-refresh-scroll" @refresh="beginRefresh" data-native="state-pull"><q-list style="min-height: 360px"><q-item><q-item-section>Pull content</q-item-section></q-item></q-list></q-pull-to-refresh>
     </div>

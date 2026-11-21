@@ -86,8 +86,13 @@ export function revertDeclaredFluentChanges(css) {
 }
 
 // Rule-level declared fixes, applied to the flattened rule list as compiled.
+const SHADCN_DISABLED = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) .q-item.disabled{color:var(--qds-fg-disabled)}'
 const PAGINATION_BASE_BEFORE_BODY = '.qds-ui .q-pagination .q-btn{flex:0 1 var(--qds-button-min-height);height:var(--qds-button-min-height);color:var(--qds-pagination-text, var(--qds-fg-default)) !important;background-color:var(--qds-pagination-bg, transparent) !important;border-color:rgba(0,0,0,0);font-weight:var(--qds-font-weight-regular)}'
 const PAGINATION_ACTIVE_PLAIN_OLD = '.qds-ui .q-pagination .q-btn[aria-current=page]{color:var(--qds-pagination-active-text) !important;background-color:var(--qds-pagination-active-bg) !important;border-color:var(--qds-pagination-active-border);font-weight:var(--qds-font-weight-semibold)}'
+const DISABLED_BEFORE = '.qds-ui .q-expansion-item>.q-expansion-item__container>.q-item.disabled{color:var(--qds-fg-disabled);cursor:not-allowed}'
+const ALPHA_BEFORE = '.qds-ui .q-color-picker__alpha .q-slider__track{background-color:rgba(0,0,0,0) !important;background-size:0 0 !important}'
+const SHADCN_HEADER_INPUT = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) .q-color-picker__header input{font:inherit;color:var(--qds-fg-default);background:var(--qds-control-fill-default);border:var(--qds-border-width-control) solid var(--qds-control-stroke-strong);border-radius:var(--qds-radius-sm)}'
+const SHADCN_HEADER_INPUT_FOCUS = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) .q-color-picker__header input:focus-visible{outline:var(--qds-focus-ring-width) solid var(--qds-stroke-focus)}'
 
 export function applyDeclaredFixes(rules) {
   const out = []
@@ -108,6 +113,11 @@ export function applyDeclaredFixes(rules) {
     }
     if (rule.includes('color-scheme:dark;--qds-color-primary: #1976ca') && rule.includes('--qds-toggle-thumb-inset: 0.1875rem')) {
       out.push(rule.replace('--qds-toggle-thumb-inset: 0.1875rem;', `--qds-toggle-thumb-inset: 0.1875rem;${PRIMARY_ALIASES};`))
+      continue
+    }
+    if (rule.endsWith(DISABLED_BEFORE)) {
+      out.push(`${head}.qds-ui .q-item.disabled{color:var(--qds-text-strong);cursor:not-allowed}`)
+      out.push(`${head}@supports(color: light-dark(#000, #fff))|.qds-ui .q-item.disabled{color:light-dark(color-mix(in srgb, var(--qds-text-strong) 15%, #000), color-mix(in srgb, var(--qds-text-strong) 15%, #fff))}`)
       continue
     }
     if (layered && rule.endsWith('.qds-ui .q-pagination .q-btn{flex:0 1 var(--qds-button-min-height);height:var(--qds-button-min-height);border-color:rgba(0,0,0,0);font-weight:var(--qds-font-weight-regular)}')) {
@@ -132,6 +142,18 @@ export function applyDeclaredFixes(rules) {
       out.push(`${head}.qds-ui .q-pagination .q-btn[aria-current=page]{border-color:var(--qds-pagination-active-border);font-weight:var(--qds-font-weight-semibold)}`)
       out.push(`${head}.qds-ui .q-pagination .q-btn[aria-current=page]:not(.q-btn--outline,.q-btn--push,.q-btn--unelevated){color:var(--qds-pagination-active-text) !important;background-color:var(--qds-pagination-active-bg) !important}`)
       out.push(`${head}.qds-ui .q-pagination .q-field{flex:none}`)
+      continue
+    }
+    if (rule.endsWith(ALPHA_BEFORE)) {
+      out.push(`${important}.qds-ui .q-color-picker__alpha .q-slider__track{background-size:0 0 !important}`)
+      continue
+    }
+    if (rule.endsWith(SHADCN_DISABLED)) continue
+    if (rule.endsWith(SHADCN_HEADER_INPUT) || rule.endsWith(SHADCN_HEADER_INPUT_FOCUS)) continue
+    if (rule.endsWith('.qds-ui .q-time__now-button{box-shadow:none}')) {
+      out.push(rule)
+      out.push(`${head}.qds-ui .q-color-picker__header input{font:inherit;color:var(--qds-fg-default);background:var(--qds-bg-flyout);border:var(--qds-border-width-control) solid var(--qds-control-stroke-strong);border-radius:var(--qds-radius-sm)}`)
+      out.push(`${head}.qds-ui .q-color-picker__header input:focus-visible{outline:var(--qds-focus-ring-width) solid var(--qds-stroke-focus)}`)
       continue
     }
     out.push(rule)
