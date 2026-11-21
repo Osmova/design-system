@@ -138,7 +138,7 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
       <q-btn color="primary" loading no-caps label="Material loading button" data-test="t180-spinner-button" />
       <div data-test="t180-spinner-field"><q-input outlined loading model-value="Busy field" label="Material loading field" /></div>
       <div style="position: relative; min-height: 80px" data-test="t180-spinner-inner"><q-inner-loading showing color="primary" label="Material inline loading" /></div>
-      <q-editor v-model="editor" :toolbar="[['bold', 'italic', 'link'], [{ label: 'Format', fixedLabel: true, list: 'no-icons', options: ['p', 'h5', 'code'] }], ['fullscreen']]" data-native="editor" />
+      <q-editor v-model="editor" :toolbar="[['bold', 'italic', 'link'], [{ label: 'Format', fixedLabel: true, list: 'no-icons', options: ['p', 'h5', 'code'] }], ['fullscreen']]" data-native="editor" aria-label="Native editor with format list" />
       <q-uploader ref="uploader" multiple :auto-upload="false" label="Native uploader" data-native="uploader" style="max-width: 100%" />
       <q-linear-progress :value="0.5" :buffer="0.8" /><q-linear-progress indeterminate /><q-circular-progress :value="60" show-value />
       <div style="position: relative; min-height: 100px"><q-inner-loading showing label="Syncing" /></div>

@@ -49,9 +49,13 @@ function setStatus(message: string) {
   status.value = message
 }
 
+// Quasar's plugin option objects forward unknown keys as attrs onto the dialog element; typed once here.
+const ariaAttrs = (label: string): { 'aria-label': string } => ({ 'aria-label': label })
+
 function openListBottomSheet() {
   $q.bottomSheet({
     title: 'Surface actions',
+    ...ariaAttrs('Surface actions sheet'),
     message: 'List mode keeps the action rail compact and tokenized.',
     actions: listActions,
   }).onOk((action: { label?: string }) => {
@@ -64,6 +68,7 @@ function openListBottomSheet() {
 function openGridBottomSheet() {
   $q.bottomSheet({
     title: 'Variant shortcuts',
+    ...ariaAttrs('Variant shortcuts sheet'),
     message: 'Grid mode proves the larger BottomSheet layout is skinned too.',
     grid: true,
     actions: gridActions,
@@ -77,6 +82,7 @@ function openGridBottomSheet() {
 function openDialog() {
   $q.dialog({
     title: 'Plugin dialog',
+    ...ariaAttrs('Plugin dialog'),
     message: 'The Dialog plugin uses the same QDS card, scrim, and action styling as component dialogs.',
     cancel: { label: 'Cancel', noCaps: true, flat: true, color: 'primary' },
     ok: { label: 'Confirm', noCaps: true, unelevated: true, color: 'primary' },
