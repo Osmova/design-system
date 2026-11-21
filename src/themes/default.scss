@@ -473,7 +473,7 @@
   --qds-color-primary: #{qds-variant-token(glass, '#{$scheme}-hc-primary')};
   --qds-color-primary-rgb: #{qds-variant-token(glass, '#{$scheme}-hc-primary-rgb')};
   --qds-stroke-strong: var(--qds-text-muted);
-  @if $scheme == dark { --_qds-glass-knob-edge: var(--qds-surface-0); }
+  @if $scheme == dark { --_qds-glass-knob-contrast: var(--qds-surface-0); }
 }
 
 $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-glass, body.qds-ui.body--dark.qds-variant-glass, body.qds-ui.body--dark .qds-variant-glass';

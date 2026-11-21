@@ -1,4 +1,4 @@
-import { expect, test, type Locator } from '@playwright/test'
+import { expect, test, type Locator, type Page } from '@playwright/test'
 import { CANONICAL_VARIANTS, applyTheme, computed, customProperty, expectGalleryPage, resolvedColor, waitForThemePaint } from './helpers'
 
 test.describe('QDS variant distinctiveness lab', () => {
@@ -212,6 +212,18 @@ test.describe('QDS variant distinctiveness lab', () => {
       const readonly = await glassPaint(page.locator('[data-test="qds-forms-state-readonly"] .q-field__control'))
       expect.soft(readonly.fill).toBe(await resolvedColor(page, '--qds-bg-surface-2'))
       expect.soft(readonly.borderStyle).toBe('dashed')
+      const readonlyField = page.locator('[data-test="qds-forms-state-readonly"] .q-field--readonly')
+      const fieldLabel = await resolvedColor(page, '--_qds-glass-field-label')
+      for (const style of ['filled', 'standout']) {
+        await readonlyField.evaluate((el, style) => {
+          el.classList.remove('q-field--outlined', 'q-field--filled', 'q-field--standout')
+          el.classList.add(`q-field--${style}`)
+        }, style)
+        const paint = await glassPaint(readonlyField.locator('.q-field__control'))
+        expect.soft(paint.borderStyle, style).toBe('dashed')
+        expect.soft(paint.border, style).toBe(fieldLabel)
+        expect.soft(paint.edgeContrast, style).toBeGreaterThanOrEqual(3)
+      }
       const pin = page.getByRole('textbox', { name: 'Digit 4' })
       await expect(pin).toHaveValue('')
       const pinControl = page.locator('[data-test="qds-forms-pin"] .q-field__control').filter({ has: pin })
@@ -338,6 +350,52 @@ test.describe('QDS variant distinctiveness lab', () => {
     })
   }
 
+  for (const [delivery, entry] of [['default', '/conformance.html'], ['layered', '/conformance-layered.html']]) {
+    for (const mode of ['light', 'dark'] as const) {
+      test(`glass ${mode} selected-row text has painted contrast in ${delivery} CSS`, async ({ page }) => {
+        await page.emulateMedia({ colorScheme: mode })
+        await page.goto(entry)
+        await applyTheme(page, mode, 'glass')
+        await page.locator('[data-conformance]').evaluate((el, mode) => {
+          const rowClass = mode === 'dark' ? 'q-item q-item--dark' : 'q-item'
+          for (const [kind, attributes] of [
+            ['active', `class="${rowClass} q-item--active"`],
+            ['option', `class="${rowClass}" role="option" aria-selected="true"`],
+          ]) {
+            el.insertAdjacentHTML('beforeend', [0, 1, 2].map(surface => `
+              <div style="background-color: var(--qds-surface-${surface})">
+                <div ${attributes} data-selected-row="${kind}-${surface}">
+                  <div class="q-item__section q-item__section--main">
+                    <div class="q-item__label q-item__label--overline">Workspace</div>
+                    <div class="q-item__label">Selected workspace</div>
+                    <div class="q-item__label q-item__label--caption">Recently updated</div>
+                  </div>
+                  <div class="q-item__section q-item__section--side">Active</div>
+                </div>
+              </div>`).join(''))
+          }
+        }, mode)
+        const parts = ['.q-item__label--caption', '.q-item__label--overline', '.q-item__section--side']
+        const rows = page.locator('[data-selected-row]')
+        await expect(rows).toHaveCount(6)
+        for (const forcedColors of ['none', 'active'] as const) {
+          await page.emulateMedia({ forcedColors })
+          await waitForThemePaint(page)
+          const highlight = forcedColors === 'active' ? await systemHighlight(page) : undefined
+          for (const row of await rows.all()) {
+            const state = await row.getAttribute('data-selected-row')
+            if (highlight) await expect(row).toHaveCSS('background-color', highlight.fill)
+            for (const part of parts) {
+              const descendant = row.locator(part)
+              expect.soft((await glassPaint(descendant)).textContrast, `${state} ${part} (${forcedColors})`).toBeGreaterThanOrEqual(4.5)
+              if (highlight) await expect.soft(descendant).toHaveCSS('color', highlight.label)
+            }
+          }
+        }
+      })
+    }
+  }
+
   test('glass marks selected tabs and segments with system highlight under forced colors', async ({ page }) => {
     await page.goto('/#components?variant=glass')
     await applyTheme(page, 'light', 'glass')
@@ -347,11 +405,16 @@ test.describe('QDS variant distinctiveness lab', () => {
     const accent = await resolvedColor(page, '--_qds-glass-selection-label')
     for (const selector of [tab, segment]) {
       expect.soft(await computed(page, selector, 'color')).toBe(accent)
-      expect.soft(await computed(page, selector, 'font-weight')).toBe('600')
       expect.soft(await computed(page, selector, 'box-shadow')).not.toContain('inset')
     }
+    expect.soft(await computed(page, segment, 'font-weight')).toBe('600')
     expect.soft(await computed(page, idleSegment, 'font-weight')).toBe('500')
     expect.soft(await computed(page, `${tab} .q-tab__label`, 'font-weight')).toBe('600')
+    await page.locator(`${segment} .q-btn__content`).evaluate(el => {
+      el.insertAdjacentHTML('afterbegin', '<i class="q-icon">●</i>')
+    })
+    await expect(page.locator(`${segment} .q-btn__content > .block`)).toBeVisible()
+    expect.soft(await computed(page, `${segment} .q-btn__content`, 'content', '::after')).toBe('none')
     for (const selector of [segment, idleSegment]) {
       await page.locator(`${selector} .q-btn__content`).first().evaluate(el => {
         const icon = document.createElement('i')
@@ -365,15 +428,7 @@ test.describe('QDS variant distinctiveness lab', () => {
 
     await page.emulateMedia({ forcedColors: 'active' })
     await waitForThemePaint(page)
-    const highlight = await page.evaluate(() => {
-      const sample = document.createElement('span')
-      sample.style.cssText = 'forced-color-adjust: none; background-color: Highlight; color: HighlightText'
-      document.body.append(sample)
-      const style = getComputedStyle(sample)
-      const pair = { fill: style.backgroundColor, label: style.color }
-      sample.remove()
-      return pair
-    })
+    const highlight = await systemHighlight(page)
     for (const selector of [tab, segment]) {
       await expect.soft(page.locator(selector)).toHaveCSS('background-color', highlight.fill)
       await expect.soft(page.locator(selector)).toHaveCSS('color', highlight.label)
@@ -400,6 +455,18 @@ test.describe('QDS variant distinctiveness lab', () => {
     expect.soft(on, 'the on track resolves to glass primary').toBe('rgb(8, 96, 204)')
   })
 })
+
+function systemHighlight(page: Page) {
+  return page.evaluate(() => {
+    const sample = document.createElement('span')
+    sample.style.cssText = 'forced-color-adjust: none; background-color: Highlight; color: HighlightText'
+    document.body.append(sample)
+    const style = getComputedStyle(sample)
+    const pair = { fill: style.backgroundColor, label: style.color }
+    sample.remove()
+    return pair
+  })
+}
 
 function glassPaint(locator: Locator, pseudo?: string) {
   return locator.evaluate((el, pseudo) => {
@@ -436,6 +503,7 @@ function glassPaint(locator: Locator, pseudo?: string) {
         fieldText[part] = ratio(paint(text.color, Number(text.opacity)), fill)
       }
     }
+    context.putImageData(fillPixel, 0, 0)
     return {
       fill: style.backgroundColor,
       shadow: style.boxShadow,
@@ -448,6 +516,7 @@ function glassPaint(locator: Locator, pseudo?: string) {
       edgeContrast: ratio(edge, fill),
       outlineOnFill: ratio(outline, fill),
       outlineContrast: Math.min(ratio(outline, fill), ratio(outline, surface)),
+      textContrast: ratio(paint(style.color, Number(style.opacity)), fill),
       fieldText,
     }
   }, pseudo)
