@@ -37,6 +37,9 @@ $win-dialog-fill: linear-gradient(var(--_qds-win-layer-alt), var(--_qds-win-laye
   .qds-ui .q-dialog__inner > .q-card > .q-card__actions { gap: var(--qds-space-sm); padding: var(--qds-space-md) var(--qds-space-lg) var(--qds-space-lg); }
   .qds-ui .q-dialog__inner--minimized { padding: var(--qds-space-md); }
 
+  // Mobile select dialog: the width important caps Quasar's pinned 90vw for even gutters.
+  @media (max-width: 599.98px) { .qds-ui .q-select__dialog { @include importance.declarations { width: calc(100vw - 2 * var(--qds-space-lg)) !important; } } }
+
   .qds-ui .q-dialog__title {
     color: var(--qds-fg-strong);
     font-size: var(--qds-font-size-h5);
