@@ -69,9 +69,14 @@
     --qds-handle-primary-mix: #{qds-variant-token($variant, handle-primary-mix)};
   }
 
-  // Palette, geometry, and chrome overrides must settle before aliases are
-  // re-emitted; this keeps a nested variant from retaining a prior scheme.
+  // Base overrides settle before the alias re-emission below.
   @include qds-derived-tokens;
+  // Primary-derived aliases re-resolve against this scope's palette, in light and dark scopes alike.
+  --qds-banner-accent: var(--qds-color-primary);
+  --qds-banner-accent-rgb: var(--qds-color-primary-rgb);
+  --qds-notify-accent: var(--qds-color-primary);
+  --qds-notify-accent-rgb: var(--qds-color-primary-rgb);
+  --qds-pagination-active-border: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-border-opacity));
   --qds-row-radius: var(--qds-radius-md);
   --qds-fill-hover-mix: #{map.get(tokens.$fill-state, variant-hover-mix)};
   --qds-fill-pressed-mix: #{map.get(tokens.$fill-state, variant-pressed-mix)};
@@ -689,6 +694,12 @@ $qds-material-scopes: '.qds-theme-dark, body.qds-ui.body--dark, .qds-variant-one
     --qds-card-header-tonal-opacity: #{map.get(map.get(tokens.$components, card), dark-header-tonal-opacity)};
     --qds-card-header-surface-mix: #{map.get(map.get(tokens.$components, card), dark-header-surface-mix)};
     @include qds-derived-tokens;
+    // Primary-derived aliases re-resolve against this scope's dark palette.
+    --qds-banner-accent: var(--qds-color-primary);
+    --qds-banner-accent-rgb: var(--qds-color-primary-rgb);
+    --qds-notify-accent: var(--qds-color-primary);
+    --qds-notify-accent-rgb: var(--qds-color-primary-rgb);
+    --qds-pagination-active-border: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-border-opacity));
     @include fallbacks.qds-soft-surfaces(tokens.$dark-soft-surfaces);
     @include fallbacks.qds-semantic-tokens(tokens.$dark-semantic);
     @include fallbacks.qds-role-fg(tokens.$dark-role-fg);

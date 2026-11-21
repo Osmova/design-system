@@ -36,6 +36,10 @@ const SWITCH_AFTER = [
 const SWITCH_FOCUS = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) :is(.q-checkbox,.q-radio,.q-toggle):focus-visible :is(.q-checkbox__inner,.q-radio__inner,.q-toggle__inner){box-shadow:var(--qds-field-focus-halo);outline-width:var(--qds-border-width-control)}'
 const SWITCH_SCHEME = `@supports(color: light-dark(#000, #fff)){${S} .q-toggle__track{background:light-dark(var(--qds-shadcn-input), color-mix(in srgb, var(--qds-shadcn-input) 80%, transparent))}${S} .q-toggle__inner--falsy .q-toggle__thumb::after{background:light-dark(var(--qds-shadcn-background), var(--qds-shadcn-foreground));box-shadow:0 0 0 1px light-dark(var(--qds-text-muted), transparent)}}`
 
+// The five primary-derived aliases re-resolve at every palette-bearing scope.
+const PRESSED_ANCHOR = '--qds-color-primary-pressed: color-mix(in srgb, var(--qds-color-primary) var(--qds-fill-pressed-mix), var(--qds-fill-state-base))'
+const PRIMARY_ALIASES = '--qds-banner-accent: var(--qds-color-primary);--qds-banner-accent-rgb: var(--qds-color-primary-rgb);--qds-notify-accent: var(--qds-color-primary);--qds-notify-accent-rgb: var(--qds-color-primary-rgb);--qds-pagination-active-border: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-border-opacity))'
+
 export function applyDeclaredShadcnChanges(css) {
   if (!css.includes(SWITCH_BEFORE) || !css.includes(SWITCH_FOCUS)) throw new Error('S01: shadcn switch baseline rules not found')
   return css.replace(SWITCH_BEFORE, SWITCH_AFTER).replace(SWITCH_FOCUS, `${SWITCH_FOCUS}${SWITCH_SCHEME}`)
@@ -65,9 +69,15 @@ export function applyDeclaredFluentChanges(css, { layered = false } = {}) {
     : text.replace(FOCUS_RING, '$1outline:var(--qds-focus-ring-width) solid var(--qds-stroke-focus) !important;$2').replace(TERM_BAR, '$1var(--qds-bg-card)$2')
 }
 
-// The inverse of the enumerated changes, for gates that hash the historical text: only the first occurrence per block is historical.
+// Inverse of the declared changes, for gates hashing the historical text.
+const PRIMARY_ALIAS_BLOCK = '--qds-banner-accent: var(--qds-color-primary);\n    --qds-banner-accent-rgb: var(--qds-color-primary-rgb);\n    --qds-notify-accent: var(--qds-color-primary);\n    --qds-notify-accent-rgb: var(--qds-color-primary-rgb);\n    --qds-pagination-active-border: rgba(var(--qds-color-primary-rgb), var(--qds-tonal-border-opacity));\n    '
+// The historical text carries exactly one alias re-emission per palette-bearing scope.
+const PRIMARY_ALIAS_RE_EMISSIONS = 5
 export function revertDeclaredFluentChanges(css) {
-  return css.split('}').map(block => block.replace(ON_FILL[1], ON_FILL[0])).join('}')
+  const stripped = css.split(PRIMARY_ALIAS_BLOCK)
+  if (stripped.length - 1 !== PRIMARY_ALIAS_RE_EMISSIONS) throw new Error(`A06: expected ${PRIMARY_ALIAS_RE_EMISSIONS} primary-derived alias re-emissions, found ${stripped.length - 1}`)
+  return stripped.join('')
+    .split('}').map(block => block.replace(ON_FILL[1], ON_FILL[0])).join('}')
     .replace(CARD_CHROME.join(''), CARD_CHROME[0])
     .replace(TERM_BAR, '$1var(--qds-surface-0)$2')
     .replace(HEADING_FAMILY[1], HEADING_FAMILY[0])
@@ -87,6 +97,15 @@ export function applyDeclaredFixes(rules) {
     if (rule.endsWith('.qds-ui .q-dialog__inner--minimized{padding:var(--qds-space-md)}')) {
       out.push(rule)
       out.push(layered ? `@media(max-width: 599.98px)|@layer qds-important|.qds-ui .q-select__dialog{width:calc(100vw - 2*var(--qds-space-lg)) !important}` : '@media(max-width: 599.98px)|.qds-ui .q-select__dialog{width:calc(100vw - 2*var(--qds-space-lg)) !important}')
+      continue
+    }
+    // The primary-derived aliases re-resolve at every palette-bearing scope.
+    if (rule.includes(PRESSED_ANCHOR) && rule.includes('--qds-fill-state-base: var(--qds-fg-strong)') && !rule.includes('--qds-banner-accent:') && rule.includes('--qds-row-radius: var(--qds-radius-md);')) {
+      out.push(rule.replace('--qds-row-radius: var(--qds-radius-md);', `${PRIMARY_ALIASES};--qds-row-radius: var(--qds-radius-md);`))
+      continue
+    }
+    if (rule.includes('color-scheme:dark;--qds-color-primary: #1976ca') && rule.includes('--qds-toggle-thumb-inset: 0.1875rem')) {
+      out.push(rule.replace('--qds-toggle-thumb-inset: 0.1875rem;', `--qds-toggle-thumb-inset: 0.1875rem;${PRIMARY_ALIASES};`))
       continue
     }
     out.push(rule)
