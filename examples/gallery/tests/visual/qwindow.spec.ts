@@ -236,4 +236,23 @@ test.describe('QDS optional QWindow extension', () => {
       expect.soft(focusStyles.outlineStyle, `${variant} close action keeps a visible focus outline`).toBe('solid')
     }
   })
+
+  test('Win contrast edges and native keyboard close survive the optional wrapper', async ({ page }) => {
+    for (const mode of ['light', 'dark'] as const) {
+      await page.goto('/#window')
+      await forceTheme(page, mode)
+      const shell = page.locator('.qds-window')
+      for (const media of [{ contrast: 'more' }, { contrast: 'no-preference', forcedColors: 'active' }] as const) {
+        await page.emulateMedia(media)
+        const edge = await shell.evaluate(el => ({ width: getComputedStyle(el).borderTopWidth, color: getComputedStyle(el).borderTopColor }))
+        expect(edge.width).toBe('1px')
+        expect(edge.color).toBe(await resolvedColor(page, '--qds-stroke-strong'))
+      }
+      await page.emulateMedia({ contrast: 'no-preference', forcedColors: 'none' })
+      const close = shell.locator('.qds-window__action--close')
+      await close.focus()
+      await page.keyboard.press('Enter')
+      await expect(shell).toBeHidden()
+    }
+  })
 })

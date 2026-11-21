@@ -95,5 +95,6 @@ $zen: '.qds-variant-zen:is(.qds-ui, .qds-ui *)';
     :is(.qds-window--maximized, .qds-window--fullscreen) { border-radius: 0; box-shadow: none; }
   }
   .qds-variant-zen.qds-reading:is(.qds-ui, .qds-ui *) .qds-window { border-color: var(--qds-stroke-strong); box-shadow: none; }
+  @media (prefers-contrast: more), (forced-colors: active) { .qds-variant-win:is(.qds-ui,.qds-ui *) .qds-window { border-color: var(--qds-stroke-strong); } }
   @media (forced-colors: active) { :is(.qds-variant-shadcn,.qds-variant-term,.qds-variant-one):is(.qds-ui,.qds-ui *) .qds-window__action--close { --_qds-window-close-ring: Highlight; } }
 }

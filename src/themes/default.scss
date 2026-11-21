@@ -616,6 +616,7 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
   }
   @media (prefers-contrast: more), (forced-colors: active) {
     .qds-variant-win, #{$dark} {
+      --_qds-win-surface-stroke: var(--qds-stroke-strong);
       @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, control-stroke-strong, control-stroke-on-accent-top, control-stroke-on-accent-bottom, card-stroke, material-stroke, stroke-default, stroke-subtle {
         --qds-#{$token}: var(--qds-stroke-strong);
       }
