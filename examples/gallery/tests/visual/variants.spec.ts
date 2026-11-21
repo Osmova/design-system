@@ -393,6 +393,56 @@ test.describe('QDS variant distinctiveness lab', () => {
           }
         }
       })
+
+      test(`glass ${mode} keeps bar, caption and chip cues in contrast modes in ${delivery} CSS`, async ({ page }) => {
+        await page.emulateMedia({ colorScheme: mode })
+        await page.goto(entry)
+        await applyTheme(page, mode, 'glass')
+        await page.locator('[data-conformance]').evaluate((el, mode) => {
+          const dark = mode === 'dark' ? ' q-item--dark' : ''
+          el.insertAdjacentHTML('beforeend', `
+            <div class="q-header"><div class="q-toolbar row no-wrap items-center">
+              <button class="q-btn q-btn-item q-btn--flat q-btn--rectangle" data-bar-item>Back</button>
+              <div class="q-btn-group row no-wrap inline" data-bar-item><button class="q-btn q-btn-item q-btn--flat">A</button></div>
+            </div></div>
+            ${[0, 1, 2].map(surface => `
+              <div style="background-color: var(--qds-surface-${surface})">
+                <div class="q-expansion-item q-item-type q-expansion-item--expanded q-expansion-item--standard"><div class="q-expansion-item__container">
+                  <div class="q-item q-item-type row no-wrap q-item--clickable q-hoverable${dark}">
+                    <div class="q-item__section column q-item__section--main"><div class="q-item__label">Details</div><div class="q-item__label q-item__label--caption" data-expanded-caption>Three items</div></div>
+                  </div>
+                </div></div>
+                <div class="q-chip row inline no-wrap items-center q-chip--clickable cursor-pointer bg-primary" tabindex="0" data-tinted-chip><div class="q-chip__content row no-wrap items-center">Filter</div></div>
+                <div class="q-chip row inline no-wrap items-center bg-positive" data-tinted-chip><div class="q-chip__content row no-wrap items-center">Done</div><i class="q-icon q-chip__icon q-chip__icon--remove" role="button" tabindex="0">×</i></div>
+              </div>`).join('')}`)
+        }, mode)
+
+        for (const caption of await page.locator('[data-expanded-caption]').all()) {
+          expect.soft((await glassPaint(caption)).textContrast, 'expanded header caption').toBeGreaterThanOrEqual(4.5)
+        }
+
+        await page.emulateMedia({ contrast: 'more' })
+        await waitForThemePaint(page)
+        for (const chip of await page.locator('[data-tinted-chip]').all()) {
+          expect.soft((await glassPaint(chip)).edgeContrast, `${await chip.textContent()} chip edge`).toBeGreaterThanOrEqual(3)
+        }
+
+        await page.emulateMedia({ contrast: 'no-preference', forcedColors: 'active' })
+        await waitForThemePaint(page)
+        const buttonText = await page.evaluate(() => {
+          const sample = document.createElement('span')
+          sample.style.cssText = 'forced-color-adjust: none; color: ButtonText'
+          document.body.append(sample)
+          const color = getComputedStyle(sample).color
+          sample.remove()
+          return color
+        })
+        for (const item of await page.locator('[data-bar-item]').all()) {
+          await expect.soft(item).toHaveCSS('border-top-width', '1px')
+          await expect.soft(item).toHaveCSS('border-top-style', 'solid')
+          await expect.soft(item).toHaveCSS('border-top-color', buttonText)
+        }
+      })
     }
   }
 
