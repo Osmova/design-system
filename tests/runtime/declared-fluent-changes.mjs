@@ -86,6 +86,8 @@ export function revertDeclaredFluentChanges(css) {
 }
 
 // Rule-level declared fixes, applied to the flattened rule list as compiled.
+const PAGINATION_BASE_BEFORE_BODY = '.qds-ui .q-pagination .q-btn{flex:0 1 var(--qds-button-min-height);height:var(--qds-button-min-height);color:var(--qds-pagination-text, var(--qds-fg-default)) !important;background-color:var(--qds-pagination-bg, transparent) !important;border-color:rgba(0,0,0,0);font-weight:var(--qds-font-weight-regular)}'
+const PAGINATION_ACTIVE_PLAIN_OLD = '.qds-ui .q-pagination .q-btn[aria-current=page]{color:var(--qds-pagination-active-text) !important;background-color:var(--qds-pagination-active-bg) !important;border-color:var(--qds-pagination-active-border);font-weight:var(--qds-font-weight-semibold)}'
 
 export function applyDeclaredFixes(rules) {
   const out = []
@@ -106,6 +108,30 @@ export function applyDeclaredFixes(rules) {
     }
     if (rule.includes('color-scheme:dark;--qds-color-primary: #1976ca') && rule.includes('--qds-toggle-thumb-inset: 0.1875rem')) {
       out.push(rule.replace('--qds-toggle-thumb-inset: 0.1875rem;', `--qds-toggle-thumb-inset: 0.1875rem;${PRIMARY_ALIASES};`))
+      continue
+    }
+    if (layered && rule.endsWith('.qds-ui .q-pagination .q-btn{flex:0 1 var(--qds-button-min-height);height:var(--qds-button-min-height);border-color:rgba(0,0,0,0);font-weight:var(--qds-font-weight-regular)}')) {
+      out.push(`${head}.qds-ui .q-pagination .q-btn{flex:0 0 var(--qds-button-min-height);height:var(--qds-button-min-height);font-weight:var(--qds-font-weight-regular)}`)
+      continue
+    }
+    if (layered && rule.endsWith('.qds-ui .q-pagination .q-btn{color:var(--qds-pagination-text, var(--qds-fg-default)) !important;background-color:var(--qds-pagination-bg, transparent) !important}')) {
+      out.push(`${important}.qds-ui .q-pagination .q-btn--flat{color:var(--qds-pagination-text, var(--qds-fg-default)) !important;background-color:var(--qds-pagination-bg, transparent) !important}`)
+      continue
+    }
+    if (!layered && rule.endsWith(PAGINATION_BASE_BEFORE_BODY)) {
+      out.push(`${head}.qds-ui .q-pagination .q-btn{flex:0 0 var(--qds-button-min-height);height:var(--qds-button-min-height);font-weight:var(--qds-font-weight-regular)}`)
+      out.push(`${head}.qds-ui .q-pagination .q-btn--flat{color:var(--qds-pagination-text, var(--qds-fg-default)) !important;background-color:var(--qds-pagination-bg, transparent) !important}`)
+      continue
+    }
+    if (layered && rule.endsWith('.qds-ui .q-pagination .q-btn[aria-current=page]{color:var(--qds-pagination-active-text) !important;background-color:var(--qds-pagination-active-bg) !important}')) {
+      out.push(`${important}.qds-ui .q-pagination .q-btn[aria-current=page]:not(.q-btn--outline,.q-btn--push,.q-btn--unelevated){color:var(--qds-pagination-active-text) !important;background-color:var(--qds-pagination-active-bg) !important}`)
+      out.push(`@layer qds.quasar|.qds-ui .q-pagination .q-field{flex:none}`)
+      continue
+    }
+    if (!layered && rule.endsWith(PAGINATION_ACTIVE_PLAIN_OLD)) {
+      out.push(`${head}.qds-ui .q-pagination .q-btn[aria-current=page]{border-color:var(--qds-pagination-active-border);font-weight:var(--qds-font-weight-semibold)}`)
+      out.push(`${head}.qds-ui .q-pagination .q-btn[aria-current=page]:not(.q-btn--outline,.q-btn--push,.q-btn--unelevated){color:var(--qds-pagination-active-text) !important;background-color:var(--qds-pagination-active-bg) !important}`)
+      out.push(`${head}.qds-ui .q-pagination .q-field{flex:none}`)
       continue
     }
     out.push(rule)
