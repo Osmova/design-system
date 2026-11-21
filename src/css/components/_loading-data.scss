@@ -90,6 +90,8 @@ $win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
   .qds-ui .q-tree--no-connectors .q-tree__children::before { display: none; }
   .qds-ui :is(.q-virtual-scroll__padding, .q-virtual-scroll__slice) { border-color: var(--qds-stroke-subtle); }
 
+  @media (forced-colors: active) { #{$win} .q-tree__node--selected::after { background: Highlight; forced-color-adjust: none; } }
+
   #{$one} .q-tree__node-header { min-height: 2.75rem; }
   #{$term} .q-linear-progress { border-radius: 0; }
   #{$term} .q-inner-loading { @include materials.solid(var(--qds-surface-0)); }
