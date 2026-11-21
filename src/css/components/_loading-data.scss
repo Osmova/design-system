@@ -19,6 +19,13 @@ $win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
     .qds-ui :is(.q-linear-progress, .q-circular-progress__circle).text-#{$role},
     #{$shadcn} .q-spinner.text-#{$role} { @include importance.declarations { color: var(--qds-fg-#{$role}) !important; } }
   }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$win} .q-linear-progress { min-height: 4px; border: var(--qds-border-width-control) solid var(--qds-stroke-strong); }
+    #{$win} .q-linear-progress__track { background: var(--qds-bg-canvas); }
+  }
+  @media (forced-colors: active) {
+    #{$win} .q-linear-progress__model { color: Highlight; forced-color-adjust: none; }
+  }
   // WinUI ProgressRing draws in the accent fill, not the darker accent text.
   #{$win} .q-spinner.text-primary { --qds-fg-primary: var(--qds-color-primary); }
 
