@@ -77,7 +77,11 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
 
     color: var(--qds-fg-default);
   }
-  .qds-ui.qds-theme-light.qds-variant-win #{$local-dark} { --_qds-win-focus-outer: var(--qds-surface-0); }
+  .qds-ui.qds-theme-light.qds-variant-win #{$local-dark} {
+    --_qds-win-focus-outer: var(--qds-surface-0);
+    --_qds-win-layer-alt: var(--qds-bg-surface-2);
+    --_qds-win-surface-stroke: var(--qds-card-stroke);
+  }
   @media (prefers-contrast: more), (forced-colors: active) {
     .qds-ui.qds-theme-light.qds-variant-win [class*='--dark'] {
       @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, stroke-default, stroke-subtle { --qds-#{$token}: var(--qds-stroke-strong); }
