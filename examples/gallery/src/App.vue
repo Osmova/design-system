@@ -49,7 +49,7 @@ const ds = useDesignSystem()
 
 const config = parseGalleryHash(typeof window === 'undefined' ? '' : window.location.hash)
 const tab = ref<GalleryTab>(config.tab)
-// Frames of the gallery used by the Compare page: chrome and URL writes belong to the host page.
+// Compare frames are content-only: chrome and URL writes belong to the host page.
 const embedded = config.embed
 let applyingUrl = false
 
