@@ -86,6 +86,21 @@ test.describe('QDS variant distinctiveness lab', () => {
       expect.soft(await customProperty(page, '--qds-material-regular-filter'), 'no blur behind controls').toBe('none')
       expect.soft(await resolvedColor(page, '--qds-color-primary'), 'the accent moves to its increased-contrast value').toBe(mode === 'light' ? 'rgb(0, 64, 221)' : 'rgb(140, 195, 255)')
       expect.soft(await resolvedColor(page, '--qds-control-stroke-default'), 'control edges take the muted text colour').toBe(await resolvedColor(page, '--qds-text-muted'))
+      const checkbox = page.getByRole('checkbox', { name: 'Checkbox selected', exact: true })
+      await checkbox.click()
+      await page.mouse.move(0, 0)
+      await waitForThemePaint(page)
+      const indicator = await resolvedColor(page, '--qds-text-muted')
+      await expect(checkbox.locator('.q-checkbox__bg')).toHaveCSS('border-top-color', indicator)
+      await expect(page.locator('.q-slider__inner').first()).toHaveCSS('background-color', indicator)
+      const toggle = page.getByRole('switch', { name: 'Enable tonal surfaces' })
+      await toggle.click()
+      await page.mouse.move(0, 0)
+      await expect(toggle.locator('.q-toggle__track')).toHaveCSS('background-color', indicator)
+      await waitForThemePaint(page)
+      expect.soft(await computed(page, '.q-toggle__inner--falsy .q-toggle__thumb', 'background-color', '::after')).toBe(
+        await resolvedColor(page, mode === 'dark' ? '--qds-surface-0' : '--_qds-glass-knob'),
+      )
     })
   }
 
@@ -173,6 +188,35 @@ test.describe('QDS variant distinctiveness lab', () => {
         expect.soft(paint.borderWidth).toBe('0px')
       }
 
+      for (const name of ['filled', 'standout']) {
+        const control = field(name)
+        await control.evaluate(el => {
+          const input = el.querySelector('input')!
+          for (const part of ['prefix', 'suffix']) {
+            const text = document.createElement('div')
+            text.className = `q-field__${part}`
+            text.textContent = part
+            input.insertAdjacentElement(part === 'prefix' ? 'beforebegin' : 'afterend', text)
+          }
+        })
+        for (const surface of ['--qds-surface-0', '--qds-surface-1', '--qds-surface-2']) {
+          await control.evaluate((el, surface) => el.closest<HTMLElement>('[data-test]')!.style.backgroundColor = `var(${surface})`, surface)
+          const paint = await glassPaint(control)
+          expect(Object.keys(paint.fieldText)).toEqual(['placeholder', 'prefix', 'suffix'])
+          for (const [part, contrast] of Object.entries(paint.fieldText)) {
+            expect.soft(contrast, `${name} ${part} over ${surface}`).toBeGreaterThanOrEqual(4.5)
+          }
+        }
+      }
+
+      const readonly = await glassPaint(page.locator('[data-test="qds-forms-state-readonly"] .q-field__control'))
+      expect.soft(readonly.fill).toBe(await resolvedColor(page, '--qds-bg-surface-2'))
+      expect.soft(readonly.borderStyle).toBe('dashed')
+      const pin = page.getByRole('textbox', { name: 'Digit 4' })
+      await expect(pin).toHaveValue('')
+      const pinControl = page.locator('[data-test="qds-forms-pin"] .q-field__control').filter({ has: pin })
+      expect.soft((await glassPaint(pinControl)).edgeContrast, 'empty PIN boundary').toBeGreaterThanOrEqual(3)
+
       await field('standout').locator('input').focus()
       await waitForThemePaint(page)
       const focused = await glassPaint(field('standout'))
@@ -180,7 +224,16 @@ test.describe('QDS variant distinctiveness lab', () => {
       expect.soft(focused.outlineContrast, 'the focus ring reads against the field and surrounding paint').toBeGreaterThanOrEqual(3)
       await field('standout').locator('input').blur()
       const error = page.locator('[data-test="qds-forms-state-error"] .q-field__control')
-      expect.soft((await glassPaint(error)).outlineContrast, 'the unfocused error ring stays visible').toBeGreaterThanOrEqual(3)
+      const errorRing = await glassPaint(error, '::before')
+      expect.soft(errorRing.outlineContrast, 'the unfocused error ring stays visible').toBeGreaterThanOrEqual(3)
+      await error.locator('input').focus()
+      await waitForThemePaint(page)
+      const errorFocus = await glassPaint(error)
+      expect.soft(errorFocus.outlineWidth).toBe('2px')
+      expect.soft(parseFloat(errorFocus.outlineOffset)).toBeGreaterThanOrEqual(parseFloat(errorRing.outlineWidth))
+      expect.soft(errorFocus.outlineContrast).toBeGreaterThanOrEqual(3)
+      expect.soft((await glassPaint(error, '::before')).outline).toBe(errorRing.outline)
+      await error.locator('input').blur()
       await expect.soft(error.locator('.q-field__append .q-icon')).toBeVisible()
 
       const outlines = [
@@ -200,6 +253,12 @@ test.describe('QDS variant distinctiveness lab', () => {
       await page.emulateMedia({ contrast: 'no-preference', forcedColors: 'none' })
       await page.goto('/#components?variant=glass')
       await applyTheme(page, mode, 'glass')
+      await page.locator('.qds-button-row .q-btn.disabled').first().evaluate(el => {
+        const outline = el.cloneNode(true) as HTMLElement
+        outline.classList.replace('q-btn--standard', 'q-btn--outline')
+        outline.setAttribute('aria-label', 'Disabled outline')
+        el.after(outline)
+      })
       const button = (label: string) => page.locator('.qds-button-row').first().getByRole('button', { name: label, exact: true })
       const [standard, outline, disabled] = await Promise.all(['Default', 'Outline', 'Disabled'].map(label => glassPaint(button(label))))
       expect.soft(standard.fill).not.toBe(outline.fill)
@@ -210,6 +269,7 @@ test.describe('QDS variant distinctiveness lab', () => {
       expect.soft(outline.border).toContain('/ 0.45')
       expect.soft(disabled.edgeContrast, 'the disabled capsule only has a fill').toBe(1)
       expect.soft(disabled.shadow).toBe('none')
+      expect.soft((await glassPaint(button('Disabled outline'))).fill).toBe('rgba(0, 0, 0, 0)')
       expect.soft(await computed(page, '.q-toolbar.qds-card .q-btn--flat', 'backdrop-filter'), 'toolbars inside content stay plain').toBe('none')
       expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'backdrop-filter'), 'bar buttons float on glass').not.toBe('none')
       expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'border-radius'), 'the shell follows glass capsules').toBe('9999px')
@@ -224,11 +284,56 @@ test.describe('QDS variant distinctiveness lab', () => {
       for (const media of outlines) {
         await page.emulateMedia(media)
         await waitForThemePaint(page)
-        for (const label of ['Default', 'Outline', 'Subtle', 'Disabled']) {
+        for (const label of ['Default', 'Outline', 'Subtle', 'Disabled', 'Disabled outline']) {
           const paint = await glassPaint(button(label))
           expect.soft(paint.borderWidth, `${label} ${JSON.stringify(media)} edge width`).toBe('1px')
           expect.soft(paint.edgeContrast, `${label} ${JSON.stringify(media)} edge contrast`).toBeGreaterThanOrEqual(3)
         }
+        const nested = await glassPaint(page.locator('.q-card .q-card:not(.q-card--bordered)').first())
+        expect.soft(nested.borderWidth, 'nested card edge').toBe('1px')
+        expect.soft(nested.edgeContrast, 'nested card edge contrast').toBeGreaterThanOrEqual(3)
+
+        const tab = page.locator('[data-test="qds-tabs-horizontal"] .q-tab--active')
+        const edge = await glassPaint(tab, '::after')
+        await tab.focus()
+        const focus = await glassPaint(tab)
+        expect.soft(edge.borderWidth).toBe('1px')
+        expect.soft(focus.outlineWidth).toBe('2px')
+        expect.soft(-parseFloat(focus.outlineOffset) - parseFloat(focus.outlineWidth)).toBeGreaterThanOrEqual(parseFloat(edge.borderWidth))
+        expect.soft((await glassPaint(tab, '::after')).border).toBe(edge.border)
+        await tab.blur()
+      }
+    })
+
+    test(`glass ${mode} shows keyboard focus on selected and unselected QSelect options`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme: mode })
+      await page.goto('/#components?variant=glass')
+      await applyTheme(page, mode, 'glass')
+      const select = page.locator('[data-test="qds-control-select-multiple"]').getByRole('combobox')
+      for (const media of [
+        { contrast: 'no-preference', forcedColors: 'none' },
+        { contrast: 'more', forcedColors: 'none' },
+        { contrast: 'no-preference', forcedColors: 'active' },
+      ] as const) {
+        await page.emulateMedia(media)
+        await select.press('ArrowDown')
+        const list = page.getByRole('listbox')
+        await expect(list).toBeVisible()
+        const combobox = page.getByRole('combobox').filter({ visible: true }).and(page.locator('[aria-expanded="true"]'))
+        for (const [key, selected] of [['Home', true], ['End', false]] as const) {
+          await combobox.press(key)
+          const option = list.locator('.q-manual-focusable--focused')
+          await expect(option).toHaveAttribute('aria-selected', String(selected))
+          await expect(combobox).toHaveAttribute('aria-activedescendant', (await option.getAttribute('id'))!)
+          await expect(combobox).toBeFocused()
+          await waitForThemePaint(page)
+          const paint = await glassPaint(option)
+          expect.soft(paint.outlineWidth).toBe('2px')
+          expect.soft(paint.outlineOnFill, `${media.forcedColors}/${media.contrast}, selected=${selected}`).toBeGreaterThanOrEqual(3)
+          await expect(list.locator('[role="option"]:not(.q-manual-focusable--focused)').first()).toHaveCSS('outline-width', '0px')
+        }
+        await combobox.press('Escape')
+        await expect(list).toBeHidden()
       }
     })
   }
@@ -238,12 +343,25 @@ test.describe('QDS variant distinctiveness lab', () => {
     await applyTheme(page, 'light', 'glass')
     const tab = '[data-test="qds-tabs-horizontal"] .q-tab--active'
     const segment = '[data-test="qds-toggle-color"] > .q-btn[aria-pressed="true"]'
+    const idleSegment = '[data-test="qds-toggle-color"] > .q-btn[aria-pressed="false"]:not(.disabled)'
     const accent = await resolvedColor(page, '--_qds-glass-selection-label')
     for (const selector of [tab, segment]) {
       expect.soft(await computed(page, selector, 'color')).toBe(accent)
       expect.soft(await computed(page, selector, 'font-weight')).toBe('600')
       expect.soft(await computed(page, selector, 'box-shadow')).not.toContain('inset')
     }
+    expect.soft(await computed(page, idleSegment, 'font-weight')).toBe('500')
+    expect.soft(await computed(page, `${tab} .q-tab__label`, 'font-weight')).toBe('600')
+    for (const selector of [segment, idleSegment]) {
+      await page.locator(`${selector} .q-btn__content`).first().evaluate(el => {
+        const icon = document.createElement('i')
+        icon.className = 'q-icon'
+        icon.textContent = '●'
+        el.replaceChildren(icon)
+      })
+    }
+    expect.soft(await computed(page, `${idleSegment} .q-btn__content`, 'content', '::after')).toBe('none')
+    expect.soft(await computed(page, `${segment} .q-btn__content`, 'border-block-end-width', '::after')).toBe('2px')
 
     await page.emulateMedia({ forcedColors: 'active' })
     await waitForThemePaint(page)
@@ -283,13 +401,14 @@ test.describe('QDS variant distinctiveness lab', () => {
   })
 })
 
-function glassPaint(locator: Locator) {
-  return locator.evaluate((el) => {
+function glassPaint(locator: Locator, pseudo?: string) {
+  return locator.evaluate((el, pseudo) => {
     const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true })!
     context.fillStyle = 'Canvas'
     context.fillRect(0, 0, 1, 1)
-    const paint = (color: string) => {
+    const paint = (color: string, opacity = 1) => {
       context.fillStyle = color
+      context.globalAlpha = opacity
       context.fillRect(0, 0, 1, 1)
       const [r, g, b] = Array.from(context.getImageData(0, 0, 1, 1).data).map(value => {
         const channel = value / 255
@@ -302,20 +421,34 @@ function glassPaint(locator: Locator) {
     for (let parent = el.parentElement; parent; parent = parent.parentElement) ancestors.unshift(parent)
     let surface = 0
     for (const ancestor of ancestors) surface = paint(getComputedStyle(ancestor).backgroundColor)
-    const style = getComputedStyle(el)
-    const fill = paint(style.backgroundColor)
+    const style = getComputedStyle(el, pseudo)
+    const fill = paint(getComputedStyle(el).backgroundColor)
     const fillPixel = context.getImageData(0, 0, 1, 1)
     const edge = paint(style.borderTopColor)
     context.putImageData(fillPixel, 0, 0)
     const outline = paint(style.outlineColor)
+    const fieldText: Record<string, number> = {}
+    for (const [part, selector] of [['placeholder', 'input[placeholder]'], ['prefix', '.q-field__prefix'], ['suffix', '.q-field__suffix']]) {
+      const node = el.querySelector(selector)
+      if (node) {
+        context.putImageData(fillPixel, 0, 0)
+        const text = getComputedStyle(node, part === 'placeholder' ? '::placeholder' : null)
+        fieldText[part] = ratio(paint(text.color, Number(text.opacity)), fill)
+      }
+    }
     return {
       fill: style.backgroundColor,
       shadow: style.boxShadow,
       border: style.borderTopColor,
       borderWidth: style.borderTopWidth,
+      borderStyle: style.borderTopStyle,
+      outline: style.outlineColor,
       outlineWidth: style.outlineWidth,
+      outlineOffset: style.outlineOffset,
       edgeContrast: ratio(edge, fill),
+      outlineOnFill: ratio(outline, fill),
       outlineContrast: Math.min(ratio(outline, fill), ratio(outline, surface)),
+      fieldText,
     }
-  })
+  }, pseudo)
 }
