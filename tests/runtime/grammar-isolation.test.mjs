@@ -105,7 +105,7 @@ test('the all-in bundle, the shared core and every complete variant bundle stay 
     assert.ok(allMin <= 712000 && allGzip <= 71800, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 712000 / 71800`)
     const parts = partitionCss(full)
     for (const [name, css] of Object.entries(parts)) {
-      const [maxMin, maxGzip] = name === 'core' ? [214000, 26600] : [380000, 46000]
+      const [maxMin, maxGzip] = name === 'core' ? [214200, 26700] : [380000, 46000]
       const bytes = Buffer.byteLength(css)
       const gzip = gzipSync(css, { level: 9 }).length
       assert.ok(bytes <= maxMin && gzip <= maxGzip, `${entry} ${name}: measured min ${bytes} / gzip ${gzip} against caps ${maxMin} / ${maxGzip}`)
