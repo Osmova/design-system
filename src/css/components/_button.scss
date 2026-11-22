@@ -39,7 +39,7 @@ $not-fab: ':where(:not(.q-btn--fab, .q-btn--fab-mini))';
 $filled: ':is(.q-btn--standard, .q-btn--unelevated, .q-btn--push):where(:not(.q-btn-toggle > .q-btn))';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
 $win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
-$win-standalone: ':where(:not(.q-date .q-btn, .q-time .q-btn, .q-pagination .q-btn, .q-editor .q-btn, .q-color-picker .q-btn))';
+$win-standalone: ':where(:not(:is(.q-date, .q-time, .q-pagination, .q-editor, .q-color-picker) *))';
 $shadcn-default: '.q-btn#{$filled}:where(:not([class*="bg-"], .qds-tonal, .qds-button--link, .q-date .q-btn, .q-time .q-btn, .q-pagination .q-btn, .q-btn-toggle .q-btn, .q-editor .q-btn, .q-color-picker .q-btn))';
 $accent-fills: ();
 $role-texts: ();
@@ -320,7 +320,10 @@ $role-texts: ();
   }
   #{$win} .q-btn-dropdown .q-btn-dropdown__arrow { opacity: #{map.get(tokens.$control, icon-opacity)}; }
   @media (prefers-contrast: more), (forced-colors: active) {
-    #{$win} .q-btn.q-btn-item { --qds-button-disabled-stroke: var(--qds-stroke-strong); border-color: var(--qds-stroke-strong); }
+    #{$win} :is(.q-btn.q-btn-item, .q-chip--clickable, .q-chip:has(> .q-chip__icon--remove)) { --qds-button-disabled-stroke: var(--qds-stroke-strong); border-color: var(--qds-stroke-strong); }
+    #{$win} .q-btn-toggle { outline: 1px solid; }
+    #{$win} .q-pagination .q-btn { flex-basis: auto; --qds-pagination-active-border: currentColor; }
+    #{$win} .q-pagination .q-input { min-width: 5em; }
   }
   #{$shadcn} .q-btn {
     --qds-button-disabled-opacity: 0.5;
