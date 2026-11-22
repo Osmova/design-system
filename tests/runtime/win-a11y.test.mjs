@@ -41,7 +41,7 @@ async function fixture(browser, layered, mode, width = 1280) {
     fixture.dispose()
     document.querySelector('#app').remove()
     const { createApp, h, reactive, ref } = Vue
-    const { QLinearProgress, QCircularProgress, QSelect, QInput, QCheckbox, QCard, QItem, QList, QBtn, QBtnToggle, QDialog, QCardSection, QCardActions } = Quasar
+    const { QLinearProgress, QCircularProgress, QSelect, QInput, QCheckbox, QCard, QItem, QList, QBtn, QBtnToggle, QDialog, QCardSection, QCardActions, QPagination, QChip } = Quasar
     const state = reactive({ selected: null, value: 'Clear this value', checked: true, mixed: null, unchecked: false })
     const dialogOpen = ref(false)
     const root = document.createElement('main')
@@ -53,6 +53,13 @@ async function fixture(browser, layered, mode, width = 1280) {
       h('section', {}, [h('p', {}, 'Progress: determinate / indeterminate'), ...[false, true].map(indeterminate => h(QLinearProgress, { id: indeterminate ? 'busy' : 'progress', value: 0.55, indeterminate, size: indeterminate ? '8px' : undefined, style: 'margin-block:12px' }))]),
       h(QCircularProgress, { id: 'circular', value: 72, size: '64px', showValue: true, color: 'accent', trackColor: 'grey-3' }),
       h('div', {}, h(QBtnToggle, { id: 'segmented', modelValue: 'a', options: [{ label: 'First', value: 'a' }, { label: 'Second', value: 'b' }] })),
+      h(QPagination, { id: 'pages', modelValue: 2, max: 5 }),
+      h('div', {}, [
+        h(QChip, { id: 'chip-clickable', clickable: true, color: 'primary', label: 'Clickable' }),
+        h(QChip, { id: 'chip-removable', removable: true, color: 'primary', label: 'Removable' }),
+        h(QChip, { id: 'chip-static', color: 'primary', label: 'Static' }),
+        h(QChip, { id: 'chip-role', clickable: true, outline: true, color: 'negative', label: 'Role outline' }),
+      ]),
       h(QSelect, { for: 'options', label: 'Keyboard options', outlined: true, modelValue: state.selected, options: ['First option', 'Second option', 'Third option'], 'onUpdate:modelValue': v => { state.selected = v }, behavior: 'menu' }),
       h(QInput, { for: 'clearable', label: 'Clearable field', outlined: true, clearable: true, modelValue: state.value, 'onUpdate:modelValue': v => { state.value = v } }),
       h('section', {}, ['checked', 'mixed', 'unchecked'].map(name => h(QCheckbox, { id: name, label: name, modelValue: state[name], 'onUpdate:modelValue': v => { state[name] = v } }))),
@@ -164,6 +171,49 @@ if (process.env.QDS_WIN_CAPTURES) {
       assert.ok(parseFloat(edge.outlineWidth) >= 1, media)
       assert.ok(contrast(over(edge.outlineColor, outside), outside) >= 3, `${media}: ${edge.outlineColor} / ${outside}`)
     }
+  }))
+
+  test('Win segmented selected pill keeps a contrasting rail in both contrast modes', () => cases(async page => {
+    const pill = '#segmented .q-btn[aria-pressed="true"]'
+    for (const media of ['contrast', 'forced']) {
+      await page.emulateMedia(mediaCases[media])
+      await settle(page)
+      const rail = await style(page, pill, ['borderTopColor', 'borderTopStyle', 'borderTopWidth'], '::after')
+      assert.equal(rail.borderTopStyle, 'solid', media)
+      assert.equal(rail.borderTopWidth, '3px', media)
+      if (media === 'forced') assert.equal(rail.borderTopColor, await systemColor(page, 'CanvasText'))
+      const bg = await surface(page, pill)
+      assert.ok(contrast(over(rail.borderTopColor, bg), bg) >= 3, `${media}: ${rail.borderTopColor} / ${bg}`)
+    }
+  }))
+
+  test('Win pagination active page has a distinct contrasting edge in increased contrast', () => cases(async page => {
+    await page.emulateMedia(mediaCases.contrast)
+    await settle(page)
+    const edge = ['borderTopColor', 'borderTopStyle', 'borderTopWidth']
+    const active = await style(page, '#pages .q-btn[aria-current="page"]', edge)
+    const idle = await style(page, '#pages .q-btn:not([aria-current="page"]) >> nth=0', edge)
+    const outside = await surface(page, '#pages')
+    assert.equal(active.borderTopStyle, 'solid')
+    assert.equal(active.borderTopWidth, '1px')
+    assert.ok(contrast(over(active.borderTopColor, outside), outside) >= 3, `${active.borderTopColor} / ${outside}`)
+    assert.notEqual(active.borderTopColor, idle.borderTopColor)
+  }))
+
+  test('Win interactive chips gain contrasting edges in increased contrast while static and role outline chips keep theirs', () => cases(async page => {
+    const edge = ['borderTopColor', 'borderTopStyle', 'borderTopWidth', 'color']
+    const normal = await style(page, '#chip-static', edge)
+    await page.emulateMedia(mediaCases.contrast)
+    await settle(page)
+    const outside = await surface(page, '#accessibility')
+    for (const id of ['chip-clickable', 'chip-removable']) {
+      const s = await style(page, `#${id}`, edge)
+      assert.equal(s.borderTopStyle, 'solid', id)
+      assert.ok(contrast(over(s.borderTopColor, outside), outside) >= 3, `${id}: ${s.borderTopColor} / ${outside}`)
+    }
+    assert.deepEqual(await style(page, '#chip-static', edge), normal)
+    const role = await style(page, '#chip-role', edge)
+    assert.equal(role.borderTopColor, role.color)
   }))
 
   test('Win accent checkbox fill and checkmark have 3:1 contrast', () => cases(async page => {
