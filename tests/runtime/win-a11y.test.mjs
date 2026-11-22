@@ -41,7 +41,7 @@ async function fixture(browser, layered, mode, width = 1280) {
     fixture.dispose()
     document.querySelector('#app').remove()
     const { createApp, h, reactive, ref } = Vue
-    const { QLinearProgress, QSelect, QInput, QCheckbox, QCard, QItem, QList, QBtn, QDialog, QCardSection, QCardActions } = Quasar
+    const { QLinearProgress, QCircularProgress, QSelect, QInput, QCheckbox, QCard, QItem, QList, QBtn, QBtnToggle, QDialog, QCardSection, QCardActions } = Quasar
     const state = reactive({ selected: null, value: 'Clear this value', checked: true, mixed: null, unchecked: false })
     const dialogOpen = ref(false)
     const root = document.createElement('main')
@@ -51,9 +51,12 @@ async function fixture(browser, layered, mode, width = 1280) {
     createApp({ render: () => [
       h('h1', { class: 'text-h5' }, 'Win interaction states'),
       h('section', {}, [h('p', {}, 'Progress: determinate / indeterminate'), ...[false, true].map(indeterminate => h(QLinearProgress, { id: indeterminate ? 'busy' : 'progress', value: 0.55, indeterminate, size: indeterminate ? '8px' : undefined, style: 'margin-block:12px' }))]),
+      h(QCircularProgress, { id: 'circular', value: 72, size: '64px', showValue: true, color: 'accent', trackColor: 'grey-3' }),
+      h('div', {}, h(QBtnToggle, { id: 'segmented', modelValue: 'a', options: [{ label: 'First', value: 'a' }, { label: 'Second', value: 'b' }] })),
       h(QSelect, { for: 'options', label: 'Keyboard options', outlined: true, modelValue: state.selected, options: ['First option', 'Second option', 'Third option'], 'onUpdate:modelValue': v => { state.selected = v }, behavior: 'menu' }),
       h(QInput, { for: 'clearable', label: 'Clearable field', outlined: true, clearable: true, modelValue: state.value, 'onUpdate:modelValue': v => { state.value = v } }),
       h('section', {}, ['checked', 'mixed', 'unchecked'].map(name => h(QCheckbox, { id: name, label: name, modelValue: state[name], 'onUpdate:modelValue': v => { state[name] = v } }))),
+      h(QCheckbox, { id: 'accent-checked', color: 'accent', modelValue: true, label: 'Accent checked' }),
       h(QCheckbox, { id: 'disabled-checked', label: 'disabled checked', modelValue: true, disable: true }),
       h(QCard, { id: 'local-dark', dark: true, style: 'padding:12px' }, () => [
         h(QItem, { id: 'dark-command', clickable: true }, () => 'Local dark command'),
@@ -151,6 +154,38 @@ if (process.env.QDS_WIN_CAPTURES) {
     } finally { await browser.close() }
   })
 } else {
+  test('Win segmented group has a contrasting perimeter in both contrast modes', () => cases(async page => {
+    for (const media of ['contrast', 'forced']) {
+      await page.emulateMedia(mediaCases[media])
+      await settle(page)
+      const edge = await style(page, '#segmented', ['outlineColor', 'outlineStyle', 'outlineWidth'])
+      const outside = await surface(page, '#accessibility')
+      assert.equal(edge.outlineStyle, 'solid', media)
+      assert.ok(parseFloat(edge.outlineWidth) >= 1, media)
+      assert.ok(contrast(over(edge.outlineColor, outside), outside) >= 3, `${media}: ${edge.outlineColor} / ${outside}`)
+    }
+  }))
+
+  test('Win accent checkbox fill and checkmark have 3:1 contrast', () => cases(async page => {
+    for (const media of ['normal', 'contrast']) {
+      await page.emulateMedia(mediaCases[media])
+      await settle(page)
+      const box = await surface(page, '#accent-checked .q-checkbox__bg')
+      const outside = await surface(page, '#accent-checked')
+      const { color } = await style(page, '#accent-checked .q-checkbox__svg', ['color'])
+      assert.ok(contrast(box, outside) >= 3, `${media}: ${box} / ${outside}`)
+      assert.ok(contrast(over(color, box), box) >= 3, `${media}: ${color} / ${box}`)
+    }
+  }))
+
+  test('Win circular progress draws a contrasting track in increased contrast', () => cases(async page => {
+    await page.emulateMedia(mediaCases.contrast)
+    await settle(page)
+    const { stroke } = await style(page, '#circular .q-circular-progress__track', ['stroke'])
+    const outside = await surface(page, '#circular')
+    assert.ok(contrast(over(stroke, outside), outside) >= 3, `${stroke} / ${outside}`)
+  }))
+
   test('Win local-dark dialog action has contrasting keyboard focus against both surfaces', async t => {
     const browser = await chromium.launch({ headless: true })
     try {

@@ -584,7 +584,9 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
 
 // WinUI deltas leave the shared semantic maps unchanged.
 @mixin qds-win-scopes {
-  $dark: '.qds-theme-dark.qds-variant-win, .qds-theme-dark .qds-variant-win, .qds-variant-win .qds-theme-dark, body.qds-ui.body--dark.qds-variant-win, body.qds-ui.body--dark .qds-variant-win';
+  $dark: '.qds-variant-win:is(.qds-theme-dark, .qds-theme-dark *), .qds-variant-win .qds-theme-dark, .qds-variant-win:is(body.qds-ui.body--dark, body.qds-ui.body--dark *)';
+  // Match the native dark scope's specificity for accessibility overrides.
+  $modes: ':is(.qds-variant-win, .qds-variant-win .qds-theme-dark, body.qds-ui.body--dark.qds-variant-win)';
   @layer qds.tokens {
   .qds-variant-win {
     @include qds-win-palette(light);
@@ -608,14 +610,14 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
 
   // Opaque material fallbacks drop the accent edge and the Mica tint, as on :root.
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; --qds-backdrop: var(--qds-surface-1); }
+    #{$modes} { --qds-control-stroke-on-accent-bottom: transparent; --qds-backdrop: var(--qds-surface-1); }
   }
 
   @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
-    .qds-variant-win, #{$dark} { --qds-control-stroke-on-accent-bottom: transparent; --qds-backdrop: var(--qds-surface-1); }
+    #{$modes} { --qds-control-stroke-on-accent-bottom: transparent; --qds-backdrop: var(--qds-surface-1); }
   }
   @media (prefers-contrast: more), (forced-colors: active) {
-    .qds-variant-win, #{$dark} {
+    #{$modes} {
       --_qds-win-surface-stroke: var(--qds-stroke-strong);
       @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, control-stroke-strong, control-stroke-on-accent-top, control-stroke-on-accent-bottom, card-stroke, material-stroke, stroke-default, stroke-subtle {
         --qds-#{$token}: var(--qds-stroke-strong);
@@ -623,7 +625,7 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
     }
   }
   @media (forced-colors: active) {
-    .qds-variant-win, #{$dark} { --qds-stroke-strong: CanvasText; --qds-stroke-focus: Highlight; --_qds-win-focus-system: Highlight; }
+    #{$modes} { --qds-stroke-strong: CanvasText; --qds-stroke-focus: Highlight; --_qds-win-focus-system: Highlight; }
   }
   }
 }

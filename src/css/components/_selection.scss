@@ -337,6 +337,7 @@ $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive
   // Dense keeps its 16px mark, which follows the dense inner size.
   #{$win} :is(.q-checkbox, .q-radio) { --qds-selection-mark-size: var(--qds-selection-inner-size); }
   #{$win} .q-checkbox:not(.q-checkbox--dense) .q-checkbox__svg { padding: 0.1875rem; }
+  #{$win} .q-checkbox .text-accent { --qds-selection-fill: color-mix(in srgb, var(--qds-color-accent), var(--qds-fg-accent)); }
   #{$win} .q-radio:not(.q-radio--dense) .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.333, 1.333, 1); }
   #{$win} .q-radio:not(.q-radio--dense, .disabled):hover .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.556, 1.556, 1); }
   #{$win} .q-radio:not(.q-radio--dense, .disabled):active .q-radio__inner--truthy .q-radio__check { transform: scale3d(1.111, 1.111, 1); }
