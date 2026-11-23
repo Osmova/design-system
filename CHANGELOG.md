@@ -4,6 +4,47 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Changed
+
+- **Contrast contract.** It replaces the 0.10.0 rule that every control keeps a 3:1 boundary:
+  - text stays at 4.5:1 or more;
+  - focus rings stay at 3:1 or more;
+  - state indicators stay at 3:1 or more: the switch off-track, checkbox and radio boxes, slider rails and errors;
+  - decorative control edges are soft or absent;
+  - under `prefers-contrast: more` and forced colours, every control gets a 3:1 edge back.
+
+  Disabled controls are exempt, as WCAG 1.4.3 allows. Ink and term keep their strokes, because strokes are part of their identity.
+- **Glass Apple pass.**
+  - Neutral buttons and fields drop their resting edge and sit on a soft tinted fill.
+  - Outline buttons keep a 45% label-colour edge.
+  - Selected rows, tabs and segments read through fill, accent label and semibold weight.
+  - Switch tracks, slider rails, checkbox and radio boxes, and errors keep strong state contrast.
+  - Read-only filled and standout fields draw a dashed edge in the field-label colour.
+  - Captions and side text on selected rows and expanded headers stay at 4.5:1.
+  - Under increased contrast and forced colours, cards, fields, buttons, rows and tinted clickable chips get 3:1 or system-colour edges back. Bar items get a `ButtonText` border under forced colours.
+- **Win states and fidelity.**
+  - Held filled buttons, and keyboard-activated ones, paint the WinUI pressed fill and drop the darker bottom edge.
+  - Neutral outline buttons use the soft control edge.
+  - Keyboard focus on select options, clear actions and focusable cards uses the Win focus ring, which stays readable inside local-dark surfaces.
+  - Under increased contrast and forced colours, edges come back for every control: segmented controls, pagination, chips, progress, fields and nested cards. Forced colours paint checked boxes, the active tab and selected tree nodes with system colours.
+- **Per-variant accent aliases.** `--qds-banner-accent(-rgb)`, `--qds-notify-accent(-rgb)` and `--qds-pagination-active-border` now resolve against each variant and scheme scope, light and dark alike. Before, the themed body kept the light `:root` values.
+
+### Fixed
+
+- **Mobile select dialog:** below 600px it gets equal whole-pixel side margins.
+- **Pagination:**
+  - Page buttons stay square at full size and no longer shrink. Size `max-pages` to the viewport.
+  - The jump-to input keeps its authored width.
+  - The QDS active treatment applies only to the default active page. Outline, push and unelevated designs keep their own look.
+- **Disabled list rows:** they keep Quasar's dimming and stay at 4.5:1 or more in every variant and scheme.
+- **Colour picker:** the value field is opaque, and the alpha ramp draws only the token checker.
+
+### Added
+
+- Gallery: a Compare A/B page that shows any two variants side by side in embedded frames. The address keeps the page and, for each side, the variant, mode, ink colour and shadcn palette.
+
 ## [0.10.0] — 2026-11-19
 
 ### Changed
