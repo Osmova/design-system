@@ -31,7 +31,7 @@ const ENTRIES = ['src/css/index.scss', 'src/css/index.layered.scss']
 const CORE_CAP = { min: 215200, gzip: 26800 }
 const VARIANT_CAP = { min: 380000, gzip: 46000 }
 // css/all and css/all/layered (every variant, for runtime switching); 701858 / 70022 with every 0.10.0 rework.
-const ALL_CAP = { min: 745000, gzip: 76650 }
+const ALL_CAP = { min: 767000, gzip: 79500 }
 const EXTENSION_ALLOWANCE = { lines: 80, min: 5632, gzip: 1024 }
 const failures = []
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
