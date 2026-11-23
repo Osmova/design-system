@@ -65,7 +65,7 @@ export const DESIGN_SYSTEM_VARIANTS = {
   win: {
     name: 'win',
     label: 'Win',
-    description: 'Default Windows 11 baseline: WinUI surfaces, solid mica layers and restrained tonal color.',
+    description: 'Windows 11 baseline: WinUI surfaces, solid mica layers and restrained tonal color.',
     cssClass: 'qds-variant-win',
   },
   ink: {
@@ -101,7 +101,7 @@ export const DESIGN_SYSTEM_VARIANTS = {
   glass: {
     name: 'glass',
     label: 'Glass',
-    description: 'Apple-inspired floating glass controls and bars, capsule and concentric shapes, and tint only for primary actions.',
+    description: 'Apple-inspired floating glass controls and bars, capsule and concentric shapes, and tint only for role fills and selection.',
     cssClass: 'qds-variant-glass',
   },
 } as Record<CanonicalDesignSystemVariantName, DesignSystemVariant> & {
