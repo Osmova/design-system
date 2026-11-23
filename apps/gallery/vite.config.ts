@@ -16,9 +16,11 @@ const adoptionModules = new Map([
 // without guessing hashed filenames (or the misleading former qwindow chunk).
 function consumerCssOrder(): Plugin {
   const emittedModules = new Map<string, string[]>()
+  let base = './'
   return {
     name: 'gallery-consumer-css-order',
     enforce: 'post',
+    configResolved(config) { base = config.base },
     buildStart() { emittedModules.clear() },
     renderChunk(_, chunk) {
       if ([...adoptionModules.values()].includes(chunk.name)) {
@@ -53,12 +55,12 @@ function consumerCssOrder(): Plugin {
         const source = String(asset.source)
         const links = source.match(/<link\b[^>]*rel="stylesheet"[^>]*>/g) ?? []
         const first = css.map((file) => {
-          const matches = links.filter((link) => link.includes(`./${file}`))
+          const matches = links.filter((link) => link.includes(`${base}${file}`))
           if (matches.length !== 1) this.error(`Expected exactly one ${file} link in ${html}`)
           return matches[0]
         })
         const otherAdoption = [...adoptionAssets.values()].filter((file) => !css.includes(file))
-        if (links.some((link) => otherAdoption.some((file) => link.includes(`./${file}`)))) {
+        if (links.some((link) => otherAdoption.some((file) => link.includes(`${base}${file}`)))) {
           this.error(`Mixed CSS adoption paths in ${html}`)
         }
         const ordered = [...first, ...links.filter((link) => !first.includes(link))]
@@ -74,9 +76,9 @@ function consumerCssOrder(): Plugin {
   }
 }
 
-// Relative base so the built gallery can be served from any deploy subpath.
+// Relative by default so the build serves from any subpath; the /next/ preview sets ODS_GALLERY_BASE.
 export default defineConfig({
-  base: './',
+  base: process.env.ODS_GALLERY_BASE || './',
   build: {
     rollupOptions: {
       input: {

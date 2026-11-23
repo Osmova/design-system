@@ -67,6 +67,7 @@ const variantIcons: Record<string, Component> = {
   glass: PhDrop,
   default: PhCircle,
 }
+const isPreview = import.meta.env.VITE_ODS_PREVIEW === '1'
 const linkIcons: Record<string, Component> = {
   storybook: PhBookOpenText,
 }
@@ -194,6 +195,9 @@ watch(tab, revealActiveGalleryTab)
 
 <template>
   <q-layout view="hHh LpR fFf">
+    <a v-if="isPreview" class="gallery-preview" href="/" data-test="ods-preview-banner">
+      Alpha preview — v1.0.0-alpha · stable site
+    </a>
     <q-header class="gallery-header">
       <q-toolbar>
         <q-btn
