@@ -43,10 +43,9 @@ jobs:
       - run: pnpm gallery:build
       - name: Verify emitted consumer CSS adoption order
         run: node apps/gallery/scripts/test-consumer-css-order.mjs
-      - run: pnpm stories:build
       - run: pnpm catalog:storybook:typecheck
       - run: pnpm catalog:storybook:build
-      - name: Verify both production catalog previews
+      - name: Verify the production catalog preview
         run: pnpm catalog:browser:test
 
       - run: pnpm gallery:test
