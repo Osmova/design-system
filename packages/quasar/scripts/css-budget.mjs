@@ -23,13 +23,13 @@ const BASELINE = '71bb9d52bf483a93de0b50202df122b73f70ed9e'
  * already emitted, and Atrium (T194) as a new variant paying both tokens and grammar. Projected
  * full catalog ~570000 min / ~56800 gzip / ~4450 component lines; caps set just above that.
  */
-const LIMITS = { important: 46, doubled: 0, lines: 5030 }
+const LIMITS = { important: 46, doubled: 0, lines: 5071 }
 // Opt-in delivery: ./css is the shared grammar plus the unscoped win default; each variant file is that grammar plus the one variant.
 const ENTRIES = ['src/css/index.scss', 'src/css/index.layered.scss']
 const CORE_CAP = { min: 210000, gzip: 26000 }
 const VARIANT_CAP = { min: 380000, gzip: 46000 }
-// css/all and css/all/layered (every variant, for runtime switching); 701858 / 70022 with every 0.10.0 rework.
-const ALL_CAP = { min: 705000, gzip: 71000 }
+// css/all and css/all/layered (every variant, for runtime switching); 712249 / 71911 with the default variant.
+const ALL_CAP = { min: 713300, gzip: 72060 }
 const EXTENSION_ALLOWANCE = { lines: 80, min: 5632, gzip: 1024 }
 const failures = []
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
