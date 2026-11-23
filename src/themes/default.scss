@@ -483,7 +483,6 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
   .qds-variant-glass {
     @include qds-glass-geometry;
     @include qds-variant-scheme(glass);
-    @include fallbacks.qds-material-tokens(light);
     @include qds-glass-material(light);
   }
 
@@ -496,7 +495,6 @@ $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-gl
 
   #{$glass-dark} {
     @include qds-variant-scheme(glass, true);
-    @include fallbacks.qds-material-tokens(dark);
     @include qds-glass-material(dark);
   }
 
