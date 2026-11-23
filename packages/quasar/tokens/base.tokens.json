@@ -133,6 +133,23 @@
     }
   },
   "font": {
+    "display": {
+      "$description": "Substrate display fallback: the body stack — every shipped variant overrides its own display family.",
+      "$type": "fontFamily",
+      "$value": [
+        "Inter Variable",
+        "Inter",
+        "Open Sans",
+        "Segoe UI Variable Display",
+        "Segoe UI",
+        "SF Pro Display",
+        "Avenir Next",
+        "Noto Sans",
+        "Helvetica Neue",
+        "Arial",
+        "sans-serif"
+      ]
+    },
     "body": {
       "$type": "fontFamily",
       "$value": [
