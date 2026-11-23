@@ -35,6 +35,7 @@
 @use 'components/compositions';
 @use 'components/variants/zen';
 @use 'components/variants/ink';
+@use 'components/variants/default' as osmova;
 
 @layer qds.base {
   @include base.styles;
@@ -72,4 +73,5 @@
   @include compositions.styles;
   @include zen.styles;
   @include ink.styles;
+  @include osmova.styles;
 }

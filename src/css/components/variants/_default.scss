@@ -1,0 +1,80 @@
+@use 'sass:map';
+@use '../button';
+@use '../card';
+@use '../../../themes/osmova';
+
+$scope: '.qds-variant-default:is(.qds-ui, .qds-ui *)';
+$field: '.q-field:not(.q-field--borderless, .qds-field--ghost)';
+$filter: '.q-chip--clickable[aria-pressed]:where(:not(.qds-solid))';
+$segment: '.q-btn-toggle > .q-btn.q-btn-item';
+$selected: ':is([aria-pressed="true"], .q-btn--active, .qds-active)';
+$edge: var(--_qds-osmova-control-edge, var(--_qds-osmova-filter-edge));
+
+@mixin styles {
+  #{$scope} { font-family: var(--qds-font-family); font-weight: var(--qds-font-weight-body); }
+  body#{$scope} { background: var(--qds-bg-canvas); }
+  .qds-ui.qds-theme-light.qds-variant-default #{card.$local-dark} {
+    @include osmova.paint(dark);
+    color: var(--qds-fg-default);
+    color-scheme: dark;
+  }
+  #{$scope} :is(.q-toolbar__title, .q-table__title, .q-dialog__title) { font-family: var(--qds-font-family-display); }
+  #{$scope} .q-item:is(.q-item--active, [aria-selected="true"]) { background-color: var(--qds-state-selected); }
+  #{$scope} .q-tabs--horizontal .q-tab > .q-tab__indicator { inset-inline: calc(50% - 0.5rem); }
+  #{$scope} .q-tabs--vertical .q-tab .q-tab__indicator { inset-block: calc(50% - 0.5rem); }
+  #{$scope} .q-tab:not(.q-tab--active):hover .q-tab__indicator { opacity: 0; }
+
+  #{$scope} #{$field} { --qds-field-radius: var(--qds-radius-control); --_qds-osmova-field-stroke: var(--_qds-osmova-validation, var(--_qds-osmova-control-edge, var(--_qds-osmova-field-edge))); }
+  #{$scope} #{$field}:is(.q-field--highlighted, :focus-within):where(:not(.q-field--readonly, .q-field--disabled)) { --_qds-osmova-field-stroke: var(--_qds-osmova-validation, var(--qds-stroke-focus)); }
+  #{$scope} .q-field--error { --_qds-osmova-validation: var(--qds-stroke-error); }
+  #{$scope} :is(.qds-field--positive, .qds-field--warning):not(.q-field--error) { --qds-field-tone: var(--qds-field-tone-fg); --_qds-osmova-validation: var(--qds-field-tone-fg); }
+  #{$scope} #{$field} .q-field__control { padding-inline: var(--qds-field-padding-inline); background: var(--qds-control-fill-default); }
+  #{$scope} #{$field}.q-field--disabled .q-field__control { background: var(--qds-control-fill-disabled); }
+  #{$scope} #{$field} .q-field__control::before { border: var(--qds-field-focus-border-width) solid var(--_qds-osmova-field-stroke); }
+  #{$scope} .q-field .q-field__control::after { display: none; }
+  #{$scope} #{$field}:is(.q-field--highlighted, :focus-within):where(:not(.q-field--readonly, .q-field--disabled)) .q-field__control { box-shadow: 0 0 0 4px color-mix(in srgb, var(--_qds-osmova-field-stroke) 8%, transparent); }
+  #{$scope} :is(.q-field--borderless, .qds-field--ghost):focus-within .q-field__control { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); }
+
+  #{$scope} .q-btn-toggle { gap: var(--qds-space-xs); padding: 0; }
+  #{$scope} :is(#{$segment}, #{$filter}) { border-color: #{$edge}; border-radius: var(--qds-radius-full); box-shadow: none; }
+  #{$scope} #{$segment} { --qds-fg-muted: var(--_qds-osmova-filter-idle); }
+  #{$scope} #{$segment}#{$selected} { --qds-fg-strong: var(--_qds-osmova-filter-text); border-color: var(--qds-segmented-thumb-bg); box-shadow: none; }
+  #{$scope} #{$filter} {
+    --_qds-osmova-chip-fill: transparent;
+    --_qds-osmova-chip-label: var(--_qds-osmova-filter-idle);
+    background: var(--_qds-osmova-chip-fill);
+    color: var(--_qds-osmova-chip-label);
+    @each $role, $soft in button.$soft-surfaces {
+      --qds-#{$soft}: var(--_qds-osmova-chip-fill);
+      --qds-fg-#{$role}: var(--_qds-osmova-chip-label);
+    }
+    --qds-fg-default: var(--_qds-osmova-chip-label);
+  }
+  #{$scope} #{$filter}.q-chip--selected { --_qds-osmova-chip-fill: var(--qds-segmented-thumb-bg); --_qds-osmova-chip-label: var(--_qds-osmova-filter-text); border-color: var(--qds-segmented-thumb-bg); }
+  #{$scope} :is(.q-chip:not(.q-chip--clickable, [class*="bg-"], .q-chip--outline), .q-chip.bg-grey:not([aria-pressed]), .q-badge.bg-grey, .q-badge:where(:not([class*="bg-"], .q-badge--outline, .q-badge--transparent))) { --qds-bg-layer: var(--qds-bg-card); --qds-fg-default: var(--_qds-osmova-tag-muted); color: var(--qds-fg-default); background-color: var(--qds-bg-card); border-color: var(--qds-border); }
+  @each $role, $_ in button.$roles {
+    #{$scope} :is(.q-chip:not(.qds-solid, [aria-pressed]).bg-#{$role}, .q-badge.qds-tonal.bg-#{$role}) {
+      @if $role == primary or $role == warning { --qds-fg-#{$role}: var(--_qds-osmova-tag-#{$role}); }
+      --qds-#{map.get(button.$soft-surfaces, $role)}: color-mix(in srgb, var(--qds-color-#{$role}) 5%, var(--qds-bg-canvas));
+      border-color: color-mix(in srgb, var(--qds-color-#{$role}) 20%, var(--qds-bg-canvas));
+    }
+  }
+
+  #{$scope} .q-avatar:where(:not([class*="bg-"], :has(img))) { background: var(--qds-color-secondary); color: var(--qds-text-on-secondary); }
+  #{$scope} .q-rating { color: var(--qds-fg-accent); }
+  // Match the QDS Phosphor star and preserve caller-supplied glyphs.
+  #{$scope} .q-rating__icon svg > path[d^="M239.18,97.26"] { d: path("M128 30 155 92 224 98 173 145 189 215 128 179 67 215 83 145 32 98 101 92Z"); fill-opacity: 0; stroke: currentColor; stroke-linejoin: round; stroke-width: 12px; }
+  #{$scope} .q-rating__icon:is(.q-rating__icon--active, .q-rating__icon--exselected) svg > path[d^="M239.18,97.26"] { fill-opacity: 1; }
+
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$scope}, .qds-ui.qds-theme-light.qds-variant-default #{card.$local-dark} { --_qds-osmova-control-edge: var(--_qds-osmova-forced-edge, var(--qds-stroke-strong)); }
+    #{$scope} .q-btn:not(.disabled, :focus-visible, [aria-pressed="true"]) { border-color: var(--_qds-osmova-control-edge); }
+    #{$scope} :is(button, a[href], input:not([type="hidden"], .q-field input, .q-slider input), select, textarea, [role="button"], [role="tab"], [contenteditable], .q-item--clickable, .q-chip--clickable, .q-slider__inner, .q-knob, :is(.q-field--borderless, .qds-field--ghost) .q-field__control):where(:not(:focus-visible, :focus-within, .disabled, .disabled *, :disabled, [aria-disabled="true"])) { outline: 1px solid var(--_qds-osmova-control-edge); outline-offset: -1px; }
+  }
+
+  @media (forced-colors: active) {
+    #{$scope} #{$field}:focus-within .q-field__control { outline: 2px solid Highlight; outline-offset: 2px; }
+    #{$scope} :is(#{$segment}#{$selected}, #{$filter}.q-chip--selected) { --qds-segmented-thumb-bg: Highlight; --_qds-osmova-filter-text: HighlightText; forced-color-adjust: none; }
+    #{$scope} :is(.q-tab--active, .q-item--active):where(:not(:focus-visible)) { outline: 2px solid Highlight; outline-offset: -2px; }
+  }
+}

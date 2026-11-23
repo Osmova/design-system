@@ -64,6 +64,8 @@ test('existing default-theme values stay byte-identical with only the two static
   // Each added profile is removed the same way shadcn is, so the frozen hash
   // below still verifies every earlier declaration and its emission order.
   const old = source.replace("@use 'shadcn';\n", '').replace('\n@include shadcn.scopes;\n', '\n')
+    .replace("@use 'osmova';\n", '')
+    .replace('@include osmova.scopes;\n', '')
     .replace('@include qds-zen-scopes;\n', '')
     .replace('@include qds-glass-scopes;\n', '')
     .replace('@include qds-win-scopes;\n', '')

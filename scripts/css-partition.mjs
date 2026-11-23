@@ -1,8 +1,8 @@
 import { compile } from 'sass'
 import postcss from 'postcss'
 
-export const VARIANT_SCOPES = ['ink', 'one', 'term', 'shadcn', 'zen', 'glass']
-// Rules scoped to the default variant ship only in the core bundle, which is the win default.
+export const VARIANT_SCOPES = ['ink', 'one', 'term', 'shadcn', 'zen', 'default', 'glass']
+// Win selectors ship with the core bundle.
 export const DEFAULT_SCOPE = 'win'
 const OWNED_BY = { reading: 'zen' }
 

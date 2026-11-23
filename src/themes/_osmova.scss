@@ -1,0 +1,163 @@
+@use 'sass:color';
+@use 'sass:map';
+@use '../tokens/default' as tokens;
+@use 'fallbacks';
+
+$profile: map.get(tokens.$variants, default);
+$scope: ':is(.qds-variant-default, body.qds-ui.qds-variant-default)';
+$dark: '.qds-variant-default:is(.qds-theme-dark, .qds-theme-dark *, body.qds-ui.body--dark, body.qds-ui.body--dark *)';
+
+@mixin scheme($name) {
+  $values: map.get($profile, $name);
+  @each $role in primary, primary-light, primary-dark, secondary, accent, positive, negative, warning, info {
+    $value: map.get($values, if(sass($role == info): primary; else: $role));
+    --qds-color-#{$role}: #{$value};
+    --qds-color-#{$role}-rgb: #{color.channel($value, 'red')}, #{color.channel($value, 'green')}, #{color.channel($value, 'blue')};
+  }
+  @each $token in surface-0, surface-1, surface-2, surface-3, text, text-strong, text-muted, border, stroke-strong, shadow-sm, fg-brand, fg-accent, fg-positive, fg-negative, fg-warning {
+    --qds-#{$token}: #{map.get($values, $token)};
+  }
+  @each $token in field-edge, filter-edge, filter-fill, filter-text, filter-idle, tag-muted, tag-warning {
+    --_qds-osmova-#{$token}: #{map.get($values, $token)};
+  }
+  --_qds-osmova-tag-primary: #{if(sass($name == light): var(--qds-color-primary); else: var(--qds-fg-brand))};
+  @each $role in primary, secondary, accent, positive, negative, warning, info, solid {
+    $on-fill: map.get($values, on-fill);
+    @if $name == light and ($role == positive or $role == warning) {
+      $on-fill: map.get($values, text-strong);
+    }
+    --qds-text-on-#{$role}: #{$on-fill};
+  }
+}
+
+@mixin paint($scheme) {
+  @include scheme($scheme);
+  @include fallbacks.qds-material-tokens(solid);
+  @include fallbacks.qds-elevation-tokens;
+
+  --qds-fg-default: var(--qds-text);
+  --qds-fg-strong: var(--qds-text-strong);
+  --qds-fg-muted: var(--qds-text-muted);
+  --qds-fg-primary: var(--qds-fg-brand);
+  --qds-fg-info: var(--qds-fg-brand);
+  --qds-fg-secondary: var(--qds-text-strong);
+  --qds-fg-on-brand: var(--qds-text-on-primary);
+  --qds-bg-canvas: var(--qds-surface-0);
+  --qds-bg-surface-1: var(--qds-surface-1);
+  --qds-bg-surface-2: var(--qds-surface-2);
+  --qds-bg-layer: var(--qds-surface-3);
+  --qds-bg-flyout: var(--qds-surface-0);
+  --qds-bg-card: var(--qds-surface-1);
+  --qds-bg-card-hover: var(--qds-surface-2);
+  --qds-surface-glass: var(--qds-surface-0);
+  --qds-backdrop: var(--qds-surface-0);
+  @each $token in card-fill, card-bg, card-bg-fallback, card-bg-readable, card-bg-opaque, card-header-bg, card-header-bg-opaque {
+    --qds-#{$token}: var(--qds-bg-card);
+  }
+  @each $role in primary, accent, positive, negative, warning, info {
+    $surface: if(sass($role == primary): brand; else: $role);
+    --qds-surface-#{$surface}-soft: color-mix(in srgb, var(--qds-color-#{$role}) 8%, var(--qds-bg-canvas));
+  }
+  --qds-surface-focus-block: var(--qds-state-selected);
+  --qds-surface-transient: var(--qds-bg-flyout);
+  --qds-menu-bg: var(--qds-bg-flyout);
+  --qds-menu-shadow: var(--qds-shadow-sm);
+  --qds-card-border-strong: var(--qds-border);
+  --qds-chrome-border-soft: var(--qds-border);
+  --qds-separator-color: var(--qds-border);
+  --qds-card-header-border: var(--qds-separator-color);
+  --qds-control-icon-color: var(--qds-fg-muted);
+  --qds-field-description-color: var(--qds-fg-muted);
+  --qds-interactive-bg: var(--qds-bg-canvas);
+  --qds-interactive-bg-hover: var(--qds-bg-surface-1);
+  --qds-interactive-bg-active: var(--qds-bg-surface-2);
+  --qds-interactive-border: var(--qds-border);
+  --qds-interactive-border-strong: var(--qds-stroke-strong);
+  --qds-interactive-text: var(--qds-fg-default);
+  --qds-interactive-text-muted: var(--qds-fg-muted);
+  --qds-slider-label-bg: var(--qds-bg-canvas);
+  --qds-slider-label-text: var(--qds-fg-strong);
+  --qds-slider-label-border: var(--qds-border);
+  --qds-tab-hover-bg: var(--qds-bg-surface-1);
+  --qds-tab-active-rail: var(--qds-color-primary);
+  --qds-field-label-bg: var(--qds-bg-canvas);
+  --qds-chrome-surface: var(--qds-surface-0);
+  --qds-chrome-surface-strong: var(--qds-surface-0);
+  --qds-toolbar-bg: var(--qds-surface-0);
+  --qds-shadow-md: var(--qds-shadow-sm);
+  --qds-shadow-lg: var(--qds-shadow-sm);
+  --qds-row-radius: var(--qds-radius-control);
+  --qds-stroke-focus: var(--_qds-osmova-forced-focus, var(--qds-color-primary));
+  --qds-state-focus-indicator: var(--qds-stroke-focus);
+  --qds-stroke-error: var(--qds-fg-negative);
+  @each $edge in border-subtle, stroke-default, stroke-subtle, stroke-divider, control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom, card-border, chrome-border, menu-border, material-stroke {
+    --qds-#{$edge}: var(--qds-border);
+  }
+  --qds-state-hover: color-mix(in srgb, var(--qds-text) 7%, transparent);
+  --qds-state-pressed: color-mix(in srgb, var(--qds-text) 13%, transparent);
+  --qds-state-selected: var(--qds-surface-2);
+  --qds-tab-active-bg: var(--qds-state-selected);
+  --qds-tab-active-text: var(--qds-text-strong);
+  --qds-segmented-track-bg: transparent;
+  --qds-segmented-thumb-bg: var(--_qds-osmova-filter-fill);
+  --qds-color-primary-hover: var(--qds-color-primary-dark);
+  --qds-color-primary-pressed: var(--qds-color-primary-dark);
+  --qds-fill-state-base: #{if(sass($scheme == dark): var(--qds-surface-0); else: var(--qds-fg-strong))};
+  --qds-banner-accent: var(--qds-color-primary);
+  --qds-banner-accent-rgb: var(--qds-color-primary-rgb);
+  --qds-notify-accent: var(--qds-color-primary);
+  --qds-notify-accent-rgb: var(--qds-color-primary-rgb);
+  --qds-pagination-active-border: var(--qds-color-primary);
+  --qds-pagination-active-bg: var(--qds-surface-2);
+  --qds-pagination-active-text: var(--qds-fg-brand);
+  --qds-table-header-bg: var(--qds-surface-2);
+  --qds-table-header-text: var(--qds-text-muted);
+  --qds-table-row-hover-bg: var(--qds-surface-1);
+  --qds-table-selected-bg: var(--qds-state-selected);
+  --qds-table-sort-icon: var(--qds-color-primary);
+  --qds-stepper-rail-active: var(--qds-color-primary);
+  --qds-chat-bubble-bg: var(--qds-surface-2);
+  --qds-chat-bubble-fg: var(--qds-text);
+}
+
+@mixin scopes {
+  @layer qds.tokens {
+    #{$scope} {
+      @include paint(light);
+      @each $token in font-family, font-family-display, font-weight-body, radius-control, radius-lg, radius-xl {
+        --qds-#{$token}: #{map.get($profile, $token)};
+      }
+      --qds-font-weight-body1: var(--qds-font-weight-body);
+      --qds-font-weight-body2: var(--qds-font-weight-body);
+      --qds-font-weight-h1: #{map.get($profile, font-weight-display)};
+      --qds-font-weight-h2: var(--qds-font-weight-bold);
+      --qds-font-size-body: 0.9375rem;
+      --qds-button-radius: var(--qds-radius-control);
+      --qds-card-radius: var(--qds-radius-lg);
+      --qds-menu-radius: var(--qds-radius-control);
+      --qds-field-size-md: #{map.get($profile, field-height)};
+      --qds-field-size-lg: calc(var(--qds-field-size-md) + var(--qds-space-xs) * 2);
+      --qds-field-padding-inline: #{map.get($profile, field-padding)};
+    }
+
+    #{$dark} {
+      @include scheme(dark);
+      --qds-fill-state-base: var(--qds-surface-0);
+    }
+
+    @media (prefers-contrast: more), (forced-colors: active) {
+      #{$scope} {
+        @each $edge in control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom {
+          --qds-#{$edge}: var(--qds-stroke-strong);
+        }
+      }
+    }
+
+    @media (forced-colors: active) {
+      #{$scope} {
+        --_qds-osmova-forced-edge: ButtonText;
+        --_qds-osmova-forced-focus: Highlight;
+      }
+    }
+  }
+}

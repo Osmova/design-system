@@ -40,7 +40,7 @@ import {
   DESIGN_SYSTEM_THEME_KEY,
 } from './src'
 import 'quasar/src/css/index.sass'
-import './src/fonts/inter.css'
+import './src/fonts/default.css'
 import './src/fonts/selawik.css'
 import './src/css/index.scss'
 import '@quasar/quasar-ui-qwindow/index.css'

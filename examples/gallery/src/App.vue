@@ -16,6 +16,7 @@ import {
   PhSquaresFour,
   PhLeaf,
   PhDrop,
+  PhCircle,
 } from '@phosphor-icons/vue'
 import {
   useDesignSystem,
@@ -68,6 +69,7 @@ const variantIcons: Record<string, Component> = {
   shadcn: PhSquaresFour,
   zen: PhLeaf,
   glass: PhDrop,
+  default: PhCircle,
 }
 const linkIcons: Record<string, Component> = {
   histoire: PhBooks,
@@ -382,7 +384,7 @@ watch(tab, revealActiveGalleryTab)
         vertical
         no-caps
         align="left"
-        indicator-color="transparent"
+        :indicator-color="activeVariant.name === 'default' ? undefined : 'transparent'"
         class="gallery-tabs gallery-nav"
         @click="closeOverlayDrawer"
       >
@@ -637,6 +639,16 @@ watch(tab, revealActiveGalleryTab)
   /* A light-on-light primary (term amber) is unreadable as a label; the tint carries the accent. */
   color: var(--qds-fg-strong);
   font-weight: 560;
+}
+
+.qds-variant-default .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {
+  background: var(--qds-state-selected);
+}
+
+.qds-variant-default .gallery-nav :deep(.q-tab--active .q-tab__indicator) {
+  width: 3px;
+  inset-block: calc(50% - 0.5rem);
+  color: var(--qds-tab-active-rail);
 }
 
 .qds-variant-glass .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {

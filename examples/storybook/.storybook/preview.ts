@@ -29,7 +29,7 @@ import { ownPreviewController } from '../../../catalog/preview/index'
 // first, then optional fonts, then the QDS tokens/component overrides AFTER
 // Quasar (unlayered overrides win via `.qds-ui` scope, they must load last).
 import 'quasar/src/css/index.sass'
-import '@osmova/quasar-design-system/fonts/inter.css'
+import '@osmova/quasar-design-system/fonts/default.css'
 import '@osmova/quasar-design-system/fonts/open-sans.css'
 import '@osmova/quasar-design-system/fonts/selawik.css'
 import '@osmova/quasar-design-system/css/all'
@@ -75,7 +75,7 @@ setup((app) => {
   ownPreviewController(app, controller)
 })
 
-const variantNames = Object.keys(DESIGN_SYSTEM_VARIANTS)
+const variants = Object.values(DESIGN_SYSTEM_VARIANTS)
 const paletteNames = SHADCN_BASE_COLORS.map((palette) => palette.name)
 
 export const globalTypes = {
@@ -98,7 +98,7 @@ export const globalTypes = {
       title: 'QDS variant',
       icon: 'summarize',
       dynamicTitle: true,
-      items: variantNames.map((name) => ({ value: name, title: name })),
+      items: variants.map(({ name, label }) => ({ value: name, title: name === 'default' ? label : name })),
     },
   },
   shadcnBaseColor: {

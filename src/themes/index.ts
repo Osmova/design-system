@@ -1,4 +1,4 @@
-export type CanonicalDesignSystemVariantName = 'win' | 'ink' | 'one' | 'term' | 'shadcn' | 'zen' | 'glass'
+export type CanonicalDesignSystemVariantName = 'win' | 'ink' | 'one' | 'term' | 'shadcn' | 'zen' | 'default' | 'glass'
 export type LegacyDesignSystemVariantName = 'fluent' | 'studio' | 'air' | 'feather' | 'mobile' | 'terminal'
 export type BuiltInDesignSystemVariantName = CanonicalDesignSystemVariantName | LegacyDesignSystemVariantName
 
@@ -98,6 +98,12 @@ export const DESIGN_SYSTEM_VARIANTS = {
     description: 'Soft tinted paper blocks with a quiet reading rhythm, gentle depth and an essential boundary on every control.',
     cssClass: 'qds-variant-zen',
   },
+  default: {
+    name: 'default',
+    label: 'Osmova',
+    description: 'Osmova’s electric blue, soft hairlines and crisp typography on white and midnight surfaces.',
+    cssClass: 'qds-variant-default',
+  },
   glass: {
     name: 'glass',
     label: 'Glass',
@@ -163,7 +169,7 @@ for (const [name, variant] of Object.entries(LEGACY_VARIANT_ALIASES)) {
 export const DEFAULT_THEME: QuasarDesignTheme = {
   name: DEFAULT_THEME_NAME,
   label: 'Default',
-  description: 'Windows 11 focused Quasar 2 design language with Ink, One, Term, Shadcn, Zen, and Glass variants.',
+  description: 'Windows 11 focused Quasar 2 design language with Ink, One, Term, Shadcn, Zen, Osmova, and Glass variants.',
   variants: DESIGN_SYSTEM_VARIANTS,
 }
 
@@ -173,7 +179,7 @@ export const DESIGN_SYSTEM_THEMES = {
 
 export function isBuiltInDesignSystemVariantName(value: unknown): value is BuiltInDesignSystemVariantName {
   return value === 'win' || value === 'fluent' || value === 'ink' || value === 'one' || value === 'term' || value === 'shadcn'
-    || value === 'zen' || value === 'glass'
+    || value === 'zen' || value === 'default' || value === 'glass'
     || value === 'studio' || value === 'air' || value === 'feather'
     || value === 'mobile' || value === 'terminal'
 }

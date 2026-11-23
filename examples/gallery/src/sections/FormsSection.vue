@@ -240,7 +240,8 @@ function onPinBackspace(index: number) {
 
     <q-card class="q-pa-lg" data-test="qds-forms-variants">
       <div class="text-h6 qds-display q-mb-xs">Variants &amp; sizes</div>
-      <div class="qds-text-muted q-mb-md">Fluent heights 24 / 32 / 40: <code>dense</code>, default, <code>.qds-field--lg</code>.</div>
+      <div v-if="ds.variant.value === 'default'" class="qds-text-muted q-mb-md">Standard fields are 56px tall. Large fields are 64px.</div>
+      <div v-else class="qds-text-muted q-mb-md">Fluent heights 24 / 32 / 40: <code>dense</code>, default, <code>.qds-field--lg</code>.</div>
       <div class="forms-matrix">
         <template v-for="variant in variants" :key="variant.name">
           <div class="forms-matrix__label qds-text-muted"><code>{{ variant.class || variant.name }}</code></div>
@@ -255,7 +256,7 @@ function onPinBackspace(index: number) {
               :name="`forms-${variant.name}-${size.name}`"
               :dense="size.dense"
               :class="[variant.class, size.class]"
-              :label="size.label"
+              :label="ds.variant.value === 'default' ? size.label.split(' (')[0] : size.label"
               placeholder="Type here"
             />
           </div>
@@ -454,7 +455,7 @@ function onPinBackspace(index: number) {
           :aria-pressed="category === pill.value"
           @update:selected="category = pill.value"
         >
-          <component :is="pill.icon" :size="16" weight="duotone" :class="pill.color" />
+          <component :is="pill.icon" :size="16" :weight="ds.variant.value === 'default' ? 'light' : 'duotone'" :class="ds.variant.value === 'default' ? undefined : pill.color" />
           {{ pill.label }}
         </q-chip>
       </div>

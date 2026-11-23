@@ -3,6 +3,7 @@
 @use '../tokens/default' as tokens;
 @use 'fallbacks' as fallbacks;
 @use 'shadcn';
+@use 'osmova';
 
 @function qds-variant-token($variant, $token) {
   @return map.get(map.get(tokens.$variants, $variant), $token);
@@ -804,11 +805,12 @@ $qds-material-scopes: '.qds-theme-dark, body.qds-ui.body--dark, .qds-variant-one
 @include qds-win-scopes;
 @include qds-ink-scopes;
 @include shadcn.scopes;
+@include osmova.scopes;
 
 // Runtime sentinel: the controller warns in development when the active variant's stylesheet is missing.
 @mixin qds-variant-sentinels {
   @layer qds.tokens {
-    @each $variant in win, ink, one, term, shadcn, zen, glass {
+    @each $variant in win, ink, one, term, shadcn, zen, default, glass {
       .qds-variant-#{$variant} { --_qds-variant: #{$variant}; }
     }
   }

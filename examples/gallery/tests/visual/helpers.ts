@@ -1,11 +1,11 @@
 import { expect, type Page } from '@playwright/test'
 
 export type Mode = 'light' | 'dark'
-export type Variant = 'win' | 'ink' | 'one' | 'term' | 'shadcn' | 'zen' | 'glass'
+export type Variant = 'win' | 'ink' | 'one' | 'term' | 'shadcn' | 'zen' | 'default' | 'glass'
 export type LegacyVariant = Exclude<Variant, 'shadcn'>
 export type BaseColor = 'neutral' | 'gray' | 'zinc' | 'stone' | 'slate'
 
-export const CANONICAL_VARIANTS: Variant[] = ['win', 'ink', 'one', 'term', 'shadcn', 'zen', 'glass']
+export const CANONICAL_VARIANTS: Variant[] = ['win', 'ink', 'one', 'term', 'shadcn', 'zen', 'default', 'glass']
 // Every page offered by the gallery nav, matching the App.vue tab set.
 export const GALLERY_PAGES = ['tokens', 'typography', 'compare', 'components', 'forms', 'apps', 'catalog', 'variants', 'scenes', 'plugins', 'window', 'icons', 'fonts'] as const
 // Existing grammar tests deliberately keep their four-variant expectations.

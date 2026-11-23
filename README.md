@@ -54,7 +54,7 @@ import '@osmova/quasar-design-system/css'
 import '@osmova/quasar-design-system/css/variants/zen' // instead of './css'
 ```
 
-Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 25 KB and a variant bundle is 26–43 KB, against about 70 KB for everything. A variant file **replaces** `./css`: importing both applies the default rules twice and lets them override the variant.
+Variants: `ink`, `one`, `term`, `shadcn`, `zen`, `default`, `glass` (`win` is `./css` itself). Gzipped, `./css` is about 25 KB and a variant bundle is 26–43 KB, against about 70 KB for everything. A variant file **replaces** `./css`: importing both applies the default rules twice and lets them override the variant.
 
 An app that switches variants at runtime either imports every variant at once:
 
@@ -232,6 +232,7 @@ The package is structured around `src/themes/`. For now there is one real theme,
 - `one`: Samsung One UI-inspired neutral grey or true-black pages, rounded blocks, pill controls, a calm blue accent, and touch-friendly rhythm.
 - `term`: opaque amber developer UI on warm cream or near-black panes, with crisp hairline rules, amber fills carrying dark ink, and a monospace-forward feel.
 - `zen`: linen paper with sage controls and a quiet reading rhythm — warm linen surfaces, a muted sage primary, 12px control and 20px block radii, gentle diffuse depth, and an essential 1px edge on every control so nothing depends on a shadow alone. The opt-in `.qds-reading` class strips decorative depth and motion while every boundary survives.
+- `default` (Osmova): electric blue actions, soft card edges, neutral navigation with leading accent rails, and pill filters. Import `@osmova/quasar-design-system/fonts/default.css` for Osmova Sans headings and Inter Light body text.
 - `glass`: inspired by Apple's design language. Controls and bars float on a translucent functional layer above opaque content: bars carry no fill of their own and pick up a divider once content scrolls under them, overlay sidebars and sheets float inset, and menus open with a short spring. Prominent controls are capsules, dense ones rounded rectangles, and nested shapes are concentric with their container. Tint is reserved for role fills and selection. It uses the native system font stack and ships no Apple font, symbol or artwork. Control edges are soft or absent; text keeps 4.5:1, and focus rings and state indicators (switch tracks, checkbox and radio boxes, slider rails, errors) keep 3:1. Translucency is decoration only: without `backdrop-filter`, under reduced transparency, forced colours or increased contrast it resolves to opaque surfaces, and increased contrast and forced colours restore a 3:1 edge on every control. Toolbars inside content stay plain; add `qds-glass-bar` to a `QToolbar` to float its buttons on glass.
 - `shadcn`: opaque New York-inspired native Quasar controls with Neutral (default), Gray, Zinc, Stone, and Slate base palettes, compact 36px regular controls, 8px control radii, and 14px card radii. No Tailwind or Reka dependency is required by the package.
 
@@ -242,7 +243,7 @@ Choose the variant once at app startup and let the runtime keep the matching bod
 ```ts
 configureDesignSystem(app, {
   mode: 'system',
-  variant: 'ink', // win | ink | one | term | shadcn | zen | glass
+  variant: 'ink', // win | ink | one | term | shadcn | zen | default | glass
 })
 ```
 
@@ -297,7 +298,7 @@ Use `qds-theme-dark` for dark mode, or a consistent `data-qds-resolved="light|da
 
 Keep QDS after Quasar for the default export. For the layered export, layer Quasar deliberately; **important declarations reverse layer order**, so audit consumer important overrides separately from normal declarations. The theme already bridges the seven Quasar role variables (`--q-primary`, `--q-secondary`, `--q-accent`, `--q-positive`, `--q-negative`, `--q-warning`, `--q-info`) within shadcn and local scheme boundaries; it does not mutate global Quasar colors or `--q-dark`. Unlayered consumer overrides after QDS are supported. Primitive overrides inside a component must also rebind the semantic aliases that consume them, because inherited custom properties can already be resolved at their parent scope.
 
-To rebrand, override `--qds-color-*` on the body (or the variant class, e.g. `.qds-variant-win`), not only on `:root`: `win`, `zen` and `glass` set their palettes on the variant class, which wins over `:root`. Overriding `--qds-color-primary` on `:root` alone also leaves the primary-derived aliases (`--qds-banner-accent`, `--qds-notify-accent(-rgb)`, `--qds-pagination-active-border`) resolving against the previous palette at body level — always override on the body/variant scope.
+To rebrand, override `--qds-color-*` on the body (or the variant class, e.g. `.qds-variant-win`), not only on `:root`: `win`, `zen`, `default` and `glass` set their palettes on the variant class, which wins over `:root`. Overriding `--qds-color-primary` on `:root` alone also leaves the primary-derived aliases (`--qds-banner-accent`, `--qds-notify-accent(-rgb)`, `--qds-pagination-active-border`) resolving against the previous palette at body level — always override on the body/variant scope.
 
 Unlike Fluent, an ordinary uncolored filled shadcn button is a primary action; contextual picker, pagination, toggle, and editor controls retain their native grammar. Flat, outline, push, dense, rounded/square, loading, literal palette colors, and explicit sizes remain distinct. Semantic solid fills own their on-fill foreground even with `text-color="white"` or normal inline text color; inline **important** author color wins. Literal combinations such as `color="red-7" text-color="white"` stay native. Use `.qds-tonal` for a soft button/badge and `.qds-solid` for a solid chip. `.qds-button--link` supplies a link-like visual treatment but does not change button semantics. Shadcn fields use perimeter strokes/focus halos rather than Fluent's focus bar, and surfaces remain opaque rather than acrylic.
 
