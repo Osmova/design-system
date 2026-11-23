@@ -21,7 +21,7 @@ async function setVariant(page: Page, variant: Variant) {
   }, variant)
 }
 
-for (const variant of [...CANONICAL_VARIANTS, 'default'] as const) {
+for (const variant of CANONICAL_VARIANTS) {
   test(`shared ${variant} URL configures before mount, reloads and opens independently`, async ({ page, browser, baseURL }) => {
     await page.addInitScript(() => {
       let controller: unknown

@@ -379,7 +379,7 @@ test.describe('ODS override gate', () => {
       expect.soft(state.canonicalClass, `${input} writes canonical class`).toBe(true)
       expect.soft(state.oldClass, `${input} old class is absent`).toBe(false)
       expect.soft(state.dataVariant, `${input} writes the canonical data-ods-variant`).toBe(canonical)
-      expect.soft(labels.map((label) => label.trim()), `${input} exposes only canonical switcher entries`).toEqual(['Win', 'Ink', 'One', 'Term', 'Shadcn', 'Zen', 'Glass'])
+      expect.soft(labels.map((label) => label.trim()), `${input} exposes only canonical switcher entries`).toEqual(['Win', 'Ink', 'One', 'Term', 'Shadcn', 'Zen', 'Osmova', 'Glass'])
     }
   })
 
