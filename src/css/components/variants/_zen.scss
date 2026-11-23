@@ -243,10 +243,10 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-btn-group:not(.q-btn-group--outline) > .q-btn + .q-btn { border-inline-start: 1px solid var(--qds-stroke-default); }
   // Segmented control: a raised tray whose active segment is pressed into it.
   #{$zen} .q-btn-toggle { gap: 0.125rem; padding: 0.1875rem; background: #{$raised}; }
-  #{$zen} .q-btn-toggle > .q-btn.q-btn-item { min-height: calc(var(--qds-button-min-height) - 0.5rem); border: 1px solid transparent; border-radius: var(--qds-radius-full); --_qds-zen-depth: 0 0 transparent; transform: none; }
+  #{$zen} .q-btn-toggle > .q-btn.q-btn-item { min-height: calc(var(--qds-button-min-height) - 0.5rem); border: 1px solid transparent; border-radius: var(--qds-radius-full); font-weight: var(--qds-font-weight-medium); --_qds-zen-depth: 0 0 transparent; transform: none; }
   #{$zen} .q-btn-toggle:has(> .q-btn--dense) { padding: 0.125rem; }
   #{$zen} .q-btn-toggle > .q-btn.q-btn-item.q-btn--dense { min-height: calc(var(--qds-button-dense-min-height) - 0.375rem); padding-inline: 0.625rem; }
-  #{$zen} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) { --_qds-zen-depth: #{$press}; border-color: #{$soft-edge}; box-shadow: #{$press}; }
+  #{$zen} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active) { --_qds-zen-depth: #{$press}; --qds-fg-strong: var(--qds-fg-brand); border-color: #{$soft-edge}; box-shadow: #{$press}; font-weight: var(--qds-font-weight-semibold); }
   #{$zen} :is(.q-breadcrumbs, .q-banner, .q-list--bordered, .q-table__container) { border: 1px solid var(--qds-stroke-default); border-radius: var(--qds-radius-lg); background: #{$raised}; box-shadow: #{$lift-1}, #{$edge}; }
   #{$zen} .q-breadcrumbs { width: fit-content; max-width: 100%; padding: 0.25rem 0.75rem; }
   #{$zen} .q-breadcrumbs .q-breadcrumbs__el:is([aria-current='page'], :not(a)) { color: var(--qds-fg-strong); font-weight: var(--qds-font-weight-semibold); }
@@ -266,7 +266,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-chip.q-chip--square { border-radius: var(--qds-radius-sm); }
   #{$zen} .q-badge.q-badge--outline { border: 1px solid #{$tint-edge}; background: transparent; }
   #{$zen} .q-chip.q-chip--clickable:not(.disabled):hover { box-shadow: #{$lift-2}, #{$edge}; }
-  #{$zen} .q-chip:is(.q-chip--selected, .q-chip--clickable:not(.disabled):active) { background: #{$inset}; box-shadow: #{$press}; }
+  #{$zen} .q-chip.q-chip--clickable:not(.disabled, .q-chip--selected):active { background: #{$inset}; box-shadow: #{$press}; }
+  #{$zen} .q-chip.q-chip--selected { background: var(--qds-surface-brand-soft); font-weight: var(--qds-font-weight-semibold); }
   #{$zen} .q-rating__icon { color: var(--qds-fg-muted); text-shadow: none; }
   #{$zen} .q-rating__icon--active { color: var(--qds-color-warning); }
 }
@@ -288,7 +289,7 @@ $ease: var(--qds-motion-fast);
   #{$zen} .qds-tile__label { color: var(--qds-fg-muted); }
   #{$zen} .qds-settings-group > .qds-settings-card + .qds-settings-card { margin-block-start: var(--qds-space-sm); }
   #{$zen} .q-stepper { --qds-stepper-dot-size: 2rem; --qds-stepper-rail: var(--qds-stroke-strong); }
-  #{$zen} .q-stepper__tab:not(.q-stepper__tab--active, .q-stepper__tab--done, .q-stepper__tab--error) .q-stepper__dot { border-color: #{$soft-edge}; background: #{$raised}; box-shadow: #{$lift-1}, #{$edge}; color: var(--qds-fg-default); }
+  #{$zen} .q-stepper__tab:not(.q-stepper__tab--active, .q-stepper__tab--done, .q-stepper__tab--error) .q-stepper__dot { border-color: var(--qds-stroke-strong); background: #{$raised}; box-shadow: #{$lift-1}, #{$edge}; color: var(--qds-fg-default); }
   #{$zen} .q-stepper__tab--active .q-stepper__dot { box-shadow: 0 0 0 0.25rem var(--qds-surface-brand-soft), #{$lift-1}; }
   #{$zen} .q-carousel { border-radius: var(--qds-radius-lg); background: #{$base}; }
   #{$zen} .q-message-sent .q-message-text { --qds-chat-bubble-bg: var(--qds-surface-brand-soft); --qds-chat-bubble-fg: var(--qds-fg-default); border-color: var(--qds-stroke-default); }
@@ -328,7 +329,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-list .q-item__label--header { padding: var(--qds-space-md) var(--qds-space-md) var(--qds-space-xs); color: var(--qds-fg-muted); font-size: var(--qds-font-size-overline); font-weight: var(--qds-font-weight-semibold); }
   #{$zen} .q-item .q-item__section--side > .q-icon { color: var(--qds-fg-muted); }
   #{$zen} .q-expansion-item { border-radius: var(--qds-radius-lg); }
-  #{$zen} .q-tree__node--selected { border-radius: var(--qds-radius-control); outline: 1px solid transparent; outline-offset: -1px; background: #{$inset}; box-shadow: inset 0 0 0 1px #{$soft-edge}, #{$press}; }
+  #{$zen} .q-tree__node--selected { border-radius: var(--qds-radius-control); outline: 1px solid transparent; outline-offset: -1px; background: var(--qds-surface-brand-soft); }
+  #{$zen} .q-tree__node--selected .q-tree__node-header-content { color: var(--qds-fg-brand); font-weight: var(--qds-font-weight-semibold); }
   #{$zen} .q-tree__node--selected::after { display: none; }
   #{$zen} .q-table thead th { color: var(--qds-fg-muted); font-weight: var(--qds-font-weight-semibold); background: #{$base}; }
   #{$zen} .q-table :is(th, td) { border-color: var(--qds-stroke-default); }
@@ -410,7 +412,8 @@ $ease: var(--qds-motion-fast);
   }
   @media (forced-colors: active) {
     #{$zen} .q-field--focused .q-field__control { outline-color: Highlight; }
-    #{$zen} :is(.q-tab--active, .q-item--active, .q-chip--selected, .q-btn[aria-pressed='true']) { border-color: Highlight; }
+    #{$zen} :is(.q-item--active, .q-chip--selected) { border-color: Highlight; }
+    #{$zen} :is(.q-tree__node--selected, .q-btn-toggle > .q-btn[aria-pressed='true']) { outline: 1px solid Highlight; outline-offset: -1px; }
     #{$zen} .q-tab--active .q-tab__indicator { forced-color-adjust: none; color: Highlight; }
   }
 }
@@ -424,7 +427,6 @@ $ease: var(--qds-motion-fast);
   #{$reading} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-list--bordered, .q-table__container, .q-banner, .q-breadcrumbs) { border-color: #{$soft-edge}; }
   #{$reading} :is(.q-field__control, .q-slider__inner, .q-toggle__track, .q-checkbox__bg, .q-radio__bg) { background: var(--qds-control-fill-default); }
   #{$reading} .q-item:is(.q-item--active, [aria-selected='true']) { background-color: var(--qds-surface-brand-soft); }
-  #{$reading} .q-tree__node--selected { background: var(--qds-surface-brand-soft); box-shadow: inset 0 0 0 1px #{$soft-edge}; }
   #{$reading} :is(.q-btn, .q-field__control, .q-tab, .q-menu, .q-item, .q-chip, .q-toggle__thumb, .q-toggle__track),
   #{$reading} :is(.q-field__control, .q-item, .q-toggle__thumb, .q-toggle__track)::before,
   #{$reading} :is(.q-field__control, .q-item, .q-toggle__thumb, .q-toggle__track)::after {

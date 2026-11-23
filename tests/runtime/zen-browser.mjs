@@ -54,7 +54,7 @@ async function mount(browser, bodyClass) {
   await page.addScriptTag({ content: assets.quasar })
   await page.evaluate(() => {
     const { createApp, h, reactive, nextTick } = Vue
-    const { QBtn, QInput, QTabs, QTab, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QSlider } = Quasar
+    const { QBtn, QBtnToggle, QInput, QTabs, QTab, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QSlider } = Quasar
     const state = reactive({ value: 'Zen', tab: 'a', menu: false, error: false })
     const app = createApp({ setup: () => () => [
       h('div', { style: 'display:flex;gap:16px;flex-wrap:wrap' }, [
@@ -67,6 +67,9 @@ async function mount(browser, bodyClass) {
         label: 'Reading label', outlined: true, hint: 'Zen help', error: state.error, errorMessage: 'Zen error' }),
       h(QTabs, { id: 'tabs', modelValue: state.tab, 'onUpdate:modelValue': (v) => { state.tab = v } },
         () => ['a', 'b', 'c'].map((name) => h(QTab, { name, label: `Tab ${name}` }))),
+      h(QBtnToggle, { id: 'segments', modelValue: 'a', options: [
+        { label: 'Segment A', value: 'a' }, { label: 'Segment B', value: 'b' },
+      ] }),
       h(QBtn, { id: 'anchor', label: 'Menu', onClick: () => { state.menu = true } }, () => h(QMenu, {
         id: 'menu', noParentEvent: true, modelValue: state.menu, 'onUpdate:modelValue': (v) => { state.menu = v }, transitionDuration: 0,
       }, () => h(QList, {}, () => [
@@ -105,6 +108,7 @@ async function observe(page) {
     ['button', '#button'], ['filled', '#fill-primary'], ['disabled', '#disabled'],
     ['field', '.q-field__control'], ['tabsTrack', '.q-tabs'],
     ['tabActive', '.q-tab--active'], ['tabIdle', '.q-tab:not(.q-tab--active)'],
+    ['segmentActive', '#segments [aria-pressed="true"]'], ['segmentIdle', '#segments [aria-pressed="false"]'],
     ['menu', '.q-menu'], ['menuItem', '.q-menu .q-item--active'],
   ]) samples[name] = await read(page, selector, PAINT)
   samples.activeLabel = await read(page, '.q-tab--active .q-tab__label', ['font-weight'])
@@ -143,6 +147,7 @@ try {
         ['field text', paint.field, paint.field],
         ['active tab label', paint.tabActive, paint.tabActive],
         ['idle tab label', paint.tabIdle, paint.tabsTrack],
+        ['active segment label', paint.segmentActive, paint.segmentActive],
         ['menu item', paint.menuItem, paint.menuItem],
       ]) {
         const fill = opaque(backdrop['background-color'], `${scheme} ${label}`)
@@ -235,6 +240,7 @@ try {
       assert.ok(parseFloat(paint.indicator.height) >= 2 && parseFloat(paint.indicator.width) < paint.activeTabWidth / 2, `${scheme} underline is a short dash (${paint.indicator.width} of ${paint.activeTabWidth}px)`)
       assert.equal(paint.fieldAfter, 'none', `${scheme} Zen paints no field focus bar`)
       assert.ok(Number(paint.activeLabel['font-weight']) > Number(paint.idleLabel['font-weight']), `${scheme} active tab carries a non-colour weight cue (${paint.activeLabel['font-weight']} vs ${paint.idleLabel['font-weight']})`)
+      assert.ok(Number(paint.segmentActive['font-weight']) > Number(paint.segmentIdle['font-weight']), `${scheme} active segment carries a weight cue`)
 
       // Focus rings the whole control instead of underlining it.
       await page.focus('.q-field input')

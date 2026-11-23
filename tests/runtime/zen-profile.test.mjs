@@ -109,7 +109,7 @@ for (const scheme of schemes) {
       check(`text/surface-${step}`, parseRgb(token.text), parseRgb(token[`surface-${step}`]))
       check(`text-strong/surface-${step}`, strong, parseRgb(token[`surface-${step}`]))
     }
-    for (const step of [0, 1, 2]) check(`text-muted/surface-${step}`, parseRgb(token['text-muted']), parseRgb(token[`surface-${step}`]))
+    for (const step of [0, 1, 2, 3]) check(`text-muted/surface-${step}`, parseRgb(token['text-muted']), parseRgb(token[`surface-${step}`]))
     for (const wash of ['brand', 'accent', 'positive', 'warning', 'negative', 'info', 'focus-block', 'transient']) {
       check(`text/soft-${wash}`, parseRgb(token.text), parseRgb(token[`soft-${wash}`]))
       check(`text-muted/soft-${wash}`, parseRgb(token['text-muted']), parseRgb(token[`soft-${wash}`]))
@@ -120,7 +120,7 @@ for (const scheme of schemes) {
         check(`on-fill/${role}-${state}`, parseRgb(token['on-fill']), mix(fill, strong, proportion))
       }
       const foreground = mix(role === 'primary' ? parseRgb(token.sage) : fill, strong, ROLE_FG_MIX)
-      for (const step of [0, 1, 2]) check(`fg-${role}/surface-${step}`, foreground, parseRgb(token[`surface-${step}`]))
+      for (const step of [0, 1, 2, 3]) check(`fg-${role}/surface-${step}`, foreground, parseRgb(token[`surface-${step}`]))
       // `secondary` has no role wash in any profile, so there is no pair to check.
       const wash = role === 'primary' ? 'brand' : role
       if (token[`soft-${wash}`]) check(`fg-${role}/soft-${wash}`, foreground, parseRgb(token[`soft-${wash}`]))
