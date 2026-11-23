@@ -7,7 +7,10 @@ test('Osmova fields use one border for rest, focus and validation', async ({ pag
   const control = (state: string) => `[data-test="qds-forms-state-${state}"] .q-field__control`
   const rest = control('rest')
   expect(await computed(page, rest, 'border-radius')).toBe('8px')
-  expect(await computed(page, rest, 'height')).toBe('56px')
+  expect(await computed(page, rest, 'height')).toBe('48px')
+  for (const [size, height] of [['dense', '40px'], ['default', '48px'], ['lg', '56px']]) {
+    expect(await computed(page, `[data-test="qds-forms-variant-outlined-${size}"] .q-field__control`, 'height')).toBe(height)
+  }
   expect(await computed(page, rest, 'border-color', '::before')).toBe('rgb(232, 232, 236)')
 
   for (const [state, color] of [

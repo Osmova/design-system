@@ -135,8 +135,9 @@ $dark: '.qds-variant-default:is(.qds-theme-dark, .qds-theme-dark *, body.qds-ui.
       --qds-button-radius: var(--qds-radius-control);
       --qds-card-radius: var(--qds-radius-lg);
       --qds-menu-radius: var(--qds-radius-control);
+      --qds-field-size-sm: #{map.get($profile, field-height-sm)};
       --qds-field-size-md: #{map.get($profile, field-height)};
-      --qds-field-size-lg: calc(var(--qds-field-size-md) + var(--qds-space-xs) * 2);
+      --qds-field-size-lg: #{map.get($profile, field-height-lg)};
       --qds-field-padding-inline: #{map.get($profile, field-padding)};
     }
 

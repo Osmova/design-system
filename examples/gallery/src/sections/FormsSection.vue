@@ -240,7 +240,7 @@ function onPinBackspace(index: number) {
 
     <q-card class="q-pa-lg" data-test="qds-forms-variants">
       <div class="text-h6 qds-display q-mb-xs">Variants &amp; sizes</div>
-      <div v-if="ds.variant.value === 'default'" class="qds-text-muted q-mb-md">Standard fields are 56px tall. Large fields are 64px.</div>
+      <div v-if="ds.variant.value === 'default'" class="qds-text-muted q-mb-md">Osmova heights 40 / 48 / 56: <code>dense</code>, default, <code>.qds-field--lg</code>.</div>
       <div v-else class="qds-text-muted q-mb-md">Fluent heights 24 / 32 / 40: <code>dense</code>, default, <code>.qds-field--lg</code>.</div>
       <div class="forms-matrix">
         <template v-for="variant in variants" :key="variant.name">
