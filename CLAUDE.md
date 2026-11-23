@@ -41,7 +41,7 @@ pnpm workspace: `packages/quasar` (the published `@osmova/ds-quasar`), `apps/gal
 - `pnpm gallery:test` — Playwright visual gate (the release gate; keep it green).
 - `pnpm test:runtime` — mandatory Node SSR/controller, independent color, and browser-cascade checks.
 - `pnpm tokens` — regenerate `src/tokens/generated/` from `tokens/`; `pnpm build` runs it and `pnpm test:runtime` fails on stale output (`tests/runtime/tokens.test.mjs`).
-- `pnpm test:tokens:parity [ref]` — every `--ods-*` value per variant, palette, scheme and media condition must resolve as on `ref` (default `develop`).
+- `pnpm test:tokens:parity [ref]` — every `--ods-*` value per variant, palette, scheme and media condition must resolve as on `ref` (default `HEAD`; the ref needs the `packages/quasar` layout).
 - `pnpm css:budget` — finite source and Sass-compressed/gzip-9 budgets, both main exports and separate optional extensions.
 - `pnpm verify:publish` — budget, build, typecheck, runtime checks, and pack dry-run; never skip runtime checks.
 - `pnpm shadcn-reference:check` / `pnpm shadcn-reference:build` — isolated pinned upstream reference.

@@ -1,5 +1,5 @@
 // Every --ods-* custom property must resolve identically to a base ref, per variant x palette x scheme x media condition.
-// Usage: node tests/runtime/token-parity-browser.mjs [base-ref, default develop]
+// Usage: node tests/runtime/token-parity-browser.mjs [base-ref, default HEAD]
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
@@ -12,7 +12,7 @@ import { compileEntry } from '../../scripts/css-partition.mjs'
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const require = createRequire(import.meta.url)
 const { chromium } = createRequire(join(root, '../../apps/gallery/package.json'))('@playwright/test')
-const ref = process.argv[2] ?? 'develop'
+const ref = process.argv[2] ?? 'HEAD'
 
 const baseTree = mkdtempSync(join(tmpdir(), 'ods-parity-'))
 execFileSync('sh', ['-c', `git archive "$1" src | tar -x -C "$2"`, 'sh', ref, baseTree], { cwd: root })
