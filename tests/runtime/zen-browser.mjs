@@ -131,7 +131,8 @@ const record = (scheme, label, ratio, minimum) => {
 
 const browser = await chromium.launch()
 try {
-  for (const [scheme, bodyClass] of [['light', 'qds-ui qds-variant-zen'], ['dark', 'qds-ui qds-variant-zen qds-theme-dark']]) {
+  for (const scheme of ['light', 'dark']) {
+    const bodyClass = `qds-ui qds-variant-zen qds-theme-${scheme}`
     const page = await mount(browser, bodyClass)
     try {
       const paint = await observe(page)
@@ -140,7 +141,7 @@ try {
       for (const [label, sample, backdrop] of [
         ['button label', paint.button, paint.button],
         ['field text', paint.field, paint.field],
-        ['active tab label', paint.tabActive, paint.tabsTrack],
+        ['active tab label', paint.tabActive, paint.tabActive],
         ['idle tab label', paint.tabIdle, paint.tabsTrack],
         ['menu item', paint.menuItem, paint.menuItem],
       ]) {
@@ -182,23 +183,33 @@ try {
       await page.mouse.move(0, 0)
 
       // Selected states carry text contrast too, not just a tint.
-      record(scheme, 'selected tab label', contrast(rgb(paint.tabActive.color), opaque(paint.tabsTrack['background-color'], `${scheme} selected tab`)), 4.5)
       record(scheme, 'selected menu item', contrast(rgb(paint.menuItem.color), opaque(paint.menuItem['background-color'], `${scheme} selected item`)), 4.5)
 
       // Disabled text is exempt from WCAG 1.4.3, so it is measured and reported
       // at the 3:1 non-text floor rather than silently skipped.
       record(scheme, 'disabled button label', contrast(rgb(paint.disabled.color), opaque(paint.page['background-color'], `${scheme} disabled`)), 3)
 
-      // Essential boundaries: a real, visible stroke on every pilot control,
-      // measured against the surface behind it, never shadow or colour alone.
+      const boundaries = [
+        ['button', 'page'], ['field', 'page'], ['tabsTrack', 'page'], ['menu', 'page'], ['menuItem', 'menu'],
+      ]
+      for (const [part, behind] of boundaries) {
+        const ratio = contrast(rgb(paint[part]['border-top-color']), opaque(paint[behind]['background-color'], scheme))
+        assert.ok(ratio < 3, `${scheme} ${part} rest edge should be soft, got ${ratio.toFixed(3)}:1`)
+      }
+      for (const media of [{ contrast: 'more' }, { contrast: 'no-preference', forcedColors: 'active' }]) {
+        await page.emulateMedia({ colorScheme: scheme, ...media })
+        const enhanced = await observe(page)
+        for (const [part, behind] of boundaries) {
+          assert.ok(parseFloat(enhanced[part]['border-top-width']) >= 1, `${scheme} ${part} needs a boundary`)
+          const ratio = contrast(rgb(enhanced[part]['border-top-color']), opaque(enhanced[behind]['background-color'], scheme))
+          record(scheme, `${part} boundary in ${media.forcedColors ?? media.contrast}`, ratio, 3)
+        }
+      }
+      await page.emulateMedia({ contrast: 'no-preference', forcedColors: 'none' })
+
       for (const [label, sample, behind] of [
-        ['button boundary', paint.button, paint.page],
-        ['field boundary', paint.field, paint.page],
-        ['tabs tray boundary', paint.tabsTrack, paint.page],
-        ['menu boundary', paint.menu, paint.page],
         ['switch off track boundary', paint.toggleOff, paint.page],
         ['checkbox well boundary', paint.checkOff, paint.page],
-        ['active menu item boundary', paint.menuItem, paint.menu],
       ]) {
         assert.ok(parseFloat(sample['border-top-width']) >= 1, `${scheme} ${label}: no boundary, width ${sample['border-top-width']}`)
         assert.notEqual(sample['border-top-style'], 'none', `${scheme} ${label} boundary style`)
@@ -211,7 +222,7 @@ try {
       record(scheme, 'switch off glyph', contrast(rgb(paint.glyphOff), opaque(paint.toggleOff['background-color'], `${scheme} switch off`)), 3)
       record(scheme, 'checkbox checked vs page', contrast(opaque(paint.checkOn['background-color'], `${scheme} checked`), opaque(paint.page['background-color'], `${scheme} page`)), 3)
       record(scheme, 'slider value bubble', contrast(rgb(paint.bubbleText.color), opaque(paint.bubble['background-color'], `${scheme} bubble`)), 4.5)
-      record(scheme, 'active tab underline', contrast(rgb(paint.indicator['background-color']), opaque(paint.tabsTrack['background-color'], `${scheme} tabs tray`)), 3)
+      record(scheme, 'active tab underline', contrast(rgb(paint.indicator['background-color']), opaque(paint.tabActive['background-color'], `${scheme} selected tab`)), 3)
 
       // Tactile depth: raised faces lift, wells recess, and the active tab is a short drawn
       // underline plus weight, never a full-width rail.

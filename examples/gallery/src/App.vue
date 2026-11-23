@@ -645,6 +645,11 @@ watch(tab, revealActiveGalleryTab)
   background: var(--qds-state-selected);
 }
 
+.qds-variant-zen .gallery-nav.gallery-nav.gallery-nav :deep(.q-tab--active) {
+  background: var(--qds-surface-brand-soft);
+  color: var(--qds-fg-brand);
+}
+
 .qds-variant-default .gallery-nav :deep(.q-tab--active .q-tab__indicator) {
   width: 3px;
   inset-block: calc(50% - 0.5rem);
