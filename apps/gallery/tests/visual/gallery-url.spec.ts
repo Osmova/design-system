@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import { CANONICAL_VARIANTS, gotoGalleryPage, type Variant } from './helpers'
 
-async function expectState(page: Page, tab: string, variant: Variant) {
+async function expectState(page: Page, tab: string, variant: Variant | 'default') {
   await expect(page.locator('body')).toHaveAttribute('data-ods-variant', variant)
   await expect(page.locator('body')).toHaveClass(new RegExp(`ods-variant-${variant}`))
   await expect(page.locator(`.gallery-tabs .q-tab--active`)).toHaveText(new RegExp(`^${tab}$`, 'i'))
@@ -21,7 +21,7 @@ async function setVariant(page: Page, variant: Variant) {
   }, variant)
 }
 
-for (const variant of CANONICAL_VARIANTS) {
+for (const variant of [...CANONICAL_VARIANTS, 'default'] as const) {
   test(`shared ${variant} URL configures before mount, reloads and opens independently`, async ({ page, browser, baseURL }) => {
     await page.addInitScript(() => {
       let controller: unknown
