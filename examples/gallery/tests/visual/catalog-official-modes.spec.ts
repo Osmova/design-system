@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { applyTheme, computed, gotoGalleryPage, resolvedColor } from './helpers'
+import { CANONICAL_VARIANTS, applyTheme, computed, gotoGalleryPage, resolvedColor, type Mode } from './helpers'
 
 async function openComponents(page: Page) {
   await page.goto('/#components')
@@ -225,5 +225,62 @@ test.describe('QDS official stable data and layout modes', () => {
     const drawer = page.locator('[data-test="qds-drawer-mini-overlay"]').locator('..')
     await expect(drawer).toHaveClass(/q-drawer--mini/)
     expect(durationInMs(await computed(page, '[data-test="qds-table-official-modes"]', 'transition-duration'))).toBeLessThanOrEqual(1)
+  })
+
+  // Quasar's default active page has no design class; the QDS pebble takes it.
+  test('QPagination default and explicit active-design pages resolve their grammar in every variant', async ({ page }) => {
+    await openComponents(page)
+    const measure = (selector: string) => page.locator(`${selector} .q-btn[aria-current="page"]`).first().evaluate((el) => {
+      const rgba = (color: string) => {
+        const canvas = document.createElement('canvas')
+        canvas.width = canvas.height = 1
+        const ctx = canvas.getContext('2d', { willReadFrequently: true })!
+        ctx.clearRect(0, 0, 1, 1)
+        ctx.fillStyle = color
+        ctx.fillRect(0, 0, 1, 1)
+        const d = ctx.getImageData(0, 0, 1, 1).data
+        return [d[0], d[1], d[2], d[3] / 255]
+      }
+      const probe = (token: string, prop: 'backgroundColor' | 'color') => {
+        const span = document.createElement('span')
+        span.style[prop] = `var(${token})`
+        el.closest('.q-pagination')!.append(span)
+        const value = rgba(getComputedStyle(span)[prop])
+        span.remove()
+        return value
+      }
+      const cs = getComputedStyle(el)
+      return {
+        designs: ['q-btn--outline', 'q-btn--push', 'q-btn--unelevated'].filter(design => el.classList.contains(design)),
+        bg: rgba(cs.backgroundColor),
+        text: rgba(cs.color),
+        activeBg: probe('--qds-pagination-active-bg', 'backgroundColor'),
+        activeText: probe('--qds-pagination-active-text', 'color'),
+        primary: probe('--qds-color-primary', 'backgroundColor'),
+      }
+    })
+    const close = (a: number[], b: number[]) =>
+      Math.abs(a[0] - b[0]) <= 1 && Math.abs(a[1] - b[1]) <= 1 && Math.abs(a[2] - b[2]) <= 1 && Math.abs(a[3] - b[3]) <= 0.02
+    const transparent = (c: number[]) => c[3] < 0.02
+
+    for (const variant of CANONICAL_VARIANTS) {
+      for (const mode of ['light', 'dark'] as Mode[]) {
+        await applyTheme(page, mode, variant)
+        const def = await measure('[data-test="qds-pagination"]')
+        expect(def.designs, `${variant}/${mode}: default active page carries no design class`).toEqual([])
+        expect(close(def.bg, def.activeBg), `${variant}/${mode}: default active page fill is the tokenized pebble`).toBe(true)
+        expect(close(def.text, def.activeText), `${variant}/${mode}: default active page text is the tokenized pebble`).toBe(true)
+
+        const outline = await measure('[data-test="qds-pagination-outline"]')
+        expect(outline.designs, `${variant}/${mode}: outline active page carries its design class`).toContain('q-btn--outline')
+        expect(transparent(outline.bg), `${variant}/${mode}: outline active page keeps the transparent button grammar`).toBe(true)
+
+        for (const solid of ['push', 'unelevated'] as const) {
+          const design = await measure(`[data-test="qds-pagination-${solid}"]`)
+          expect(design.designs, `${variant}/${mode}: ${solid} active page carries its design class`).toContain(`q-btn--${solid}`)
+          expect(close(design.bg, design.primary), `${variant}/${mode}: ${solid} active page keeps Quasar's solid grammar`).toBe(true)
+        }
+      }
+    }
   })
 })

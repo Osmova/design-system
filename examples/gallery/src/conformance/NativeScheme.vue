@@ -43,8 +43,8 @@ const nodes = [{ label: 'Root', id: 'root', children: [{ label: 'Branch', id: 'b
     <q-checkbox v-model="checked" :dark="dark" label="Accept terms" data-native="checkbox" />
     <q-radio v-model="choice" :dark="dark" val="account" label="Account" data-native="radio" />
     <q-toggle v-model="checked" :dark="dark" label="Notifications" data-native="toggle" />
-    <q-slider v-model="slider" :dark="dark" label label-always markers data-native="slider" />
-    <q-range v-model="range" :dark="dark" label label-always markers data-native="range" />
+    <q-slider v-model="slider" :dark="dark" label label-always markers data-native="slider" aria-label="Native slider" />
+    <q-range v-model="range" :dark="dark" label label-always markers data-native="range" aria-label="Native range" />
     <q-color v-model="color" :dark="dark" default-view="spectrum" data-native="color" style="max-width: 100%" />
     <q-date v-model="date" :dark="dark" data-native="date" style="max-width: 100%" />
     <q-time v-model="time" :dark="dark" data-native="time" style="max-width: 100%" />
@@ -69,7 +69,7 @@ const nodes = [{ label: 'Root', id: 'root', children: [{ label: 'Branch', id: 'b
     <q-timeline :dark="dark" data-native="timeline"><q-timeline-entry title="Entry" subtitle="Caption">Content</q-timeline-entry></q-timeline>
     <q-chat-message :dark="dark" name="Alex" stamp="10:30" :text="['Received message']" data-native="chat" />
     <q-carousel :dark="dark" model-value="first" navigation arrows height="160px" data-native="carousel"><q-carousel-slide name="first">First slide</q-carousel-slide><q-carousel-slide name="second">Second slide</q-carousel-slide></q-carousel>
-    <q-editor v-model="editor" :dark="dark" :toolbar="[['bold', 'italic', 'link', 'fullscreen']]" data-native="editor" />
+    <q-editor v-model="editor" :dark="dark" :toolbar="[['bold', 'italic', 'link', 'fullscreen']]" data-native="editor" aria-label="Native editor" />
     <q-uploader :dark="dark" label="Native uploader" :auto-upload="false" data-native="uploader" style="max-width: 100%" />
   </q-card>
 </template>

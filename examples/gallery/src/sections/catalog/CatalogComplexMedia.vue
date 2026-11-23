@@ -509,6 +509,7 @@ onBeforeUnmount(() => {
           color="primary"
           track-color="grey-3"
           data-test="qds-knob"
+          aria-label="Progress knob"
         />
       </div>
 
@@ -534,7 +535,7 @@ onBeforeUnmount(() => {
         <!-- Root class hook: Quasar 2.25+ routes $attrs to QEditor's content node and teleports
              the .q-editor root (which keeps `class`, the frame, and the `fullscreen` modifier)
              when full-screen, so root-geometry proofs anchor here while data-test lands on content. -->
-        <q-editor v-model="editor" min-height="8rem" :toolbar="editorToolbar" class="qds-editor-proof" data-test="qds-editor" />
+        <q-editor v-model="editor" min-height="8rem" :toolbar="editorToolbar" class="qds-editor-proof" data-test="qds-editor" aria-label="Rich text editor" />
         <div class="catalog-label q-mt-md">QEditor read-only</div>
         <q-editor v-model="readonlyEditor" readonly min-height="5rem" :toolbar="[]" class="qds-editor-proof-readonly" data-test="qds-editor-readonly" />
       </div>

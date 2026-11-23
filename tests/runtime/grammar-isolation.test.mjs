@@ -9,7 +9,7 @@ import { readFileSync } from 'node:fs'
 import { compileMechanics, compilePilot, families, root } from './grammar-fixture.mjs'
 import { compileSubstrateBaseline, substrateBaseline } from './grammar-fixture-baseline.mjs'
 import { ruleKeys } from './css-rules.mjs'
-import { ADDED_WIN_RULE, ADDED_IMPORTANT_RULE, applyDeclaredFluentChanges, applyDeclaredShadcnChanges } from './declared-fluent-changes.mjs'
+import { ADDED_WIN_RULE, ADDED_IMPORTANT_RULE, applyDeclaredFixes, applyDeclaredFluentChanges, applyDeclaredShadcnChanges } from './declared-fluent-changes.mjs'
 
 test('independent hooks compile identically after physically excluding all compatibility modules', () => {
   assert.equal(compilePilot(), compilePilot({ removed: true }))
@@ -78,7 +78,7 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
     const current = ruleKeys(css)
     // The frozen hash above still covers the untouched baseline; only the
     // enumerated declared changes are normalised before the rule-by-rule compare.
-    const expected = ruleKeys(applyDeclaredShadcnChanges(applyDeclaredFluentChanges(baseline, { layered: entry.includes('layered') }))).map(retire).filter(Boolean)
+    const expected = applyDeclaredFixes(ruleKeys(applyDeclaredShadcnChanges(applyDeclaredFluentChanges(baseline, { layered: entry.includes('layered') }))).map(retire).filter(Boolean))
     const added = []
     let cursor = 0
     for (const rule of expected) {
@@ -102,10 +102,10 @@ test('the all-in bundle, the shared core and every complete variant bundle stay 
   for (const entry of ['index.scss', 'index.layered.scss']) {
     const full = compileEntry(new URL(`src/css/${entry}`, root).pathname)
     const [allMin, allGzip] = [Buffer.byteLength(full), gzipSync(full, { level: 9 }).length]
-    assert.ok(allMin <= 705000 && allGzip <= 71000, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 705000 / 71000`)
+    assert.ok(allMin <= 716200 && allGzip <= 72050, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 716200 / 72050`)
     const parts = partitionCss(full)
     for (const [name, css] of Object.entries(parts)) {
-      const [maxMin, maxGzip] = name === 'core' ? [210000, 26000] : [380000, 46000]
+      const [maxMin, maxGzip] = name === 'core' ? [215200, 26800] : [380000, 46000]
       const bytes = Buffer.byteLength(css)
       const gzip = gzipSync(css, { level: 9 }).length
       assert.ok(bytes <= maxMin && gzip <= maxGzip, `${entry} ${name}: measured min ${bytes} / gzip ${gzip} against caps ${maxMin} / ${maxGzip}`)

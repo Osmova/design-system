@@ -21,8 +21,10 @@ const semanticForegroundRoles = ['solid', 'primary', 'secondary', 'accent', 'pos
 const semanticRoles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info'] as const
 const mutedSurfaces = [0, 1, 2, 3] as const
 
-function semanticForegroundFill(role: typeof semanticForegroundRoles[number]) {
-  return role === 'solid' ? '--qds-media-scrim-strong' : `--qds-color-${role}`
+// The on-solid utility pairs with the primary fill it is documented against.
+function semanticForegroundFill(role: typeof semanticForegroundRoles[number]): string {
+  if (role !== 'solid') return `--qds-color-${role}`
+  return '--qds-color-primary'
 }
 </script>
 

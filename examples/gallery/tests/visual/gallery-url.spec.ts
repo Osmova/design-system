@@ -136,6 +136,25 @@ test('in-session missing/invalid variants retain selection and unknown pages can
   await expect(page).toHaveURL(/#tokens\?extra=ok$/)
 })
 
+test('embedded compare falls back to the components page', async ({ page }) => {
+  await page.goto('/#compare?embed=1')
+  // Compare frames would nest the compare page inside itself, so embed pins a content page.
+  await expect(page.locator('[data-test="qds-compare-ab"]')).toHaveCount(0)
+  await expect(page.locator('[data-test="qds-control-standard-button"]')).toBeVisible()
+  await expect(page.locator('.gallery-header')).toHaveCount(0)
+  await expect(page.locator('.gallery-nav')).toHaveCount(0)
+  // Embedded pages never write the address bar.
+  expect(new URL(page.url()).hash).toBe('#compare?embed=1')
+})
+
+test('mode from the address themes the non-embedded gallery before mount', async ({ page }) => {
+  await page.goto('/#components?mode=dark')
+  await expectState(page, 'components', 'win')
+  await expect(page.locator('body')).toHaveAttribute('data-qds-mode', 'dark')
+  await expect(page.locator('body')).toHaveClass(/qds-theme-dark/)
+  await expect(page.locator('[data-test="qds-control-standard-button"]')).toBeVisible()
+})
+
 test('unknown initial page keeps a valid variant and subsequent writes preserve a nested pathname', async ({ page }) => {
   await page.goto('/?campaign=nested#unknown?variant=one&extra=ok')
   await expectState(page, 'tokens', 'one')

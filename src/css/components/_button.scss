@@ -39,6 +39,7 @@ $not-fab: ':where(:not(.q-btn--fab, .q-btn--fab-mini))';
 $filled: ':is(.q-btn--standard, .q-btn--unelevated, .q-btn--push):where(:not(.q-btn-toggle > .q-btn))';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
 $win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
+$win-standalone: ':where(:not(:is(.q-date, .q-time, .q-pagination, .q-editor, .q-color-picker) *))';
 $shadcn-default: '.q-btn#{$filled}:where(:not([class*="bg-"], .qds-tonal, .qds-button--link, .q-date .q-btn, .q-time .q-btn, .q-pagination .q-btn, .q-btn-toggle .q-btn, .q-editor .q-btn, .q-color-picker .q-btn))';
 $accent-fills: ();
 $role-texts: ();
@@ -203,6 +204,7 @@ $role-texts: ();
   }
 
   @each $role, $_ in $roles {
+    #{$win} .q-btn.bg-#{$role} { --_qds-win-role: var(--qds-color-#{$role}); --_qds-win-soft: #{role-soft($role)}; }
     .qds-ui .q-btn.text-#{$role} {
       @include importance.declarations { color: role-value($role, fg) !important; }
     }
@@ -304,18 +306,25 @@ $role-texts: ();
     }
   }
 
-  // WinUI Button/AccentButton labels are Regular; disabled accent fills keep the
-  // AccentFillColorDisabled + TextOnAccentFillColorDisabled pair, without an edge.
-  // Same (0,2,0) weight as the base rule so later partials' weights still win.
   .qds-ui:where(.qds-variant-win, .qds-variant-win *) .q-btn { font-weight: var(--qds-font-weight-regular); }
+  #{$win} .q-btn { --_qds-win-pressed: color-mix(in srgb, var(--_qds-win-role) var(--qds-fill-pressed-mix), var(--qds-fill-state-base)); }
+  #{$win} .q-btn.qds-tonal { --_qds-win-pressed: color-mix(in srgb, var(--_qds-win-soft), var(--_qds-win-role) 18%); }
+  #{$win} .q-btn.bg-primary:not(.qds-tonal) { --_qds-win-pressed: var(--qds-color-primary-pressed); }
+  #{$win} .q-btn--outline:where(:not([class*='text-'], .disabled)) { border-color: var(--qds-control-stroke-default); }
+  #{$win} .q-btn#{$filled}#{$win-standalone}:not(.disabled):is(:active, .q-btn--active) { border-bottom-color: var(--qds-control-stroke-default); --qds-button-fill: var(--_qds-win-pressed, var(--qds-control-fill-pressed)); color: var(--qds-fg-muted); }
+  #{$win} .q-btn#{$win-standalone}:not(.disabled).q-btn--active { --qds-button-state: var(--qds-state-pressed); }
   #{$win} .q-btn#{$filled}:is(#{$accent-fills}):not(.qds-tonal) {
     --qds-button-disabled-fill: var(--_qds-win-accent-fill-disabled);
     --qds-button-disabled-fg: var(--_qds-win-text-on-accent-disabled);
     --qds-button-disabled-stroke: transparent;
   }
-  // The dropdown chevron stays a secondary hint glyph (WinUI TextFillColorSecondary-like).
   #{$win} .q-btn-dropdown .q-btn-dropdown__arrow { opacity: #{map.get(tokens.$control, icon-opacity)}; }
-
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$win} :is(.q-btn.q-btn-item, :is(.q-chip--clickable, .q-chip:has(> .q-chip__icon--remove)):where(:not(.q-chip--outline[class*='text-']))) { --qds-button-disabled-stroke: var(--qds-stroke-strong); border-color: var(--qds-stroke-strong); }
+    #{$win} .q-btn-toggle { outline: 1px solid; }
+    #{$win} .q-pagination .q-btn { flex-basis: auto; --qds-pagination-active-border: currentColor; }
+    #{$win} .q-pagination .q-input { min-width: 5em; }
+  }
   #{$shadcn} .q-btn {
     --qds-button-disabled-opacity: 0.5;
     --qds-button-disabled-fg: var(--qds-button-on-fill, var(--qds-fg-default));

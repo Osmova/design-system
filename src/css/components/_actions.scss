@@ -89,9 +89,8 @@ $win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
   #{$win} .q-btn-toggle > .q-btn.q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active)::after {
     position: absolute;
     inset: auto calc(50% - 0.5rem) 0;
-    height: 3px;
     content: '';
-    background: var(--qds-tab-active-rail);
+    border-top: 3px solid var(--qds-tab-active-rail);
     border-radius: var(--qds-radius-full);
   }
 

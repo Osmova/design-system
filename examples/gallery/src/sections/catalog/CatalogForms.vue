@@ -198,8 +198,8 @@ const checkboxChoices = [
         <div class="catalog-demo">
           <div class="catalog-label">QSlider &amp; QRange</div>
           <div class="catalog-stack catalog-stack--relaxed">
-            <q-slider v-model="slider" name="catalog-slider" data-test="qds-catalog-slider" :min="0" :max="100" label label-always markers />
-            <q-range v-model="range" name="catalog-range" data-test="qds-catalog-range" :min="0" :max="100" label label-always markers />
+            <q-slider v-model="slider" name="catalog-slider" data-test="qds-catalog-slider" :min="0" :max="100" label label-always markers aria-label="Catalog slider" />
+            <q-range v-model="range" name="catalog-range" data-test="qds-catalog-range" :min="0" :max="100" label label-always markers aria-label="Catalog range" />
           </div>
         </div>
 

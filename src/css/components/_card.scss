@@ -1,11 +1,13 @@
 @use '../materials';
 @use '../../themes/shadcn';
+@use '../../themes/default' as theme;
 
 $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
 $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
+$win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
 $framed: '.q-card--bordered, .qds-card--readable, .qds-card--contrast, .qds-card--opaque, .qds-card--solid';
 $local-dark: ':is(.q-card--dark, .q-table--dark, .q-tree--dark, .q-stepper--dark, .q-list--dark, .q-menu--dark, .q-uploader--dark, .q-date--dark, .q-time--dark)';
 $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
@@ -75,6 +77,17 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
 
     color: var(--qds-fg-default);
   }
+  .qds-ui.qds-theme-light.qds-variant-win #{$local-dark} {
+    --_qds-win-focus-outer: var(--qds-surface-0);
+    --_qds-win-layer-alt: var(--qds-bg-surface-2);
+    --_qds-win-surface-stroke: var(--qds-card-stroke);
+  }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    .qds-ui.qds-theme-light.qds-variant-win [class*='--dark'] {
+      @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, stroke-default, stroke-subtle { --qds-#{$token}: var(--qds-stroke-strong); }
+    }
+    #{$win} :is(.q-card, .qds-card) :is(.q-card, .qds-card, .qds-tile):is([tabindex], a, .cursor-pointer) { border: var(--qds-border-width-control) solid var(--qds-stroke-strong); }
+  }
   #{$explicit-dark} .qds-text-muted { color: var(--qds-fg-muted); }
   #{$explicit-dark} .qds-text-strong { color: var(--qds-fg-strong); }
 
@@ -131,15 +144,19 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
   // Glass's own tokens resolved on the light root, so a dark block re-points them at its inverted surfaces.
   .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} {
     --qds-stroke-strong: color-mix(in srgb, var(--qds-surface-0) 48%, var(--qds-text-strong));
-    @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, control-stroke-bottom, control-stroke-strong {
-      --qds-#{$token}: var(--qds-stroke-strong);
-    }
+    @include theme.qds-glass-paint(dark);
+    --qds-stroke-focus: var(--_qds-glass-highlight, #{theme.qds-variant-token(glass, dark-primary)});
+    --qds-stroke-error: #{theme.qds-variant-token(glass, dark-negative)};
     --qds-segmented-track-bg: var(--qds-bg-surface-2);
-    --qds-segmented-thumb-bg: var(--qds-bg-layer);
     --_qds-glass-nested: var(--qds-bg-surface-2);
     --_qds-glass-on-track: color-mix(in srgb, currentColor 85%, var(--qds-surface-0));
   }
-  @media (prefers-contrast: more) { .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} { --qds-material-stroke: var(--qds-stroke-strong); } }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$glass} :is(.q-card, .qds-card, .qds-tile) { border: var(--qds-border-width-control) solid var(--_qds-glass-forced-edge, var(--_qds-glass-control-edge)); }
+  }
+  @media (prefers-contrast: more) {
+    .qds-ui.qds-theme-light.qds-variant-glass #{$local-dark} { --_qds-glass-control-edge: var(--qds-fg-muted); --qds-stroke-strong: var(--qds-fg-muted); --_qds-glass-knob-contrast: var(--qds-bg-card); }
+  }
 
 
   #{$shadcn} :is(.q-card, .qds-card, .qds-tile) { color: var(--qds-shadcn-card-foreground); }
