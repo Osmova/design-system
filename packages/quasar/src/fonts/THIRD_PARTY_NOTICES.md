@@ -2,10 +2,13 @@
 
 This package redistributes the following font files (`./files/*.woff2`). Each is licensed under the
 **SIL Open Font License, Version 1.1** (OFL-1.1). The full license text is included once below and
-applies to all five families.
+applies to every family below.
 
 - **Inter** — Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter).
   Reserved Font Name "Inter". Files: `inter-latin-wght-normal.woff2`, `inter-latin-ext-wght-normal.woff2`.
+- **Instrument Sans** — Copyright 2022 The Instrument Sans Project Authors (https://github.com/Instrument/instrument-sans).
+  Exposed as Osmova Sans in CSS. Files: `instrument-sans-latin-wght-normal.woff2`,
+  `instrument-sans-latin-ext-wght-normal.woff2` (Google Fonts v4).
 - **Open Sans** — Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans).
   Reserved Font Name "Open Sans". Files: `open-sans-latin-wght-normal.woff2`, `open-sans-latin-ext-wght-normal.woff2`.
 - **Selawik** — Copyright 2015 Microsoft Corporation (https://github.com/microsoft/Selawik),

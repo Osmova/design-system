@@ -69,6 +69,7 @@ test('existing default-theme values stay byte-identical with only the two static
     .replace('@include ods-glass-scopes;\n', '')
     .replace('@include ods-win-scopes;\n', '')
     .replace('\n@include ods-variant-sentinels;\n', '\n')
+    .replace('@include osmova.scopes;\n', '')
     .replace('@include ods-ink-scopes;\n', '')
   const options = { url: path, loadPaths: [root.pathname], silenceDeprecations: ['if-function'] }
   const baseline = sass.compileString(old, options).css

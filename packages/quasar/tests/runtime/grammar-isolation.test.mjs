@@ -36,7 +36,7 @@ test('neutral mechanics emit layout/containment only, without focus, paint, typo
 // data-ods-shadcn-accent: optional shadcn brand accent added after 150d952 (token-only rules).
 // Ink is rebuilt for 0.10.0 as a new design language: its 150d952 rules are
 // retired, not immutable, and its new rules are an added profile.
-const PROFILE_SCOPES = /ods-variant-zen|ods-reading|ods-variant-glass|ods-variant-ink|data-ods-shadcn-accent/
+const PROFILE_SCOPES = /ods-variant-zen|ods-reading|ods-variant-glass|ods-variant-default|ods-variant-ink|data-ods-shadcn-accent/
 const RETIRED_PROFILE = 'ink'
 const selectorsOf = (rule) => {
   const path = rule.slice(0, rule.indexOf('{')).split('|')

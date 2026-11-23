@@ -3,6 +3,7 @@
 @use '../tokens/default' as tokens;
 @use 'fallbacks' as fallbacks;
 @use 'shadcn';
+@use 'osmova';
 
 @function ods-variant-token($variant, $token) {
   @return map.get(map.get(tokens.$variants, $variant), $token);
@@ -771,10 +772,11 @@ $ods-material-scopes: '.ods-theme-dark, body.ods-ui.body--dark, .ods-variant-one
 // Runtime sentinel: the controller warns in development when the active variant's stylesheet is missing.
 @mixin ods-variant-sentinels {
   @layer ods.tokens {
-    @each $variant in win, ink, one, term, shadcn, zen, glass {
+    @each $variant in win, ink, one, term, shadcn, zen, glass, default {
       .ods-variant-#{$variant} { --_ods-variant: #{$variant}; }
     }
   }
 }
 
 @include ods-variant-sentinels;
+@include osmova.scopes;

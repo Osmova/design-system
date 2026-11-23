@@ -18,7 +18,7 @@ import { ownPreviewController } from '../../../packages/quasar/catalog/preview/i
 import '@gallery/adoption-default.scss'
 import '@gallery/fonts/plus-jakarta-sans.css'
 import '@gallery/gallery.css'
-import '@osmova/ds-quasar/fonts/inter.css'
+import '@osmova/ds-quasar/fonts/default.css'
 import '@osmova/ds-quasar/fonts/open-sans.css'
 import '@osmova/ds-quasar/fonts/selawik.css'
 import '@osmova/ds-quasar/fonts/zen.css'

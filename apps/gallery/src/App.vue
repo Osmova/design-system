@@ -15,6 +15,7 @@ import {
   PhSquaresFour,
   PhLeaf,
   PhDrop,
+  PhCircle,
 } from '@phosphor-icons/vue'
 import {
   useDesignSystem,
@@ -64,6 +65,7 @@ const variantIcons: Record<string, Component> = {
   shadcn: PhSquaresFour,
   zen: PhLeaf,
   glass: PhDrop,
+  default: PhCircle,
 }
 const linkIcons: Record<string, Component> = {
   storybook: PhBookOpenText,

@@ -9,7 +9,7 @@ import './fonts/plus-jakarta-sans.css'
 import './gallery.css'
 
 // 4. Optional design-system fonts (drive --ods-font-family* faces).
-import '@osmova/ds-quasar/fonts/inter.css'
+import '@osmova/ds-quasar/fonts/default.css'
 import '@osmova/ds-quasar/fonts/open-sans.css'
 import '@osmova/ds-quasar/fonts/selawik.css'
 import '@osmova/ds-quasar/fonts/zen.css'

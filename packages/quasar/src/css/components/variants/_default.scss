@@ -1,0 +1,45 @@
+$scope: '.ods-variant-default:is(.ods-ui, .ods-ui *)';
+
+@mixin styles {
+  #{$scope} { font-weight: var(--ods-font-weight-body); }
+  body#{$scope} { background: var(--ods-bg-canvas); }
+
+  #{$scope} :is(.q-toolbar__title, .q-table__title, .q-dialog__title) {
+    font-family: var(--ods-font-family-display);
+  }
+
+  #{$scope} .q-tabs .q-tab { border-radius: var(--ods-tab-radius); }
+
+  #{$scope} .q-field--standard:not(.q-field--rounded) {
+    --ods-field-radius: var(--ods-radius-control);
+  }
+
+  #{$scope} .q-field--standard .q-field__control {
+    background: var(--ods-field-fill);
+    padding-inline: var(--ods-field-padding-inline);
+  }
+
+  #{$scope} .q-field--focused .q-field__control {
+    outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
+    outline-offset: var(--ods-focus-ring-offset);
+  }
+
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$scope} :is(button, a[href], input:not([type='hidden'], .q-field input, .q-slider input), select, textarea, [role='button'], [role='tab'], [contenteditable], .q-item--clickable, .q-slider__inner, .q-slider__thumb, .q-knob, .q-toggle__track, .q-checkbox__bg, .q-radio__bg, .q-field:not(.q-field--focused, .q-field--disabled) .q-field__control):where(:not(:focus-visible, .disabled, :disabled, [aria-disabled='true'], .disabled *)) {
+      outline: 1px solid var(--ods-stroke-strong);
+      outline-offset: -1px;
+    }
+
+    #{$scope} :is(input:not([type='hidden']), textarea, select):where(:not(.q-field *)):focus-visible {
+      outline: var(--ods-focus-ring-width) solid var(--ods-stroke-focus);
+      outline-offset: var(--ods-focus-ring-offset);
+    }
+  }
+
+  @media (forced-colors: active) {
+    #{$scope} :is(.q-tab--active, .q-item--active, .q-btn[aria-pressed='true']):where(:not(:focus-visible)) {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
+    }
+  }
+}

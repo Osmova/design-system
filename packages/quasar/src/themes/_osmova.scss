@@ -1,0 +1,135 @@
+@use 'sass:map';
+@use '../tokens/default' as tokens;
+@use 'fallbacks';
+
+$profile: map.get(tokens.$variants, default);
+$scope: ':is(.ods-variant-default, body.ods-ui.ods-variant-default)';
+
+@mixin scheme($name) {
+  $values: map.get($profile, $name);
+  @each $role in primary, primary-light, primary-dark, secondary, accent, positive, negative, warning {
+    $value: map.get($values, $role);
+    --ods-color-#{$role}: #{$value};
+    --ods-color-#{$role}-rgb: #{tokens.ods-rgb($value)};
+  }
+  @each $token in surface-0, surface-1, surface-2, surface-3, text, text-strong, text-muted, border, stroke-strong, shadow-sm, fg-brand, fg-accent, fg-positive, fg-negative, fg-warning {
+    --ods-#{$token}: #{map.get($values, $token)};
+  }
+  --ods-text-on-primary: #{map.get($values, on-fill)};
+}
+
+@mixin scopes {
+  @layer ods.tokens {
+    #{$scope} {
+      @include scheme(light);
+      @each $token in font-family, font-family-display, font-weight-body, radius-control, radius-lg, radius-xl {
+        --ods-#{$token}: #{map.get($profile, $token)};
+      }
+      @each $step in h1, h2 {
+        --ods-font-weight-#{$step}: #{map.get($profile, font-weight-display)};
+      }
+
+      --ods-color-info: var(--ods-color-primary);
+      --ods-color-info-rgb: var(--ods-color-primary-rgb);
+      --ods-fg-secondary: var(--ods-text-strong);
+      --ods-fg-primary: var(--ods-fg-brand);
+      --ods-fg-info: var(--ods-fg-brand);
+      --ods-fg-on-brand: var(--ods-text-on-primary);
+      @each $role in secondary, accent, positive, negative, warning, info, solid {
+        --ods-text-on-#{$role}: var(--ods-text-on-primary);
+      }
+
+      --ods-fg-default: var(--ods-text);
+      --ods-fg-strong: var(--ods-text-strong);
+      --ods-fg-muted: var(--ods-text-muted);
+      --ods-control-icon-color: var(--ods-text-muted);
+      --ods-field-description-color: var(--ods-text-muted);
+      --ods-bg-canvas: var(--ods-surface-0);
+      --ods-bg-surface-1: var(--ods-surface-1);
+      --ods-bg-surface-2: var(--ods-surface-2);
+      --ods-bg-layer: var(--ods-surface-3);
+      --ods-bg-flyout: var(--ods-surface-0);
+      --ods-bg-card: var(--ods-surface-1);
+      --ods-bg-card-hover: var(--ods-surface-2);
+      --ods-surface-glass: var(--ods-surface-0);
+      --ods-stroke-focus: var(--ods-color-primary);
+      --ods-state-focus-indicator: var(--ods-stroke-focus);
+      --ods-stroke-error: var(--ods-fg-negative);
+      @each $edge in border-subtle, stroke-default, stroke-subtle, stroke-divider, control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom, separator-color, menu-border, material-stroke {
+        --ods-#{$edge}: var(--ods-border);
+      }
+
+      @include fallbacks.ods-material-tokens(solid);
+      --ods-backdrop: var(--ods-surface-0);
+      --ods-card-fill: var(--ods-bg-card);
+      --ods-card-radius: var(--ods-radius-lg);
+      --ods-card-border: var(--ods-border);
+      --ods-card-header-bg: var(--ods-bg-card);
+      --ods-card-header-bg-opaque: var(--ods-bg-card);
+      --ods-chrome-surface: var(--ods-surface-0);
+      --ods-chrome-surface-strong: var(--ods-surface-0);
+      --ods-chrome-border: var(--ods-border);
+      --ods-toolbar-bg: var(--ods-surface-0);
+      --ods-menu-bg: var(--ods-bg-flyout);
+      --ods-button-radius: var(--ods-radius-control);
+      --ods-row-radius: var(--ods-radius-control);
+      --ods-tab-radius: var(--ods-radius-full);
+      --ods-color-primary-hover: var(--ods-color-primary-dark);
+      --ods-color-primary-pressed: var(--ods-color-primary-dark);
+
+      @each $state, $surface in (default: 1, hover: 2, pressed: 3) {
+        --ods-control-fill-#{$state}: var(--ods-surface-#{$surface});
+      }
+      @each $role in primary, accent, positive, negative, warning, info {
+        $surface: if($role == primary, brand, $role);
+        --ods-surface-#{$surface}-soft: color-mix(in srgb, var(--ods-color-#{$role}) 11%, var(--ods-surface-0));
+      }
+      --ods-state-selected: var(--ods-surface-brand-soft);
+      --ods-state-hover: color-mix(in srgb, var(--ods-text) 7%, transparent);
+      --ods-state-pressed: color-mix(in srgb, var(--ods-text) 13%, transparent);
+      --ods-surface-focus-block: var(--ods-state-selected);
+      --ods-surface-transient: var(--ods-surface-2);
+      --ods-segmented-track-bg: var(--ods-surface-2);
+      --ods-segmented-thumb-bg: var(--ods-state-selected);
+      --ods-tab-hover-bg: var(--ods-surface-2);
+      --ods-tab-active-bg: var(--ods-state-selected);
+      --ods-tab-active-text: var(--ods-fg-brand);
+
+      @each $token in tab-active-rail, banner-accent, notify-accent, stepper-rail-active, table-sort-icon {
+        --ods-#{$token}: var(--ods-color-primary);
+      }
+      --ods-banner-accent-rgb: var(--ods-color-primary-rgb);
+      --ods-notify-accent-rgb: var(--ods-color-primary-rgb);
+      --ods-pagination-active-border: var(--ods-color-primary);
+      --ods-pagination-active-bg: var(--ods-state-selected);
+      --ods-pagination-active-text: var(--ods-fg-brand);
+      --ods-slider-label-bg: var(--ods-surface-0);
+      --ods-slider-label-text: var(--ods-text-strong);
+      --ods-table-header-bg: var(--ods-surface-2);
+      --ods-table-header-text: var(--ods-text-muted);
+      --ods-table-row-hover-bg: var(--ods-surface-2);
+      --ods-table-selected-bg: var(--ods-state-selected);
+      --ods-chat-bubble-bg: var(--ods-surface-2);
+      --ods-chat-bubble-fg: var(--ods-text);
+    }
+
+    #{$scope}:where(.ods-theme-dark, .ods-theme-dark *, body.ods-ui.body--dark, body.ods-ui.body--dark *) {
+      @include scheme(dark);
+    }
+
+    @media (prefers-contrast: more), (forced-colors: active) {
+      #{$scope} {
+        @each $edge in control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom {
+          --ods-#{$edge}: var(--ods-stroke-strong);
+        }
+      }
+    }
+
+    @media (forced-colors: active) {
+      #{$scope} {
+        --ods-stroke-strong: ButtonText;
+        --ods-stroke-focus: Highlight;
+      }
+    }
+  }
+}
