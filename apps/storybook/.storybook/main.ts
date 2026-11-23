@@ -29,6 +29,8 @@ const config: StorybookConfig = {
       plugins: [...(config.plugins ?? []), vue({ template: { transformAssetUrls } }), quasar()],
       resolve: {
         ...config.resolve,
+        // QWindow imports quasar internals without declaring it; resolve them from this app.
+        dedupe: [...(config.resolve?.dedupe ?? []), 'quasar'],
         alias: [
           ...baseEntries,
           { find: '@ods-catalog', replacement: path.resolve(repoRoot, 'packages/quasar/catalog') },
