@@ -104,6 +104,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+    // QWindow imports quasar internals without declaring it; resolve them from this app.
+    dedupe: ['quasar'],
   },
   // The design-system is a source-only package (.ts/.scss). Keep it out of
   // esbuild's dep prebundle so Vite/Quasar/Sass compile its sources directly.
