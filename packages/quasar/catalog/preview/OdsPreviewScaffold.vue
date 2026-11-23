@@ -13,14 +13,13 @@ const props = withDefaults(defineProps<{
   caseId: string
   /** Human title for the proof header. */
   title: string
-  /** Storybook's toolbar is authoritative; Histoire uses these local controls. */
+  /** Local theme selectors; Storybook hides them because its toolbar is authoritative. */
   themeControls?: boolean
 }>(), { themeControls: true })
 
 /**
- * Shared preview shell for both hosts (Histoire and Storybook): renders the
- * demo slot on top of the same per-document controller readout, so control and
- * lifecycle semantics are identical.
+ * Shared preview shell: renders the demo slot on top of the per-document
+ * controller readout.
  */
 const resolution = useCatalogPreviewController()
 const controller = computed(() => resolution.controller)

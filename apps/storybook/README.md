@@ -31,5 +31,5 @@ Layout:
 - `stories/components`: one file per family. `Showcase` and `Gallery` stories render shared demos;
   the other stories render one Quasar component with Controls built from Quasar's own API
   description (`quasar/dist/api`).
-- `demos/`: showcase components shared with the Histoire stories until Histoire is removed.
+- `demos/`: showcase components rendered by the family stories.
 - `stories/catalog-proof.stories.ts` and `playwright.proof.config.ts`: the earlier shared-catalog proof.

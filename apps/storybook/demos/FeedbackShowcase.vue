@@ -22,7 +22,7 @@ function notify() {
   $q.notify({
     type: 'positive',
     message: 'Design-system notification',
-    caption: 'Notify plugin preview from Histoire',
+    caption: 'Notify plugin preview from Storybook',
     timeout: 1400,
   })
 }

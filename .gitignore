@@ -1,6 +1,5 @@
 node_modules/
 dist/
-.histoire/
 .DS_Store
 *.log
 *.local.*

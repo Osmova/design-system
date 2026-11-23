@@ -7,8 +7,6 @@
     "tokens": "pnpm -C packages/quasar tokens",
     "build": "pnpm -C packages/quasar build",
     "typecheck": "pnpm -C packages/quasar typecheck",
-    "stories": "pnpm -C packages/quasar stories",
-    "stories:build": "pnpm -C packages/quasar stories:build",
     "stories:sb": "pnpm -C apps/storybook storybook",
     "stories:sb:build": "pnpm -C apps/storybook build-storybook",
     "catalog:generate": "pnpm -C packages/quasar catalog:generate",

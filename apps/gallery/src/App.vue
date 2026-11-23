@@ -3,7 +3,6 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type Compon
 import { useQuasar } from 'quasar'
 import {
   PhBookOpenText,
-  PhBooks,
   PhCaretDown,
   PhDeviceMobile,
   PhMoonStars,
@@ -67,7 +66,6 @@ const variantIcons: Record<string, Component> = {
   glass: PhDrop,
 }
 const linkIcons: Record<string, Component> = {
-  histoire: PhBooks,
   storybook: PhBookOpenText,
 }
 

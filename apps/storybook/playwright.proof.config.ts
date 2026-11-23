@@ -19,13 +19,6 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: 'python3 -u -m http.server 6196 --bind 127.0.0.1 --directory ../../packages/quasar/.histoire/dist',
-      wait: { stdout: /Serving HTTP on 127\.0\.0\.1 port 6196/ },
-      timeout: 15_000,
-      reuseExistingServer: false,
-      gracefulShutdown: { signal: 'SIGTERM', timeout: 5000 },
-    },
-    {
       command: 'python3 -u -m http.server 6197 --bind 127.0.0.1 --directory storybook-static',
       wait: { stdout: /Serving HTTP on 127\.0\.0\.1 port 6197/ },
       timeout: 15_000,

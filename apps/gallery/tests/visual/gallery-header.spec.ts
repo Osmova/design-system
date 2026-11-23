@@ -133,9 +133,10 @@ test('shell chrome keeps identical geometry and type across every variant and mo
   }
 })
 
-test('header links reach both deployed catalogs', async ({ page }) => {
+test('header links reach only the deployed Storybook catalog', async ({ page }) => {
   await page.goto('/')
-  for (const [name, label] of [['histoire', 'Histoire'], ['storybook', 'Storybook']] as const) {
+  await expect(page.locator('.gallery-links .gallery-link')).toHaveCount(1)
+  for (const [name, label] of [['storybook', 'Storybook']] as const) {
     const link = page.locator(`[data-test="qds-link-${name}"]`)
     await expect(link).toBeVisible()
     await expect(link).toHaveAttribute('href', `${name}/`)

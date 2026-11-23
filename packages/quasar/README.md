@@ -6,7 +6,7 @@ The Quasar 2 package of the Osmova Design System: tokens, a Quasar skin, and a r
 
 Published as `@osmova/ds-quasar`. It succeeds the 0.x `quasar-design-system` package, which stays available. 1.0 renames the public `qds` prefix to `ods` in classes, custom properties, data attributes, cascade layers, Sass and TypeScript names, and moves the stored preference to `osmova.ds.theme`; the [CHANGELOG](./CHANGELOG.md) lists the renames and [`scripts/rename-map.json`](https://github.com/Osmova/design-system/blob/master/scripts/rename-map.json) holds the complete map.
 
-[Live gallery](https://qds.osmova.com/) · [Component catalog](https://qds.osmova.com/histoire/)
+[Live gallery](https://qds.osmova.com/) · [Component catalog](https://qds.osmova.com/storybook/)
 
 ## Goals
 
@@ -307,7 +307,7 @@ Shadcn values and geometry reference the MIT-licensed [unovue/shadcn-vue](https:
 
 ## Component Coverage
 
-ODS skins visible Quasar chrome — buttons, cards, inputs, toolbars, drawers, lists, expansion items, and similar surfaces that carry tokenized visual treatment. The release gallery and Histoire catalog exercise the high-value sub-elements across forms/pickers, data/navigation/layout, media/complex/loading, and overlays/plugins.
+ODS skins visible Quasar chrome — buttons, cards, inputs, toolbars, drawers, lists, expansion items, and similar surfaces that carry tokenized visual treatment. The release gallery and Storybook catalog exercise the high-value sub-elements across forms/pickers, data/navigation/layout, media/complex/loading, and overlays/plugins.
 
 Public ODS-owned component classes use strict namespaced BEM for new optional modules: block `.ods-window`, elements such as `.ods-window__titlebar`, and modifiers such as `.ods-window--embedded`. Utility hooks such as `.ods-ui`, `.ods-tonal`, `.ods-solid`, and variant classes remain intentionally semantic rather than component blocks.
 

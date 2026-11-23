@@ -50,7 +50,7 @@ function notify() {
         <q-select v-model="density" :options="['Compact', 'Comfortable', 'Spacious']" label="Density sample" outlined dense class="q-mb-md" />
         <q-toggle v-model="enabled" color="primary" label="Interactive state" />
         <q-separator class="q-my-md" />
-        <div class="text-caption ods-text-muted">Mode and variant are controlled from the Histoire panel.</div>
+        <div class="text-caption ods-text-muted">Mode and variant are controlled from the Storybook toolbar.</div>
       </q-card>
     </div>
 

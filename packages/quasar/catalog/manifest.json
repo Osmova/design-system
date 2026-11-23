@@ -4,7 +4,7 @@
   "title": "ODS shared catalog \u2014 bounded proof",
   "scope": {
     "kind": "development-only",
-    "note": "Catalog demos, manifest and control data are excluded from the published package (not listed in package.json files/exports). They only back the Histoire + Storybook preview proof.",
+    "note": "Catalog demos, manifest and control data are excluded from the published package (not listed in package.json files/exports). They only back the Storybook preview proof.",
     "proofMode": "Four cases only. Every native Quasar export is classified with an explicit disposition; exports outside the implemented cases stay status 'planned' \u2014 never presented as covered.",
     "inventoryRule": "The native inventory is machine-generated from the installed Quasar source; the case list is separate from the export list."
   },
@@ -18,11 +18,6 @@
     "persist": false
   },
   "hosts": {
-    "histoire": {
-      "adapter": "./stories/catalog-proof.story.vue",
-      "setup": "./histoire.setup.ts",
-      "kind": "variant story with per-variant fresh init state"
-    },
     "storybook": {
       "adapter": "../../apps/storybook/stories/catalog-proof.stories.ts",
       "setup": "../../apps/storybook/.storybook/preview.ts",
@@ -64,7 +59,6 @@
       "viewport": null,
       "optionalPeers": null,
       "hostIdMap": {
-        "histoireVariantTitle": "actions/button",
         "storybookExport": "buttonProof"
       },
       "disposition": "implemented"
@@ -113,7 +107,6 @@
       "viewport": null,
       "optionalPeers": null,
       "hostIdMap": {
-        "histoireVariantTitle": "forms/field",
         "storybookExport": "fieldProof"
       },
       "disposition": "implemented"
@@ -151,7 +144,6 @@
       },
       "optionalPeers": null,
       "hostIdMap": {
-        "histoireVariantTitle": "navigation/tabs",
         "storybookExport": "tabsProof"
       },
       "disposition": "implemented"
@@ -192,7 +184,6 @@
       "viewport": null,
       "optionalPeers": null,
       "hostIdMap": {
-        "histoireVariantTitle": "overlays/menu",
         "storybookExport": "menuProof"
       },
       "disposition": "implemented"

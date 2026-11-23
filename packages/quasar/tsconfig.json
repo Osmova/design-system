@@ -15,9 +15,6 @@
   "include": [
     "src/**/*.ts",
     "catalog/**/*.ts",
-    "catalog/**/*.vue",
-    "stories/**/*.vue",
-    "histoire.config.ts",
-    "histoire.setup.ts"
+    "catalog/**/*.vue"
   ]
 }

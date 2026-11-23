@@ -81,9 +81,8 @@
           "optionalPeers": { "type": ["array", "null"], "items": { "type": "string" } },
           "hostIdMap": {
             "type": "object",
-            "required": ["histoireVariantTitle", "storybookExport"],
+            "required": ["storybookExport"],
             "properties": {
-              "histoireVariantTitle": { "type": "string" },
               "storybookExport": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*$" }
             }
           },

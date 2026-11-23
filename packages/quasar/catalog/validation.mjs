@@ -23,7 +23,6 @@ export function loadCatalogSources(root = REPO_ROOT) {
     load(path.posix.join('catalog', entry.demo))
     load(path.posix.join('catalog', entry.fixtures))
   }
-  load('stories/catalog-proof.story.vue')
   load(manifest.hosts.storybook.adapter)
   return { files, quasarSource: readQuasarSource(root), quasarVersion: readQuasarVersion(root), atlas: countAtlasHooks(root) }
 }
@@ -120,17 +119,6 @@ export function validateCatalog(snapshot, { complete = false } = {}) {
     }
   } catch (error) { errors.push(error.message) }
   const sb = storybookEvidence(files[manifest.hosts.storybook.adapter] ?? '')
-  let histoire
-  try { histoire = templateEvidence(files['stories/catalog-proof.story.vue'] ?? '', 'catalog-proof.story.vue') }
-  catch (error) { errors.push(error.message) }
-  const hsScript = histoire?.descriptor.scriptSetup?.content ?? ''
-  const hsAst = ts.createSourceFile('histoire.ts', hsScript, ts.ScriptTarget.Latest, true)
-  const demoMap = new Map()
-  walkTs(hsAst, (node) => {
-    if (ts.isVariableDeclaration(node) && node.name.getText(hsAst) === 'demoByCase' && ts.isObjectLiteralExpression(node.initializer)) {
-      for (const prop of node.initializer.properties) if (ts.isPropertyAssignment(prop)) demoMap.set(prop.name.text, prop.initializer.getText(hsAst))
-    }
-  })
   for (const [index, entry] of manifest.cases.entries()) {
     check(entry.order === index + 1 && ['implemented', 'planned'].includes(entry.disposition), `case order/disposition invalid: ${entry.id}`)
     const rows = control.cases[entry.id] ?? []
@@ -178,19 +166,7 @@ export function validateCatalog(snapshot, { complete = false } = {}) {
       }
     })
     for (const key of entry.controls) check(passed.has(key), `storybook render binding missing: ${entry.id}/${key}`)
-    check(demoMap.get(entry.id) === demoName, `histoire demo mapping drift: ${entry.id}`)
   }
-  check(histoire?.elements.some((e) => e.tag === 'component' && e.props.some((p) => p.type === 7 && p.name === 'bind' && !p.arg && p.exp?.content === 'state')), 'histoire reactive state binding missing')
-  check(histoire?.elements.some((e) => e.tag === 'OdsPreviewScaffold'), 'histoire shared scaffold missing')
-  const layout = histoire?.elements.find((e) => e.tag === 'Story')?.props.find((p) => p.type === 7 && p.name === 'bind' && p.arg?.content === 'layout')?.exp?.loc.source
-  let isolated = false
-  if (layout) walkTs(ts.createSourceFile('layout.ts', `const layout = ${layout}`, ts.ScriptTarget.Latest, true), (node) => {
-    if (ts.isObjectLiteralExpression(node)) {
-      const values = new Map(node.properties.filter(ts.isPropertyAssignment).map((p) => [p.name.getText(), p.initializer.getText()]))
-      isolated = values.get('type') === "'single'" && values.get('iframe') === 'true'
-    }
-  })
-  check(isolated, 'histoire proof must use isolated single iframe layout')
   const planned = inventory.exports.filter((row) => row.proofStatus === 'planned')
   if (complete) {
     for (const row of [...planned, ...inventory.visualPlugins.filter((r) => r.proofStatus === 'planned'), ...inventory.optionalModules.filter((r) => r.proofStatus === 'optional-separate')]) errors.push(`PLANNED ${row.name}: no implemented proof`)

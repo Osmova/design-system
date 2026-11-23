@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { h, type VNode } from 'vue'
 
-// Shared catalog: ONE copy of demos + control semantics for both hosts. The
-// Storybook adapter maps catalog control rows into CSF argTypes/args statically
-// (explicit export per case — no Histoire bridge, no iframe substitution).
+// Shared catalog: the Storybook adapter maps catalog control rows into CSF
+// argTypes/args statically (explicit export per case, no iframe substitution).
 interface CatalogControlRow {
   key: string
   kind: 'toggle' | 'select' | 'number' | 'text'
@@ -24,7 +23,6 @@ interface CatalogManifestCase {
   fixtures: string
   subelements: string[]
   hostIdMap: {
-    histoireVariantTitle: string
     storybookExport: string
   }
   disposition: 'implemented' | 'planned'

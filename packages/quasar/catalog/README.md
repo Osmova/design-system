@@ -1,6 +1,6 @@
 # ODS shared catalog — bounded proof (development only)
 
-This directory is **development-only tooling** for the shared Histoire + Storybook catalog proof.
+This directory is **development-only tooling** for the shared Storybook catalog proof.
 It is **not part of the published package**: `package.json#files` and `#exports` deliberately do not
 reference `catalog/`, and `npm pack` never ships it.
 
@@ -12,11 +12,11 @@ reference `catalog/`, and `npm pack` never ships it.
 - `schema.json` — manifest schema reference; `validation.mjs` checks the bounded contract,
   compiler-derived bindings, adapter render structures and deterministic generated data.
 - `control.json` — single source of control rows (key/kind/default/options/subelement). Both preview
-  hosts build their controls from it; demos intentionally carry **no prop defaults**.
-- `demos/` — shared Vue demo components (plain Quasar + `--ods-*` tokens; no Histoire/Storybook APIs).
+  host builds its controls from it; demos intentionally carry **no prop defaults**.
+- `demos/` — shared Vue demo components (plain Quasar + `--ods-*` tokens; no Storybook APIs).
 - `preview/` — shared preview helper: `useCatalogPreviewController()` reads the **injected**
   controller directly (module-global fallback is never used in the proof path), and
-  `OdsPreviewScaffold.vue` renders the same shell + lifecycle readout in both hosts.
+  `OdsPreviewScaffold.vue` renders the shell + lifecycle readout.
 - `fixtures/` — generated fixture JSON (fresh state/fixtured defaults + assertion lists per case).
 - `native-inventory.json` — machine-generated native Quasar inventory: every `node_modules/quasar/src/components.js`
   export with an explicit disjoint disposition (`mixin`, `helper`, `composite-child`, `spinner`, `core`),
@@ -40,23 +40,20 @@ Unknown native names (including new spinner names) fail classification explicitl
   adapter parity, package boundary). Also `--complete`, negative controls, host-dep hygiene.
   Negative controls mutate cloned sources and real temporary fixtures and assert specific
   diagnostics; there is no checker test hook or forced-failure path.
-- `pnpm stories` / `pnpm stories:build` and `pnpm catalog:storybook` /
-  `pnpm catalog:storybook:build` rebuild the compiled runtime before starting the host.
+- `pnpm catalog:storybook` / `pnpm catalog:storybook:build` rebuild the compiled runtime before starting the host.
 - `pnpm catalog:storybook:typecheck` includes Storybook configs and its CSF adapter.
-- `pnpm catalog:browser:test` exercises both already-built production hosts with
-  config-owned static servers (6196/6197). See the private workspace README for
+- `pnpm catalog:browser:test` exercises the already-built Storybook with a
+  config-owned static server (6197). See the private workspace README for
   prerequisites. The proof includes actual controls/readout, portals, native icons,
   held tab arrows, 393px document geometry and isolated Docs/source checks.
 
 ## Boundaries (must hold)
 
 - `src/**`, gallery, and existing stories are untouched by this proof.
-- The preview controllers use the **compiled package entrypoint** (`dist`) in both hosts, one explicit
+- The preview controllers use the **compiled package entrypoint** (`dist`), one explicit
   controller per preview document/app, `persist: false`, `app.onUnmount`-driven dispose; `catalog/preview`
   rejects the `fallbackController` module-global shortcut.
 - Storybook deps live only in the private `apps/storybook` workspace (`storybook`,
   `@storybook/vue3-vite`, `@storybook/addon-docs`, `@storybook/addon-a11y` pinned exactly at 10.6.7).
-- Histoire owns theme changes through the shared scaffold. Storybook owns them through
-  toolbar globals only (in-canvas theme selectors hidden); both show live actual body state.
-- The four proof variants use Histoire's isolated single-iframe layout. Existing story files
-  and their URLs are unchanged. No claim of complete catalog or browser acceptance is made.
+- Storybook owns theme changes through toolbar globals only (in-canvas theme selectors hidden) and
+  shows the live actual body state. No claim of complete catalog or browser acceptance is made.
