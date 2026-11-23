@@ -1,5 +1,6 @@
 @use '../materials';
 @use '../importance';
+@use 'variants/glass';
 
 $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
 
@@ -92,8 +93,8 @@ $win-dialog-fill: linear-gradient(var(--_qds-win-layer-alt), var(--_qds-win-laye
   #{$glass} .q-dialog__inner--minimized:not(.q-dialog__inner--animating) > div { border-radius: var(--_qds-glass-sheet-radius); }
   #{$glass} .q-dialog__inner > .q-card > .q-form > :is(.q-card__section, .q-card__actions) { padding-inline: var(--_qds-glass-sheet-pad); }
   #{$glass} .q-dialog__inner--bottom > div { margin: 0 var(--_qds-glass-inset) calc(var(--_qds-glass-inset) + env(safe-area-inset-bottom)); }
-  // Alerts and partial sheets are regular glass; a maximized dialog stays opaque.
-  #{$glass} .q-dialog__inner--minimized > :is(.q-card, .q-bottom-sheet) { box-shadow: var(--qds-material-edge), var(--qds-shadow-lg); @include materials.material(regular); }
+  // Minimized dialogs, plugin sheets and native select sheets share the same material.
+  #{$glass} .q-dialog__inner--minimized > :is(.q-card, .q-bottom-sheet, .q-select__dialog) { @include glass.material(regular, var(--qds-shadow-lg)); @include glass.contrast-frame; }
   #{$glass} .q-dialog__inner--maximized > .q-card { border: 0; box-shadow: none; }
   #{$glass} .q-dialog__inner.q-transition--scale-enter-active > * { transition-timing-function: var(--qds-motion-ease-out), var(--_qds-glass-spring); }
   @media (prefers-reduced-motion: reduce) { #{$glass} .q-dialog__inner.q-transition--scale-enter-from > * { transform: none; } }

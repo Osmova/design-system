@@ -68,6 +68,26 @@ test.describe('QDS variant distinctiveness lab', () => {
 
   // A bare-class fallback (0,1,0) never beats the dark scope (0,3,1).
   for (const mode of ['light', 'dark'] as const) {
+    test(`glass ${mode} keeps labels legible over the painted gallery backdrop`, async ({ page, isMobile }) => {
+      await page.goto('/#components?variant=glass')
+      await applyTheme(page, mode, 'glass')
+      const toolbar = page.locator('.gallery-header .q-toolbar')
+      await expect(toolbar).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+      await expect(page.locator('.gallery-layout')).toHaveCSS('background-image', /glass-landscape/)
+      await expectMaterialText(page, '.gallery-title span, .gallery-switcher__label')
+      await page.locator('.gallery-switcher').click()
+      const menu = page.getByRole('menu', { name: 'Variant', exact: true })
+      await expect(menu).toHaveCSS('backdrop-filter', /blur\(24px\).*saturate/)
+      await expect(menu).toHaveCSS('background-image', /radial-gradient/)
+      await expectMaterialText(page, '.gallery-variant-menu .q-item__label')
+      await page.keyboard.press('Escape')
+      await expect(menu).toBeHidden()
+
+      if (isMobile) await page.getByRole('button', { name: 'Pages', exact: true }).click()
+      await expect(page.locator('.gallery-nav')).toBeInViewport()
+      await expectMaterialText(page, '.gallery-nav__header, .gallery-nav .q-tab__label')
+    })
+
     test(`glass drops translucency under forced colors in ${mode}`, async ({ page }) => {
       await page.goto('/#components?variant=glass')
       await applyTheme(page, mode, 'glass')
@@ -283,7 +303,8 @@ test.describe('QDS variant distinctiveness lab', () => {
       expect.soft(disabled.shadow).toBe('none')
       expect.soft((await glassPaint(button('Disabled outline'))).fill).toBe('rgba(0, 0, 0, 0)')
       expect.soft(await computed(page, '.q-toolbar.qds-card .q-btn--flat', 'backdrop-filter'), 'toolbars inside content stay plain').toBe('none')
-      expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'backdrop-filter'), 'bar buttons float on glass').not.toBe('none')
+      expect.soft(await computed(page, '.gallery-header .q-toolbar', 'backdrop-filter', '::before'), 'one glass capsule holds the toolbar').toContain('blur(12px)')
+      expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'backdrop-filter'), 'toolbar buttons share the capsule').toBe('none')
       expect.soft(await computed(page, '.gallery-header .gallery-switcher', 'border-radius'), 'the shell follows glass capsules').toBe('9999px')
 
       const session = await page.context().newCDPSession(page)
@@ -516,6 +537,59 @@ function systemHighlight(page: Page) {
     sample.remove()
     return pair
   })
+}
+
+async function expectMaterialText(page: Page, selector: string) {
+  await waitForThemePaint(page)
+  const labels = await page.locator(selector).evaluateAll(elements => elements.flatMap(element => {
+    const range = document.createRange()
+    range.selectNodeContents(element)
+    const { left, top, right, bottom } = range.getBoundingClientRect()
+    const rect = element.getBoundingClientRect()
+    const x = Math.ceil(Math.max(0, left, rect.left))
+    const y = Math.ceil(Math.max(0, top, rect.top))
+    const width = Math.floor(Math.min(innerWidth, right, rect.right)) - x
+    const height = Math.floor(Math.min(innerHeight, bottom, rect.bottom)) - y
+    if (width < 1 || height < 1) return []
+    let opacity = 1
+    for (let parent: Element | null = element; parent; parent = parent.parentElement) opacity *= Number(getComputedStyle(parent).opacity)
+    return [{ x, y, width, height, name: element.textContent?.trim(), color: getComputedStyle(element).color, opacity }]
+  }))
+  expect(labels.length).toBeGreaterThan(0)
+  const hidden = await page.addStyleTag({ content: `${selector} { visibility: hidden !important; }` })
+  const screenshot = await page.screenshot({ animations: 'disabled', scale: 'css' })
+  await hidden.evaluate(element => element.remove())
+
+  const results = await page.evaluate(async ({ labels, png }) => {
+    const response = await fetch(`data:image/png;base64,${png}`)
+    const image = await createImageBitmap(await response.blob())
+    const canvas = document.createElement('canvas')
+    canvas.width = image.width
+    canvas.height = image.height
+    const context = canvas.getContext('2d', { willReadFrequently: true })!
+    context.drawImage(image, 0, 0)
+    const foreground = document.createElement('canvas').getContext('2d', { willReadFrequently: true })!
+    const linear = (channel: number) => (channel /= 255) <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+    const luminance = (r: number, g: number, b: number) => linear(r) * 0.2126 + linear(g) * 0.7152 + linear(b) * 0.0722
+    return labels.map(({ x, y, width, height, name, color, opacity }) => {
+      foreground.clearRect(0, 0, 1, 1)
+      foreground.fillStyle = color
+      foreground.fillRect(0, 0, 1, 1)
+      const [r, g, b, a] = foreground.getImageData(0, 0, 1, 1).data
+      const alpha = opacity * a / 255
+      const pixels = context.getImageData(x, y, width, height).data
+      let minimum = Infinity
+      for (let i = 0; i < pixels.length; i += 4) {
+        const [br, bg, bb] = [pixels[i], pixels[i + 1], pixels[i + 2]]
+        const back = luminance(br, bg, bb)
+        const ink = luminance(r * alpha + br * (1 - alpha), g * alpha + bg * (1 - alpha), b * alpha + bb * (1 - alpha))
+        minimum = Math.min(minimum, (Math.max(ink, back) + 0.05) / (Math.min(ink, back) + 0.05))
+      }
+      return { name, minimum }
+    })
+  }, { labels, png: screenshot.toString('base64') })
+  await test.info().attach(`painted contrast: ${selector}`, { body: JSON.stringify(results), contentType: 'application/json' })
+  for (const { name, minimum } of results) expect.soft(minimum, name).toBeGreaterThanOrEqual(4.5)
 }
 
 function glassPaint(locator: Locator, pseudo?: string) {
