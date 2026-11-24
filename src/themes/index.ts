@@ -95,7 +95,7 @@ export const DESIGN_SYSTEM_VARIANTS = {
   zen: {
     name: 'zen',
     label: 'Zen',
-    description: 'Soft tinted paper blocks with a quiet reading rhythm, gentle depth and an essential boundary on every control.',
+    description: 'Misty surfaces, slate type and sage accents with gentle depth and a quiet reading mode.',
     cssClass: 'qds-variant-zen',
   },
   default: {

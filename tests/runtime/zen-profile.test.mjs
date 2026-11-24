@@ -66,8 +66,7 @@ test('the .qds-reading modifier removes depth and motion while every Zen boundar
     assert.ok(declarations.includes(removed), `reading must set ${removed}`)
   }
   assert.doesNotMatch(declarations, /border(-[a-z]+)?:\s*(none|0)/, 'reading must not remove a Zen boundary')
-  // No device, hardware or user-agent heuristic anywhere in the profile.
-  assert.doesNotMatch(css, /prefers-|pointer:|hover:|forced-colors|-webkit-min-device|monochrome|update:/)
+  assert.doesNotMatch(css, /@media\b[^{}]*\{[^{}]*\.qds-reading|pointer:|hover:|-webkit-min-device|monochrome|update:/)
 })
 
 // ── Contrast is a hard gate, computed from the shipped token values ──────────
@@ -78,7 +77,7 @@ function zenTokens(scheme) {
   const keys = [
     ...[0, 1, 2, 3].map((step) => [`surface-${step}`, `${prefix}surface-${step}`]),
     ['text', `${prefix}text`], ['text-strong', `${prefix}text-strong`], ['text-muted', `${prefix}text-muted`],
-    ['stroke-strong', `${prefix}stroke-strong`], ['border', `${prefix}border`],
+    ['stroke-strong', `${prefix}stroke-strong`], ['border', `${prefix}border`], ['sage', `${prefix}sage`],
     ...roles.map((role) => [role, `${palette}${role}`]),
     ...['brand', 'accent', 'positive', 'warning', 'negative', 'info', 'focus-block', 'transient']
       .map((wash) => [`soft-${wash}`, `${scheme === 'dark' ? 'dark-' : ''}soft-${wash}`]),
@@ -110,7 +109,7 @@ for (const scheme of schemes) {
       check(`text/surface-${step}`, parseRgb(token.text), parseRgb(token[`surface-${step}`]))
       check(`text-strong/surface-${step}`, strong, parseRgb(token[`surface-${step}`]))
     }
-    for (const step of [0, 1, 2]) check(`text-muted/surface-${step}`, parseRgb(token['text-muted']), parseRgb(token[`surface-${step}`]))
+    for (const step of [0, 1, 2, 3]) check(`text-muted/surface-${step}`, parseRgb(token['text-muted']), parseRgb(token[`surface-${step}`]))
     for (const wash of ['brand', 'accent', 'positive', 'warning', 'negative', 'info', 'focus-block', 'transient']) {
       check(`text/soft-${wash}`, parseRgb(token.text), parseRgb(token[`soft-${wash}`]))
       check(`text-muted/soft-${wash}`, parseRgb(token['text-muted']), parseRgb(token[`soft-${wash}`]))
@@ -120,8 +119,8 @@ for (const scheme of schemes) {
       for (const [state, proportion] of Object.entries(FILL_STATES)) {
         check(`on-fill/${role}-${state}`, parseRgb(token['on-fill']), mix(fill, strong, proportion))
       }
-      const foreground = mix(fill, strong, ROLE_FG_MIX)
-      for (const step of [0, 1, 2]) check(`fg-${role}/surface-${step}`, foreground, parseRgb(token[`surface-${step}`]))
+      const foreground = mix(role === 'primary' ? parseRgb(token.sage) : fill, strong, ROLE_FG_MIX)
+      for (const step of [0, 1, 2, 3]) check(`fg-${role}/surface-${step}`, foreground, parseRgb(token[`surface-${step}`]))
       // `secondary` has no role wash in any profile, so there is no pair to check.
       const wash = role === 'primary' ? 'brand' : role
       if (token[`soft-${wash}`]) check(`fg-${role}/soft-${wash}`, foreground, parseRgb(token[`soft-${wash}`]))
@@ -130,9 +129,7 @@ for (const scheme of schemes) {
     assert.ok(checked >= 70, `${checked} pairings`)
   })
 
-  // Essential boundaries must be readable on their own: Zen controls resolve
-  // their stroke to stroke-strong, which has to clear the 3:1 non-text minimum.
-  test(`Zen ${scheme} essential control boundaries clear 3:1 on every surface and wash`, () => {
+  test(`Zen ${scheme} state and contrast-mode strokes clear 3:1 on every surface and wash`, () => {
     const token = zenTokens(scheme)
     const stroke = parseRgb(token['stroke-strong'])
     const failures = []
@@ -203,9 +200,9 @@ test('Zen paints every surface through a rebindable alias, never a raw --qds-sur
 test('with the compatibility grammar removed the Zen field still paints its own well in every state', () => {
   const css = compile(zenProgram())
   for (const expected of [
-    /\.q-field__control\{[^}]*background:var\(--qds-bg-surface-1\)/,
-    /\.q-field__control:hover\{background:var\(--qds-bg-surface-1\)\}/,
-    /\.q-field--focused \.q-field__control\{[^}]*background:var\(--qds-bg-surface-1\)/,
+    /\.q-field__control\{[^}]*background:var\(--qds-control-fill-default\)/,
+    /\.q-field__control:hover\{background:var\(--qds-control-fill-default\)\}/,
+    /\.q-field--focused \.q-field__control\{[^}]*background:var\(--qds-control-fill-default\)/,
   ]) assert.match(css, expected)
 })
 
@@ -255,10 +252,54 @@ test('Zen focus pairs the glow with a real outline or boundary, never the glow a
   }
 })
 
-test('Zen grammar is self-contained and declares no !important', () => {
+const zenSelector = '.qds-variant-zen:is(.qds-ui,.qds-ui *)'
+// Notify and soft banners must stay out: the shared layer repaints them as neutral washes.
+const paintedSurface = ':is(:is(.bg-primary,.bg-secondary,.bg-accent,.bg-positive,.bg-negative,.bg-warning,.bg-info,.bg-dark),.q-bar--dark)'
+  + ':not(.q-btn,.q-chip,.q-badge,.q-toggle__track,.q-slider__selection,.q-notification,.q-banner:where(.bg-positive,.bg-negative,.bg-warning,.bg-info))'
+const paintedTargets = ['', ' :is(.q-tab:not(.disabled),.q-tab__indicator,.q-tabs__arrow)', ' .q-chip--outline:not(.disabled)',
+  ' .q-btn:is(.q-btn--flat,.q-btn--outline):not(:is(.bg-primary,.bg-secondary,.bg-accent,.bg-positive,.bg-negative,.bg-warning,.bg-info,.bg-dark),.q-btn-toggle *,.disabled):not(.q-pagination [aria-current=page].q-btn--flat)']
+const selectorList = (path) => {
+  const selectors = ['']
+  let depth = 0
+  for (const character of path) {
+    if (character === ',' && depth === 0) { selectors.push(''); continue }
+    depth += character === '(' ? 1 : character === ')' ? -1 : 0
+    selectors[selectors.length - 1] += character
+  }
+  return selectors
+}
+
+test('Zen routes only native color, focus and transparent chrome overrides through the importance layer', () => {
   const css = compile(zenProgram())
-  assert.doesNotMatch(css, /!important/)
   assert.doesNotMatch(css, /@import|@layer/)
+  const layered = compile(`@use 'src/css/importance' with ($layered: true);${zenProgram()}`)
+  const important = (source) => flattenRules(source).flatMap(([path, body]) =>
+    body.split(';').filter((declaration) => declaration.includes('!important')).map((declaration) => [path, declaration]))
+  const rules = important(css)
+  assert.ok(rules.length > 0)
+  for (const [path, declaration] of rules) {
+    if (declaration.startsWith('background-color:')) {
+      assert.match(path, /prefers-reduced-transparency:\s*reduce/)
+      assert.match(path, /\.bg-transparent/)
+      assert.match(declaration, /^background-color:var\(--_qds-zen-surface-fill,/)
+    } else if (declaration.startsWith('outline:')) {
+      assert.match(path, /\.q-field__focusable-action:focus-visible$/)
+      assert.match(declaration, /^outline:var\(--qds-focus-ring-width\) solid currentColor\s*!important/i)
+    } else if (/prefers-reduced-transparency/.test(path)) {
+      assert.match(path, /\.bg-transparent/)
+      assert.match(declaration, /^color:var\(--_qds-zen-surface-ink, ?var\(--qds-fg-default\)\)\s*!important/)
+    } else if (/^color:#fff\s*!important/i.test(declaration)) {
+      assert.equal(path, `${zenSelector} .q-chip.bg-dark`)
+    } else {
+      assert.match(declaration, /^color:var\(--_qds-zen-surface-ink,/)
+      for (const selector of selectorList(path)) {
+        assert.ok(selector.startsWith(`${zenSelector} ${paintedSurface}`), `important ink outside a painted surface: ${selector}`)
+        assert.ok(paintedTargets.includes(selector.slice(zenSelector.length + paintedSurface.length + 1)), `unexpected important ink target: ${selector}`)
+      }
+    }
+  }
+  assert.equal(important(layered).length, rules.length)
+  for (const [path] of important(layered)) assert.match(path, /@layer qds-important/)
 })
 
 // Inverted ink surfaces (tooltip, value bubble, dock stop) and the switch glyphs.
@@ -272,7 +313,7 @@ for (const scheme of schemes) {
     check('raised text on ink pill', raised, strong, 4.5)
     check('switch on glyph', parseRgb(token['on-fill']), parseRgb(token.primary), 3)
     for (const step of [0, 1, 2, 3]) check(`switch off glyph/surface-${step}`, parseRgb(token['text-muted']), parseRgb(token[`surface-${step}`]), 3)
-    const focus = mix(parseRgb(token.primary), strong, ROLE_FG_MIX)
+    const focus = mix(parseRgb(token.sage), strong, ROLE_FG_MIX)
     for (const step of [0, 1, 2, 3]) check(`focus outline/surface-${step}`, focus, parseRgb(token[`surface-${step}`]), 3)
     assert.deepEqual(failures, [])
   })

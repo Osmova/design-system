@@ -12,8 +12,8 @@ Quasar component overrides, and a runtime light/dark/system + variant controller
 The fifth variant, `shadcn`, provides opaque New York-inspired native Quasar styling with
 Neutral/Gray/Zinc/Stone/Slate palettes. It requires Quasar >=2.35; the existing ^2.0.0 peer range
 remains for existing variants. No mandatory Tailwind/Reka dependency is introduced. The sixth,
-`zen`, is the soft reading surface: linen paper with sage controls, generous radii, gentle diffuse depth,
-and an essential edge on every control, with an opt-in `.qds-reading` presentation. The seventh,
+`zen`, is the soft reading surface: cool mist and slate, sage and sunset accents, generous radii, and soft diffuse depth.
+Increased contrast restores strong control edges, and `.qds-reading` removes decorative depth and motion. The seventh,
 `glass`, is inspired by Apple's design language: controls and bars float on a translucent functional
 layer above opaque content, prominent controls are capsules, nested shapes are concentric (private
 `--_qds-glass-*` geometry tokens), and tint is reserved for role fills and selection. Translucency is

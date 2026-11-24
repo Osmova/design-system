@@ -107,7 +107,7 @@ test('the all-in bundle, the shared core and every complete variant bundle stay 
   for (const entry of ['index.scss', 'index.layered.scss']) {
     const full = compileEntry(new URL(`src/css/${entry}`, root).pathname)
     const [allMin, allGzip] = [Buffer.byteLength(full), gzipSync(full, { level: 9 }).length]
-    assert.ok(allMin <= 785200 && allGzip <= 80625, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 785200 / 80625`)
+    assert.ok(allMin <= 791000 && allGzip <= 81600, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 791000 / 81600`)
     const parts = partitionCss(full)
     for (const [name, css] of Object.entries(parts)) {
       const [maxMin, maxGzip] = name === 'core' ? [215800, 26875] : [380000, 46000]
@@ -147,10 +147,10 @@ test('each variant bundle is the full stylesheet minus every other variant, in t
   }
 })
 
-test('mandatory runtime and publish gates run the grammar and variant bundle browser proofs serially after the existing checks', () => {
+test('mandatory runtime and publish gates run the grammar and variant browser proofs serially after the existing checks', () => {
   const { scripts } = JSON.parse(readFileSync(new URL('package.json', root), 'utf8'))
   assert.equal(scripts['test:runtime:grammar:browser'], 'node tests/runtime/grammar-fixture-browser.mjs')
-  assert.equal(scripts['test:runtime:variants:browser'], 'node tests/runtime/variant-bundles-browser.mjs')
+  assert.equal(scripts['test:runtime:variants:browser'], 'node tests/runtime/variant-bundles-browser.mjs && node tests/runtime/zen-browser.mjs')
   assert.equal(scripts['test:runtime'], 'pnpm test:runtime:ssr && pnpm test:runtime:colorjs && pnpm test:runtime:fill-contrast && pnpm test:runtime:grammar:browser && pnpm test:runtime:variants:browser')
   assert.ok(scripts['verify:publish'].split(' && ').includes('pnpm test:runtime'))
 })

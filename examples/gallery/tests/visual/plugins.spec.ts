@@ -370,7 +370,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
     }
   })
 
-  test('Zen plugin surfaces are opaque blocks with a real edge in both modes', async ({ page }) => {
+  test('Zen plugin surfaces are opaque blocks with a soft edge in both modes', async ({ page }) => {
     for (const mode of ['light', 'dark'] as const) {
       await applyTheme(page, mode, 'zen')
 
@@ -378,7 +378,7 @@ test.describe('QDS plugin/global UI surfaces', () => {
       await expect(page.locator('.q-bottom-sheet.q-bottom-sheet--list')).toBeVisible()
       expect.soft(await computed(page, '.q-bottom-sheet', 'backdrop-filter'), `Zen ${mode} BottomSheet carries no acrylic`).toBe('none')
       expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-width'), `Zen ${mode} BottomSheet edge`).toBe('1px')
-      expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-color'), `Zen ${mode} BottomSheet edge color`).toBe(await resolvedColor(page, '--qds-stroke-strong'))
+      expect.soft(await computed(page, '.q-bottom-sheet', 'border-top-color'), `Zen ${mode} BottomSheet edge color`).toBe(await resolvedColor(page, '--qds-stroke-default'))
       expect.soft(await computed(page, '.q-bottom-sheet', 'background-color'), `Zen ${mode} BottomSheet surface`).toBe(await resolvedColor(page, '--qds-surface-0'))
       await page.getByText('Pin surface').click()
       await expectNoResidualGlobalSurfaces(page)
@@ -387,13 +387,34 @@ test.describe('QDS plugin/global UI surfaces', () => {
       await expect(page.locator('.q-loading.qds-plugin-loading .q-loading__box')).toBeVisible()
       expect.soft(await computed(page, '.q-loading__box', 'backdrop-filter'), `Zen ${mode} Loading box carries no acrylic`).toBe('none')
       expect.soft(await computed(page, '.q-loading__box', 'border-top-width'), `Zen ${mode} Loading box edge`).toBe('1px')
-      expect.soft(await computed(page, '.q-loading__box', 'border-top-color'), `Zen ${mode} Loading box edge color`).toBe(await resolvedColor(page, '--qds-stroke-strong'))
+      expect.soft(await computed(page, '.q-loading__box', 'border-top-color'), `Zen ${mode} Loading box edge color`).toBe(await resolvedColor(page, '--qds-stroke-default'))
       expect.soft(await computed(page, '.q-loading__box', 'background-color'), `Zen ${mode} Loading box surface`).toBe(await resolvedColor(page, '--qds-surface-0'))
       await hideLoadingWithTestHook(page)
       await expect(page.locator('.q-loading')).toHaveCount(0)
       await expectNoResidualGlobalSurfaces(page)
     }
   })
+
+  for (const mode of ['light', 'dark'] as const) {
+    test(`Zen ${mode} restores BottomSheet grid action edges and focus`, async ({ page }) => {
+      await applyTheme(page, mode, 'zen')
+      await page.emulateMedia({ contrast: 'more' })
+      await page.getByRole('button', { name: 'Open grid BottomSheet' }).click()
+      const actions = page.locator('.q-bottom-sheet--grid .q-bottom-sheet__item[tabindex="0"]')
+      await expect(actions.first()).toBeVisible()
+      await page.keyboard.press('Tab')
+      const edge = await resolvedColor(page, '--qds-stroke-strong')
+      for (const action of await actions.all()) {
+        await expect(action).toHaveCSS('border-top-width', '1px')
+        await expect(action).toHaveCSS('border-top-color', edge)
+        await action.focus()
+        await expect(action).toHaveCSS('outline-style', 'solid')
+        await expect(action).toHaveCSS('outline-color', await action.evaluate(el => getComputedStyle(el).color))
+      }
+      await page.keyboard.press('Escape')
+      await expectNoResidualGlobalSurfaces(page)
+    })
+  }
 
   test('Loading and LoadingBar plugin surfaces are visible only during their assertions', async ({ page }) => {
     await expect(page.locator('[data-test="qds-plugin-inner-loading"]')).toBeVisible()

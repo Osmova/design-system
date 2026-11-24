@@ -245,23 +245,33 @@
 
 // Zen's boundary is essential and its depth decorative: control strokes resolve
 // to the 3:1 stroke-strong value so every affordance reads with shadows off.
-@mixin qds-zen-paper($scheme) {
+@mixin qds-zen-scheme($scheme) {
+  @include qds-variant-scheme(zen, $scheme == dark);
+  @include fallbacks.qds-material-tokens(solid);
   --qds-stroke-strong: #{qds-variant-token(zen, '#{$scheme}-stroke-strong')};
   @each $token in control-stroke-default, control-stroke-secondary, control-stroke-strong, control-stroke-top, control-stroke-bottom, material-stroke, menu-border {
-    --qds-#{$token}: var(--qds-stroke-strong);
+    --qds-#{$token}: var(--qds-stroke-default);
   }
+  --qds-control-fill-default: var(--qds-bg-surface-2);
+  --qds-control-fill-hover: var(--qds-bg-layer);
+  --qds-control-fill-pressed: var(--qds-bg-layer);
+  --qds-control-fill-disabled: var(--qds-bg-surface-2);
+  --qds-control-fill-input-active: var(--qds-bg-surface-2);
+  --qds-card-stroke: var(--qds-stroke-subtle);
+  --qds-bar-dark-bg: var(--qds-fg-strong);
+  --qds-bar-dark-fg: var(--qds-bg-card);
   --qds-bg-overlay: #{qds-variant-token(zen, '#{$scheme}-scrim')};
   --qds-fg-disabled: #{qds-variant-token(zen, '#{$scheme}-fg-disabled')};
   --qds-fg-on-brand: var(--qds-text-on-primary);
   --qds-text-on-solid: #{map.get(qds-variant-token(zen, '#{$scheme}-on-fill'), primary)};
-  --qds-fg-brand: color-mix(in srgb, var(--qds-color-primary) 80%, var(--qds-text-strong));
+  --qds-fg-brand: color-mix(in srgb, #{qds-variant-token(zen, '#{$scheme}-sage')} 80%, var(--qds-text-strong));
   @each $role in secondary, accent, positive, negative, warning, info {
     --qds-fg-#{$role}: color-mix(in srgb, var(--qds-color-#{$role}) 80%, var(--qds-text-strong));
   }
   --qds-stroke-error: var(--qds-fg-negative);
   --qds-stroke-focus: var(--qds-fg-brand);
   --qds-segmented-track-bg: var(--qds-surface-0);
-  --qds-segmented-thumb-bg: var(--qds-surface-2);
+  --qds-segmented-thumb-bg: var(--qds-surface-brand-soft);
   --qds-row-radius: var(--qds-radius-control);
   --qds-button-radius: var(--qds-radius-full);
   --qds-tab-radius: var(--qds-radius-full);
@@ -278,6 +288,11 @@
   }
   @each $level in lift-2, lift-3, edge, inset, press {
     --_qds-zen-#{$level}: #{qds-variant-token(zen, '#{$scheme}-#{$level}')};
+  }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    --qds-border: var(--qds-stroke-strong);
+    --qds-border-subtle: var(--qds-stroke-strong);
+    --_qds-zen-outline-mix: 100%;
   }
 }
 
@@ -344,7 +359,7 @@
   @layer qds.tokens {
   .qds-variant-zen {
     --qds-font-family: #{qds-variant-token(zen, font-family)};
-    --qds-font-family-display: #{qds-variant-token(zen, font-family-display)};
+    --qds-font-family-display: var(--qds-font-family);
     @each $step in xs, sm, md, xl {
       --qds-radius-#{$step}: #{qds-variant-token(zen, radius-#{$step})};
     }
@@ -354,14 +369,12 @@
     --qds-motion-fast: #{qds-variant-token(zen, motion-fast)};
     --_qds-zen-spring: #{qds-variant-token(zen, motion-spring)};
     @each $step in h1, h2, h3, h4 {
-      --qds-font-weight-#{$step}: 380;
+      --qds-font-weight-#{$step}: var(--qds-font-weight-semibold);
     }
     --qds-font-weight-h5: 450;
     --qds-font-weight-h6: 500;
     --qds-letter-spacing-overline: 0.1em;
-    @include qds-variant-scheme(zen);
-    @include fallbacks.qds-material-tokens(solid);
-    @include qds-zen-paper(light);
+    @include qds-zen-scheme(light);
   }
 
   @media not (pointer: coarse) {
@@ -375,10 +388,9 @@
   .qds-theme-dark .qds-variant-zen,
   body.qds-ui.body--dark.qds-variant-zen,
   body.qds-ui.body--dark .qds-variant-zen {
-    @include qds-variant-scheme(zen, true);
-    @include fallbacks.qds-material-tokens(solid);
-    @include qds-zen-paper(dark);
+    @include qds-zen-scheme(dark);
   }
+
   }
 }
 

@@ -41,7 +41,7 @@ const variants: VariantSample[] = [
   {
     name: 'zen',
     label: 'Zen',
-    intent: 'Soft tinted paper blocks, a quiet reading rhythm and an essential edge on every control.',
+    intent: 'Misty surfaces, slate type, sage accents and soft shadows.',
     sample: 'Reading pane 01',
   },
   {

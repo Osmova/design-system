@@ -93,11 +93,14 @@ test.describe('QDS official stable data and layout modes', () => {
   for (const variant of ['ink', 'one', 'term', 'zen'] as const) {
     test(`keeps explicit QTable and QTree dark in light/${variant}`, async ({ page }) => {
       await openComponents(page)
-      await applyTheme(page, 'light', variant)
+      await applyTheme(page, variant === 'zen' ? 'dark' : 'light', variant)
+      const background = await resolvedColor(page, variant === 'zen' ? '--qds-bg-card' : '--qds-text-strong')
+      const foreground = await resolvedColor(page, variant === 'zen' ? '--qds-fg-default' : '--qds-surface-0')
+      if (variant === 'zen') await applyTheme(page, 'light', variant)
 
       const table = page.locator('[data-test="qds-table-official-modes"]')
       await expect(table).toHaveClass(/q-table--dark/)
-      await expect(table).toHaveCSS('background-color', await resolvedColor(page, '--qds-text-strong'))
+      await expect(table).toHaveCSS('background-color', background)
       const darkHeaderBackground = await table.evaluate((element) => {
         const sample = document.createElement('div')
         sample.style.backgroundColor = getComputedStyle(element).getPropertyValue('--qds-table-header-bg')
@@ -124,7 +127,7 @@ test.describe('QDS official stable data and layout modes', () => {
         'border-bottom-color',
         await table.locator('td').first().evaluate((element) => getComputedStyle(element).borderBottomColor),
       )
-      await expect(table.locator('td').first()).toHaveCSS('color', await resolvedColor(page, '--qds-surface-0'))
+      await expect(table.locator('td').first()).toHaveCSS('color', foreground)
 
       if (variant === 'term') {
         // Local dark inverts Term's light-page tokens; it is not the global Term dark palette.
@@ -143,8 +146,8 @@ test.describe('QDS official stable data and layout modes', () => {
       await openCatalog(page)
       const tree = page.locator('[data-test="qds-tree-dark-no-connectors"]')
       await expect(tree).toHaveClass(/q-tree--dark/)
-      await expect(tree).toHaveCSS('background-color', await resolvedColor(page, '--qds-text-strong'))
-      await expect(tree.locator('.q-tree__node-header').first()).toHaveCSS('color', await resolvedColor(page, '--qds-surface-0'))
+      await expect(tree).toHaveCSS('background-color', background)
+      await expect(tree.locator('.q-tree__node-header').first()).toHaveCSS('color', foreground)
       if (variant === 'term') {
         await expect(tree).toHaveCSS('background-color', 'rgb(14, 13, 11)')
         await expect(tree.locator('.q-tree__node-header').first()).toHaveCSS('color', 'rgb(248, 246, 240)')

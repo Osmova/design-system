@@ -83,6 +83,10 @@ $explicit-dark: '.qds-ui.qds-theme-light #{$local-dark}';
     --_qds-win-layer-alt: var(--qds-bg-surface-2);
     --_qds-win-surface-stroke: var(--qds-card-stroke);
   }
+  .qds-ui.qds-theme-light.qds-variant-zen #{$local-dark},
+  .qds-ui.qds-theme-light .qds-variant-zen #{$local-dark} {
+    @include theme.qds-zen-scheme(dark);
+  }
   @media (prefers-contrast: more), (forced-colors: active) {
     .qds-ui.qds-theme-light.qds-variant-win [class*='--dark'] {
       @each $token in control-stroke-default, control-stroke-secondary, control-stroke-top, stroke-default, stroke-subtle { --qds-#{$token}: var(--qds-stroke-strong); }

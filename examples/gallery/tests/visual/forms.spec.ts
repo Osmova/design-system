@@ -376,7 +376,7 @@ test.describe('forms', () => {
     })
   }
 
-  for (const variant of CANONICAL_VARIANTS) {
+  for (const variant of [...CANONICAL_VARIANTS, 'zen'] as const) {
     test(`field group joins its children (${variant})`, async ({ page }) => {
       await openForms(page, 'light', variant)
       const group = page.locator(byHook('qds-forms-field-group'))
@@ -396,6 +396,8 @@ test.describe('forms', () => {
               top: r.top,
               height: r.height,
               z: z === 'auto' ? 0 : Number(z),
+              background: style.backgroundColor,
+              border: style.borderTopColor,
               startStart: radius(style.borderStartStartRadius),
               startEnd: radius(style.borderStartEndRadius),
               endStart: radius(style.borderEndStartRadius),
@@ -411,6 +413,11 @@ test.describe('forms', () => {
       expect.soft(isTransparent(fill), `group button keeps its colour fill (${fill})`).toBe(false)
       expect(parts.length, 'input, select and button').toBe(3)
       const [first, middle, last] = parts
+      if (variant === 'zen') {
+        expect.soft(middle.background, 'Zen input and select share a fill').toBe(first.background)
+        expect.soft(middle.border, 'Zen select seam uses the field hairline').toBe(first.border)
+        expect.soft(middle.height, 'Zen select and input share a height').toBeCloseTo(first.height, 0)
+      }
       const wrapped = await page.evaluate(() => matchMedia('(max-width: 30rem)').matches)
       if (wrapped) {
         expect.soft(first.startStart > 0 && first.startEnd > 0, 'wrapped first row keeps its top radii').toBe(true)
@@ -450,6 +457,18 @@ test.describe('forms', () => {
         .toBeGreaterThan(0)
     })
   }
+
+  test('Zen Bio autogrows with a thin scrollbar', async ({ page }) => {
+    for (const mode of MODES) {
+      await openForms(page, mode, 'zen')
+      const bio = page.locator('textarea[name="forms-bio"]')
+      await bio.fill('One line')
+      const before = await bio.evaluate((element) => element.getBoundingClientRect().height)
+      await bio.fill('First line\nSecond line\nThird line\nFourth line')
+      await expect(bio).toHaveCSS('scrollbar-width', 'thin')
+      await expect.poll(() => bio.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThan(before)
+    }
+  })
 
   test('kbd hints render as keycaps', async ({ page }) => {
     await openForms(page, 'light')
