@@ -109,8 +109,8 @@ const FILL_STATES = { hover: 0.88, pressed: 0.76 }
 const ROLE_FG_MIX = 0.86
 const DARK_TRACK_MIX = 0.8
 const DARK_CONTRAST_TRACK_MIX = 0.72
-const DARK_BRIGHT_SWITCH_MIX = 0.65
-const brightSwitchRoles = ['accent', 'positive', 'warning']
+const DARK_BRIGHT_TRACK_MIX = 0.65
+const brightTrackRoles = ['accent', 'positive', 'warning']
 
 export function glassPairs(scheme) {
   const token = glassTokens(scheme)
@@ -154,6 +154,7 @@ export function glassPairs(scheme) {
     if (level === 'regular') {
       const selection = mix(token['selection-fill'], sheen, token['selection-fill'][3])
       add('material text', 'selected label/regular', token['selection-label'], selection, 4.5)
+      add('material text', 'selected caption/regular', mix(token['field-label'], token['text-strong'], 0.75), selection, 4.5)
       add('state indicator', 'stroke/regular', token['stroke-strong'], sheen, 3)
       const track = scheme === 'dark' ? mix(token.primary, token['surface-0'], DARK_TRACK_MIX) : token.primary
       add('state indicator', 'on track/regular', track, sheen, 3)
@@ -167,10 +168,14 @@ export function glassPairs(scheme) {
   for (const role of roles) {
     for (const increased of [false, true]) {
       const color = increased && role === 'primary' ? token['hc-primary'] : token[role]
-      const amount = brightSwitchRoles.includes(role) ? DARK_BRIGHT_SWITCH_MIX : increased ? DARK_CONTRAST_TRACK_MIX : DARK_TRACK_MIX
+      const amount = brightTrackRoles.includes(role) ? DARK_BRIGHT_TRACK_MIX : increased ? DARK_CONTRAST_TRACK_MIX : DARK_TRACK_MIX
       const fill = scheme === 'dark' ? mix(color, token['surface-0'], amount) : color
       const state = `${role}/${increased ? 'more' : 'default'}`
-      add('state indicator', `switch thumb/track/${state}`, parseRgb('#ffffff'), fill, 3)
+      for (const control of ['switch', 'slider', 'range']) {
+        add('state indicator', `${control} thumb/track/${state}`, parseRgb('#ffffff'), fill, 3)
+      }
+      add('state indicator', `checkbox/radio glyph/${state}`, token[`on-${role}`], color, 3)
+      for (const [name, surface] of surfaces) add('state indicator', `checkbox/radio ${name}/${state}`, color, surface, 3)
       for (const [name, surface] of surfaces) add('state indicator', `switch track/${name}/${state}`, fill, surface, 3)
     }
   }

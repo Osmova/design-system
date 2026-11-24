@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QFab, QFabAction, QIcon, QInnerLoading, QInput, QItem, QItemSection, QLinearProgress, QList, QMenu, QPopupEdit, QPopupProxy, QRating, QSelect, QSeparator, QTooltip, QUploader } from 'quasar'
+import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QFab, QFabAction, QIcon, QInnerLoading, QInput, QItem, QItemSection, QLinearProgress, QList, QMenu, QPopupEdit, QPopupProxy, QRadio, QRange, QRating, QSelect, QSlider, QSeparator, QToggle, QTooltip, QUploader } from 'quasar'
 import { QdsWindow, type QdsWindowInstance } from '@osmova/quasar-design-system/qwindow'
 import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/quasar-design-system'
 import { ppPlus, ppStar } from 'quasar-extras-svg-icons/phosphor-icons-v2'
@@ -53,6 +53,7 @@ const editor = ref('<p><a href="https://example.org">Native link</a> and <strong
 const events = ref('Ready')
 const dismissals: Array<() => void> = []
 const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
+const glassSelectionProbe = new URLSearchParams(location.search).has('glass-selection')
 const image = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect width="32" height="32" fill="gray"/%3E%3C/svg%3E'
 
 onMounted(async () => {
@@ -106,6 +107,21 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
       <q-btn-group data-native="group"><q-btn no-caps label="One" /><q-btn no-caps label="Two"><q-badge floating label="99+" /></q-btn></q-btn-group>
       <q-btn-toggle v-model="selected" no-caps :options="[{ label: 'Account', value: 'account' }, { label: 'Password', value: 'password' }]" data-native="segments" />
       <q-fab v-model="fab" :icon="ppPlus" label="Create" no-caps data-native="fab"><q-fab-action :icon="ppPlus" label="Draft" /></q-fab>
+    </section>
+    <section v-if="glassSelectionProbe" data-selection-matrix aria-label="Glass selection matrix">
+      <div v-for="role in roles" :key="role" :data-selection-role="role">
+        <q-checkbox :model-value="true" :color="role" label="Checked" />
+        <q-checkbox :model-value="null" :color="role" label="Mixed" />
+        <q-checkbox :model-value="false" :color="role" keep-color label="Unchecked" />
+        <q-radio model-value="selected" val="selected" :color="role" label="Selected" />
+        <q-radio model-value="selected" val="other" :color="role" keep-color label="Unselected" />
+        <q-toggle :model-value="true" :color="role" :icon="ppPlus" label="On" />
+        <q-toggle :model-value="null" :color="role" :icon="ppPlus" keep-color label="Mixed" />
+        <q-toggle :model-value="false" :color="role" :icon="ppPlus" keep-color label="Off" />
+        <q-slider :model-value="35" :color="role" aria-label="Slider" />
+        <q-range :model-value="{ min: 20, max: 70 }" :selection-color="role" vertical style="height: 120px" aria-label="Range" />
+        <q-btn-toggle model-value="selected" :toggle-color="role" :options="[{ label: 'Selected', value: 'selected' }, { label: 'Other', value: 'other' }]" />
+      </div>
     </section>
     <section aria-label="Identity" data-native="identity">
       <q-avatar><img :src="image" alt="Alex" /></q-avatar><q-avatar>AM</q-avatar><q-avatar :icon="ppPlus" />

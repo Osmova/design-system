@@ -425,6 +425,7 @@
   @include qds-glass-ink($scheme);
   @include qds-glass-optics($scheme);
   // The switch and slider knob stays light in both schemes, unlike an on-fill foreground.
+  --_qds-glass-knob-ink: #{qds-variant-token(glass, light-text-strong)};
   @if $scheme == light {
     --_qds-glass-knob: #{qds-variant-token(glass, light-surface-0)};
     --_qds-glass-nested: var(--qds-surface-1);
@@ -436,14 +437,19 @@
     --qds-bg-surface-1: var(--qds-surface-2);
     --qds-chrome-surface: color-mix(in srgb, var(--qds-surface-0) var(--qds-chrome-surface-mix, 86%), transparent);
     // A light role on a dark track would wash out the light knob.
-    --_qds-glass-on-track: color-mix(in srgb, currentColor 80%, var(--qds-surface-0));
-    --_qds-glass-bright-track: color-mix(in srgb, currentColor 65%, var(--qds-surface-0));
+    @include qds-glass-dark-tracks(var(--qds-surface-0));
   }
   --_qds-glass-bar-line: transparent;
   --qds-toolbar-bg: transparent;
   @each $state, $mix in (default: 10%, hover: 16%, pressed: 24%) {
     --qds-control-fill-#{$state}: color-mix(in srgb, var(--qds-text-muted) #{$mix}, var(--qds-surface-0));
   }
+}
+
+@mixin qds-glass-dark-tracks($surface) {
+  --_qds-glass-on-track: color-mix(in srgb, currentColor 80%, #{$surface});
+  --_qds-glass-bright-track: color-mix(in srgb, currentColor 65%, #{$surface});
+  --_qds-glass-off-hover-ink: #{$surface};
 }
 
 @mixin qds-glass-ink($scheme, $local: false) {
@@ -481,6 +487,7 @@
   }
   --qds-material-edge: inset 0 0 0 0 transparent;
   --_qds-glass-sheen: none;
+  --_qds-glass-plain-toolbar-fill: #{$surface};
 }
 
 @mixin qds-glass-geometry {
@@ -504,6 +511,7 @@
   --_qds-glass-sheen: none;
   --_qds-glass-bar-line: var(--qds-border);
   --_qds-glass-scroll-edge: none;
+  --_qds-glass-plain-toolbar-fill: var(--qds-surface-0);
 }
 
 @mixin qds-glass-contrast($scheme) {
@@ -512,6 +520,7 @@
   --qds-stroke-strong: var(--qds-text-muted);
   @if $scheme == dark {
     --_qds-glass-knob-contrast: var(--qds-surface-0);
+    --_qds-glass-off-icon: var(--qds-text-strong);
     --_qds-glass-on-track: color-mix(in srgb, currentColor 72%, var(--qds-surface-0));
   }
 }

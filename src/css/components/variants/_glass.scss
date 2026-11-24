@@ -1,6 +1,8 @@
 @use '../../materials';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
+$bar: ":is(.q-header, .q-footer, .q-toolbar.qds-glass-bar, .q-bar, .q-toolbar[class*='bg-'])";
+$untinted-capsule: ".q-toolbar.qds-glass-bar:where(:not([class*='bg-']))";
 $segment-selected: ".q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active)";
 
 @mixin material($level: regular, $shadow: var(--qds-shadow-md), $fill: var(--qds-material-#{$level}-bg)) {
@@ -9,11 +11,15 @@ $segment-selected: ".q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn
   box-shadow: var(--qds-material-edge), $shadow;
 }
 
-@mixin contrast-frame {
+@mixin contrast-frame($edge: var(--_qds-glass-control-edge)) {
   @media (prefers-contrast: more), (forced-colors: active) {
-    outline: 1px solid var(--_qds-glass-forced-edge, var(--_qds-glass-control-edge));
+    outline: 1px solid var(--_qds-glass-forced-edge, #{$edge});
     outline-offset: -1px;
   }
+}
+
+@mixin selection-mark {
+  content: ''; position: absolute; inset: auto auto 2px 50%; translate: -50% 0; inline-size: 0.5rem; border-block-end: 2px solid currentColor; pointer-events: none;
 }
 
 @mixin button {
@@ -32,26 +38,31 @@ $segment-selected: ".q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn
   #{$glass} .qds-field-group > .q-btn { --qds-button-radius: var(--qds-radius-control); }
   #{$glass} .q-btn:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: 2px; }
   // A toolbar or a group paints one glass surface for its controls.
-  #{$glass} .q-toolbar :is(.q-btn-group, .q-btn--flat:not(.q-btn-group > *)) { background: var(--qds-control-fill-default); }
-  #{$glass} :is(.q-header, .q-footer) .q-toolbar:not(.qds-glass-bar) :is(.q-btn-group, .q-btn--flat:not(.q-btn-group > *)) {
+  #{$glass} .q-toolbar :is(.q-btn-group:not(.q-btn-toggle), .q-btn--flat:not(.q-btn-group > *)) { background: var(--qds-control-fill-default); }
+  #{$glass} :is(.q-header, .q-footer) .q-toolbar:not(.qds-glass-bar) :is(.q-btn-group:not(.q-btn-toggle), .q-btn--flat:not(.q-btn-group > *)) {
     border: 1px solid transparent; border-radius: var(--qds-radius-full); @include material(thin, var(--qds-shadow-sm));
     @media (prefers-contrast: more), (forced-colors: active) { border-color: var(--_qds-glass-forced-button, var(--_qds-glass-control-edge)); }
   }
-  #{$glass} .q-toolbar.qds-glass-bar :is(.q-btn-group, .q-btn--flat:not(.q-btn-group > *)) { background: transparent; }
+  #{$glass} .q-toolbar.qds-glass-bar :is(.q-btn-group:not(.q-btn-toggle), .q-btn--flat:not(.q-btn-group > *)) { background: transparent; }
   #{$glass} .q-btn-group:not(.q-btn-toggle) { @include contrast-frame; }
-  #{$glass} .q-toolbar .q-btn-group > .q-btn { background: transparent; border-color: transparent; box-shadow: none; }
+  #{$glass} .q-toolbar .q-btn-group > .q-btn:not(.q-btn-toggle > *) { background: transparent; border-color: transparent; box-shadow: none; }
   #{$glass} .q-btn:is(.q-btn--fab, .q-btn--fab-mini):where(:not([class*='bg-'], .disabled)) { @include material(thin); }
   #{$glass} .q-btn:is(.q-btn--fab, .q-btn--fab-mini):where([class*='bg-']:not(.disabled)) { box-shadow: var(--qds-material-edge), var(--qds-shadow-md); }
   #{$glass} .q-btn:is(.q-btn--fab, .q-btn--fab-mini):where(:not([class*='bg-'], .disabled)):focus-visible { outline-offset: -4px; }
   // The selected thumb floats over a recessed track.
   #{$glass} .q-btn-toggle { padding: 0.1875rem; gap: 0.125rem; border-radius: var(--qds-radius-full); @include material(regular, var(--qds-shadow-sm)); @include contrast-frame; }
-  #{$glass} .q-btn-toggle > .q-btn-item { border-radius: var(--qds-radius-full); box-shadow: none; background: transparent; font-weight: var(--qds-font-weight-medium); }
-  #{$glass} #{$segment-selected} { --qds-fg-strong: var(--_qds-glass-selection-label); background: var(--qds-segmented-thumb-bg); box-shadow: var(--qds-shadow-sm); color: var(--qds-fg-strong); font-weight: var(--qds-font-weight-semibold); }
+  #{$glass} .q-btn-toggle > .q-btn-item { --qds-button-fill: transparent; --qds-button-on-fill: var(--qds-fg-default); border-radius: var(--qds-radius-full); box-shadow: none; background: transparent; font-weight: var(--qds-font-weight-medium); }
+  #{$glass} #{$segment-selected} { --qds-fg-strong: var(--_qds-glass-selection-label); --qds-button-fill: var(--qds-segmented-thumb-bg); --qds-button-on-fill: var(--_qds-glass-selection-label); background: var(--qds-segmented-thumb-bg); box-shadow: var(--qds-shadow-sm); color: var(--qds-fg-strong); font-weight: var(--qds-font-weight-semibold); }
+  #{$glass} #{$segment-selected} .q-btn__content { color: var(--_qds-glass-selection-label); }
   #{$glass} #{$segment-selected} .q-btn__content:has(> :is(.q-icon, svg)):not(:has(> .block))::after {
-    content: ''; position: absolute; inset: auto auto 2px 50%; translate: -50% 0; inline-size: 0.5rem; border-block-end: 2px solid currentColor; pointer-events: none;
+    @include selection-mark;
   }
   @media (prefers-contrast: more), (forced-colors: active) {
     #{$glass} :is(.q-btn.q-btn-item, .q-btn.q-btn-item.disabled, .q-toolbar .q-btn-group > .q-btn) { border-color: var(--_qds-glass-forced-button, var(--_qds-glass-control-edge)); }
+    #{$glass} .q-btn.q-btn-item[class*='bg-']:not(.qds-tonal, .q-btn-toggle > *, .q-pagination [aria-current='page'], .disabled) { border-color: var(--_qds-glass-forced-button, currentColor); }
+  }
+  @media (prefers-contrast: more) {
+    #{$glass} .q-btn-toggle { background-color: var(--qds-segmented-track-bg); }
   }
   // Drop the duotone fill layer so content icons read as monochrome line symbols.
   #{$glass} svg > g > path[opacity='0.2']:first-child { display: none; }
@@ -93,34 +104,38 @@ $boxed: ':where(:not(.q-field--borderless, .qds-field--ghost))';
 
 @mixin tabs {
   // In content, tabs use a recessed track; bar tabs float in an inset capsule.
-  #{$glass} .q-tabs--horizontal:not(.q-color-picker *) { padding: var(--_qds-glass-inset); border-radius: var(--qds-radius-full); background: var(--qds-segmented-track-bg); box-shadow: inset 0 0 0 1px var(--qds-material-stroke); }
+  #{$glass} .q-tabs--horizontal:not(.q-color-picker *) { padding: var(--_qds-glass-inset); border-radius: var(--qds-radius-full); background: var(--qds-segmented-track-bg); box-shadow: inset 0 0 0 1px var(--qds-material-stroke); @include contrast-frame; }
   // Outside scroll arrows keep the gutter Quasar reserves for them inside the track.
   #{$glass} .q-tabs--horizontal.q-tabs--scrollable.q-tabs__arrows--outside:not(body.mobile .q-tabs--mobile-without-arrows) { padding-inline: 36px; }
-  #{$glass} :is(.q-header, .q-footer) .q-tabs--horizontal:not(.q-toolbar.qds-glass-bar *),
-  #{$glass} .q-tabs--horizontal.qds-glass-bar { @include material; @include contrast-frame; }
+  #{$glass} #{$bar} .q-tabs--horizontal:not(#{$untinted-capsule} *),
+  #{$glass} .q-tabs--horizontal.qds-glass-bar { @include material; }
   #{$glass} :is(.q-header, .q-footer) > .q-tabs--horizontal { margin: var(--_qds-glass-inset); }
-  #{$glass} .q-toolbar.qds-glass-bar .q-tabs--horizontal:not(.qds-glass-bar) { background: transparent; box-shadow: none; }
+  #{$glass} #{$untinted-capsule} .q-tabs--horizontal:not(.qds-glass-bar) { background: transparent; box-shadow: none; }
   #{$glass} .q-tab { min-height: var(--qds-tab-min-height, 2.125rem); padding-inline: 0.875rem; border-radius: var(--qds-radius-full); color: var(--qds-fg-muted); font-weight: var(--qds-font-weight-medium); text-transform: none; }
   #{$glass} .q-tabs--vertical .q-tab { border-radius: var(--qds-radius-control); }
   #{$glass} .q-tabs .q-tab.q-tab--active { background: var(--_qds-glass-selection-fill); color: var(--_qds-glass-selection-label); }
-  #{$glass} .q-tabs--horizontal:not(.q-color-picker *, .q-header *, .q-footer *, .qds-glass-bar, .qds-glass-bar *) .q-tab.q-tab--active { background: var(--qds-segmented-thumb-bg); box-shadow: var(--qds-shadow-sm); }
+  #{$glass} .q-tabs--horizontal:not(.q-color-picker *, #{$bar} *, .qds-glass-bar) .q-tab.q-tab--active { background: var(--qds-segmented-thumb-bg); box-shadow: var(--qds-shadow-sm); }
+  #{$glass} .q-tab--active .q-tab__content { color: var(--_qds-glass-selection-label); }
+  #{$glass} .q-tab--active .q-tab__content:has(> :is(.q-tab__icon, svg)):not(:has(> .q-tab__label))::after { @include selection-mark; }
   #{$glass} .q-tab--active .q-tab__label { font-weight: var(--qds-font-weight-semibold); }
   #{$glass} .q-tab__indicator { display: none; }
-  #{$glass} :is(.q-tab:focus-visible, .q-menu .q-item:focus-visible, .q-item.q-manual-focusable--focused) { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: -4px; }
+  #{$glass} :is(.q-tab:focus-visible, .q-item:focus-visible, .q-item.q-manual-focusable--focused) { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: -4px; }
   #{$glass} .q-tab.disabled { color: var(--qds-fg-disabled); }
   @media (prefers-contrast: more), (forced-colors: active) {
     #{$glass} :is(.q-tab, .q-menu .q-item--clickable, .q-item[role='option'])::after { content: ''; position: absolute; inset: 0; border: 1px solid var(--_qds-glass-row-edge, var(--_qds-glass-forced-edge, var(--_qds-glass-control-edge))); border-radius: inherit; pointer-events: none; }
   }
   @media (forced-colors: active) {
-    #{$glass} :where(.q-menu .q-item, .q-item[role='option']) { --qds-stroke-focus: CanvasText; }
+    #{$glass} .q-item { --qds-stroke-focus: CanvasText; }
     #{$glass} :is(.q-tab--active, .q-item--active, .q-item[aria-selected='true']) { forced-color-adjust: none; --qds-stroke-focus: HighlightText; --_qds-glass-row-edge: HighlightText; }
-    #{$glass} #{$segment-selected} { forced-color-adjust: none; }
+    #{$glass} #{$segment-selected} { forced-color-adjust: none; --qds-stroke-focus: HighlightText; border-color: HighlightText; }
+    #{$glass} #{$segment-selected}:focus-visible { outline-offset: -3px; }
   }
 }
 
 @mixin menu {
   #{$glass} :is(.q-header, .q-footer, .q-bar, .q-toolbar.qds-glass-bar, .q-tabs.qds-glass-bar, .q-drawer__content, .q-btn-toggle, .q-btn--fab, .q-btn--fab-mini, .q-menu, .q-tooltip, .q-dialog__inner--minimized > :is(.q-card, .q-bottom-sheet, .q-select__dialog)) {
     --qds-fg-brand: var(--qds-fg-primary);
+    --_qds-glass-selection-caption: color-mix(in srgb, var(--_qds-glass-field-label) 75%, var(--qds-fg-strong));
     @each $ink in muted, primary, secondary, accent, positive, negative, warning, info { --qds-fg-#{$ink}: var(--_qds-glass-ink-#{$ink}); }
   }
   #{$glass} .q-menu { @include material(regular, var(--qds-menu-shadow), var(--qds-menu-bg)); }

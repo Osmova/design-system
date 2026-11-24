@@ -41,6 +41,10 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
   #{$glass} .q-drawer .q-list { padding: var(--_qds-glass-inset); }
   #{$glass} .q-drawer .q-item { padding-inline: var(--qds-space-sm); border-radius: var(--qds-radius-control); }
   #{$glass} .q-drawer--on-top:not(.q-drawer--mini) .q-item { border-radius: calc(var(--qds-radius-lg) - var(--_qds-glass-inset)); }
+  #{$glass} .q-drawer--mini .q-item:is(.q-item--active, [aria-selected='true']) {
+    &::before { display: block; background: transparent; color: var(--_qds-glass-selection-label); @include glass.selection-mark; }
+    .q-item__section--side > .q-icon { color: var(--_qds-glass-selection-label); }
+  }
   #{$glass} .q-drawer .q-layout__shadow::after { box-shadow: none; }
   #{$glass} .q-drawer__backdrop { background: var(--qds-bg-overlay); }
 

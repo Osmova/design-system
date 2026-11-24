@@ -1,4 +1,5 @@
 @use '../importance';
+$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
 
 @mixin styles {
@@ -50,6 +51,25 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
   .qds-ui .qds-variant-term .q-pagination .q-btn,
   .qds-ui.qds-variant-term .q-pagination .q-btn {
     border-radius: var(--qds-radius-sm);
+  }
+
+  #{$glass} .q-pagination { --qds-pagination-active-bg: var(--_qds-glass-selection-fill); --qds-pagination-active-text: var(--_qds-glass-selection-label); }
+  @media (prefers-contrast: more) {
+    #{$glass} .q-pagination .q-btn[aria-current='page']:is(.q-btn--push, .q-btn--unelevated) { border-color: currentColor; }
+  }
+  @media (forced-colors: active) {
+    #{$glass} .q-pagination .q-btn[aria-current='page']:not(.q-btn--outline) {
+      forced-color-adjust: none;
+      --qds-button-fill: Highlight;
+      --qds-button-on-fill: HighlightText;
+      --qds-stroke-focus: HighlightText;
+      --qds-pagination-active-bg: Highlight;
+      --qds-pagination-active-text: HighlightText;
+      background: Highlight; color: HighlightText; border-color: HighlightText;
+    }
+    #{$glass} .q-pagination .q-btn[aria-current='page']:not(.q-btn--outline):focus-visible { outline-offset: -3px; }
+    #{$glass} .q-pagination .q-btn[aria-current='page'].q-btn--outline { forced-color-adjust: none; border-color: Highlight; --qds-stroke-focus: Highlight; }
+    #{$glass} .q-pagination .q-btn[aria-current='page'].q-btn--outline .q-btn__content { color: Highlight; }
   }
 
   #{$shadcn} .q-pagination { --qds-pagination-active-text: var(--qds-fg-default); --qds-pagination-active-bg: var(--qds-bg-canvas); --qds-pagination-active-border: var(--qds-stroke-default); }
