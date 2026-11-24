@@ -56,8 +56,12 @@ test('no-filter, reduced transparency, forced colours and increased contrast all
   const rules = flattenRules(css).filter(([path]) => path.includes('.qds-variant-glass'))
     .map(([path, body]) => [path.replace(/: /g, ':'), body.replace(/:\s+/g, ':')])
   const opaque = (pattern) => rules.filter(([path, body]) => pattern.test(path)
+    && body.includes('--qds-material-thin-bg:var(--qds-surface-0)')
+    && body.includes('--qds-material-thin-filter:none')
     && body.includes('--qds-material-regular-bg:var(--qds-surface-0)')
     && body.includes('--qds-material-regular-filter:none')
+    && body.includes('--_qds-glass-sheen:none')
+    && body.includes('--_qds-glass-scroll-edge:none')
     && body.includes('--_qds-glass-bar-line:var(--qds-border)'))
   for (const [name, pattern] of [
     ['no backdrop-filter', /@supports not/],
@@ -87,6 +91,8 @@ function glassTokens(scheme) {
     ['stroke-strong', `${prefix}stroke-strong`], ['hc-primary', `${prefix}hc-primary`],
     ...['button-fill', 'field-fill', 'standout-fill', 'field-label', 'selection-fill', 'selection-label', 'segmented-thumb']
       .map((name) => [name, `${prefix}${name}`]),
+    ...['thin', 'regular', 'thick'].flatMap((level) => ['opacity', 'brightness'].map((key) =>
+      [`${level}-${key}`, `${prefix}${level}-${key}`])),
     ...roles.map((role) => [role, `${palette}${role}`]),
     ['primary-dark', `${palette}primary-dark`],
     ...['brand', 'accent', 'positive', 'warning', 'negative', 'info'].map((wash) => [`soft-${wash}`, `${palette}soft-${wash}`]),
@@ -95,12 +101,16 @@ function glassTokens(scheme) {
     $glass: map.get(t.$variants, glass);
     .probe{${keys.map(([name, key]) => `--${name}:#{map.get($glass, '${key}')};`).join('')}
     ${roles.map((role) => `--on-${role}:#{map.get(map.get($glass, '${prefix}on-fill'), ${role})};`).join('')}}`)
-  return Object.fromEntries([...css.matchAll(/--([\w-]+):\s*([^;}]+)/g)].map((match) => [match[1], parseRgb(match[2].trim())]))
+  return Object.fromEntries([...css.matchAll(/--([\w-]+):\s*([^;}]+)/g)].map(([, name, value]) =>
+    [name, /-(opacity|brightness)$/.test(name) ? parseFloat(value) : parseRgb(value.trim())]))
 }
 
 const FILL_STATES = { hover: 0.88, pressed: 0.76 }
 const ROLE_FG_MIX = 0.86
-const MATERIAL = { light: 0.92, dark: 0.92 }
+const DARK_TRACK_MIX = 0.8
+const DARK_CONTRAST_TRACK_MIX = 0.72
+const DARK_BRIGHT_TRACK_MIX = 0.65
+const brightTrackRoles = ['accent', 'positive', 'warning']
 
 export function glassPairs(scheme) {
   const token = glassTokens(scheme)
@@ -126,18 +136,62 @@ export function glassPairs(scheme) {
     if (token[`soft-${wash}`]) add('role text', `fg-${role}/soft-${wash}`, foreground, token[`soft-${wash}`], 4.5)
     add('control edge', `${role} fill/surface-0`, fill, token['surface-0'], 3)
   }
+  for (const role of [...roles, 'dark']) {
+    const label = role === 'dark' ? parseRgb('#fff') : token[`on-${role}`]
+    const shade = role === 'dark' ? parseRgb('#000') : token['text-strong']
+    const fill = role === 'dark' ? parseRgb('#1d1d1d') : token[role]
+    const fills = role === 'primary' ? [['default', fill], ['more', token['hc-primary']]] : [['both', fill]]
+    for (const [mode, surface] of fills) {
+      for (const [state, amount] of [['track', 1], ['control wash', 0.94], ['selected pill', 0.78]]) {
+        const paint = mix(surface, shade, amount)
+        add('role container text', `${role}/${mode}/${state}`, label, paint, 4.5)
+        add('role container focus', `${role}/${mode}/${state}`, label, paint, 3)
+      }
+    }
+  }
   // Strong strokes still draw state indicators and must read on glass and opaque surfaces.
   for (const [name, surface] of surfaces) {
     add('control edge', `stroke/${name}`, token['stroke-strong'], surface, 3)
-    add('control edge', `stroke/glass over ${name}`, token['stroke-strong'], mix(token[scheme === 'dark' ? 'surface-2' : 'surface-0'], surface, MATERIAL[scheme]), 3)
+  }
+  for (const level of ['thin', 'regular', 'thick']) {
+    const back = scheme === 'dark' ? 255 * token[`${level}-brightness`] : 0
+    const fill = mix(token['surface-0'], [back, back, back], token[`${level}-opacity`] / 100)
+    const sheen = scheme === 'dark' ? mix([255, 255, 255], fill, 0.05) : mix([16, 19, 34], fill, 0.04)
+    const muted = mix(token['text-muted'], token['text-strong'], 0.65)
+    add('material text', `text/${level}`, token.text, sheen, 4.5)
+    add('material text', `muted/${level}`, muted, sheen, 4.5)
+    for (const role of roles) {
+      add('material text', `${role}/${level}`, mix(token[role], token['text-strong'], 0.65), sheen, 4.5)
+    }
+    add('material focus', `focus/${level}`, token.primary, sheen, 3)
+    if (level === 'regular') {
+      const selection = mix(token['selection-fill'], sheen, token['selection-fill'][3])
+      add('material text', 'selected label/regular', token['selection-label'], selection, 4.5)
+      add('material text', 'selected caption/regular', mix(token['field-label'], token['text-strong'], 0.75), selection, 4.5)
+      add('state indicator', 'stroke/regular', token['stroke-strong'], sheen, 3)
+      const track = scheme === 'dark' ? mix(token.primary, token['surface-0'], DARK_TRACK_MIX) : token.primary
+      add('state indicator', 'on track/regular', track, sheen, 3)
+    }
   }
   add('control edge', 'stroke/segmented track', token['stroke-strong'], token['surface-2'], 3)
   add('state indicator', 'knob/switch off track', parseRgb('#ffffff'), token['stroke-strong'], 3)
-  // Dark tracks shade the role toward the page so the light knob keeps its edge.
-  const track = scheme === 'dark' ? mix(token.primary, token['surface-0'], 0.7) : token.primary
-  add('state indicator', 'knob/switch on track', parseRgb('#ffffff'), track, 3)
+  const track = scheme === 'dark' ? mix(token.primary, token['surface-0'], DARK_TRACK_MIX) : token.primary
   add('state indicator', 'slider thumb/selection', parseRgb('#ffffff'), track, 3)
   for (const name of ['surface-0', 'surface-1', 'surface-2']) add('state indicator', `on track/${name}`, track, token[name], 3)
+  for (const role of roles) {
+    for (const increased of [false, true]) {
+      const color = increased && role === 'primary' ? token['hc-primary'] : token[role]
+      const amount = brightTrackRoles.includes(role) ? DARK_BRIGHT_TRACK_MIX : increased ? DARK_CONTRAST_TRACK_MIX : DARK_TRACK_MIX
+      const fill = scheme === 'dark' ? mix(color, token['surface-0'], amount) : color
+      const state = `${role}/${increased ? 'more' : 'default'}`
+      for (const control of ['switch', 'slider', 'range']) {
+        add('state indicator', `${control} thumb/track/${state}`, parseRgb('#ffffff'), fill, 3)
+      }
+      add('state indicator', `checkbox/radio glyph/${state}`, token[`on-${role}`], color, 3)
+      for (const [name, surface] of surfaces) add('state indicator', `checkbox/radio ${name}/${state}`, color, surface, 3)
+      for (const [name, surface] of surfaces) add('state indicator', `switch track/${name}/${state}`, fill, surface, 3)
+    }
+  }
   // The empty slider track is the stroke colour, so it reads on the surfaces a slider sits on.
   for (const name of ['surface-0', 'surface-1']) add('state indicator', `slider track/${name}`, token['stroke-strong'], token[name], 3)
   add('state indicator', 'slider thumb/empty track', parseRgb('#ffffff'), token['stroke-strong'], 3)
@@ -162,8 +216,6 @@ export function glassPairs(scheme) {
   add('selection cue', 'thumb/track', thumb, token['surface-2'], 1)
   add('focus indicator', 'focus/thumb', token.primary, thumb, 3)
   add('increased contrast', 'edge/thumb', token['text-muted'], thumb, 3)
-  const contrastTrack = scheme === 'dark' ? mix(token['hc-primary'], token['surface-0'], 0.7) : token['hc-primary']
-  add('increased contrast', 'white knob/on track', parseRgb('#ffffff'), contrastTrack, 3)
   add('increased contrast', 'on-primary/hc fill', token['on-primary'], token['hc-primary'], 7)
   return pairs
 }

@@ -1,3 +1,4 @@
+@use 'variants/glass';
 @use '../importance';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
@@ -351,27 +352,35 @@ $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive
   #{$win} .q-toggle:not(.q-toggle--dense, .disabled):hover .q-toggle__thumb::after { transform: scale(1.167); }
   #{$win} .q-toggle:not(.q-toggle--dense, .disabled):active .q-toggle__thumb::after { transform: scale(1.417, 1.167); }
 
+  #{$glass} :is(.q-checkbox, .q-radio, .q-toggle):focus-visible :is(.q-checkbox__inner, .q-radio__inner, .q-toggle__inner) { outline-color: #{glass.$focus}; }
+  #{$glass} :is(.q-checkbox__inner--falsy .q-checkbox__bg, .q-radio__inner--falsy .q-radio__bg) { border-color: var(--_qds-glass-surface-ink, currentColor); }
   #{$glass} .q-toggle { --_qds-glass-knob-width: calc(var(--qds-toggle-thumb-size) * 1.5); }
   #{$glass} .q-toggle--dense { --qds-toggle-track-width: 3.25rem; --qds-toggle-track-height: 1.5rem; }
   #{$glass} .q-toggle .q-toggle__thumb { width: var(--_qds-glass-knob-width); }
   #{$glass} .q-toggle .q-toggle__inner--truthy .q-toggle__thumb { inset-inline-start: calc(var(--qds-toggle-track-width) - var(--_qds-glass-knob-width) - var(--qds-toggle-thumb-inset)); }
   #{$glass} .q-toggle .q-toggle__inner--indet .q-toggle__thumb { inset-inline-start: calc((var(--qds-toggle-track-width) - var(--_qds-glass-knob-width)) / 2); }
-  #{$glass} .q-toggle .q-toggle__track { background: var(--_qds-glass-forced-edge, var(--qds-stroke-strong)); border-color: transparent; }
-  #{$glass} .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__track { background: var(--_qds-glass-highlight, var(--_qds-glass-on-track)); border-color: transparent; }
+  #{$glass} .q-toggle .q-toggle__track { background: var(--_qds-glass-forced-edge, var(--_qds-glass-surface-ink, var(--qds-stroke-strong))); border-color: transparent; }
+  #{$glass} .q-toggle__inner--indet { color: var(--qds-color-primary); }
+  @each $role in primary, secondary, accent, positive, negative, warning, info {
+    #{$glass} .q-toggle__inner--indet.text-#{$role} { --qds-fg-#{$role}: var(--qds-color-#{$role}); }
+  }
+  #{$glass} .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__track { background: var(--_qds-glass-highlight, var(--_qds-glass-on-track)); border-color: var(--_qds-glass-surface-ink, transparent); }
+  #{$glass} :is(.q-toggle__inner, .q-slider__selection):is(.text-accent, .text-positive, .text-warning) { --_qds-glass-on-track: var(--_qds-glass-bright-track, currentColor); }
   #{$glass} .q-toggle.disabled .q-toggle__inner--falsy .q-toggle__track { background: var(--_qds-glass-forced-edge, var(--qds-bg-surface-2)); }
-  #{$glass} .q-toggle:is(*, .disabled) :is(.q-toggle__thumb, .q-toggle__inner--truthy .q-toggle__thumb)::after { border-radius: var(--qds-radius-full); background: var(--_qds-glass-canvas, var(--_qds-glass-knob)); box-shadow: var(--qds-shadow-sm); }
-  #{$glass} .q-toggle:not(.disabled) .q-toggle__inner--falsy .q-toggle__thumb::after { background: var(--_qds-glass-canvas, var(--_qds-glass-knob-contrast, var(--_qds-glass-knob))); }
-  #{$glass} .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track { background: var(--_qds-glass-forced-edge, color-mix(in srgb, var(--qds-stroke-strong) 84%, var(--qds-text-strong))); }
-  #{$glass} :is(.q-checkbox, .q-radio) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet, .q-radio__inner--truthy) :is(.q-checkbox__bg, .q-radio__bg) { border-color: transparent; background: var(--_qds-glass-highlight, currentColor); }
+  #{$glass} .q-toggle:is(*, .disabled) :is(.q-toggle__thumb, .q-toggle__inner--truthy .q-toggle__thumb)::after { border-radius: var(--qds-radius-full); background: var(--_qds-glass-canvas, var(--_qds-glass-thumb-fill, var(--_qds-glass-knob))); box-shadow: var(--qds-shadow-sm); }
+  #{$glass} .q-toggle:not(.disabled) .q-toggle__inner--falsy { --_qds-glass-thumb-fill: var(--_qds-glass-role-wash, var(--_qds-glass-knob-contrast, var(--_qds-glass-knob))); --_qds-glass-thumb-ink: var(--_qds-glass-surface-ink, var(--_qds-glass-off-icon)); }
+  #{$glass} .q-toggle .q-toggle__thumb .q-icon { color: var(--_qds-glass-forced-edge, var(--_qds-glass-thumb-ink, var(--_qds-glass-knob-ink))); }
+  #{$glass} .q-toggle:not(.disabled):hover .q-toggle__inner--falsy .q-toggle__track { background: var(--_qds-glass-forced-edge, var(--_qds-glass-surface-ink, color-mix(in srgb, var(--qds-stroke-strong) 84%, var(--_qds-glass-off-hover-ink, var(--qds-text-strong))))); }
+  #{$glass} :is(.q-checkbox, .q-radio) :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet, .q-radio__inner--truthy) :is(.q-checkbox__bg, .q-radio__bg) { border-color: var(--_qds-glass-surface-ink, transparent); background: var(--_qds-glass-highlight, currentColor); }
   #{$glass} .q-radio .q-radio__inner--truthy .q-radio__check { fill: var(--qds-selection-on, var(--qds-text-on-primary)); }
   // The knob is a light capsule drawn around Quasar's square thumb box, whose size is set inline.
   #{$glass} .q-slider .q-slider__thumb { background: transparent; border-color: transparent; }
-  #{$glass} .q-slider .q-slider__thumb::before { content: ''; position: absolute; inset: -0.125rem -0.5rem; border-radius: var(--qds-radius-full); background: var(--_qds-glass-canvas, var(--_qds-glass-knob)); box-shadow: 0 0 0 1px var(--_qds-glass-forced-edge, var(--_qds-glass-knob-contrast, var(--qds-material-stroke))), var(--qds-shadow-sm); }
+  #{$glass} .q-slider .q-slider__thumb::before { content: ''; position: absolute; inset: -0.125rem -0.5rem; border-radius: var(--qds-radius-full); background: var(--_qds-glass-canvas, var(--_qds-glass-knob)); box-shadow: 0 0 0 1px var(--_qds-glass-forced-edge, var(--_qds-glass-role-wash, var(--_qds-glass-knob-contrast, var(--qds-material-stroke)))), var(--qds-shadow-sm); }
   #{$glass} .q-slider .q-slider__thumb--v::before { inset: -0.5rem -0.125rem; }
   #{$glass} .q-slider .q-slider__thumb-shape { display: none; }
   #{$glass} .q-slider .q-slider__thumb.q-slider--focus { outline: 0; }
-  #{$glass} .q-slider .q-slider__thumb.q-slider--focus::before { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); }
-  #{$glass} .q-slider .q-slider__inner { background: var(--_qds-glass-forced-edge, var(--qds-stroke-strong)); }
+  #{$glass} .q-slider .q-slider__thumb.q-slider--focus::before { outline: var(--qds-focus-ring-width) solid #{glass.$focus}; outline-offset: var(--qds-focus-ring-offset); }
+  #{$glass} .q-slider .q-slider__inner { background: var(--_qds-glass-forced-edge, var(--_qds-glass-surface-ink, var(--qds-stroke-strong))); }
   #{$glass} .q-slider .q-slider__selection { background: var(--_qds-glass-highlight, var(--_qds-glass-on-track)); }
   @media (forced-colors: active) {
     #{$glass} :is(.q-toggle__track, .q-toggle__thumb, .q-slider__inner, .q-slider__selection, .q-slider__thumb) { forced-color-adjust: none; }

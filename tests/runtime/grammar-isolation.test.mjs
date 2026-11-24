@@ -76,6 +76,11 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
     assert.equal(gzipSync(baseline, { level: 9 }).length, baselineGzip)
 
     const current = ruleKeys(css)
+    const glassHooks = current.filter(rule => /--_qds-(?:context-role-text|focus-on-surface):/.test(rule))
+    assert.ok(glassHooks.length > 0, `${entry} must bind the contextual hooks`)
+    for (const rule of glassHooks) {
+      assert.ok(selectorsOf(rule).every(selector => ownerOfSelector(selector) === 'glass'), `${entry} shared a Glass binding: ${rule}`)
+    }
     // The frozen hash above still covers the untouched baseline; only the
     // enumerated declared changes are normalised before the rule-by-rule compare.
     const expected = applyDeclaredFixes(ruleKeys(applyDeclaredShadcnChanges(applyDeclaredFluentChanges(baseline, { layered: entry.includes('layered') }))).map(retire).filter(Boolean))
@@ -102,10 +107,10 @@ test('the all-in bundle, the shared core and every complete variant bundle stay 
   for (const entry of ['index.scss', 'index.layered.scss']) {
     const full = compileEntry(new URL(`src/css/${entry}`, root).pathname)
     const [allMin, allGzip] = [Buffer.byteLength(full), gzipSync(full, { level: 9 }).length]
-    assert.ok(allMin <= 745000 && allGzip <= 76650, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 745000 / 76650`)
+    assert.ok(allMin <= 785200 && allGzip <= 80625, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 785200 / 80625`)
     const parts = partitionCss(full)
     for (const [name, css] of Object.entries(parts)) {
-      const [maxMin, maxGzip] = name === 'core' ? [215200, 26800] : [380000, 46000]
+      const [maxMin, maxGzip] = name === 'core' ? [215800, 26875] : [380000, 46000]
       const bytes = Buffer.byteLength(css)
       const gzip = gzipSync(css, { level: 9 }).length
       assert.ok(bytes <= maxMin && gzip <= maxGzip, `${entry} ${name}: measured min ${bytes} / gzip ${gzip} against caps ${maxMin} / ${maxGzip}`)

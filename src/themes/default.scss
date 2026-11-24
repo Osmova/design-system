@@ -422,31 +422,72 @@
   --qds-toggle-track-width: 3.9375rem;
   --qds-toggle-track-height: 1.75rem;
   --qds-toggle-thumb-inset: 0.125rem;
-  // Glass diffuses busy content and is edged by a bright top highlight rather than a deep drop shadow.
-  --qds-material-regular-blur: 40px;
-  --qds-material-saturate: 1.8;
+  @include qds-glass-ink($scheme);
+  @include qds-glass-optics($scheme);
   // The switch and slider knob stays light in both schemes, unlike an on-fill foreground.
+  --_qds-glass-knob-ink: #{qds-variant-token(glass, light-text-strong)};
   @if $scheme == light {
-    --qds-material-regular-bg: color-mix(in srgb, var(--qds-surface-0) 92%, transparent);
-    --qds-material-edge: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     --_qds-glass-knob: #{qds-variant-token(glass, light-surface-0)};
     --_qds-glass-nested: var(--qds-surface-1);
     --_qds-glass-on-track: currentColor;
   } @else {
-    --qds-material-edge: inset 0 1px 0 rgba(255, 255, 255, 0.18);
     --_qds-glass-knob: #{qds-variant-token(glass, dark-text-strong)};
     --_qds-glass-nested: var(--qds-surface-2);
     // The page stays black, but a well inside a card is the elevated grey, never a black hole.
     --qds-bg-surface-1: var(--qds-surface-2);
     --qds-chrome-surface: color-mix(in srgb, var(--qds-surface-0) var(--qds-chrome-surface-mix, 86%), transparent);
     // A light role on a dark track would wash out the light knob.
-    --_qds-glass-on-track: color-mix(in srgb, currentColor 70%, var(--qds-surface-0));
+    @include qds-glass-dark-tracks(var(--qds-surface-0));
   }
   --_qds-glass-bar-line: transparent;
   --qds-toolbar-bg: transparent;
   @each $state, $mix in (default: 10%, hover: 16%, pressed: 24%) {
-    --qds-control-fill-#{$state}: color-mix(in srgb, var(--qds-text-muted) #{$mix}, var(--qds-material-regular-bg));
+    --qds-control-fill-#{$state}: color-mix(in srgb, var(--qds-text-muted) #{$mix}, var(--qds-surface-0));
   }
+}
+
+@mixin qds-glass-dark-tracks($surface) {
+  --_qds-glass-on-track: color-mix(in srgb, currentColor 80%, #{$surface});
+  --_qds-glass-bright-track: color-mix(in srgb, currentColor 65%, #{$surface});
+  --_qds-glass-off-hover-ink: #{$surface};
+}
+
+@mixin qds-glass-ink($scheme, $local: false) {
+  $muted: var(--qds-fg-muted);
+  @if $local { $muted: qds-variant-token(glass, '#{$scheme}-text-muted'); }
+  --_qds-glass-ink-muted: color-mix(in srgb, #{$muted} 65%, var(--qds-fg-strong));
+  @each $role in primary, secondary, accent, positive, negative, warning, info {
+    $ink: var(--qds-color-#{$role});
+    @if $local { $ink: qds-variant-token(glass, '#{$scheme}-#{$role}'); }
+    --_qds-glass-ink-#{$role}: color-mix(in srgb, #{$ink} 65%, var(--qds-fg-strong));
+  }
+}
+
+@mixin qds-glass-optics($scheme, $surface: var(--qds-surface-0)) {
+  --qds-material-saturate: 1.7;
+  --qds-material-regular-blur: 24px;
+  --qds-material-thin-blur: 12px;
+  @each $level in regular, thin, thick {
+    --qds-material-#{$level}-bg: color-mix(in srgb, #{$surface} #{qds-variant-token(glass, '#{$scheme}-#{$level}-opacity')}, transparent);
+    --qds-material-#{$level}-filter: blur(var(--qds-material-#{$level}-blur)) saturate(var(--qds-material-saturate)) brightness(#{qds-variant-token(glass, '#{$scheme}-#{$level}-brightness')});
+  }
+  @if $scheme == light {
+    --_qds-glass-sheen: radial-gradient(ellipse at 18% 0%, #ffffff80, transparent 72%), linear-gradient(165deg, transparent 55%, #1013220a);
+    --qds-material-edge: inset 0 1px 0 #fffffff2, inset 0 0 0 1px #ffffff59, inset 0 -1px 0 #161a2a26;
+  } @else {
+    --_qds-glass-sheen: radial-gradient(ellipse at 18% 0%, #ffffff0d, transparent 72%), linear-gradient(165deg, transparent 55%, #00000022);
+    --qds-material-edge: inset 0 1px 0 #ffffff52, inset 0 0 0 1px #ffffff24, inset 0 -1px 0 #00000066;
+  }
+}
+
+@mixin qds-glass-solid-optics($surface) {
+  @each $level in regular, thin, thick {
+    --qds-material-#{$level}-bg: #{$surface};
+    --qds-material-#{$level}-filter: none;
+  }
+  --qds-material-edge: inset 0 0 0 0 transparent;
+  --_qds-glass-sheen: none;
+  --_qds-glass-plain-toolbar-fill: #{$surface};
 }
 
 @mixin qds-glass-geometry {
@@ -467,14 +508,21 @@
 
 @mixin qds-glass-solid {
   @include fallbacks.qds-material-tokens(solid);
+  --_qds-glass-sheen: none;
   --_qds-glass-bar-line: var(--qds-border);
+  --_qds-glass-scroll-edge: none;
+  --_qds-glass-plain-toolbar-fill: var(--qds-surface-0);
 }
 
 @mixin qds-glass-contrast($scheme) {
   --qds-color-primary: #{qds-variant-token(glass, '#{$scheme}-hc-primary')};
   --qds-color-primary-rgb: #{qds-variant-token(glass, '#{$scheme}-hc-primary-rgb')};
   --qds-stroke-strong: var(--qds-text-muted);
-  @if $scheme == dark { --_qds-glass-knob-contrast: var(--qds-surface-0); }
+  @if $scheme == dark {
+    --_qds-glass-knob-contrast: var(--qds-surface-0);
+    --_qds-glass-off-icon: var(--qds-text-strong);
+    --_qds-glass-on-track: color-mix(in srgb, currentColor 72%, var(--qds-surface-0));
+  }
 }
 
 $glass-dark: '.qds-theme-dark.qds-variant-glass, .qds-theme-dark .qds-variant-glass, body.qds-ui.body--dark.qds-variant-glass, body.qds-ui.body--dark .qds-variant-glass';

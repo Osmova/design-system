@@ -1,5 +1,6 @@
 @use '../materials';
 @use '../importance';
+@use 'variants/glass';
 
 $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
 $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
@@ -99,6 +100,13 @@ $win: '.qds-variant-win:is(.qds-ui,.qds-ui *)';
   .qds-ui :is(.q-virtual-scroll__padding, .q-virtual-scroll__slice) { border-color: var(--qds-stroke-subtle); }
 
   @media (forced-colors: active) { #{$win} .q-tree__node--selected::after { background: Highlight; forced-color-adjust: none; } }
+  #{glass.$glass} .q-tree { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); }
+  #{glass.$glass} :is(.q-tree__arrow, .q-tree__icon, .q-tree__spinner) { color: var(--_qds-glass-surface-ink, var(--qds-fg-muted)); }
+  #{glass.$glass} .q-tree__node--selected { background: var(--_qds-glass-role-selection, var(--qds-surface-brand-soft)); }
+  #{glass.$glass} .q-tree__node--selected::after { background: var(--_qds-glass-surface-ink, var(--qds-tab-active-rail)); }
+  #{glass.$glass} #{glass.$role-fill} .q-tree__node-header-content { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); }
+  #{glass.$glass} .q-tree__node--selected .q-tree__node-header-content { color: var(--_qds-glass-surface-ink, var(--qds-fg-strong)); }
+  #{glass.$glass} .q-tree__node-header:focus-visible { outline-color: #{glass.$focus}; }
 
   #{$one} .q-tree__node-header { min-height: 2.75rem; }
   #{$term} .q-linear-progress { border-radius: 0; }

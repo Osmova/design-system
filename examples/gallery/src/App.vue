@@ -201,9 +201,9 @@ watch(tab, revealActiveGalleryTab)
 </script>
 
 <template>
-  <q-layout view="hHh LpR fFf" :class="{ 'gallery--embedded': embedded }">
+  <q-layout view="hHh LpR fFf" class="gallery-layout" :class="{ 'gallery--embedded': embedded }">
     <q-header v-if="!embedded" class="gallery-header">
-      <q-toolbar>
+      <q-toolbar class="qds-glass-bar">
         <q-btn
           flat
           round
@@ -445,6 +445,20 @@ watch(tab, revealActiveGalleryTab)
   --qds-button-radius: 9999px;
 }
 
+.qds-variant-glass .gallery-layout:not(.gallery--embedded) {
+  background: url('./glass-landscape.webp') center / cover no-repeat fixed;
+}
+
+.qds-variant-glass .gallery-page {
+  background: var(--qds-surface-1);
+}
+
+.qds-variant-glass .gallery-title__sub,
+.qds-variant-glass .gallery-nav__header {
+  color: var(--qds-fg-muted);
+  opacity: 1;
+}
+
 .gallery-page {
   min-height: 0;
   padding: var(--qds-space-md);
@@ -574,6 +588,18 @@ watch(tab, revealActiveGalleryTab)
   height: 36px;
   min-height: 36px;
   border: 0;
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  .qds-variant-glass .gallery-header :deep(.q-btn) {
+    outline: 1px solid var(--_qds-glass-forced-button, var(--_qds-glass-control-edge));
+    outline-offset: -1px;
+  }
+
+  .qds-variant-glass .gallery-header :deep(.q-btn:focus-visible) {
+    outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus);
+    outline-offset: -2px;
+  }
 }
 
 .gallery-palette-slot {

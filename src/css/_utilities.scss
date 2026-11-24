@@ -1,7 +1,7 @@
 @use 'importance';
 @mixin styles {
   @each $role in primary, secondary, accent, positive, negative, warning, info {
-    .qds-ui .text-#{$role} { @include importance.declarations { color: var(--qds-fg-#{$role}) !important; } }
+    .qds-ui .text-#{$role} { @include importance.declarations { color: var(--_qds-context-role-text, var(--qds-fg-#{$role})) !important; } }
     .qds-ui .bg-#{$role} { @include importance.declarations { background: var(--qds-color-#{$role}) !important; } }
   }
 

@@ -1,5 +1,6 @@
 @use '../importance';
 $one: ':is(.qds-ui.qds-variant-one, .qds-ui .qds-variant-one)';
+$glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui,.qds-ui *)';
 $shadcn-roles: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative, .bg-warning, .bg-info)';
 
@@ -62,6 +63,9 @@ $shadcn-roles: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-ne
   }
 
   .qds-ui :is(.q-date--bordered, .q-time--bordered, .q-color-picker--bordered) { border-color: var(--qds-stroke-subtle); }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$glass} :is(.q-date--bordered, .q-time--bordered, .q-color-picker--bordered, .q-color-picker__tune-tab input) { border-color: var(--_qds-glass-forced-edge, var(--_qds-glass-control-edge)); }
+  }
 
   .qds-ui :is(.q-date__header, .q-time__header) {
     color: var(--qds-fg-strong);
