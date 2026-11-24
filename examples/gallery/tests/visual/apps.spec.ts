@@ -339,6 +339,7 @@ test.describe('apps', () => {
       const assertMark = async (destination: string) => {
         await expect(current).toHaveAttribute('data-nav', destination)
         await expect(current.locator('svg')).toBeVisible()
+        await settle(page)
         const mark = await current.evaluate((element) => {
           const rail = getComputedStyle(element, '::before')
           return {
