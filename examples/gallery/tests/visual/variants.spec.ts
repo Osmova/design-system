@@ -478,7 +478,7 @@ test.describe('QDS variant distinctiveness lab', () => {
           await selected.focus()
           const paint = await glassPaint(selected)
           expect.soft(paint.outlineStyle, `${label} focus style`).toBe('solid')
-          expect.soft(highlight && design !== '-outline' ? paint.outlineOnFill : paint.outlineOnSurface, `${label} focus`).toBeGreaterThanOrEqual(3)
+          expect.soft(parseFloat(paint.outlineOffset) < 0 ? paint.outlineOnFill : paint.outlineOnSurface, `${label} focus`).toBeGreaterThanOrEqual(3)
           await selected.blur()
         }
       }

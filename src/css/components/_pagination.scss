@@ -59,7 +59,7 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
   #{$glass} .q-pagination .q-btn[aria-current='page']:is(.q-btn--push, .q-btn--unelevated):focus-visible { --_qds-focus-on-surface: currentColor; outline-offset: -3px; }
   #{$glass} .q-pagination .q-btn[aria-current='page']:is(.q-btn--flat, .q-btn--standard):focus-visible { --_qds-focus-on-surface: var(--_qds-glass-highlight-text, var(--qds-pagination-active-text)); outline-offset: -3px; }
   @media (prefers-contrast: more) {
-    #{$glass} .q-pagination .q-btn[aria-current='page']:is(.q-btn--push, .q-btn--unelevated) { border-color: currentColor; }
+    #{$glass} .q-pagination .q-btn[aria-current='page']:not(.q-btn--outline) { border-color: currentColor; }
   }
   @media (forced-colors: active) {
     #{$glass} .q-pagination .q-btn[aria-current='page']:not(.q-btn--outline) {
