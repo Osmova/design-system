@@ -28,7 +28,8 @@ $chrome: ':is(.q-header, .q-footer, .q-toolbar, .q-bar)';
 $role-fill: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative, .bg-warning, .bg-info, .bg-dark)';
 $surface: ':is(#{$role-fill}, .q-bar--dark)';
 // Notify and soft banners are repainted as neutral washes by the shared layer.
-$painted-surface: '#{$surface}:not(.q-btn, .q-chip, .q-badge, .q-toggle__track, .q-slider__selection, .q-notification, .q-banner:where(.bg-positive, .bg-negative, .bg-warning, .bg-info))';
+$soft-wash: '.q-notification, .q-banner:where(.bg-positive, .bg-negative, .bg-warning, .bg-info)';
+$painted-surface: '#{$surface}:not(.q-btn, .q-chip, .q-badge, .q-toggle__track, .q-slider__selection, #{$soft-wash})';
 $surface-ink: var(--_qds-zen-surface-ink, var(--qds-fg-default));
 $surface-edge: var(--_qds-zen-surface-ink, var(--qds-stroke-strong));
 $outer-focus: var(--_qds-zen-surface-ink, var(--qds-stroke-focus));
@@ -401,7 +402,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} :is(.q-header, .q-footer) { background: #{$base}; color: var(--qds-fg-default); box-shadow: none; }
   #{$zen} :is(.q-header, .q-footer, .q-bar, .q-toolbar:not(:is(.q-header, .q-footer) *),
     .q-card, .qds-card, .q-drawer, .q-menu, .q-bottom-sheet, .q-btn-toggle, .q-list--bordered,
-    .q-date, .q-time, .q-color-picker, .q-stepper, .q-editor, .q-uploader, .q-table__container):not(#{$surface}, .bg-transparent) {
+    .q-date, .q-time, .q-color-picker, .q-stepper, .q-editor, .q-uploader, .q-table__container):not(#{$surface}, .bg-transparent),
+  #{$zen} :is(#{$soft-wash}) {
     --_qds-zen-surface-ink: initial;
     --_qds-zen-surface-fill: initial;
     --_qds-zen-tab-tray: initial;
@@ -427,14 +429,14 @@ $ease: var(--qds-motion-fast);
   // Transparent toolbars keep the ink of the chrome they sit on, including author paint.
   #{$zen} :is(.q-header .q-toolbar, .q-footer .q-toolbar, .q-toolbar.bg-transparent) { color: var(--_qds-zen-surface-ink, inherit); }
   #{$zen} #{$chrome} #{$flat-action}:not([class*='text-']) { color: var(--_qds-zen-surface-ink, inherit); }
+  #{$zen} :is(.q-card, .qds-card)[class*='bg-']:not(#{$surface}) .q-toolbar:not([class*='bg-']) { background: transparent; color: inherit; }
   @media (prefers-reduced-transparency: reduce) {
     #{$zen} #{$chrome}:not(#{$role-fill}, .q-bar--dark),
     #{$zen} .q-footer:not(#{$role-fill}):has(> .q-tabs) { background-color: var(--_qds-zen-surface-fill, #{$base}); }
     #{$zen} :is(.q-header, .q-footer) .q-toolbar:not(#{$role-fill}) { background-color: var(--_qds-zen-surface-fill, inherit); }
     // Where Zen supplies the fallback paint it also supplies the ink.
     #{$zen} #{$chrome}.bg-transparent:not(#{$role-fill}, :is(.q-header, .q-footer, .q-card, .qds-card) .q-toolbar) {
-      @include importance.declarations { background-color: var(--_qds-zen-surface-fill, #{$base}) !important; }
-      color: #{$surface-ink};
+      @include importance.declarations { background-color: var(--_qds-zen-surface-fill, #{$base}) !important; color: #{$surface-ink} !important; }
     }
     #{$zen} :is(.q-header, .q-footer, .q-card, .qds-card) .q-toolbar.bg-transparent:not(#{$role-fill}) {
       @include importance.declarations { background-color: var(--_qds-zen-surface-fill, inherit) !important; }
