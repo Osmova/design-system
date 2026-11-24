@@ -30,6 +30,8 @@ const assets = {
 
 const fixture = `body { margin: 24px; } #app { width: 560px; display: grid; gap: 24px; }
   *, *::before, *::after { transition: none !important; animation: none !important; }`
+const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
+const actionRole = (index) => roles[(index + 1) % roles.length]
 
 // Chrome serializes a resolved color-mix() as `color(srgb r g b / a)` with 0..1
 // components, and everything else as rgb()/rgba() bytes. Both must land on the
@@ -52,21 +54,21 @@ async function mount(browser, bodyClass) {
     + `<body class="${bodyClass}"><div id="app"></div></body>`)
   await page.addScriptTag({ content: assets.vue })
   await page.addScriptTag({ content: assets.quasar })
-  await page.evaluate(() => {
+  await page.evaluate(({ roles, barActions }) => {
     const { createApp, h, reactive, nextTick } = Vue
-    const { QBtn, QBtnToggle, QInput, QTabs, QTab, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QSlider } = Quasar
+    const { QBtn, QBtnGroup, QBtnToggle, QInput, QTabs, QTab, QToolbar, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QSlider } = Quasar
     const state = reactive({ value: 'Zen', tab: 'a', menu: false, error: false })
+    const tabs = (props) => h(QTabs, { ...props, modelValue: state.tab, 'onUpdate:modelValue': (v) => { state.tab = v } },
+      () => ['a', 'b', 'c'].map((name) => h(QTab, { name, label: `Tab ${name}`, disable: name === 'c' })))
     const app = createApp({ setup: () => () => [
       h('div', { style: 'display:flex;gap:16px;flex-wrap:wrap' }, [
         h(QBtn, { id: 'button', label: 'Action' }),
         h(QBtn, { id: 'disabled', label: 'Disabled', disable: true }),
-        ...['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
-          .map((role) => h(QBtn, { id: `fill-${role}`, class: 'role-fill', label: role, color: role })),
+        ...roles.map((role) => h(QBtn, { id: `fill-${role}`, class: 'role-fill', label: role, color: role })),
       ]),
       h(QInput, { id: 'field', modelValue: state.value, 'onUpdate:modelValue': (v) => { state.value = v },
         label: 'Reading label', outlined: true, hint: 'Zen help', error: state.error, errorMessage: 'Zen error' }),
-      h(QTabs, { id: 'tabs', modelValue: state.tab, 'onUpdate:modelValue': (v) => { state.tab = v } },
-        () => ['a', 'b', 'c'].map((name) => h(QTab, { name, label: `Tab ${name}` }))),
+      tabs({ id: 'tabs' }),
       h(QBtnToggle, { id: 'segments', modelValue: 'a', options: [
         { label: 'Segment A', value: 'a' }, { label: 'Segment B', value: 'b' },
       ] }),
@@ -83,20 +85,35 @@ async function mount(browser, bodyClass) {
         h(QCheckbox, { id: 'check-on', modelValue: true, label: 'Checked' }),
         h(QSlider, { id: 'slider', modelValue: 40, labelAlways: true, style: 'width:160px' }),
       ]),
+      h('div', { style: 'display:flex;flex-wrap:wrap' }, roles.map((role) =>
+        h(QToggle, { id: `toggle-${role}`, modelValue: true, color: role, label: role }))),
+      tabs({ id: 'accent-tabs', class: 'bg-accent text-white' }),
+      h('div', { id: 'accent-wrapper', class: 'bg-accent' }, [tabs({ id: 'wrapped-tabs' })]),
+      ...roles.map((role, index) => h(QToolbar, { id: `bar-${role}`, class: `bg-${role}` }, () => [
+        h(QBtn, { id: `bar-fill-${role}`, color: barActions[index], label: 'Action' }),
+        h('div', {}, [tabs({ id: `bar-tabs-${role}` })]),
+      ])),
+      h(QBtnToggle, { id: 'icon-segments', modelValue: 'a', dense: true, options: [
+        { icon: 'M0 0h24v24H0z', value: 'a', attrs: { 'aria-label': 'Square' } },
+        { icon: 'M12 0l12 24H0z', value: 'b', attrs: { 'aria-label': 'Triangle' } },
+      ] }),
+      ...['flat', 'outline'].map((style) => h(QBtnGroup, { id: `group-${style}`, [style]: true },
+        () => ['Previous', 'Next'].map((label) => h(QBtn, { label, [style]: true })))),
+      h('div', { id: 'glass', class: 'qds-glass' }, 'Solid Zen surface'),
     ] })
     app.use(Quasar)
     app.mount('#app')
     window.zen = { state, async set(values) { Object.assign(state, values); await nextTick() }, dispose() { app.unmount() } }
-  })
+  }, { roles, barActions: roles.map((_, index) => actionRole(index)) })
   return page
 }
 
-const read = (page, selector, properties) => page.evaluate(([target, names]) => {
+const read = (page, selector, properties, pseudo) => page.evaluate(([target, names, pseudo]) => {
   const element = document.querySelector(target)
   if (!element) return null
-  const computed = getComputedStyle(element)
+  const computed = getComputedStyle(element, pseudo)
   return Object.fromEntries(names.map((name) => [name, computed.getPropertyValue(name)]))
-}, [selector, properties])
+}, [selector, properties, pseudo])
 
 const PAINT = ['color', 'background-color', 'border-top-width', 'border-top-color', 'border-top-style', 'box-shadow', 'outline-width', 'outline-color', 'font-weight']
 
@@ -133,6 +150,82 @@ const record = (scheme, label, ratio, minimum) => {
   assert.ok(ratio >= minimum, `${scheme} ${label}: computed contrast ${ratio.toFixed(3)} < ${minimum}`)
 }
 
+async function verifyIconSegments(page, scheme) {
+  const group = '#icon-segments'
+  const selected = `${group} [aria-pressed="true"]`
+  const idle = `${group} [aria-pressed="false"]`
+  const properties = ['content', 'width', 'border-bottom-width', 'border-bottom-style', 'border-bottom-color']
+  assert.equal(await page.locator(`${selected} .q-icon svg`).count(), 1)
+  assert.equal(await page.locator(`${idle} .q-icon svg`).count(), 1)
+  const mark = await read(page, selected, properties, '::after')
+  assert.equal(mark.content, '""', `${scheme} selected icon needs a persistent mark`)
+  assert.equal(mark['border-bottom-style'], 'solid')
+  assert.ok(parseFloat(mark.width) > 0 && parseFloat(mark['border-bottom-width']) >= 2)
+  assert.equal((await read(page, idle, ['content'], '::after')).content, 'none')
+  for (const selector of [selected, group]) {
+    const { 'background-color': background } = await read(page, selector, ['background-color'])
+    record(scheme, `icon selection mark against ${selector}`, contrast(
+      opaque(mark['border-bottom-color'], `${scheme} icon selection`), opaque(background, selector),
+    ), 3)
+  }
+}
+
+async function verifyRoleSwitches(page, scheme) {
+  const canvas = opaque((await read(page, 'body', ['background-color']))['background-color'], scheme)
+  for (const role of roles) {
+    const selector = `#toggle-${role}[aria-checked="true"] .q-toggle__track`
+    const track = await read(page, selector, ['background-color', 'opacity'])
+    assert.equal(track.opacity, '1')
+    const fill = opaque(track['background-color'], `${scheme} ${role} switch`)
+    const roleFace = await read(page, `#fill-${role}`, ['background-color'])
+    assert.deepEqual(fill, opaque(roleFace['background-color'], role))
+    const glyph = await read(page, selector, ['border-inline-start-color', 'border-inline-start-width', 'border-inline-start-style'], '::before')
+    assert.ok(parseFloat(glyph['border-inline-start-width']) >= 2)
+    assert.equal(glyph['border-inline-start-style'], 'solid')
+    record(scheme, `${role} switch track vs page`, contrast(fill, canvas), 3)
+    record(scheme, `${role} switch on glyph`, contrast(opaque(glyph['border-inline-start-color'], role), fill), 3)
+  }
+}
+
+async function verifyBarTabs(page, scheme) {
+  for (const [tabs, bar] of [
+    ['#accent-tabs', '#accent-tabs'], ['#wrapped-tabs', '#accent-wrapper'],
+    ...roles.map((role) => [`#bar-tabs-${role}`, `#bar-${role}`]),
+  ]) {
+    const fill = opaque((await read(page, bar, ['background-color']))['background-color'], bar)
+    if (tabs !== bar) assert.equal(rgb((await read(page, tabs, ['background-color']))['background-color'])[3], 0)
+    for (const selected of [true, false]) {
+      const selector = `${tabs} [aria-selected="${selected}"]:not(.disabled)`
+      const tab = await read(page, selector, ['color', 'opacity', 'background-color'])
+      assert.equal(tab.opacity, '1', `${scheme} ${tabs} enabled tab opacity`)
+      assert.equal(rgb(tab['background-color'])[3], 0)
+      record(scheme, `${tabs} ${selected ? 'active' : 'inactive'} label`, contrast(opaque(tab.color, selector), fill), 4.5)
+    }
+    const activeMark = await read(page, `${tabs} .q-tab--active .q-tab__indicator`, ['background-color'])
+    record(scheme, `${tabs} active underline`, contrast(opaque(activeMark['background-color'], tabs), fill), 3)
+    const disabled = await read(page, `${tabs} .q-tab.disabled`, ['opacity'])
+    assert.ok(Number(disabled.opacity) < 1, `${scheme} ${tabs} disabled tab stays muted`)
+  }
+}
+
+async function verifyGroupPerimeters(page, scheme, enhanced) {
+  const canvas = opaque((await read(page, 'body', ['background-color']))['background-color'], scheme)
+  for (const style of ['flat', 'outline']) {
+    for (const edge of ['top', 'right', 'bottom', 'left']) {
+      const prefix = `border-${edge}`
+      const group = await read(page, `#group-${style}`, [`${prefix}-width`, `${prefix}-style`, `${prefix}-color`])
+      const label = `${style} group ${edge} perimeter`
+      if (enhanced) {
+        assert.ok(parseFloat(group[`${prefix}-width`]) >= 1)
+        assert.equal(group[`${prefix}-style`], 'solid')
+        record(scheme, label, contrast(opaque(group[`${prefix}-color`], label), canvas), 3)
+      } else {
+        assert.equal(rgb(group[`${prefix}-color`])[3], 0, `${scheme} ${label} stays soft`)
+      }
+    }
+  }
+}
+
 const browser = await chromium.launch()
 try {
   for (const scheme of ['light', 'dark']) {
@@ -140,6 +233,22 @@ try {
     const page = await mount(browser, bodyClass)
     try {
       const paint = await observe(page)
+      await verifyIconSegments(page, scheme)
+      await verifyRoleSwitches(page, scheme)
+      await verifyBarTabs(page, scheme)
+      await verifyGroupPerimeters(page, scheme, false)
+
+      const cdp = await page.context().newCDPSession(page)
+      await cdp.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }] })
+      assert.ok(await page.evaluate(() => matchMedia('(prefers-reduced-transparency: reduce)').matches))
+      for (const selector of ['#glass', '#button', '.q-field__control', '#tabs', '#icon-segments']) {
+        const material = await read(page, selector, ['background-color', 'backdrop-filter'])
+        opaque(material['background-color'], `${scheme} reduced transparency ${selector}`)
+        assert.equal(material['backdrop-filter'], 'none')
+      }
+      await verifyGroupPerimeters(page, `${scheme} reduced transparency`, false)
+      await cdp.send('Emulation.setEmulatedMedia', { features: [] })
+      await cdp.detach()
 
       // Text legibility on the real painted control fills.
       for (const [label, sample, backdrop] of [
@@ -157,11 +266,18 @@ try {
       // Every role fill, in every interactive state the profile can reach, is
       // measured against the on-fill text actually painted on it. Pressed is
       // held with a real pointer because Chromium cannot be asked for :active.
-      for (const role of ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']) {
-        const selector = `#fill-${role}`
+      for (const [role, selector, filledRole] of roles.flatMap((role, index) => [
+        [role, `#fill-${role}`], [`${actionRole(index)} button in ${role} bar`, `#bar-fill-${role}`, actionRole(index)],
+      ])) {
         const rest = await read(page, selector, PAINT)
         record(scheme, `${role} fill rest`, contrast(rgb(rest.color), opaque(rest['background-color'], `${scheme} ${role} rest`)), 4.5)
-        record(scheme, `${role} fill vs page`, contrast(opaque(rest['background-color'], `${scheme} ${role}`), opaque(paint.page['background-color'], `${scheme} page`)), 3)
+        if (filledRole) {
+          const normal = await read(page, `#fill-${filledRole}`, ['color', 'background-color'])
+          assert.deepEqual(rgb(rest.color), rgb(normal.color), `${scheme} ${role} keeps its on-fill foreground`)
+          assert.deepEqual(rgb(rest['background-color']), rgb(normal['background-color']), `${scheme} ${role} keeps its own fill`)
+        } else {
+          record(scheme, `${role} fill vs page`, contrast(opaque(rest['background-color'], `${scheme} ${role}`), opaque(paint.page['background-color'], `${scheme} page`)), 3)
+        }
 
         await page.hover(selector)
         const hover = await read(page, selector, PAINT)
@@ -203,6 +319,8 @@ try {
       }
       for (const media of [{ contrast: 'more' }, { contrast: 'no-preference', forcedColors: 'active' }]) {
         await page.emulateMedia({ colorScheme: scheme, ...media })
+        await verifyGroupPerimeters(page, `${scheme} ${media.forcedColors ?? media.contrast}`, true)
+        await verifyIconSegments(page, `${scheme} ${media.forcedColors ?? media.contrast}`)
         const enhanced = await observe(page)
         for (const [part, behind] of boundaries) {
           assert.ok(parseFloat(enhanced[part]['border-top-width']) >= 1, `${scheme} ${part} needs a boundary`)
@@ -261,6 +379,8 @@ try {
     const page = await mount(browser, bodyClass)
     try {
       const paint = await observe(page)
+      await verifyIconSegments(page, `reading ${scheme}`)
+      await verifyRoleSwitches(page, `reading ${scheme}`)
       for (const [label, sample] of [['button', paint.button], ['field', paint.field], ['tabs tray', paint.tabsTrack], ['menu', paint.menu], ['switch track', paint.toggleOff], ['checkbox well', paint.checkOff]]) {
         assert.equal(sample['box-shadow'], 'none', `reading ${scheme} ${label} must drop decorative depth`)
         assert.ok(parseFloat(sample['border-top-width']) >= 1, `reading ${scheme} ${label} must keep its boundary`)
