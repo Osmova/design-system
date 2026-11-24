@@ -13,18 +13,25 @@ $focus: var(--_qds-glass-focus-ink, var(--_qds-glass-forced-edge, var(--_qds-gla
 $edge: var(--_qds-glass-forced-edge, var(--_qds-glass-surface-ink, var(--_qds-glass-control-edge)));
 $native-action: ":where(a[href], button, input, select, textarea, summary, [contenteditable='true'], [tabindex]:not([tabindex='-1'])):where(:not(.disabled, :disabled, [aria-disabled='true'], .q-btn, .q-tab, .q-item, .q-bottom-sheet__item, .q-chip, .q-chip *, .q-field, .q-field *, .q-checkbox, .q-radio, .q-toggle, .q-slider *))";
 
+@mixin reset-ink {
+  --_qds-context-role-text: initial;
+  --_qds-glass-surface-ink: initial;
+  --_qds-glass-role-wash: initial;
+  --_qds-glass-role-selection: initial;
+  --_qds-glass-role-quiet: initial;
+}
+
 @mixin surface-context {
   // Components that paint their own surface start a new context; transparent rows carry the underlying ink.
-  #{$glass} :where(#{$surfaces}, .q-list--bordered, .q-bar:not(.bg-transparent), .q-btn-toggle, .q-bottom-sheet, .q-tabs--horizontal:not(.bg-transparent, #{$untinted-capsule} *), #{$untinted-capsule}) {
-    --_qds-context-role-text: initial;
-    --_qds-glass-surface-ink: initial;
-    --_qds-glass-role-wash: initial;
-    --_qds-glass-role-selection: initial;
-  }
-  #{$glass} :where(#{$role-fill}) :where(#{$surfaces}) { color: var(--qds-fg-default); }
+  #{$glass} :where(:is(#{$surfaces}):not(.bg-transparent), .q-list--bordered, .q-bar:not(.bg-transparent), .q-btn-toggle, .q-bottom-sheet, .q-tabs--horizontal:not(.bg-transparent, #{$untinted-capsule} *), #{$untinted-capsule}) { @include reset-ink; }
+  #{$glass} :where(#{$role-fill}) :where(:is(#{$surfaces}):not(.bg-transparent)) { color: var(--qds-fg-default); }
+  #{$glass} #{$role-fill} :is(#{$surfaces}).bg-transparent { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); }
+  // An outset ring would sit on the fill in the surface's reset ink.
+  #{$glass} #{$role-fill} :is(#{$surfaces}):not(#{$role-fill}, .bg-transparent):focus-visible { outline-offset: calc(-1 * var(--qds-focus-ring-width)); }
   #{$glass} #{$role-fill} {
     --_qds-glass-role-wash: color-mix(in srgb, var(--_qds-glass-role-fill) 94%, var(--_qds-glass-role-shade));
     --_qds-glass-role-selection: color-mix(in srgb, var(--_qds-glass-role-fill) 78%, var(--_qds-glass-role-shade));
+    --_qds-glass-role-quiet: color-mix(in srgb, var(--_qds-glass-surface-ink) 70%, var(--_qds-glass-role-fill));
     color: #{$ink};
   }
   @each $role in $roles {
@@ -40,6 +47,8 @@ $native-action: ":where(a[href], button, input, select, textarea, summary, [cont
       }
     }
   }
+  // Role banners are repainted as soft tints, so they are surfaces rather than fills.
+  #{$glass} .q-banner:is(.bg-positive, .bg-negative, .bg-warning, .bg-info) { @include reset-ink; }
   #{$glass} :is(.q-list, .q-item, .q-tabs, .q-tab-panels, .q-expansion-item, .q-checkbox__label, .q-radio__label, .q-toggle__label) { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); }
   #{$glass} :where(.q-tab, .q-item, .q-bottom-sheet__item, .q-toolbar, .q-toolbar__title, .q-list, a[href]:not([class*='q-'])),
   #{$glass} #{$role-fill} > :where(.q-icon, .q-toolbar__title) { --_qds-context-role-text: #{$ink}; }

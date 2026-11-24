@@ -75,6 +75,8 @@ $role-fills: '.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative
     border: var(--qds-border-width-control) solid var(--qds-stroke-subtle);
     box-shadow: var(--qds-card-shadow);
   }
+  // Arrow buttons paint their own flyout, so their label keeps its neutral colour on any fill.
+  #{$glass} .q-carousel :is(.q-carousel__control, .q-carousel__prev-arrow, .q-carousel__next-arrow) .q-btn > .q-btn__content { color: inherit; }
   .qds-ui .q-carousel :is(.q-carousel__navigation .q-btn, .q-carousel__navigation-icon) { color: var(--qds-fg-muted); opacity: 1; }
   .qds-ui .q-carousel .q-carousel__navigation .q-carousel__navigation-icon--active { color: var(--qds-color-primary); }
   .qds-ui .q-carousel__navigation--thumbnails { padding: var(--qds-space-xs) var(--qds-space-sm); background: var(--qds-bg-flyout); border-radius: var(--qds-radius-full); }
@@ -154,6 +156,9 @@ $role-fills: '.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative
   .qds-ui .q-editor { overflow: hidden; color: var(--qds-fg-default); background: var(--qds-bg-canvas); border: var(--qds-border-width-control) solid var(--qds-stroke-default); border-radius: var(--qds-radius-md); }
   .qds-ui .q-editor--flat { border-color: transparent; }
   #{$glass} .q-editor { border-radius: var(--qds-radius-control); }
+  #{$glass} .q-timeline { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); }
+  #{$glass} :is(.q-timeline__heading-title, .q-timeline__title) { color: var(--_qds-glass-surface-ink, var(--qds-fg-strong)); }
+  #{$glass} .q-timeline__subtitle { color: var(--_qds-glass-surface-ink, var(--qds-fg-muted)); }
   #{$glass} .q-knob { color: var(--_qds-glass-surface-ink, var(--qds-color-primary)); }
   #{$glass} .q-knob .q-circular-progress__text { color: var(--_qds-glass-surface-ink, var(--qds-fg-strong)); }
   // Captions sit on the black media scrim in both schemes, unlike text on a glass role fill.
