@@ -76,6 +76,11 @@ test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only
     assert.equal(gzipSync(baseline, { level: 9 }).length, baselineGzip)
 
     const current = ruleKeys(css)
+    const glassHooks = current.filter(rule => /--_qds-(?:context-role-text|focus-on-surface):/.test(rule))
+    assert.ok(glassHooks.length > 0, `${entry} must bind the contextual hooks`)
+    for (const rule of glassHooks) {
+      assert.ok(selectorsOf(rule).every(selector => ownerOfSelector(selector) === 'glass'), `${entry} shared a Glass binding: ${rule}`)
+    }
     // The frozen hash above still covers the untouched baseline; only the
     // enumerated declared changes are normalised before the rule-by-rule compare.
     const expected = applyDeclaredFixes(ruleKeys(applyDeclaredShadcnChanges(applyDeclaredFluentChanges(baseline, { layered: entry.includes('layered') }))).map(retire).filter(Boolean))

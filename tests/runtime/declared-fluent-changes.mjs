@@ -100,6 +100,16 @@ export function applyDeclaredFixes(rules) {
     const layered = rule.startsWith('@layer')
     const head = layered ? rule.slice(0, rule.lastIndexOf('|') + 1) : ''
     const important = layered ? '@layer qds-important|' : ''
+    // Glass supplies these private hooks; the shared fallback stays byte-identical.
+    const roleText = rule.match(/(?:^|\|)\.qds-ui (?:\.q-btn)?\.text-(primary|secondary|accent|positive|negative|warning|info)\{color:(var\(--qds-fg-\1\)) !important\}$/)
+    if (roleText) {
+      out.push(rule.replace(`color:${roleText[2]}`, `color:var(--_qds-context-role-text, ${roleText[2]})`))
+      continue
+    }
+    if (/(?:^|\|)\.qds-ui \.q-btn:focus-visible\{outline:var\(--qds-focus-ring-width\) solid var\(--qds-stroke-focus\) !important(?:;outline-offset:var\(--qds-focus-ring-offset\))?\}$/.test(rule)) {
+      out.push(rule.replace('solid var(--qds-stroke-focus)', 'solid var(--_qds-focus-on-surface, var(--qds-stroke-focus))'))
+      continue
+    }
     // The mobile select dialog trades Quasar's 90vw for even space-lg gutters.
     if (rule.endsWith('.qds-ui .q-dialog__inner--minimized{padding:var(--qds-space-md)}')) {
       out.push(rule)
