@@ -352,6 +352,38 @@ test.describe('QDS variant distinctiveness lab', () => {
 
   for (const [delivery, entry] of [['default', '/conformance.html'], ['layered', '/conformance-layered.html']]) {
     for (const mode of ['light', 'dark'] as const) {
+      test(`Zen ${mode} keeps focus and text readable on role chrome in ${delivery} CSS`, async ({ page }) => {
+        await page.goto(entry)
+        await applyTheme(page, mode, 'zen')
+        await page.locator('[data-conformance]').evaluate((el) => {
+          const button = '<button class="q-btn q-btn-item q-btn--flat no-outline text-accent">Back</button>'
+          const tabs = '<div class="q-tabs"><div class="q-tab q-tab--active" role="tab" tabindex="0">Current</div></div>'
+          el.insertAdjacentHTML('beforeend', ['primary', 'secondary', 'accent', 'positive', 'negative', 'info', 'warning', 'dark'].map(role =>
+            `<div class="q-header bg-${role}"><div class="q-toolbar bg-transparent" data-role-toolbar="${role}">${button}</div></div>`,
+          ).join('') + `<div class="q-footer" data-zen-dock>${tabs}</div>`)
+        })
+        await page.keyboard.press('Tab')
+        const actions = page.locator('[data-role-toolbar] .q-btn')
+        await expect(actions).toHaveCount(8)
+        for (const action of await actions.all()) {
+          const role = await action.locator('..').getAttribute('data-role-toolbar')
+          await action.focus()
+          await expect(action).toHaveCSS('outline-style', 'solid')
+          const paint = await glassPaint(action)
+          expect.soft(parseFloat(paint.outlineOffset), `${role} outer focus`).toBeGreaterThanOrEqual(0)
+          expect.soft(paint.outlineOnParent, `${role} outer focus`).toBeGreaterThanOrEqual(3)
+          expect.soft(paint.textContrast, `${role} action label`).toBeGreaterThanOrEqual(4.5)
+        }
+        const selected = page.locator('[data-zen-dock] .q-tab')
+        await selected.focus()
+        await expect(selected).toHaveCSS('outline-style', 'solid')
+        const paint = await glassPaint(selected)
+        expect(parseFloat(paint.outlineOffset)).toBeLessThan(0)
+        expect(paint.outlineOnFill).toBeGreaterThanOrEqual(3)
+        expect(paint.textContrast).toBeGreaterThanOrEqual(4.5)
+      })
+    }
+    for (const mode of ['light', 'dark'] as const) {
       test(`glass ${mode} selected-row text has painted contrast in ${delivery} CSS`, async ({ page }) => {
         await page.emulateMedia({ colorScheme: mode })
         await page.goto(entry)
@@ -539,11 +571,14 @@ function glassPaint(locator: Locator, pseudo?: string) {
     let surface = 0
     for (const ancestor of ancestors) surface = paint(getComputedStyle(ancestor).backgroundColor)
     const style = getComputedStyle(el, pseudo)
+    const surfacePixel = context.getImageData(0, 0, 1, 1)
     const fill = paint(getComputedStyle(el).backgroundColor)
     const fillPixel = context.getImageData(0, 0, 1, 1)
     const edge = paint(style.borderTopColor)
     context.putImageData(fillPixel, 0, 0)
     const outline = paint(style.outlineColor)
+    context.putImageData(surfacePixel, 0, 0)
+    const outlineOnParent = ratio(paint(style.outlineColor), surface)
     const fieldText: Record<string, number> = {}
     for (const [part, selector] of [['placeholder', 'input[placeholder]'], ['prefix', '.q-field__prefix'], ['suffix', '.q-field__suffix']]) {
       const node = el.querySelector(selector)
@@ -565,6 +600,7 @@ function glassPaint(locator: Locator, pseudo?: string) {
       outlineOffset: style.outlineOffset,
       edgeContrast: ratio(edge, fill),
       outlineOnFill: ratio(outline, fill),
+      outlineOnParent,
       outlineContrast: Math.min(ratio(outline, fill), ratio(outline, surface)),
       textContrast: ratio(paint(style.color, Number(style.opacity)), fill),
       fieldText,

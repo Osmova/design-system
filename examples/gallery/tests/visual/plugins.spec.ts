@@ -395,6 +395,27 @@ test.describe('QDS plugin/global UI surfaces', () => {
     }
   })
 
+  for (const mode of ['light', 'dark'] as const) {
+    test(`Zen ${mode} restores BottomSheet grid action edges and focus`, async ({ page }) => {
+      await applyTheme(page, mode, 'zen')
+      await page.emulateMedia({ contrast: 'more' })
+      await page.getByRole('button', { name: 'Open grid BottomSheet' }).click()
+      const actions = page.locator('.q-bottom-sheet--grid .q-bottom-sheet__item[tabindex="0"]')
+      await expect(actions.first()).toBeVisible()
+      await page.keyboard.press('Tab')
+      const edge = await resolvedColor(page, '--qds-stroke-strong')
+      for (const action of await actions.all()) {
+        await expect(action).toHaveCSS('border-top-width', '1px')
+        await expect(action).toHaveCSS('border-top-color', edge)
+        await action.focus()
+        await expect(action).toHaveCSS('outline-style', 'solid')
+        await expect(action).toHaveCSS('outline-color', await action.evaluate(el => getComputedStyle(el).color))
+      }
+      await page.keyboard.press('Escape')
+      await expectNoResidualGlobalSurfaces(page)
+    })
+  }
+
   test('Loading and LoadingBar plugin surfaces are visible only during their assertions', async ({ page }) => {
     await expect(page.locator('[data-test="qds-plugin-inner-loading"]')).toBeVisible()
     expect.soft(await computed(page, '.qds-plugin-inner-loading', 'background-color'), 'QInnerLoading plugin proof surface').not.toBe('rgba(0, 0, 0, 0)')

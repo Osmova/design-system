@@ -252,10 +252,26 @@ test('Zen focus pairs the glow with a real outline or boundary, never the glow a
   }
 })
 
-test('Zen grammar is self-contained and declares no !important', () => {
+test('Zen routes only role ink and transparent chrome fallbacks through the importance layer', () => {
   const css = compile(zenProgram())
-  assert.doesNotMatch(css, /!important/)
   assert.doesNotMatch(css, /@import|@layer/)
+  const layered = compile(`@use 'src/css/importance' with ($layered: true);${zenProgram()}`)
+  const important = (source) => flattenRules(source).flatMap(([path, body]) =>
+    body.split(';').filter((declaration) => declaration.includes('!important')).map((declaration) => [path, declaration]))
+  const rules = important(css)
+  assert.ok(rules.length > 0)
+  for (const [path, declaration] of rules) {
+    if (declaration.startsWith('background-color:')) {
+      assert.match(path, /prefers-reduced-transparency:\s*reduce/)
+      assert.match(path, /\.bg-transparent/)
+      assert.match(declaration, /^background-color:var\(--_qds-zen-surface-fill,/)
+    } else {
+      assert.match(path, /\.bg-dark/)
+      assert.match(declaration, /^color:(var\(--_qds-zen-surface-ink,|#fff!important)/)
+    }
+  }
+  assert.equal(important(layered).length, rules.length)
+  for (const [path] of important(layered)) assert.match(path, /@layer qds-important/)
 })
 
 // Inverted ink surfaces (tooltip, value bubble, dock stop) and the switch glyphs.

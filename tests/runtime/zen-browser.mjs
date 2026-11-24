@@ -32,7 +32,7 @@ const fixture = `body { margin: 24px; } #app { width: 560px; display: grid; gap:
   *, *::before, *::after { transition: none !important; animation: none !important; }`
 const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
 const barRoles = [...roles, 'dark']
-const barCompositions = ['header-direct', 'header-toolbar', 'header-colored-toolbar', 'footer-direct', 'footer-toolbar', 'footer-colored-toolbar', 'footer-colored-tabs', 'toolbar', 'compact-bar', 'vertical-bar']
+const barCompositions = ['header-transparent-toolbar', 'footer-transparent-toolbar', 'header-direct', 'header-toolbar', 'header-colored-toolbar', 'footer-direct', 'footer-toolbar', 'footer-colored-toolbar', 'footer-colored-tabs', 'toolbar', 'compact-bar', 'vertical-bar']
 const designs = ['standard', 'flat', 'outline', 'unelevated', 'push']
 const actionRole = (index) => roles[(index + 1) % roles.length]
 
@@ -63,7 +63,7 @@ async function mount(browser, bodyClass) {
   await page.addScriptTag({ content: assets.quasar })
   await page.evaluate(({ roles, barRoles, barCompositions, barActions, designs }) => {
     const { createApp, h, reactive, nextTick } = Vue
-    const { QBtn, QBtnGroup, QBtnToggle, QInput, QTabs, QTab, QToolbar, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QRadio, QSlider, QRange, QPagination, QBar, QCard, QChip, QSelect, QExpansionItem, QTree, QRating, QDate, QTime, QColor, QStepper, QStep, QSplitter, QEditor, QUploader, QTable } = Quasar
+    const { QBtn, QBtnGroup, QBtnToggle, QInput, QTabs, QTab, QRouteTab, QToolbar, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QRadio, QSlider, QRange, QPagination, QBar, QCard, QChip, QSelect, QExpansionItem, QTree, QRating, QDate, QTime, QColor, QStepper, QStep, QSplitter, QEditor, QUploader, QTable } = Quasar
     const state = reactive({ value: 'Zen', tab: 'a', menu: false, error: false })
     const svg = 'M0 0h24v24H0z'
     const tabs = (props, icons = false) => h(QTabs, { ...props, modelValue: state.tab, 'onUpdate:modelValue': (v) => { state.tab = v } },
@@ -84,14 +84,18 @@ async function mount(browser, bodyClass) {
       const button = h(QBtn, { id: `action-${id}`, label: 'Action', color: 'secondary' })
       const title = h(Quasar.QToolbarTitle, {}, () => 'Bar title')
       const fill = { id, class: `bg-${role}` }
-      const neutralToolbar = () => h(QToolbar, { id: `nested-${id}` }, () => [title, button, tray])
+      const neutralToolbar = (transparent = false) => h(QToolbar, {
+        id: `nested-${id}`, class: transparent ? 'bg-transparent' : undefined,
+      }, () => [title, button, tray])
       const coloredToolbar = () => h(QToolbar, fill, () => [title, button, tray])
       const shell = (kind, children, paint = fill) => h(kind, { ...paint, class: [`q-${kind}`, paint.class] }, children)
       switch (composition) {
         case 'header-direct': return shell('header', [title, button, tray])
+        case 'header-transparent-toolbar': return shell('header', [neutralToolbar(true)])
         case 'header-toolbar': return shell('header', [neutralToolbar()])
         case 'header-colored-toolbar': return shell('header', [coloredToolbar()], {})
         case 'footer-direct': return shell('footer', [title, button, tray])
+        case 'footer-transparent-toolbar': return shell('footer', [neutralToolbar(true)])
         case 'footer-toolbar': return shell('footer', [neutralToolbar()])
         case 'footer-colored-toolbar': return shell('footer', [coloredToolbar()], {})
         case 'footer-colored-tabs': return shell('footer', [tray], {})
@@ -100,6 +104,67 @@ async function mount(browser, bodyClass) {
         case 'vertical-bar': return h(QBar, fill, () => [title, button, tray])
       }
     }))
+    const contractTabs = (vertical, route, fill) => h(QTabs, {
+      vertical, class: fill, modelValue: 'current', 'onUpdate:modelValue': () => {},
+      activeColor: 'accent', indicatorColor: 'secondary',
+    }, () => ['current', 'next'].map((name) => h(route ? QRouteTab : QTab, {
+      name, href: route ? `/${name}` : undefined, exact: route, label: name, icon: svg,
+      'data-audit': `${route ? 'route' : 'tab'}-${vertical ? 'vertical' : 'horizontal'}-${name}`,
+    })))
+    const roleControls = (role, container) => {
+      const controls = [
+        ...designs.flatMap((design) => [undefined, role].map((color) => h(QBtn, {
+          color, [design]: design !== 'standard', label: design, icon: svg,
+          'data-audit': `button-${design}-${color ?? 'neutral'}`,
+        }))),
+        h(QBtn, { color: 'accent', class: 'qds-tonal', label: 'Tonal', 'data-audit': 'tonal-button' }),
+        ...[true, false].flatMap((active) => [
+          ...[false, true].map((filled) => h(QItem, {
+            active, clickable: true, activeClass: 'text-accent', class: filled ? `bg-${role}` : undefined,
+            'data-audit': `item-${filled ? 'filled' : 'neutral'}-${active}`,
+          }, () => [
+            h(QItemSection, { side: true }, () => h(Quasar.QIcon, { name: svg })),
+            h(QItemSection, {}, () => ['Item', h(Quasar.QItemLabel, { caption: true }, () => 'Caption')]),
+          ])),
+          ...['neutral', 'outline', 'tonal', 'solid'].map((design) => h(QChip, {
+            color: design === 'neutral' || design === 'outline' ? undefined : role,
+            textColor: design === 'outline' ? 'accent' : undefined, outline: design === 'outline',
+            class: design === 'solid' ? 'qds-solid' : undefined, selected: active,
+            clickable: true, removable: true, icon: svg, label: 'Chip',
+            'data-audit': `chip-${design}-${active}`,
+          })),
+          ...[QToggle, QCheckbox, QRadio].map((component) => h(component, {
+            color: role, modelValue: active, val: true, keepColor: true, label: component.name,
+            'data-audit': `${component.name}-${active}`,
+          })),
+        ]),
+        ...[false, true].map(filled => h(QBtnToggle, {
+          class: filled ? `bg-${role}` : undefined, color: 'accent', toggleColor: role, modelValue: 'on',
+          options: ['on', 'off'].map((value) => ({ value, icon: svg, attrs: { 'aria-label': value, 'data-audit': `segment-${filled ? 'filled' : 'neutral'}-${value}` } })),
+        })),
+        ...designs.map((design) => h(QPagination, {
+          'data-family': `pagination-${design}`, modelValue: 2, max: 3, color: role,
+          activeColor: 'accent', activeDesign: design === 'standard' ? '' : design,
+        })),
+        ...['outlined', 'filled', 'standout', 'borderless', 'ghost', 'error', 'standout-role'].map((design) =>
+          h(QInput, {
+            modelValue: 'Value', label: 'Input', prefix: 'Prefix', suffix: 'Suffix', hint: 'Hint',
+            outlined: design === 'error', error: design === 'error', errorMessage: 'Error',
+            clearable: true, class: design === 'ghost' ? 'qds-field--ghost' : undefined,
+            [design]: true, standout: design === 'standout-role' ? `bg-${role} text-accent` : design === 'standout',
+            'data-audit': `field-${design}`,
+          })),
+        h(QInput, { type: 'textarea', modelValue: 'Text', outlined: true, 'data-audit': 'field-textarea' }),
+        h(QSelect, { options: ['Value'], modelValue: 'Value', borderless: true, 'data-audit': 'field-select' }),
+      ]
+      const props = { 'data-audit-surface': `${container}-${role}`, class: `bg-${role}` }
+      const trays = [false, true].flatMap((vertical) => [false, true].map((route) => contractTabs(vertical, route)))
+      if (container === 'track') return h('div', { 'data-audit-surface': `track-${role}` },
+        [false, true].flatMap((vertical) => [false, true].map((route) => contractTabs(vertical, route, props.class))))
+      if (container === 'toolbar') return h(QToolbar, props, () => h('div', controls.concat(trays)))
+      if (container === 'bar') return h(QBar, { ...props, style: 'height:auto' }, () => h('div', controls.concat(trays)))
+      return h('section', { ...props, class: [props.class, container === 'panel' ? undefined : `q-${container}`] }, controls.concat(trays))
+    }
     const app = createApp({ setup: () => () => [
       h('div', { style: 'display:flex;gap:16px;flex-wrap:wrap' }, [
         h(QBtn, { id: 'button', label: 'Action' }),
@@ -173,6 +238,14 @@ async function mount(browser, bodyClass) {
         h(QBar, { id: 'inner-neutral-bar' }, () => [tabs({ id: 'neutral-reset-tabs' }, true)]),
       ]),
       ...chromeCases,
+      h(QToolbar, { id: 'transparent-toolbar', class: 'bg-transparent' }, () => [
+        h(Quasar.QToolbarTitle, {}, () => 'Transparent toolbar'), tabs({ id: 'transparent-toolbar-tabs' }, true),
+      ]),
+      h('header', { id: 'transparent-header', class: 'q-header bg-transparent' }, [
+        h(QToolbar, { id: 'transparent-header-toolbar', class: 'bg-transparent' }, () => tabs({ id: 'transparent-header-tabs' }, true)),
+      ]),
+      h(QBar, { id: 'transparent-dark-bar', dark: true, class: 'bg-transparent' }, () => tabs({ id: 'transparent-dark-bar-tabs' }, true)),
+      ...barRoles.flatMap((role) => ['panel', 'toolbar', 'header', 'footer', 'bar', 'track'].map((container) => roleControls(role, container))),
       destinations('list'),
       h('aside', { id: 'drawer', class: 'q-drawer q-drawer--bordered q-drawer--left' }, [destinations('drawer-list')]),
       h('aside', { id: 'mini-drawer', class: 'q-drawer q-drawer--mini q-drawer--bordered q-drawer--left' }, [
@@ -426,7 +499,7 @@ async function verifyRoleSelection(page, scheme, forced) {
   }
 }
 
-async function verifyChrome(page, scheme, forced, edges = false) {
+async function verifyChrome(page, scheme, forced, edges = false, reducedTransparency = false) {
   for (const [id, tray, filled] of [
     ...barRoles.flatMap((role) => barCompositions.map((composition) => {
       const id = `${composition}-${role}`
@@ -442,8 +515,8 @@ async function verifyChrome(page, scheme, forced, edges = false) {
     const chrome = await read(page, container, ['color', 'background-color', 'backdrop-filter', 'background-image'])
     assert.equal(chrome['backdrop-filter'], 'none', `${scheme} ${container}`)
     assert.equal(chrome['background-image'], 'none', `${scheme} ${container}`)
-    if (id === 'neutral-footer') assert.equal(rgb(chrome['background-color'])[3], 0)
-    if (id !== 'neutral-footer') opaque(chrome['background-color'], `${scheme} ${container}`)
+    if (id === 'neutral-footer' && !reducedTransparency) assert.equal(rgb(chrome['background-color'])[3], 0)
+    else opaque(chrome['background-color'], `${scheme} ${container}`)
     const trayPaint = await read(page, tabs, ['background-color', 'backdrop-filter'])
     assert.equal(trayPaint['backdrop-filter'], 'none')
     if (filled && id !== tray) assert.equal(rgb(trayPaint['background-color'])[3], 0)
@@ -474,6 +547,10 @@ async function verifyChrome(page, scheme, forced, edges = false) {
     if (id === 'neutral-footer' && !forced) {
       assert.equal(indicator.display, 'none')
       record(scheme, 'neutral footer selected pebble', contrast(await surface(page, active), await surface(page, tabs)), 3)
+      await page.locator(active).focus()
+      const focus = await read(page, active, ['outline-color', 'outline-width', 'outline-style', 'outline-offset'])
+      assert.ok(parseFloat(focus['outline-width']) >= 1 && focus['outline-style'] === 'solid' && parseFloat(focus['outline-offset']) < 0)
+      record(scheme, 'neutral footer selected pebble focus', paintContrast(focus['outline-color'], await surface(page, active)), 3)
     } else {
       assert.notEqual(indicator.display, 'none', `${scheme} ${id} selection mark`)
       assert.equal(indicator.opacity, '1')
@@ -515,6 +592,111 @@ async function verifyDestinations(page, scheme, forced) {
       record(scheme, `${design} current page face`, contrast(face, await surface(page, container)), 3)
     }
   }
+}
+
+async function verifyRoleControls(page, scheme, edges = false) {
+  await page.keyboard.press('Tab')
+  const observations = await page.evaluate(async ({ edges }) => {
+    const layers = (node) => {
+      const paints = []
+      for (; node; node = node.parentElement) paints.unshift(getComputedStyle(node).backgroundColor)
+      return paints
+    }
+    const enabled = (node) => !node.matches('.disabled, [disabled], [aria-disabled="true"]')
+    const entries = []
+    for (const container of document.querySelectorAll('[data-audit-surface]')) {
+      const prefix = container.dataset.auditSurface
+      for (const fixture of container.querySelectorAll('[data-audit], .q-pagination .q-btn')) {
+        const node = fixture.dataset.audit?.startsWith('field-') ? fixture.closest('.q-field') : fixture
+        if (!enabled(node)) continue
+        const family = node.closest('[data-family]')?.dataset.family
+        const name = `${prefix}/${fixture.dataset.audit ?? family + '/' + node.textContent.trim()}`
+        const field = node.matches('.q-field')
+        const target = field ? node.querySelector('input, textarea, .q-select__focus-target') : node
+        const anchor = field ? node.querySelector('.q-field__control') : node
+        const parts = field
+          ? node.querySelectorAll('.q-field__native, .q-field__label, .q-field__append .q-icon, .q-field__prefix, .q-field__suffix, .q-field__messages > div')
+          : [node.querySelector('.q-checkbox__label, .q-radio__label, .q-toggle__label') ?? node,
+            ...node.querySelectorAll('.q-item__label--caption, svg, .q-chip__icon--remove')].filter((part) => !part.closest('.q-checkbox__bg, .q-radio__bg'))
+        const focusTarget = node.querySelector('.q-checkbox__inner, .q-radio__inner, .q-toggle__inner') ?? anchor
+        const add = (label, paint, backdrop, minimum, present = true, opacity = 1) => entries.push({ name: `${name} ${label}`, paint, backdrop, minimum, present, opacity })
+        const inspect = (state) => {
+          for (const part of parts) {
+            const computed = getComputedStyle(part)
+            const icon = part instanceof SVGElement || part.classList.contains('q-icon')
+            let opacity = 1
+            let hidden = false
+            for (let el = part; el && el !== node.parentElement; el = el.parentElement) {
+              const style = getComputedStyle(el)
+              opacity *= Number(style.opacity)
+              hidden ||= style.display === 'none' || style.visibility === 'hidden'
+            }
+            if (!hidden) add(`${state} ${part.className.baseVal ?? part.className} ink`, part instanceof SVGElement ? computed.fill : computed.color,
+              layers(part), icon ? 3 : 4.5, true, opacity)
+          }
+          const mark = node.querySelector('.q-tab__indicator')
+          if (mark && node.getAttribute('aria-selected') === 'true') {
+            const paint = getComputedStyle(mark)
+            add('selection underline', paint.backgroundColor, layers(node), 3, paint.display !== 'none' && Number(paint.opacity) === 1)
+          }
+          if (node.matches('.q-item--active')) {
+            const rail = getComputedStyle(node, '::before')
+            add('current item rail', rail.backgroundColor, layers(node), 3, rail.content === '""' && parseFloat(rail.width) >= 2)
+          }
+          if (node.matches('.q-btn[aria-current="page"]:is(.q-btn--flat, .q-btn--outline), .q-btn-toggle .q-btn[aria-pressed="true"]')) {
+            const dash = getComputedStyle(node, '::after')
+            add('selected action dash', dash.borderBottomColor, layers(node), 3, dash.content === '""' && parseFloat(dash.borderBottomWidth) >= 2)
+          }
+        }
+        target.blur()
+        if (field) await new Promise(resolve => setTimeout(resolve, 0))
+        inspect('unfocused')
+        target.focus({ preventScroll: true })
+        if (field) await Vue.nextTick()
+        inspect('focused')
+        const focus = getComputedStyle(focusTarget)
+        add('keyboard focus', focus.outlineColor, layers(parseFloat(focus.outlineOffset) < 0 ? focusTarget : focusTarget.parentElement), 3,
+          target.matches(':focus-visible') && parseFloat(focus.outlineWidth) >= 1 && focus.outlineStyle === 'solid')
+        const action = node.querySelector('.q-chip__icon--remove, .q-field__focusable-action[tabindex]')
+        if (action) {
+          action.focus({ preventScroll: true })
+          const paint = getComputedStyle(action)
+          add('secondary action keyboard focus', paint.outlineColor, layers(action), 3,
+            action.matches(':focus-visible') && parseFloat(paint.outlineWidth) >= 1 && paint.outlineStyle === 'solid')
+          action.blur()
+        }
+        target.blur()
+        if (edges && node.matches('.q-tab')) {
+          const paint = getComputedStyle(node)
+          add('increased contrast tab edge', paint.outlineColor, layers(node), 3,
+            parseFloat(paint.outlineWidth) >= 1 && paint.outlineStyle === 'solid')
+        } else if (edges) {
+          const mark = node.querySelector('.q-checkbox__bg, .q-radio__bg, .q-toggle__track') ?? anchor
+          const paint = getComputedStyle(mark)
+          const side = node.matches('.q-field--borderless') && !node.matches('.qds-field--ghost') ? 'bottom' : 'top'
+          const face = node.matches('.q-btn-toggle .q-btn[aria-pressed="true"]') ? mark : mark.parentElement
+          add('increased contrast boundary', paint.getPropertyValue(`border-${side}-color`), layers(face), 3,
+            parseFloat(paint.getPropertyValue(`border-${side}-width`)) >= 1)
+        }
+      }
+    }
+    return entries
+  }, { edges })
+  assert.ok(observations.length > 5000, 'the role surface matrix rendered')
+  const failures = []
+  for (const { name, paint, backdrop, minimum, present, opacity } of observations) {
+    const surface = backdrop.map(rgb).reduce((behind, face) => mix(face, behind, face[3]), [255, 255, 255])
+    const ink = rgb(paint)
+    const ratio = contrast(mix(ink, surface, ink[3] * opacity), surface)
+    if (!present || ratio < minimum) failures.push({ name, present, paint, surface, ratio, minimum })
+    else record(scheme, name, ratio, minimum)
+  }
+  if (failures.length) {
+    const unique = new Map(failures.map((failure) => [failure.name.replace(/^[^/]+\//, ''), failure]))
+    for (const failure of unique.values()) console.error(JSON.stringify(failure))
+  }
+  assert.equal(failures.length, 0, `${scheme}: all role surface observations must meet their contrast and visibility thresholds`)
+  console.log(`${scheme}: ${observations.length} role-surface observations passed`)
 }
 
 async function verifyControlPerimeters(page, scheme) {
@@ -559,6 +741,29 @@ async function verifyControlPerimeters(page, scheme) {
   }
 }
 
+async function verifyKeyboardParts(page, scheme) {
+  await page.keyboard.press('Tab')
+  for (const selector of ['#frame-date .q-date__header-link[tabindex="0"]', '#frame-time [role="spinbutton"][tabindex="0"]',
+    '#frame-color-picker [role="slider"][tabindex="0"]', '#frame-editor [contenteditable="true"]',
+    '#tree [role="treeitem"][tabindex="0"]', '#rating-primary [role="radio"][tabindex="0"]']) {
+    const target = page.locator(selector).first()
+    const state = () => target.evaluate((el) => {
+      const paint = getComputedStyle(el)
+      return { width: paint.outlineWidth, style: paint.outlineStyle, ink: paint.outlineColor, focused: el.matches(':focus-visible') }
+    })
+    await target.blur()
+    const behind = await surface(page, selector)
+    const edge = await state()
+    assert.ok(parseFloat(edge.width) >= 1 && edge.style === 'solid', `${scheme} ${selector} control boundary`)
+    record(scheme, `${selector} control boundary`, paintContrast(edge.ink, behind), 3)
+    await target.focus()
+    const focus = await state()
+    assert.ok(focus.focused && parseFloat(focus.width) >= 1 && focus.style === 'solid', `${scheme} ${selector} keyboard focus`)
+    record(scheme, `${selector} keyboard focus`, paintContrast(focus.ink, await surface(page, selector)), 3)
+    await target.blur()
+  }
+}
+
 function verifyMenuMark(paint, scheme) {
   assert.equal(paint.menuMark.content, '""')
   assert.notEqual(paint.menuMark.display, 'none')
@@ -597,6 +802,7 @@ try {
       const paint = await observe(page)
       await verifyIconSegments(page, scheme)
       await verifyRoleSwitches(page, scheme)
+      await verifyRoleControls(page, scheme)
       await verifyBarTabs(page, scheme)
       await verifyRoleSelection(page, scheme, false)
       await verifyChrome(page, scheme, false)
@@ -611,7 +817,13 @@ try {
         opaque(material['background-color'], `${scheme} reduced transparency ${selector}`)
         assert.equal(material['backdrop-filter'], 'none')
       }
-      await verifyChrome(page, `${scheme} reduced transparency`, false)
+      await verifyChrome(page, `${scheme} reduced transparency`, false, false, true)
+      for (const id of ['transparent-toolbar', 'transparent-header', 'transparent-header-toolbar', 'transparent-dark-bar',
+        ...barRoles.flatMap((role) => [`nested-header-transparent-toolbar-${role}`, `nested-footer-transparent-toolbar-${role}`])]) {
+        const selector = `#${id}`
+        opaque((await read(page, selector, ['background-color']))['background-color'], `${scheme} ${selector}`)
+        record(scheme, `${selector} reduced-transparency text`, paintContrast((await read(page, selector, ['color'])).color, await surface(page, selector)), 4.5)
+      }
       await verifyGroupPerimeters(page, `${scheme} reduced transparency`, false)
       await cdp.send('Emulation.setEmulatedMedia', { features: [] })
       await cdp.detach()
@@ -689,6 +901,10 @@ try {
         await verifyIconSegments(page, `${scheme} ${media.forcedColors ?? media.contrast}`)
         const medium = `${scheme} ${media.forcedColors ?? media.contrast}`
         await verifyControlPerimeters(page, medium)
+        if (media.contrast === 'more') {
+          await verifyRoleControls(page, medium, true)
+          await verifyKeyboardParts(page, medium)
+        }
         await verifyRoleSelection(page, medium, media.forcedColors === 'active')
         await verifyChrome(page, medium, media.forcedColors === 'active', true)
         await verifyDestinations(page, medium, media.forcedColors === 'active')
