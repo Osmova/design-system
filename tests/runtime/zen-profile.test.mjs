@@ -252,7 +252,7 @@ test('Zen focus pairs the glow with a real outline or boundary, never the glow a
   }
 })
 
-test('Zen routes only role ink and transparent chrome fallbacks through the importance layer', () => {
+test('Zen routes only native color, focus and transparent chrome overrides through the importance layer', () => {
   const css = compile(zenProgram())
   assert.doesNotMatch(css, /@import|@layer/)
   const layered = compile(`@use 'src/css/importance' with ($layered: true);${zenProgram()}`)
@@ -265,6 +265,9 @@ test('Zen routes only role ink and transparent chrome fallbacks through the impo
       assert.match(path, /prefers-reduced-transparency:\s*reduce/)
       assert.match(path, /\.bg-transparent/)
       assert.match(declaration, /^background-color:var\(--_qds-zen-surface-fill,/)
+    } else if (declaration.startsWith('outline:')) {
+      assert.match(path, /\.q-field__focusable-action:focus-visible$/)
+      assert.match(declaration, /^outline:var\(--qds-focus-ring-width\) solid currentColor\s*!important/i)
     } else {
       assert.match(path, /\.bg-dark/)
       assert.match(declaration, /^color:(var\(--_qds-zen-surface-ink,|#fff\s*!important)/)

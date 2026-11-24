@@ -438,6 +438,7 @@ $ease: var(--qds-motion-fast);
     @include importance.declarations { color: #{$surface-ink} !important; }
   }
   #{$zen} .q-chip.bg-dark { @include importance.declarations { color: white !important; } }
+  #{$zen} :is(.q-chip, .q-btn-toggle) { --qds-control-icon-opacity: 1; }
   #{$zen} .q-btn-toggle#{$role-fill} > .q-btn:not(.disabled) { --qds-fg-muted: #{$surface-ink}; }
   #{$zen} .q-chip:focus-visible { outline-color: #{$outer-focus}; }
   #{$zen} .q-chip .q-chip__icon--remove:focus-visible { outline-color: currentColor; outline-offset: -1px; }
@@ -463,7 +464,11 @@ $ease: var(--qds-motion-fast);
   #{$zen} #{$transparent-field} .q-field__control,
   #{$zen} .q-field .q-field__control#{$role-fill} { --_qds-zen-field-ink: var(--_qds-zen-surface-ink); }
   #{$zen} .q-field .q-field__control .q-field__marginal .q-icon { color: var(--_qds-zen-field-ink, var(--qds-fg-muted)); }
-  #{$zen} .q-field__focusable-action:focus-visible { outline: var(--qds-focus-ring-width) solid currentColor; outline-offset: -1px; }
+  #{$zen} .q-field__focusable-action { opacity: 1; }
+  #{$zen} .q-field__focusable-action:focus-visible {
+    @include importance.declarations { outline: var(--qds-focus-ring-width) solid currentColor !important; }
+    outline-offset: -1px;
+  }
   #{$zen} :is(.q-date__header, .q-time__header)#{$role-fill} :is(.q-date__header-link, .q-time__link:not(.q-time__header-ampm *)) {
     color: #{$surface-ink}; opacity: 1; --qds-stroke-focus: #{$outer-focus};
   }
@@ -526,7 +531,7 @@ $ease: var(--qds-motion-fast);
       &:not(:focus-visible) { outline: 1px solid #{$surface-edge}; outline-offset: -1px; }
       &:focus-visible { outline: var(--qds-focus-ring-width) solid #{$outer-focus}; outline-offset: -2px; }
     }
-    #{$zen} :is(.q-field__focusable-action, .q-chip__icon--remove):not(:focus-visible) { outline: 1px solid currentColor; outline-offset: -1px; }
+    #{$zen} :is(.q-field__focusable-action, .q-chip__icon--remove):not(:focus-visible) { border: 1px solid currentColor; }
     #{$zen} :is(.q-knob, .q-scrollarea__container, .q-splitter__separator)[tabindex]:not([aria-disabled='true'], :focus-visible) { outline: 1px solid #{$surface-edge}; outline-offset: -1px; }
   }
   @media (forced-colors: active) {
