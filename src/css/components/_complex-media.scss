@@ -154,6 +154,8 @@ $role-fills: '.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative
   .qds-ui .q-editor { overflow: hidden; color: var(--qds-fg-default); background: var(--qds-bg-canvas); border: var(--qds-border-width-control) solid var(--qds-stroke-default); border-radius: var(--qds-radius-md); }
   .qds-ui .q-editor--flat { border-color: transparent; }
   #{$glass} .q-editor { border-radius: var(--qds-radius-control); }
+  #{$glass} .q-knob { color: var(--_qds-glass-surface-ink, var(--qds-color-primary)); }
+  #{$glass} .q-knob .q-circular-progress__text { color: var(--_qds-glass-surface-ink, var(--qds-fg-strong)); }
   // Captions sit on the black media scrim in both schemes, unlike text on a glass role fill.
   #{$glass} .q-img__content > :is(.absolute-bottom, .absolute-top) { color: white; }
   .qds-ui .q-editor:focus-within { border-color: var(--qds-stroke-focus); box-shadow: inset 0 -2px 0 var(--qds-stroke-focus); }

@@ -5,6 +5,7 @@ $roles: primary, secondary, accent, positive, negative, info, warning, dark;
 $role-fill: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative, .bg-info, .bg-warning, .bg-dark)';
 $bar: ":is(.q-header, .q-footer, .q-toolbar.qds-glass-bar, .q-bar, .q-toolbar#{$role-fill})";
 $untinted-capsule: ".q-toolbar.qds-glass-bar:where(:not(#{$role-fill}))";
+$surfaces: '.q-card, .qds-card, .q-banner, .q-carousel, .q-color-picker, .q-date, .q-time, .q-drawer__content, .q-editor, .q-uploader, .q-table__card, .q-stepper, .q-slide-item, .q-menu, .q-select__dialog, .q-pull-to-refresh__puller';
 $segment-selected: ".q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn--active, .qds-active)";
 
 $ink: var(--_qds-glass-surface-ink);
@@ -13,13 +14,14 @@ $edge: var(--_qds-glass-forced-edge, var(--_qds-glass-surface-ink, var(--_qds-gl
 $native-action: ":where(a[href], button, input, select, textarea, summary, [contenteditable='true'], [tabindex]:not([tabindex='-1'])):where(:not(.disabled, :disabled, [aria-disabled='true'], .q-btn, .q-tab, .q-item, .q-bottom-sheet__item, .q-chip, .q-chip *, .q-field, .q-field *, .q-checkbox, .q-radio, .q-toggle, .q-slider *))";
 
 @mixin surface-context {
-  // Neutral painted components start a new context; transparent rows carry the underlying ink.
-  #{$glass} :where(.q-card, .qds-card, .q-list--bordered, .q-menu, .q-bar:not(.bg-transparent), .q-drawer__content, .q-btn-toggle, .q-bottom-sheet, .q-select__dialog, .q-date, .q-time, .q-color-picker, .q-tabs--horizontal:not(.bg-transparent, #{$untinted-capsule} *), #{$untinted-capsule}) {
+  // Components that paint their own surface start a new context; transparent rows carry the underlying ink.
+  #{$glass} :where(#{$surfaces}, .q-list--bordered, .q-bar:not(.bg-transparent), .q-btn-toggle, .q-bottom-sheet, .q-tabs--horizontal:not(.bg-transparent, #{$untinted-capsule} *), #{$untinted-capsule}) {
     --_qds-context-role-text: initial;
     --_qds-glass-surface-ink: initial;
     --_qds-glass-role-wash: initial;
     --_qds-glass-role-selection: initial;
   }
+  #{$glass} :where(#{$role-fill}) :where(#{$surfaces}) { color: var(--qds-fg-default); }
   #{$glass} #{$role-fill} {
     --_qds-glass-role-wash: color-mix(in srgb, var(--_qds-glass-role-fill) 94%, var(--_qds-glass-role-shade));
     --_qds-glass-role-selection: color-mix(in srgb, var(--_qds-glass-role-fill) 78%, var(--_qds-glass-role-shade));
