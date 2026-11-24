@@ -640,9 +640,9 @@ test.describe('QDS variant distinctiveness lab', () => {
 
         for (const contrast of ['no-preference', 'more'] as const) {
           await page.emulateMedia({ contrast })
-          const labels = '[data-probe-label], [data-fill-probe] :is(.q-btn__content, .q-tab__content, .q-item__label, .q-chip__content, .q-checkbox__label, .q-radio__label, .q-toggle__label, .q-field__label, .q-field__native, .q-field__marginal, .q-field__messages, .q-field__prefix, .q-field__suffix, .q-tree__node-header-content, .q-circular-progress__text, .q-editor__content a, .q-stepper__title, .q-table td, .q-uploader__title):not(.disabled *, [hidden], input[tabindex="-1"], .q-field__marginal:has(.q-icon))'
-          const icons = '[data-fill-probe] :is(.q-item__section--side > .q-icon, .q-chip__icon--remove, .q-tab__icon, .q-field__marginal .q-icon, .q-tree__arrow, .q-tree__icon, .q-rating__icon--active, .q-knob):not(.disabled *)'
-          const controls = '[data-fill-probe] :is(.q-btn, .q-tab, .q-item, .q-chip, .q-chip__icon--remove, .q-checkbox, .q-radio, .q-toggle, .q-field, [data-probe-label][tabindex], a[data-probe-label], .q-tree__node-header, .q-knob, .q-rating__icon-container):not(.disabled, :disabled)'
+          const labels = '[data-probe-label], [data-fill-probe] :is(.q-btn__content, .q-tab__content, .q-item__label, .q-chip__content, .q-checkbox__label, .q-radio__label, .q-toggle__label, .q-field__label, .q-field__native, .q-field__marginal, .q-field__messages, .q-field__prefix, .q-field__suffix, .q-tree__node-header-content, .q-circular-progress__text, .q-editor__content a, .q-stepper__title, .q-table td, .q-uploader__title, .q-timeline__title, .q-timeline__subtitle, .q-banner a[href]):not(.disabled *, [hidden], input[tabindex="-1"], .q-field__marginal:has(.q-icon))'
+          const icons = '[data-fill-probe] :is(.q-item__section--side > .q-icon, .q-chip__icon--remove, .q-tab__icon, .q-field__marginal .q-icon, .q-tree__arrow, .q-tree__icon, .q-rating__icon, .q-knob):not(.disabled *)'
+          const controls = '[data-fill-probe] :is(.q-btn, .q-tab, .q-item, .q-chip, .q-chip__icon--remove, .q-checkbox, .q-radio, .q-toggle, .q-field, [data-probe-label][tabindex], a[data-probe-label], .q-tree__node-header, .q-knob, .q-rating__icon-container, :is(.q-card, .q-markup-table)[tabindex="0"], .q-banner a[href]):not(.disabled, :disabled)'
           const links = await glassPaints(page.locator('[data-fill-probe] a[data-probe-label]'))
           const placeholders = await glassPaints(page.locator('[data-fill-probe] input[data-probe="error field"][placeholder]'), '::placeholder')
           const text = [...await glassPaints(page.locator(labels)), ...placeholders]
@@ -650,6 +650,7 @@ test.describe('QDS variant distinctiveness lab', () => {
           const marks = await glassPaints(page.locator('[data-fill-probe] .q-tab--active .q-tab__content:has(> .q-tab__icon):not(:has(> .q-tab__label))'), '::after')
           const focus = await glassPaints(page.locator(controls), undefined, undefined, true)
           expect(marks).toHaveLength(16)
+          await expect(page.locator('[data-fill-probe] :is(.q-card, .q-markup-table)[tabindex="0"]')).toHaveCount(16)
           const failures = <T extends typeof text[number]>(paints: T[], fails: (paint: T) => boolean) => [...new Map(paints.filter(fails).map(paint => [`${paint.probe?.split('/')[0]} ${paint.part} ${paint.fill} ${paint.outline}`, paint])).values()]
           expect.soft(failures(text, paint => paint.textContrast < 4.5), `${contrast} text`).toEqual([])
           expect(placeholders).toHaveLength(48)

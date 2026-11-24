@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBar, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCarousel, QCarouselSlide, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QExpansionItem, QFab, QFabAction, QFile, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QKnob, QLinearProgress, QList, QMarkupTable, QMenu, QPopupEdit, QPopupProxy, QPagination, QRadio, QRouteTab, QRange, QRating, QSelect, QSlider, QSeparator, QStep, QStepper, QTab, QTable, QTabs, QToggle, QToolbar, QToolbarTitle, QTooltip, QTree, QUploader } from 'quasar'
+import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBar, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCarousel, QCarouselSlide, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QExpansionItem, QFab, QFabAction, QFile, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QKnob, QLinearProgress, QList, QMarkupTable, QMenu, QPopupEdit, QPopupProxy, QPagination, QRadio, QRouteTab, QRange, QRating, QSelect, QSlider, QSeparator, QStep, QStepper, QTab, QTable, QTabs, QTimeline, QTimelineEntry, QToggle, QToolbar, QToolbarTitle, QTooltip, QTree, QUploader } from 'quasar'
 import { QdsWindow, type QdsWindowInstance } from '@osmova/quasar-design-system/qwindow'
 import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/quasar-design-system'
 import { ppPlus, ppStar } from 'quasar-extras-svg-icons/phosphor-icons-v2'
@@ -62,6 +62,7 @@ const fillSurfaces = [
   ['capsule', QToolbar, 'qds-glass-bar'],
   ['bar', QBar, ''],
 ] as const
+const bannerRoles = ['positive', 'negative', 'warning', 'info']
 const fillTree = [{ id: 'root', label: 'Folder', icon: ppPlus, children: [{ id: 'leaf', label: 'Leaf' }] }]
 const fillEditor = '<a href="#role-fill">Link</a> text'
 const fillRows = [{ name: 'Alpha' }, { name: 'Beta' }]
@@ -123,7 +124,7 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
       <q-fab v-model="fab" :icon="ppPlus" label="Create" no-caps data-native="fab"><q-fab-action :icon="ppPlus" label="Draft" /></q-fab>
     </section>
     <section v-if="glassFillProbe" data-fill-matrix>
-      <template v-for="role in [...roles, 'dark']" :key="role">
+      <template v-for="(role, index) in [...roles, 'dark']" :key="role">
         <component :is="component" v-for="[surface, component, classes] in fillSurfaces" :key="surface"
           :class="[classes, `bg-${role}`]" :data-fill-probe="`${role}/${surface}`"
           style="position: relative; z-index: 0; padding: 16px; display: block; height: auto">
@@ -185,6 +186,17 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
           <q-knob :model-value="40" show-value aria-label="Knob" data-probe="knob" />
           <q-rating :model-value="3" :icon="ppStar" :max="5" data-probe="rating" />
           <q-banner data-probe="banner"><span data-probe-label>Banner</span><template #action><q-btn flat no-caps label="Action" /></template></q-banner>
+          <q-banner :class="`bg-${bannerRoles[index % 4]}`" data-probe="role banner">
+            <span data-probe-label>Notice</span> <a href="#role-fill">More</a>
+            <q-item clickable dense><q-item-section>Item</q-item-section></q-item>
+            <template #action><q-btn flat no-caps label="Dismiss" /></template>
+          </q-banner>
+          <q-card flat class="bg-transparent" data-probe="transparent card"><span data-probe-label>Transparent</span> <q-btn flat no-caps label="Open" /></q-card>
+          <q-carousel :model-value="1" arrows class="bg-transparent" style="height: 80px" data-probe="transparent carousel">
+            <q-carousel-slide :name="1"><span data-probe-label>Clear</span></q-carousel-slide><q-carousel-slide :name="2" />
+          </q-carousel>
+          <q-card tabindex="0" data-probe="focusable card"><span data-probe-label>Focusable</span></q-card>
+          <q-timeline data-probe="timeline"><q-timeline-entry title="Event" subtitle="Today"><span data-probe-label>Entry</span></q-timeline-entry></q-timeline>
           <q-editor :model-value="fillEditor" :toolbar="[['bold', 'link']]" data-probe="editor" />
           <q-uploader label="Uploader" data-probe="uploader" />
           <q-table :rows="fillRows" :columns="fillColumns" row-key="name" selection="multiple" :pagination="{ rowsPerPage: 1 }" color="primary" data-probe="table" />
