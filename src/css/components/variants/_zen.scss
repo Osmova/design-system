@@ -1,6 +1,7 @@
 $zen: '.qds-variant-zen:is(.qds-ui,.qds-ui *)';
 $reading: '.qds-variant-zen.qds-reading:is(.qds-ui,.qds-ui *)';
-$nav-parent: ':is(.q-drawer, nav) .q-expansion-item:is(.q-expansion-item--collapsed, .q-drawer--mini *):has(.q-item--active) > .q-expansion-item__container > .q-item';
+$selected-item: ".q-item:is(.q-item--active, .q-router-link--exact-active, [aria-selected='true'], [aria-current]:not([aria-current='false'], [aria-current='']))";
+$nav-parent: ':is(.q-drawer, nav) .q-expansion-item:is(.q-expansion-item--collapsed, .q-drawer--mini *):has(#{$selected-item}) > .q-expansion-item__container > .q-item';
 
 // Depth model: aliases resolve at the painted element, so local dark still inverts them.
 $base: var(--qds-bg-surface-1);
@@ -21,7 +22,10 @@ $tint-edge: color-mix(in srgb, currentColor var(--_qds-zen-outline-mix, 32%), tr
 $field-fill: var(--qds-control-fill-default);
 $spring: var(--_qds-zen-spring);
 $roles: primary, secondary, accent, positive, negative, warning, info;
+$chrome: ':is(.q-header, .q-footer, .q-toolbar, .q-bar)';
+$tab-bar: ':is(#{$chrome}, :has(> .q-tabs), .q-tabs)';
 $role-fill: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative, .bg-warning, .bg-info, .bg-dark)';
+$filled-tab-bar: ':is(#{$tab-bar}#{$role-fill}, .q-bar--dark)';
 $push: inset 0 -2px 0 color-mix(in srgb, var(--qds-fg-strong) 22%, transparent);
 // Quasar `size` sets an inline font-size; the height and padding follow it along zen's ramp.
 $btn-height: clamp(var(--qds-button-size-sm), calc(var(--qds-button-min-height) + (1em - 0.875rem) * 2), var(--qds-button-size-lg));
@@ -138,46 +142,43 @@ $ease: var(--qds-motion-fast);
     max-width: 100%;
     min-width: 0;
     padding: 0.25rem;
-    border: 1px solid #{$soft-edge};
+    border: 1px solid var(--_qds-zen-tab-edge, #{$soft-edge});
     border-radius: calc(var(--qds-radius-control) + 0.25rem);
-    background: #{$raised};
-    box-shadow: #{$lift-1}, #{$edge};
-    color: var(--qds-fg-default);
+    background: var(--_qds-zen-tab-tray, #{$raised});
+    box-shadow: var(--_qds-zen-tab-depth, #{$lift-1}, #{$edge});
+    color: var(--_qds-zen-bar-ink, var(--qds-fg-default));
   }
   #{$zen} .q-tab {
     min-height: var(--qds-tab-min-height);
     padding: 0 var(--qds-space-md);
     border-radius: var(--qds-radius-control);
     opacity: 1;
-    color: var(--qds-fg-muted);
+    color: var(--_qds-zen-bar-ink, var(--qds-fg-muted));
     transition: color #{$ease}, background-color #{$ease};
   }
   @media (max-width: 30rem) { #{$zen} .q-tabs--horizontal .q-tab { padding-inline: 0.5rem; } }
-  #{$zen} .q-tab:not(.disabled):hover { background: #{$tint}; color: var(--qds-fg-strong); }
+  #{$zen} .q-tab:not(.disabled):hover { background: var(--_qds-zen-tab-tray, #{$tint}); color: var(--_qds-zen-bar-ink, var(--qds-fg-strong)); }
   #{$zen} .q-tab__label { font-size: 0.875rem; font-weight: var(--qds-font-weight-medium); text-transform: none; letter-spacing: 0; }
-  #{$zen} .q-tab--active { background: var(--qds-surface-brand-soft); color: var(--qds-fg-brand); }
+  #{$zen} .q-tab--active { background: var(--_qds-zen-tab-tray, var(--qds-surface-brand-soft)); color: var(--_qds-zen-bar-ink, var(--qds-fg-brand)); }
   #{$zen} .q-tab--active .q-tab__label { font-weight: var(--qds-font-weight-semibold); }
-  #{$zen} .q-tab .q-tab__indicator { height: 3px; border-radius: var(--qds-radius-full); color: var(--qds-fg-brand); }
+  #{$zen} .q-tab .q-tab__indicator { height: 3px; border-radius: var(--qds-radius-full); color: var(--_qds-zen-bar-ink, var(--qds-fg-brand)); }
+  #{$zen} .q-tab:not(.q-tab--active):not(.disabled):hover .q-tab__indicator { opacity: 0; }
   #{$zen} .q-tabs--horizontal .q-tab > .q-tab__indicator { inset-inline: calc(50% - 0.75rem); bottom: 0.3125rem; }
   #{$zen} .q-tabs--vertical .q-tab .q-tab__indicator { width: 3px; height: auto; inset-block: calc(50% - 0.625rem); }
   #{$zen} .q-tab.disabled { opacity: var(--qds-disabled-opacity); }
-  // On a coloured bar the tray is the bar: tabs take its ink instead of the paper's muted text.
-  $bar-tabs: ':is(.q-tabs[class*="bg-"], #{$role-fill} > .q-tabs, :is(.q-toolbar, .q-header)#{$role-fill} .q-tabs)';
-  #{$zen} #{$bar-tabs} { border-color: transparent; box-shadow: none; }
-  #{$zen} #{$bar-tabs}:not([class*='bg-']) { background: transparent; }
-  @each $role in $roles {
-    #{$zen} :is(.q-tabs.bg-#{$role}, .bg-#{$role} > .q-tabs:where(:not([class*='bg-'])), :is(.q-toolbar, .q-header).bg-#{$role} .q-tabs:where(:not([class*='bg-']))) { --_qds-zen-tab-on-bar: var(--qds-text-on-#{$role}); }
-  }
-  #{$zen} #{$bar-tabs} .q-tab { color: var(--_qds-zen-tab-on-bar, inherit); background: transparent; }
-  #{$zen} #{$bar-tabs} .q-tab:focus-visible { outline-color: currentColor; }
-  #{$zen} #{$bar-tabs} :is(.q-tab__indicator, .q-tabs__arrow) { color: var(--_qds-zen-tab-on-bar, inherit); }
-  #{$zen} .q-tabs__arrow { color: var(--qds-fg-muted); text-shadow: none; }
-  // Floating pill dock for footer navigation; the active stop is a filled pebble.
-  #{$zen} .q-footer:has(> .q-tabs) { padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom)); border: 0; background: transparent; box-shadow: none; }
-  #{$zen} .q-footer > .q-tabs { width: fit-content; margin-inline: auto; padding: 0.375rem; border-radius: var(--qds-radius-full); box-shadow: #{$lift-5}, #{$edge}; }
+  #{$zen} .q-tab:focus-visible { outline-color: var(--_qds-zen-bar-ink, var(--qds-stroke-focus)); }
+  #{$zen} .q-tabs__arrow { color: var(--_qds-zen-bar-ink, var(--qds-fg-muted)); text-shadow: none; }
+  #{$zen} .q-tabs .q-tabs__arrow:hover { color: var(--_qds-zen-bar-ink, var(--qds-fg-strong)); }
+  // Neutral footer docks distinguish the current stop with a filled pebble.
+  $dock: '.q-footer:not([class*="bg-"]) > .q-tabs:not([class*="bg-"])';
+  #{$zen} .q-footer:not([class*='bg-']):has(> .q-tabs) { padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom)); border: 0; background: transparent; box-shadow: none; }
+  #{$zen} .q-footer > .q-tabs { width: fit-content; margin-inline: auto; padding: 0.375rem; border-radius: var(--qds-radius-full); }
+  #{$zen} #{$dock} { --_qds-zen-tab-depth: #{$lift-5}, #{$edge}; }
   #{$zen} .q-footer > .q-tabs .q-tab { min-width: var(--qds-control-size-lg); border-radius: var(--qds-radius-full); }
-  #{$zen} .q-footer > .q-tabs .q-tab--active { background: var(--qds-fg-strong); color: #{$raised}; }
-  #{$zen} .q-footer > .q-tabs .q-tab__indicator { display: none; }
+  #{$zen} #{$dock} .q-tab--active { background: var(--qds-fg-strong); color: #{$raised}; }
+  @media (forced-colors: none) {
+    #{$zen} #{$dock} .q-tab__indicator { display: none; }
+  }
 }
 
 @mixin menu {
@@ -201,7 +202,8 @@ $ease: var(--qds-motion-fast);
 @mixin selection {
   // Checkbox, radio and switch sit in wells; a checked mark rises out of it.
   #{$zen} :is(.q-checkbox, .q-radio):not(.q-checkbox--dense, .q-radio--dense) { --qds-selection-mark-size: 1.25rem; }
-  #{$zen} :is(.q-checkbox, .q-radio, .q-toggle) .q-icon { color: var(--qds-text-on-solid); }
+  #{$zen} .q-checkbox .q-checkbox__inner--falsy .q-icon { color: var(--qds-fg-muted); }
+  #{$zen} .q-toggle .q-toggle__thumb .q-icon { color: var(--qds-fg-default); }
   #{$zen} :is(.q-checkbox .q-checkbox__bg, .q-radio .q-radio__bg) { background: #{$base}; box-shadow: #{$well}; transition: background-color #{$ease}, box-shadow #{$ease}; }
   #{$zen} .q-checkbox .q-checkbox__bg { border-color: var(--qds-stroke-strong); border-radius: var(--qds-radius-sm); }
   #{$zen} .q-radio__inner--falsy { color: var(--qds-stroke-strong); }
@@ -214,7 +216,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-toggle .q-toggle__thumb { transition: inset-inline-start #{$spring}; }
   // In-track state glyphs drawn from borders: a bar when on, a ring when off. They survive forced colours.
   #{$zen} .q-toggle .q-toggle__inner--truthy .q-toggle__track::before { content: ''; position: absolute; inset-inline-start: calc(var(--qds-toggle-track-height) / 2 - 1px); top: 50%; height: 40%; translate: 0 -50%; border-inline-start: 2px solid var(--qds-selection-on, var(--qds-text-on-primary)); border-radius: 1px; }
-  #{$zen} .q-toggle .q-toggle__inner--falsy .q-toggle__track::after { content: ''; position: absolute; inset-inline-end: calc(var(--qds-toggle-track-height) / 2 - 0.25rem); top: 50%; width: 0.5rem; height: 0.5rem; translate: 0 -50%; border: 1.5px solid var(--qds-fg-muted); border-radius: 50%; }
+  #{$zen} .q-toggle :is(.q-toggle__inner--falsy, .q-toggle__inner--indet) .q-toggle__track::after { content: ''; position: absolute; inset-inline-end: calc(var(--qds-toggle-track-height) / 2 - 0.25rem); top: 50%; width: 0.5rem; height: 0.5rem; translate: 0 -50%; border: 1.5px solid var(--qds-fg-muted); border-radius: 50%; }
+  #{$zen} .q-toggle .q-toggle__inner--indet .q-toggle__track::after { inset-inline: 0.25rem; width: auto; height: 0; border: 0; border-top: 2px dashed var(--qds-fg-muted); border-radius: 0; }
   #{$zen} .q-toggle.disabled .q-toggle__thumb::after { background: #{$inset}; box-shadow: none; }
   #{$zen} .q-slider__track-container { border-radius: var(--qds-radius-full); }
   // Quasar sizes the track inline, so the well and fill grow past it instead.
@@ -275,8 +278,9 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-chip.q-chip--clickable:not(.disabled):hover { box-shadow: #{$lift-2}, #{$edge}; }
   #{$zen} .q-chip.q-chip--clickable:not(.disabled, .q-chip--selected):active { background: #{$inset}; box-shadow: #{$press}; }
   #{$zen} .q-chip.q-chip--selected { background: var(--qds-surface-brand-soft); font-weight: var(--qds-font-weight-semibold); }
-  #{$zen} .q-rating__icon { color: var(--qds-fg-muted); text-shadow: none; }
-  #{$zen} .q-rating__icon--active { color: var(--qds-color-warning); }
+  #{$zen} .q-rating__icon { color: var(--qds-fg-muted); opacity: 1; text-shadow: none; }
+  #{$zen} .q-rating__icon--active { color: var(--qds-fg-warning); }
+  #{$zen} .q-rating__icon--active::after { content: ''; position: absolute; inset-inline: 30%; bottom: -0.125em; border-bottom: 2px solid currentColor; border-radius: var(--qds-radius-full); }
 }
 
 @mixin blocks {
@@ -315,7 +319,7 @@ $ease: var(--qds-motion-fast);
   #{$zen} .qds-field--dropzone .q-field__control { border-style: dashed; background: #{$base}; box-shadow: none; }
   #{$zen} .qds-menu-row__title { font-weight: var(--qds-font-weight-semibold); }
   #{$zen} :is(.qds-menu-row__caption, .qds-menu-row__description) { color: var(--qds-fg-muted); }
-  #{$zen} .qds-subpage-tabs .q-tab--active { color: var(--qds-fg-brand); }
+  #{$zen} .qds-subpage-tabs .q-tab--active { color: var(--_qds-zen-bar-ink, var(--qds-fg-brand)); }
 }
 
 @mixin data {
@@ -328,17 +332,19 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-list--separator > .q-item { border-radius: 0; }
   #{$zen} .q-list--separator > .q-item-type + .q-item-type { border-block-start-color: var(--qds-stroke-default); }
   #{$zen} .q-item:not(.disabled):hover { background-color: #{$tint}; }
-  // Selection presses the row in and gives it an edge, so it survives grayscale and reading.
-  #{$zen} .q-item:is(.q-item--active, [aria-selected='true']) { border-color: #{$soft-edge}; background-color: var(--qds-surface-brand-soft); color: var(--qds-fg-brand); font-weight: var(--qds-font-weight-semibold); }
-  #{$zen} .q-item:is(.q-item--active, [aria-selected='true'])::before,
-  #{$zen} #{$nav-parent}::before { display: none; }
-  #{$zen} .q-item:is(.q-item--active, [aria-selected='true']) .q-item__section--side > .q-icon { color: var(--qds-fg-brand); }
+  #{$zen} #{$selected-item} { border-color: #{$soft-edge}; background-color: var(--qds-surface-brand-soft); color: var(--qds-fg-brand); font-weight: var(--qds-font-weight-semibold); }
+  #{$zen} #{$selected-item}::before,
+  #{$zen} #{$nav-parent}::before {
+    content: ''; position: absolute; inset-inline-start: 0; inset-block: max(0.5rem, calc(50% - 0.5rem)); width: 3px;
+    background: var(--qds-fg-brand); border-radius: var(--qds-radius-full); pointer-events: none;
+  }
+  #{$zen} #{$selected-item} .q-item__section--side > .q-icon { color: var(--qds-fg-brand); }
   #{$zen} .q-list .q-item__label--header { padding: var(--qds-space-md) var(--qds-space-md) var(--qds-space-xs); color: var(--qds-fg-muted); font-size: var(--qds-font-size-overline); font-weight: var(--qds-font-weight-semibold); }
   #{$zen} .q-item .q-item__section--side > .q-icon { color: var(--qds-fg-muted); }
   #{$zen} .q-expansion-item { border-radius: var(--qds-radius-lg); }
   #{$zen} .q-tree__node--selected { border-radius: var(--qds-radius-control); outline: 1px solid transparent; outline-offset: -1px; background: var(--qds-surface-brand-soft); }
   #{$zen} .q-tree__node--selected .q-tree__node-header-content { color: var(--qds-fg-brand); font-weight: var(--qds-font-weight-semibold); }
-  #{$zen} .q-tree__node--selected::after { display: none; }
+  #{$zen} .q-tree__node--selected::after { background: var(--qds-fg-brand); }
   #{$zen} .q-table thead th { color: var(--qds-fg-muted); font-weight: var(--qds-font-weight-semibold); background: #{$base}; }
   #{$zen} .q-table :is(th, td) { border-color: var(--qds-stroke-default); }
   #{$zen} .q-table tbody tr:last-child > td { border-bottom: 0; }
@@ -365,16 +371,38 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-pagination .q-btn[aria-current='page'].q-btn--flat { --qds-pagination-active-bg: var(--qds-surface-brand-soft); }
   #{$zen} .q-pagination .q-btn[aria-current='page'].q-btn--outline { border-color: #{$tint-edge}; }
   #{$zen} .q-pagination .q-btn[aria-current='page'] { --_qds-zen-depth: #{$lift-1}; }
+  #{$zen} .q-pagination .q-btn[aria-current='page']:is(.q-btn--flat, .q-btn--outline)::after {
+    content: ''; position: absolute; inset-inline: calc(50% - 0.375rem); bottom: 0.25rem; border-bottom: 2px solid currentColor; border-radius: var(--qds-radius-full); pointer-events: none;
+  }
 }
 
 @mixin chrome {
   // Header, drawer and footer share the base tone, bounded by an edge; the current place is a raised pebble.
   #{$zen} :is(.q-header, .q-footer) { background: #{$base}; color: var(--qds-fg-default); box-shadow: none; }
+  #{$zen} :is(.q-header, .q-footer, .q-bar, .q-toolbar:not(:is(.q-header, .q-footer) *)):not(#{$role-fill}, .q-bar--dark) {
+    --_qds-zen-bar-ink: initial;
+    --_qds-zen-tab-tray: initial;
+    --_qds-zen-tab-edge: initial;
+    --_qds-zen-tab-depth: initial;
+  }
+  #{$zen} #{$filled-tab-bar} {
+    --_qds-zen-tab-tray: transparent;
+    --_qds-zen-tab-edge: transparent;
+    --_qds-zen-tab-depth: none;
+    color: var(--_qds-zen-bar-ink);
+  }
+  @each $role in $roles {
+    #{$zen} #{$tab-bar}.bg-#{$role} { --_qds-zen-bar-ink: var(--qds-text-on-#{$role}); }
+  }
+  #{$zen} #{$tab-bar}.bg-dark { --_qds-zen-bar-ink: white; }
+  #{$zen} .q-bar--dark:not(#{$role-fill}) { --_qds-zen-bar-ink: var(--qds-bar-dark-fg); }
+  #{$zen} :is(.q-header, .q-footer) .q-toolbar:not(#{$role-fill}) { color: var(--_qds-zen-bar-ink, var(--qds-fg-default)); }
+  #{$zen} .q-bar:has(.q-tabs) { height: auto; }
+  #{$zen} #{$chrome} .q-btn:is(.q-btn--flat, .q-btn--outline):not(.q-btn-toggle *, [class*='text-']) { color: var(--_qds-zen-bar-ink, var(--qds-fg-default)); }
   #{$zen} .q-header { border-bottom: 1px solid var(--qds-stroke-default); }
   #{$zen} .q-footer { border-top: 1px solid var(--qds-stroke-default); }
   #{$zen} .q-drawer { border-color: var(--qds-stroke-default); background: #{$base}; box-shadow: none; }
   #{$zen} .q-drawer .q-item { border-radius: var(--qds-radius-full); }
-  #{$zen} .q-drawer .q-item:is(.q-item--active, [aria-selected='true']) { background-color: var(--qds-surface-brand-soft); color: var(--qds-fg-brand); font-weight: var(--qds-font-weight-semibold); }
   #{$zen} .q-drawer__backdrop { background: var(--qds-bg-overlay); }
 }
 
@@ -412,17 +440,33 @@ $ease: var(--qds-motion-fast);
 
 @mixin contrast {
   @media (prefers-contrast: more), (forced-colors: active) {
-    #{$zen} .q-btn.q-btn--flat:not(.q-btn-group > *, [aria-current='page']),
+    #{$zen} .q-btn.q-btn--flat:not(.q-btn-group > *),
+    #{$zen} .q-pagination .q-btn[aria-current='page'],
+    #{$zen} .q-btn#{$role-fill}:not(.q-btn-group > *),
+    #{$zen} .q-chip.qds-solid,
     #{$zen} .q-btn-group:is(.q-btn-group--flat, .q-btn-group--outline),
     #{$zen} .q-btn-toggle > .q-btn.q-btn-item,
     #{$zen} .q-chip.q-chip--clickable,
-    #{$zen} .q-item:is(.q-item--clickable, [aria-selected='true']) { border-color: #{$soft-edge}; }
+    #{$zen} .q-item.q-item--clickable,
+    #{$zen} #{$selected-item} { border-color: #{$soft-edge}; }
+    #{$zen} #{$filled-tab-bar} { --_qds-zen-tab-edge: var(--_qds-zen-bar-ink); }
+    #{$zen} :is(.q-header, .q-footer)#{$role-fill} { border-color: var(--_qds-zen-bar-ink); }
+    #{$zen} #{$chrome} :is(.q-btn-group, .q-btn:not(.q-btn-group > *)) { border-color: var(--_qds-zen-bar-ink, #{$soft-edge}); }
   }
   @media (forced-colors: active) {
     #{$zen} .q-field--focused .q-field__control { outline-color: Highlight; }
-    #{$zen} :is(.q-item--active, .q-chip--selected) { border-color: Highlight; }
+    #{$zen} #{$selected-item},
+    #{$zen} .q-chip--selected { border-color: Highlight; }
     #{$zen} :is(.q-tree__node--selected, .q-btn-toggle > .q-btn[aria-pressed='true']) { outline: 1px solid Highlight; outline-offset: -1px; }
-    #{$zen} .q-tab--active .q-tab__indicator { forced-color-adjust: none; color: Highlight; }
+    #{$zen} .q-tab--active .q-tab__indicator,
+    #{$zen} #{$selected-item}::before,
+    #{$zen} #{$nav-parent}::before,
+    #{$zen} .q-tree__node--selected::after { forced-color-adjust: none; background: Highlight; }
+    #{$zen} .q-pagination .q-btn[aria-current='page']::after { content: ''; position: absolute; inset-inline: calc(50% - 0.375rem); bottom: 0.25rem; border-bottom: 2px solid Highlight; forced-color-adjust: none; }
+    #{$zen} :is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg,
+    #{$zen} .q-toggle__inner--truthy .q-toggle__track,
+    #{$zen} .q-slider .q-slider__selection { forced-color-adjust: none; background: Highlight; --qds-selection-on: HighlightText; }
+    #{$zen} .q-radio .q-radio__inner--truthy .q-radio__bg { forced-color-adjust: none; color: Highlight; background: Canvas; }
   }
 }
 
@@ -434,7 +478,7 @@ $ease: var(--qds-motion-fast);
   #{$reading} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-list--bordered, .q-table__container, .q-stepper, .q-uploader, .q-editor, .q-splitter, .q-date, .q-time, .q-color-picker, .q-notification, .q-tooltip, .q-popup-edit, .q-dialog__inner > .q-card, .q-dialog__inner > .q-bottom-sheet, .q-loading .q-loading__box, .q-drawer, .q-header, .q-footer, .q-footer > .q-tabs) { box-shadow: none; }
   #{$reading} :is(.q-card, .qds-card, .qds-tile, .qds-settings-card, .q-list--bordered, .q-table__container, .q-banner, .q-breadcrumbs) { border-color: #{$soft-edge}; }
   #{$reading} :is(.q-field__control, .q-slider__inner, .q-toggle__track, .q-checkbox__bg, .q-radio__bg) { background: var(--qds-control-fill-default); }
-  #{$reading} .q-item:is(.q-item--active, [aria-selected='true']) { background-color: var(--qds-surface-brand-soft); }
+  #{$reading} #{$selected-item} { background-color: var(--qds-surface-brand-soft); }
   #{$reading} :is(.q-btn, .q-field__control, .q-tab, .q-menu, .q-item, .q-chip, .q-toggle__thumb, .q-toggle__track),
   #{$reading} :is(.q-field__control, .q-item, .q-toggle__thumb, .q-toggle__track)::before,
   #{$reading} :is(.q-field__control, .q-item, .q-toggle__thumb, .q-toggle__track)::after {

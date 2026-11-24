@@ -5,7 +5,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { compile } from 'sass'
-import { contrast } from './shadcn-fixtures.mjs'
+import { contrast, mix } from './shadcn-fixtures.mjs'
 
 const root = new URL('../../', import.meta.url)
 const require = createRequire(import.meta.url)
@@ -31,6 +31,9 @@ const assets = {
 const fixture = `body { margin: 24px; } #app { width: 560px; display: grid; gap: 24px; }
   *, *::before, *::after { transition: none !important; animation: none !important; }`
 const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
+const barRoles = [...roles, 'dark']
+const barCompositions = ['header-direct', 'header-toolbar', 'header-colored-toolbar', 'footer-direct', 'footer-toolbar', 'footer-colored-toolbar', 'footer-colored-tabs', 'toolbar', 'compact-bar', 'vertical-bar']
+const designs = ['standard', 'flat', 'outline', 'unelevated', 'push']
 const actionRole = (index) => roles[(index + 1) % roles.length]
 
 // Chrome serializes a resolved color-mix() as `color(srgb r g b / a)` with 0..1
@@ -47,6 +50,10 @@ const opaque = (value, context) => {
   assert.equal(paint[3], 1, `${context} must paint an opaque fill, got ${value}`)
   return paint
 }
+const paintContrast = (value, backdrop) => {
+  const ink = rgb(value)
+  return contrast(mix(ink, backdrop, ink[3]), backdrop)
+}
 
 async function mount(browser, bodyClass) {
   const page = await browser.newPage({ viewport: { width: 900, height: 900 }, reducedMotion: 'reduce' })
@@ -54,12 +61,45 @@ async function mount(browser, bodyClass) {
     + `<body class="${bodyClass}"><div id="app"></div></body>`)
   await page.addScriptTag({ content: assets.vue })
   await page.addScriptTag({ content: assets.quasar })
-  await page.evaluate(({ roles, barActions }) => {
+  await page.evaluate(({ roles, barRoles, barCompositions, barActions, designs }) => {
     const { createApp, h, reactive, nextTick } = Vue
-    const { QBtn, QBtnGroup, QBtnToggle, QInput, QTabs, QTab, QToolbar, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QSlider } = Quasar
+    const { QBtn, QBtnGroup, QBtnToggle, QInput, QTabs, QTab, QToolbar, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QRadio, QSlider, QRange, QPagination, QBar, QCard, QChip, QSelect, QExpansionItem, QTree, QRating, QDate, QTime, QColor, QStepper, QStep, QSplitter, QEditor, QUploader, QTable } = Quasar
     const state = reactive({ value: 'Zen', tab: 'a', menu: false, error: false })
-    const tabs = (props) => h(QTabs, { ...props, modelValue: state.tab, 'onUpdate:modelValue': (v) => { state.tab = v } },
-      () => ['a', 'b', 'c'].map((name) => h(QTab, { name, label: `Tab ${name}`, disable: name === 'c' })))
+    const svg = 'M0 0h24v24H0z'
+    const tabs = (props, icons = false) => h(QTabs, { ...props, modelValue: state.tab, 'onUpdate:modelValue': (v) => { state.tab = v } },
+      () => ['a', 'b', 'c'].map((name) => h(QTab, { name, label: icons ? undefined : `Tab ${name}`, icon: icons ? svg : undefined, 'aria-label': icons ? `Tab ${name}` : undefined, disable: name === 'c' })))
+    const destinations = (id, iconOnly = false) => h(QList, { bordered: true, id }, () =>
+      [true, false].map((active) => h(QItem, { active: active && !['list', 'drawer-list', 'mini-child'].includes(id), clickable: true,
+        'aria-selected': id === 'list' ? String(active) : undefined,
+        'aria-current': ['drawer-list', 'mini-child'].includes(id) && active ? 'page' : undefined,
+        'data-current': String(active) }, () =>
+        h(QItemSection, { avatar: iconOnly }, () => iconOnly
+          ? h(Quasar.QIcon, { name: svg, 'aria-label': 'Destination' })
+          : 'Destination'))))
+    const chromeCases = barRoles.flatMap((role) => barCompositions.map((composition) => {
+      const id = `${composition}-${role}`
+      const tabsOwnFill = composition === 'footer-colored-tabs'
+      const tray = tabs({ id: `tabs-${id}`, vertical: composition === 'vertical-bar',
+        class: tabsOwnFill ? `bg-${role}` : undefined }, true)
+      const button = h(QBtn, { id: `action-${id}`, label: 'Action', color: 'secondary' })
+      const title = h(Quasar.QToolbarTitle, {}, () => 'Bar title')
+      const fill = { id, class: `bg-${role}` }
+      const neutralToolbar = () => h(QToolbar, { id: `nested-${id}` }, () => [title, button, tray])
+      const coloredToolbar = () => h(QToolbar, fill, () => [title, button, tray])
+      const shell = (kind, children, paint = fill) => h(kind, { ...paint, class: [`q-${kind}`, paint.class] }, children)
+      switch (composition) {
+        case 'header-direct': return shell('header', [title, button, tray])
+        case 'header-toolbar': return shell('header', [neutralToolbar()])
+        case 'header-colored-toolbar': return shell('header', [coloredToolbar()], {})
+        case 'footer-direct': return shell('footer', [title, button, tray])
+        case 'footer-toolbar': return shell('footer', [neutralToolbar()])
+        case 'footer-colored-toolbar': return shell('footer', [coloredToolbar()], {})
+        case 'footer-colored-tabs': return shell('footer', [tray], {})
+        case 'toolbar': return coloredToolbar()
+        case 'compact-bar':
+        case 'vertical-bar': return h(QBar, fill, () => [title, button, tray])
+      }
+    }))
     const app = createApp({ setup: () => () => [
       h('div', { style: 'display:flex;gap:16px;flex-wrap:wrap' }, [
         h(QBtn, { id: 'button', label: 'Action' }),
@@ -87,11 +127,29 @@ async function mount(browser, bodyClass) {
       ]),
       h('div', { style: 'display:flex;flex-wrap:wrap' }, roles.map((role) =>
         h(QToggle, { id: `toggle-${role}`, modelValue: true, color: role, label: role }))),
+      ...roles.map((color) => h('div', { style: 'display:flex;gap:10px;align-items:center' }, [
+        h(QCheckbox, { id: `checked-${color}`, color, modelValue: true }),
+        h(QCheckbox, { id: `mixed-${color}`, color, modelValue: null }),
+        h(QCheckbox, { id: `unchecked-${color}`, color, keepColor: true, modelValue: false }),
+        h(QCheckbox, { id: `custom-check-${color}`, color, checkedIcon: svg, modelValue: true }),
+        h(QCheckbox, { id: `custom-check-mixed-${color}`, color, indeterminateIcon: 'M0 10h24v4H0z', modelValue: null }),
+        h(QCheckbox, { id: `custom-check-off-${color}`, color, keepColor: true, uncheckedIcon: svg, modelValue: false }),
+        h(QRadio, { id: `radio-${color}`, color, modelValue: true, val: true }),
+        h(QRadio, { id: `radio-off-${color}`, color, keepColor: true, modelValue: false, val: true }),
+        h(QRadio, { id: `custom-radio-${color}`, color, checkedIcon: svg, modelValue: true, val: true }),
+        h(QRadio, { id: `custom-radio-off-${color}`, color, keepColor: true, uncheckedIcon: svg, modelValue: false, val: true }),
+        h(QToggle, { id: `switch-icon-${color}`, color, iconColor: color, icon: svg, modelValue: true }),
+        h(QToggle, { id: `switch-off-${color}`, color, keepColor: true, icon: svg, modelValue: false }),
+        h(QToggle, { id: `switch-mixed-${color}`, color, keepColor: true, icon: svg, modelValue: null }),
+        h(QSlider, { id: `slider-${color}`, color, modelValue: 40 }),
+        h(QRange, { id: `range-${color}`, color, modelValue: { min: 25, max: 75 } }),
+      ])),
       tabs({ id: 'accent-tabs', class: 'bg-accent text-white' }),
       h('div', { id: 'accent-wrapper', class: 'bg-accent' }, [tabs({ id: 'wrapped-tabs' })]),
       ...roles.map((role, index) => h(QToolbar, { id: `bar-${role}`, class: `bg-${role}` }, () => [
         h(QBtn, { id: `bar-fill-${role}`, color: barActions[index], label: 'Action' }),
         h('div', {}, [tabs({ id: `bar-tabs-${role}` })]),
+        h(QBtnGroup, { id: `bar-group-${role}`, flat: true }, () => h(QBtn, { label: 'Group', flat: true })),
       ])),
       h(QBtnToggle, { id: 'icon-segments', modelValue: 'a', dense: true, options: [
         { icon: 'M0 0h24v24H0z', value: 'a', attrs: { 'aria-label': 'Square' } },
@@ -99,12 +157,70 @@ async function mount(browser, bodyClass) {
       ] }),
       ...['flat', 'outline'].map((style) => h(QBtnGroup, { id: `group-${style}`, [style]: true },
         () => ['Previous', 'Next'].map((label) => h(QBtn, { label, [style]: true })))),
+      h('header', { id: 'neutral-header', class: 'q-header' }, [
+        h(QToolbar, { id: 'neutral-header-toolbar' }, () => [h(Quasar.QToolbarTitle, {}, () => 'Toolbar'), tabs({ id: 'header-tabs' }, true)]),
+      ]),
+      h('header', { id: 'neutral-direct-header', class: 'q-header' }, [tabs({ id: 'header-direct-tabs' }, true)]),
+      h('footer', { id: 'neutral-footer', class: 'q-footer' }, [tabs({ id: 'footer-tabs' }, true)]),
+      h('footer', { id: 'neutral-footer-toolbar', class: 'q-footer' }, [
+        h(QToolbar, { id: 'neutral-footer-toolbar-inner' }, () => [tabs({ id: 'footer-nested-tabs' }, true)]),
+      ]),
+      h(QToolbar, { id: 'neutral-toolbar' }, () => [tabs({ id: 'toolbar-tabs' }, true)]),
+      h(QBar, { id: 'neutral-bar' }, () => [tabs({ id: 'bar-tabs' }, true)]),
+      h(QBar, { id: 'native-dark-bar', dark: true }, () => [tabs({ id: 'native-dark-tabs' }, true)]),
+      h('header', { id: 'outer-mixed-header', class: 'q-header bg-accent' }, [
+        h(QToolbar, { id: 'inner-mixed-toolbar', class: 'bg-dark' }, () => [tabs({ id: 'mixed-tabs' }, true)]),
+        h(QBar, { id: 'inner-neutral-bar' }, () => [tabs({ id: 'neutral-reset-tabs' }, true)]),
+      ]),
+      ...chromeCases,
+      destinations('list'),
+      h('aside', { id: 'drawer', class: 'q-drawer q-drawer--bordered q-drawer--left' }, [destinations('drawer-list')]),
+      h('aside', { id: 'mini-drawer', class: 'q-drawer q-drawer--mini q-drawer--bordered q-drawer--left' }, [
+        destinations('mini-list', true),
+        h(QExpansionItem, { id: 'mini-parent', icon: svg }, () => destinations('mini-child', true)),
+      ]),
+      h(QTree, { id: 'tree', nodes: [{ label: 'Current', id: 'now' }, { label: 'Other', id: 'other' }], nodeKey: 'id', selected: 'now', 'onUpdate:selected': () => {} }),
+      ...designs.map((design) => h(QPagination, { id: `pagination-${design}`, modelValue: 2, max: 3, activeDesign: design === 'standard' ? '' : design, activeColor: 'accent' })),
+      h(QPagination, { id: 'pagination-input', modelValue: 2, max: 3, input: true }),
+      h(QBtn, { id: 'outline-button', label: 'Outline', outline: true }),
+      h(QBtn, { id: 'flat-button', label: 'Flat', flat: true }),
+      h(QBtn, { id: 'tonal-button', label: 'Tonal', class: 'qds-tonal', color: 'accent' }),
+      h(QBtnGroup, { id: 'standard-group' }, () => h(QBtn, { label: 'Standard' })),
+      h(QBtnGroup, { id: 'push-group', push: true }, () => h(QBtn, { label: 'Push', push: true })),
+      h(QBtnGroup, { id: 'unelevated-group', unelevated: true }, () => h(QBtn, { label: 'Unelevated', unelevated: true })),
+      h(QChip, { id: 'chip', clickable: true, label: 'Chip' }),
+      h(QChip, { id: 'outline-chip', outline: true, clickable: true, label: 'Outline' }),
+      h(QChip, { id: 'solid-chip', class: 'qds-solid', color: 'accent', clickable: true, label: 'Solid' }),
+      h('div', { id: 'field-group', class: 'qds-field-group' }, [
+        h(QInput, { modelValue: 'Joined', label: 'Input', outlined: true }),
+        h(QSelect, { modelValue: 'Joined', options: ['Joined'], outlined: true }),
+        h(QBtn, { label: 'Go' }),
+      ]),
+      ...['filled', 'standout', 'borderless', 'readonly'].map((design) =>
+        h('div', { 'data-edge-field': design }, [h(QInput, { modelValue: 'Value', [design]: true })])),
+      h('div', { 'data-edge-field': 'textarea' }, [h(QInput, { type: 'textarea', modelValue: 'Note', outlined: true })]),
+      h('div', { class: 'qds-option-group--card' }, h(QRadio, { id: 'option-card', class: 'qds-active', modelValue: true, val: true })),
+      h(QCard, { id: 'card', bordered: true }, () => 'Card'),
+      ...[
+        ['date', QDate, { modelValue: '2026/11/24' }], ['time', QTime, { modelValue: '12:00' }],
+        ['color-picker', QColor, { modelValue: '#e2907f' }], ['editor', QEditor, { modelValue: 'Text' }],
+        ['splitter', QSplitter, { modelValue: 50 }], ['uploader', QUploader, {}],
+        ['stepper', QStepper, { modelValue: 'step' }], ['table', QTable, { rows: [], columns: [] }],
+      ].map(([id, component, props]) => h('div', { id: `frame-${id}` }, [h(component, props,
+        id === 'stepper' ? () => h(QStep, { name: 'step', title: 'Step' }) : undefined)])),
+      ...roles.flatMap((color) => [
+        h(QRating, { id: `rating-${color}`, colorSelected: color, modelValue: 2, max: 3, icon: svg }),
+        h(QBtnToggle, { id: `segment-${color}`, modelValue: 'a', toggleColor: color, dense: true, options: [
+          { icon: svg, value: 'a', attrs: { 'aria-label': 'Square' } },
+          { icon: 'M12 0l12 24H0z', value: 'b', attrs: { 'aria-label': 'Triangle' } },
+        ] }),
+      ]),
       h('div', { id: 'glass', class: 'qds-glass' }, 'Solid Zen surface'),
     ] })
     app.use(Quasar)
     app.mount('#app')
     window.zen = { state, async set(values) { Object.assign(state, values); await nextTick() }, dispose() { app.unmount() } }
-  }, { roles, barActions: roles.map((_, index) => actionRole(index)) })
+  }, { roles, barRoles, barCompositions, designs, barActions: roles.map((_, index) => actionRole(index)) })
   return page
 }
 
@@ -128,6 +244,7 @@ async function observe(page) {
     ['segmentActive', '#segments [aria-pressed="true"]'], ['segmentIdle', '#segments [aria-pressed="false"]'],
     ['menu', '.q-menu'], ['menuItem', '.q-menu .q-item--active'],
   ]) samples[name] = await read(page, selector, PAINT)
+  samples.menuMark = await read(page, '.q-menu .q-item--active', ['content', 'display', 'width', 'background-color'], '::before')
   samples.activeLabel = await read(page, '.q-tab--active .q-tab__label', ['font-weight'])
   samples.idleLabel = await read(page, '.q-tab:not(.q-tab--active) .q-tab__label', ['font-weight'])
   samples.indicator = await read(page, '.q-tab--active .q-tab__indicator', ['display', 'height', 'width', 'background-color', 'opacity'])
@@ -150,8 +267,7 @@ const record = (scheme, label, ratio, minimum) => {
   assert.ok(ratio >= minimum, `${scheme} ${label}: computed contrast ${ratio.toFixed(3)} < ${minimum}`)
 }
 
-async function verifyIconSegments(page, scheme) {
-  const group = '#icon-segments'
+async function verifyIconSegments(page, scheme, group = '#icon-segments') {
   const selected = `${group} [aria-pressed="true"]`
   const idle = `${group} [aria-pressed="false"]`
   const properties = ['content', 'width', 'border-bottom-width', 'border-bottom-style', 'border-bottom-color']
@@ -164,8 +280,8 @@ async function verifyIconSegments(page, scheme) {
   assert.equal((await read(page, idle, ['content'], '::after')).content, 'none')
   for (const selector of [selected, group]) {
     const { 'background-color': background } = await read(page, selector, ['background-color'])
-    record(scheme, `icon selection mark against ${selector}`, contrast(
-      opaque(mark['border-bottom-color'], `${scheme} icon selection`), opaque(background, selector),
+    record(scheme, `icon selection mark against ${selector}`, paintContrast(
+      mark['border-bottom-color'], opaque(background, selector),
     ), 3)
   }
 }
@@ -201,10 +317,256 @@ async function verifyBarTabs(page, scheme) {
       assert.equal(rgb(tab['background-color'])[3], 0)
       record(scheme, `${tabs} ${selected ? 'active' : 'inactive'} label`, contrast(opaque(tab.color, selector), fill), 4.5)
     }
-    const activeMark = await read(page, `${tabs} .q-tab--active .q-tab__indicator`, ['background-color'])
+    const active = `${tabs} .q-tab--active`
+    const activeMark = await read(page, `${active} .q-tab__indicator`, ['background-color'])
     record(scheme, `${tabs} active underline`, contrast(opaque(activeMark['background-color'], tabs), fill), 3)
+    await page.locator(active).focus()
+    const focus = await read(page, active, ['outline-width', 'outline-style', 'outline-color'])
+    assert.ok(parseFloat(focus['outline-width']) >= 1 && focus['outline-style'] === 'solid', `${scheme} ${tabs} focus ring`)
+    record(scheme, `${tabs} focus ring`, paintContrast(focus['outline-color'], fill), 3)
     const disabled = await read(page, `${tabs} .q-tab.disabled`, ['opacity'])
     assert.ok(Number(disabled.opacity) < 1, `${scheme} ${tabs} disabled tab stays muted`)
+  }
+}
+
+async function surface(page, selector) {
+  const layers = await page.locator(selector).evaluate((element) => {
+    const layers = []
+    for (let node = element; node; node = node.parentElement) layers.unshift(getComputedStyle(node).backgroundColor)
+    return layers
+  })
+  return layers.map(rgb).reduce((behind, face) => mix(face, behind, face[3]), [255, 255, 255]).slice(0, 3)
+}
+
+async function verifyRoleSelection(page, scheme, forced) {
+  const canvas = await surface(page, 'body')
+  for (const role of roles) {
+    await verifyIconSegments(page, scheme, `#segment-${role}`)
+    const rating = `#rating-${role}`
+    const currentRating = `${rating} [aria-checked="true"] .q-rating__icon`
+    const idleRating = `${rating} .q-rating__icon:not(.q-rating__icon--active)`
+    for (const selector of [currentRating, idleRating]) {
+      const icon = await read(page, selector, ['color', 'opacity'])
+      assert.equal(icon.opacity, '1')
+      record(scheme, `${selector} icon`, paintContrast(icon.color, canvas), 3)
+    }
+    const ratingMark = await read(page, currentRating, ['content', 'border-bottom-color', 'border-bottom-width'], '::after')
+    assert.equal(ratingMark.content, '""')
+    assert.ok(parseFloat(ratingMark['border-bottom-width']) >= 2)
+    record(scheme, `${role} rating mark`, paintContrast(ratingMark['border-bottom-color'], canvas), 3)
+    assert.equal((await read(page, idleRating, ['content'], '::after')).content, 'none')
+    const roleFill = await surface(page, `#fill-${role}`)
+    for (const [id, part, glyph, ink] of [
+      ['checked', '.q-checkbox__bg', '.q-checkbox__truthy', 'stroke'],
+      ['mixed', '.q-checkbox__bg', '.q-checkbox__indet', 'fill'],
+    ]) {
+      const selector = `#${id}-${role} ${part}`
+      const fill = await surface(page, selector)
+      if (!forced) assert.deepEqual(fill, roleFill, `${scheme} ${id} ${role} uses the role fill`)
+      const mark = await read(page, `${selector} ${glyph}`, [ink, 'opacity'])
+      assert.equal(mark.opacity, '1')
+      record(scheme, `${id} ${role} face`, contrast(fill, canvas), 3)
+      record(scheme, `${id} ${role} glyph`, paintContrast(mark[ink], fill), 3)
+    }
+    const well = `#radio-${role} .q-radio__bg`
+    const dot = await read(page, `${well} .q-radio__check`, ['fill', 'transform'])
+    assert.doesNotMatch(dot.transform, /^matrix\(0,/)
+    const radioFill = await surface(page, well)
+    if (!forced) assert.deepEqual(rgb(dot.fill).slice(0, 3), roleFill, `${scheme} radio ${role} uses the role fill`)
+    record(scheme, `${role} radio dot`, paintContrast(dot.fill, radioFill), 3)
+    record(scheme, `${role} radio ring`, paintContrast((await read(page, well, ['border-top-color']))['border-top-color'], radioFill), 3)
+
+    for (const id of ['custom-check', 'custom-check-mixed', 'custom-check-off', 'custom-radio', 'custom-radio-off']) {
+      const selector = `#${id}-${role} .q-icon svg`
+      const { fill } = await read(page, selector, ['fill'])
+      record(scheme, `${id} ${role} SVG`, paintContrast(fill, await surface(page, selector)), 3)
+    }
+    for (const [id, part] of [['unchecked', '.q-checkbox__bg'], ['radio-off', '.q-radio__bg'], ['switch-off', '.q-toggle__track'], ['switch-mixed', '.q-toggle__track']]) {
+      const selector = `#${id}-${role} ${part}`
+      record(scheme, `${id} ${role} perimeter`, paintContrast((await read(page, selector, ['border-top-color']))['border-top-color'], canvas), 3)
+    }
+    for (const [id, pseudo, edge, style] of [
+      ['switch-icon', '::before', 'border-inline-start', 'solid'],
+      ['switch-off', '::after', 'border-top', 'solid'],
+      ['switch-mixed', '::after', 'border-top', 'dashed'],
+    ]) {
+      const selector = `#${id}-${role}`
+      const track = `${selector} .q-toggle__track`
+      const thumb = await read(page, `${selector} .q-toggle__thumb`, ['background-color', 'border-top-color'], '::after')
+      const icon = await read(page, `${selector} .q-toggle__thumb .q-icon`, ['color', 'opacity'])
+      const glyph = await read(page, track, ['content', `${edge}-style`, `${edge}-color`], pseudo)
+      const fill = await surface(page, track)
+      assert.equal(glyph.content, '""')
+      assert.equal(glyph[`${edge}-style`], style)
+      assert.equal(icon.opacity, '1')
+      if (id === 'switch-icon' && !forced) assert.deepEqual(fill, roleFill)
+      record(scheme, `${id} ${role} track mark`, paintContrast(glyph[`${edge}-color`], fill), 3)
+      record(scheme, `${id} ${role} thumb icon`, paintContrast(icon.color, opaque(thumb['background-color'], selector)), 3)
+      const thumbBoundary = Math.max(paintContrast(thumb['background-color'], fill), paintContrast(thumb['border-top-color'], fill))
+      record(scheme, `${id} ${role} thumb vs track`, thumbBoundary, 3)
+    }
+
+    for (const [id, thumbs] of [['slider', 1], ['range', 2]]) {
+      const selector = `#${id}-${role}`
+      const unfilled = await surface(page, `${selector} .q-slider__inner`)
+      const filled = await surface(page, `${selector} .q-slider__selection`)
+      if (!forced) assert.deepEqual(filled, roleFill)
+      record(scheme, `${id} ${role} fill vs well`, contrast(filled, unfilled), 3)
+      const track = await read(page, `${selector} .q-slider__inner`, ['border-top-color'])
+      record(scheme, `${id} ${role} well edge`, paintContrast(track['border-top-color'], canvas), 3)
+      assert.equal(await page.locator(`${selector} .q-slider__thumb`).count(), thumbs)
+      for (let index = 0; index < thumbs; index++) {
+        const thumb = await read(page, `${selector} .q-slider__thumb:nth-child(${index + 1} of .q-slider__thumb)`, PAINT)
+        record(scheme, `${id} ${role} thumb ${index + 1} vs well`, paintContrast(thumb['border-top-color'], unfilled), 3)
+        record(scheme, `${id} ${role} thumb ${index + 1} vs fill`, Math.max(
+          paintContrast(thumb['background-color'], filled), paintContrast(thumb['border-top-color'], filled),
+        ), 3)
+      }
+    }
+  }
+}
+
+async function verifyChrome(page, scheme, forced, edges = false) {
+  for (const [id, tray, filled] of [
+    ...barRoles.flatMap((role) => barCompositions.map((composition) => {
+      const id = `${composition}-${role}`
+      return [composition === 'footer-colored-tabs' ? `tabs-${id}` : id, `tabs-${id}`, true]
+    })),
+    ['neutral-header', 'header-tabs'], ['neutral-direct-header', 'header-direct-tabs'], ['neutral-footer', 'footer-tabs'],
+    ['neutral-footer-toolbar', 'footer-nested-tabs'], ['neutral-toolbar', 'toolbar-tabs'],
+    ['neutral-bar', 'bar-tabs'], ['native-dark-bar', 'native-dark-tabs', true],
+    ['inner-mixed-toolbar', 'mixed-tabs', true], ['inner-neutral-bar', 'neutral-reset-tabs'],
+  ]) {
+    const container = `#${id}`
+    const tabs = `#${tray}`
+    const chrome = await read(page, container, ['color', 'background-color', 'backdrop-filter', 'background-image'])
+    assert.equal(chrome['backdrop-filter'], 'none', `${scheme} ${container}`)
+    assert.equal(chrome['background-image'], 'none', `${scheme} ${container}`)
+    if (id === 'neutral-footer') assert.equal(rgb(chrome['background-color'])[3], 0)
+    if (id !== 'neutral-footer') opaque(chrome['background-color'], `${scheme} ${container}`)
+    const trayPaint = await read(page, tabs, ['background-color', 'backdrop-filter'])
+    assert.equal(trayPaint['backdrop-filter'], 'none')
+    if (filled && id !== tray) assert.equal(rgb(trayPaint['background-color'])[3], 0)
+    if (edges) {
+      const edge = await read(page, tabs, ['border-top-color', 'border-top-width', 'border-top-style'])
+      assert.ok(parseFloat(edge['border-top-width']) >= 1 && edge['border-top-style'] === 'solid')
+      record(scheme, `${tabs} tray edge`, paintContrast(
+        edge['border-top-color'], await surface(page, filled ? container : tabs),
+      ), 3)
+    }
+    const active = `${tabs} [aria-selected="true"]`
+    for (const selector of [active, `${tabs} [aria-selected="false"]:not(.disabled)`]) {
+      const icon = `${selector} .q-icon svg`
+      assert.equal(await page.locator(icon).count(), 1)
+      const { fill } = await read(page, icon, ['fill'])
+      record(scheme, `${selector} icon`, paintContrast(fill, await surface(page, selector)), 3)
+    }
+    const title = await page.locator(`${container} .q-toolbar__title`).count()
+    if (title) {
+      const selector = `${container} .q-toolbar__title`
+      record(scheme, `${container} title`, paintContrast((await read(page, selector, ['color'])).color, await surface(page, selector)), 4.5)
+    }
+    const action = `#action-${id}`
+    if (await page.locator(action).count()) {
+      record(scheme, `${container} filled action`, paintContrast((await read(page, action, ['color'])).color, await surface(page, action)), 4.5)
+    }
+    const indicator = await read(page, `${active} .q-tab__indicator`, ['display', 'width', 'height', 'opacity', 'background-color'])
+    if (id === 'neutral-footer' && !forced) {
+      assert.equal(indicator.display, 'none')
+      record(scheme, 'neutral footer selected pebble', contrast(await surface(page, active), await surface(page, tabs)), 3)
+    } else {
+      assert.notEqual(indicator.display, 'none', `${scheme} ${id} selection mark`)
+      assert.equal(indicator.opacity, '1')
+      assert.ok(parseFloat(indicator.width) > 0 && parseFloat(indicator.height) >= 2)
+      record(scheme, `${container} tab underline`, paintContrast(indicator['background-color'], await surface(page, active)), 3)
+    }
+  }
+}
+
+async function verifyDestinations(page, scheme, forced) {
+  for (const [selector, pseudo, container] of [
+    ['#list [data-current="true"]', '::before', '#list'],
+    ['#drawer-list [data-current="true"]', '::before', '#drawer-list'],
+    ['#mini-list [data-current="true"]', '::before', '#mini-list'],
+    ['#mini-parent > .q-expansion-item__container > .q-item', '::before', '#mini-drawer'],
+    ['#tree .q-tree__node--selected', '::after', '#tree'],
+  ]) {
+    const mark = await read(page, selector, ['content', 'width', 'height', 'display', 'background-color'], pseudo)
+    assert.equal(mark.content, '""')
+    assert.notEqual(mark.display, 'none', `${scheme} ${selector} mark`)
+    assert.ok(parseFloat(mark.width) >= 2 && parseFloat(mark.height) > 0)
+    for (const background of [selector, container]) {
+      record(scheme, `${selector} current mark vs ${background}`, paintContrast(mark['background-color'], await surface(page, background)), 3)
+    }
+  }
+  for (const design of designs) {
+    const container = `#pagination-${design}`
+    const selector = `${container} [aria-current="page"]`
+    const face = await surface(page, selector)
+    const text = await read(page, selector, ['color'])
+    record(scheme, `${design} current page text`, paintContrast(text.color, face), 4.5)
+    if (forced || ['flat', 'outline'].includes(design)) {
+      const mark = await read(page, selector, ['content', 'border-bottom-color', 'border-bottom-width', 'border-bottom-style'], '::after')
+      assert.equal(mark.content, '""')
+      assert.equal(mark['border-bottom-style'], 'solid')
+      assert.ok(parseFloat(mark['border-bottom-width']) >= 2)
+      record(scheme, `${design} current page mark`, paintContrast(mark['border-bottom-color'], face), 3)
+    } else {
+      record(scheme, `${design} current page face`, contrast(face, await surface(page, container)), 3)
+    }
+  }
+}
+
+async function verifyControlPerimeters(page, scheme) {
+  for (const [selector, edge, behind] of [
+    ...['outline-button', 'flat-button', 'tonal-button', 'standard-group', 'push-group', 'unelevated-group',
+      'segments', 'chip', 'outline-chip', 'solid-chip', 'option-card', 'card', 'glass',
+    ].map((id) => [`#${id}`]),
+    ...roles.flatMap((role) => [
+      [`#fill-${role}`], [`#bar-group-${role}`, undefined, `#bar-${role}`],
+    ]),
+    ...['date', 'time', 'color-picker', 'editor', 'splitter', 'uploader', 'stepper', 'table'].map((name) =>
+      [`#frame-${name} > .q-${name === 'table' ? 'table__container' : name}`]),
+    ...designs.map((design) => [`#pagination-${design} [aria-current="page"]`]),
+    ['#pagination-flat .q-btn[aria-label="1"]'],
+    ['#pagination-input .q-field__control'],
+    ...['filled', 'standout', 'readonly', 'borderless'].map((design) =>
+      [`[data-edge-field="${design}"] .q-field__control`, design === 'borderless' ? 'bottom' : undefined]),
+    ['[data-edge-field="textarea"] .q-field__control'],
+    ['#field-group .q-field:first-child .q-field__control', 'left'],
+    ['#field-group .q-field:nth-child(2) .q-field__control', 'top'],
+    ['#field-group .q-btn', 'right'],
+    ['#list [data-current="true"]', undefined, '#list'],
+    ['#list [data-current="false"]', undefined, '#list'],
+    ['#drawer', 'right'],
+    ['#mini-drawer', 'right'],
+    ['#neutral-header', 'bottom'],
+    ['#neutral-footer-toolbar', 'top'],
+    ['#footer-tabs'],
+    ['#header-toolbar-accent', 'bottom', '#header-toolbar-accent'],
+    ['#footer-toolbar-warning', 'top', '#footer-toolbar-warning'],
+    ['#tabs-footer-colored-tabs-info', undefined, '#tabs-footer-colored-tabs-info'],
+    ['#tabs-header-direct-dark', undefined, '#header-direct-dark'],
+    ['#action-toolbar-accent', undefined, '#toolbar-accent'],
+  ]) {
+    for (const side of edge ? [edge] : ['top', 'right', 'bottom', 'left']) {
+      const prefix = `border-${side}`
+      const paint = await read(page, selector, [`${prefix}-width`, `${prefix}-style`, `${prefix}-color`])
+      const name = `${selector} ${side} perimeter`
+      assert.ok(paint && parseFloat(paint[`${prefix}-width`]) >= 1 && paint[`${prefix}-style`] !== 'none', `${scheme} ${name}`)
+      record(scheme, name, paintContrast(paint[`${prefix}-color`], await surface(page, behind ?? 'body')), 3)
+    }
+  }
+}
+
+function verifyMenuMark(paint, scheme) {
+  assert.equal(paint.menuMark.content, '""')
+  assert.notEqual(paint.menuMark.display, 'none')
+  assert.ok(parseFloat(paint.menuMark.width) >= 2)
+  for (const part of ['menuItem', 'menu']) {
+    record(scheme, `current menu mark vs ${part}`, paintContrast(
+      paint.menuMark['background-color'], opaque(paint[part]['background-color'], part),
+    ), 3)
   }
 }
 
@@ -236,6 +598,9 @@ try {
       await verifyIconSegments(page, scheme)
       await verifyRoleSwitches(page, scheme)
       await verifyBarTabs(page, scheme)
+      await verifyRoleSelection(page, scheme, false)
+      await verifyChrome(page, scheme, false)
+      await verifyDestinations(page, scheme, false)
       await verifyGroupPerimeters(page, scheme, false)
 
       const cdp = await page.context().newCDPSession(page)
@@ -246,6 +611,7 @@ try {
         opaque(material['background-color'], `${scheme} reduced transparency ${selector}`)
         assert.equal(material['backdrop-filter'], 'none')
       }
+      await verifyChrome(page, `${scheme} reduced transparency`, false)
       await verifyGroupPerimeters(page, `${scheme} reduced transparency`, false)
       await cdp.send('Emulation.setEmulatedMedia', { features: [] })
       await cdp.detach()
@@ -260,7 +626,7 @@ try {
         ['menu item', paint.menuItem, paint.menuItem],
       ]) {
         const fill = opaque(backdrop['background-color'], `${scheme} ${label}`)
-        record(scheme, label, contrast(rgb(sample.color), fill), 4.5)
+        record(scheme, label, paintContrast(sample.color, fill), 4.5)
       }
 
       // Every role fill, in every interactive state the profile can reach, is
@@ -270,7 +636,7 @@ try {
         [role, `#fill-${role}`], [`${actionRole(index)} button in ${role} bar`, `#bar-fill-${role}`, actionRole(index)],
       ])) {
         const rest = await read(page, selector, PAINT)
-        record(scheme, `${role} fill rest`, contrast(rgb(rest.color), opaque(rest['background-color'], `${scheme} ${role} rest`)), 4.5)
+        record(scheme, `${role} fill rest`, paintContrast(rest.color, opaque(rest['background-color'], `${scheme} ${role} rest`)), 4.5)
         if (filledRole) {
           const normal = await read(page, `#fill-${filledRole}`, ['color', 'background-color'])
           assert.deepEqual(rgb(rest.color), rgb(normal.color), `${scheme} ${role} keeps its on-fill foreground`)
@@ -281,7 +647,7 @@ try {
 
         await page.hover(selector)
         const hover = await read(page, selector, PAINT)
-        record(scheme, `${role} fill hover`, contrast(rgb(hover.color), opaque(hover['background-color'], `${scheme} ${role} hover`)), 4.5)
+        record(scheme, `${role} fill hover`, paintContrast(hover.color, opaque(hover['background-color'], `${scheme} ${role} hover`)), 4.5)
 
         const box = await page.locator(selector).boundingBox()
         await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
@@ -289,7 +655,7 @@ try {
         const pressed = await read(page, selector, PAINT)
         await page.mouse.up()
         assert.notEqual(pressed['background-color'], rest['background-color'], `${scheme} ${role} must repaint when pressed`)
-        record(scheme, `${role} fill pressed`, contrast(rgb(pressed.color), opaque(pressed['background-color'], `${scheme} ${role} pressed`)), 4.5)
+        record(scheme, `${role} fill pressed`, paintContrast(pressed.color, opaque(pressed['background-color'], `${scheme} ${role} pressed`)), 4.5)
         assert.match(pressed['box-shadow'], /inset/, `${scheme} ${role} pressed recedes into an inset`)
       }
       // Pressed recedes for the neutral face too: an inset, never more lift.
@@ -303,28 +669,34 @@ try {
       assert.ok(lift >= 0, `${scheme} neutral pressed never lifts (translateY ${lift})`)
       await page.mouse.move(0, 0)
 
-      // Selected states carry text contrast too, not just a tint.
-      record(scheme, 'selected menu item', contrast(rgb(paint.menuItem.color), opaque(paint.menuItem['background-color'], `${scheme} selected item`)), 4.5)
+      record(scheme, 'selected menu item', paintContrast(paint.menuItem.color, opaque(paint.menuItem['background-color'], `${scheme} selected item`)), 4.5)
+      verifyMenuMark(paint, scheme)
 
       // Disabled text is exempt from WCAG 1.4.3, so it is measured and reported
       // at the 3:1 non-text floor rather than silently skipped.
-      record(scheme, 'disabled button label', contrast(rgb(paint.disabled.color), opaque(paint.page['background-color'], `${scheme} disabled`)), 3)
+      record(scheme, 'disabled button label', paintContrast(paint.disabled.color, opaque(paint.page['background-color'], `${scheme} disabled`)), 3)
 
       const boundaries = [
         ['button', 'page'], ['field', 'page'], ['tabsTrack', 'page'], ['menu', 'page'], ['menuItem', 'menu'],
       ]
       for (const [part, behind] of boundaries) {
-        const ratio = contrast(rgb(paint[part]['border-top-color']), opaque(paint[behind]['background-color'], scheme))
+        const ratio = paintContrast(paint[part]['border-top-color'], opaque(paint[behind]['background-color'], scheme))
         assert.ok(ratio < 3, `${scheme} ${part} rest edge should be soft, got ${ratio.toFixed(3)}:1`)
       }
       for (const media of [{ contrast: 'more' }, { contrast: 'no-preference', forcedColors: 'active' }]) {
         await page.emulateMedia({ colorScheme: scheme, ...media })
         await verifyGroupPerimeters(page, `${scheme} ${media.forcedColors ?? media.contrast}`, true)
         await verifyIconSegments(page, `${scheme} ${media.forcedColors ?? media.contrast}`)
+        const medium = `${scheme} ${media.forcedColors ?? media.contrast}`
+        await verifyControlPerimeters(page, medium)
+        await verifyRoleSelection(page, medium, media.forcedColors === 'active')
+        await verifyChrome(page, medium, media.forcedColors === 'active', true)
+        await verifyDestinations(page, medium, media.forcedColors === 'active')
         const enhanced = await observe(page)
+        verifyMenuMark(enhanced, medium)
         for (const [part, behind] of boundaries) {
           assert.ok(parseFloat(enhanced[part]['border-top-width']) >= 1, `${scheme} ${part} needs a boundary`)
-          const ratio = contrast(rgb(enhanced[part]['border-top-color']), opaque(enhanced[behind]['background-color'], scheme))
+          const ratio = paintContrast(enhanced[part]['border-top-color'], opaque(enhanced[behind]['background-color'], scheme))
           record(scheme, `${part} boundary in ${media.forcedColors ?? media.contrast}`, ratio, 3)
         }
       }
@@ -336,16 +708,16 @@ try {
       ]) {
         assert.ok(parseFloat(sample['border-top-width']) >= 1, `${scheme} ${label}: no boundary, width ${sample['border-top-width']}`)
         assert.notEqual(sample['border-top-style'], 'none', `${scheme} ${label} boundary style`)
-        record(scheme, label, contrast(rgb(sample['border-top-color']), opaque(behind['background-color'], `${scheme} ${label}`)), 3)
+        record(scheme, label, paintContrast(sample['border-top-color'], opaque(behind['background-color'], `${scheme} ${label}`)), 3)
       }
 
       // State indicators that are not text clear the 3:1 non-text minimum on what they sit on.
       record(scheme, 'switch on track vs page', contrast(opaque(paint.toggleOn['background-color'], `${scheme} switch on`), opaque(paint.page['background-color'], `${scheme} page`)), 3)
-      record(scheme, 'switch on glyph', contrast(rgb(paint.glyphOn), opaque(paint.toggleOn['background-color'], `${scheme} switch on`)), 3)
-      record(scheme, 'switch off glyph', contrast(rgb(paint.glyphOff), opaque(paint.toggleOff['background-color'], `${scheme} switch off`)), 3)
+      record(scheme, 'switch on glyph', paintContrast(paint.glyphOn, opaque(paint.toggleOn['background-color'], `${scheme} switch on`)), 3)
+      record(scheme, 'switch off glyph', paintContrast(paint.glyphOff, opaque(paint.toggleOff['background-color'], `${scheme} switch off`)), 3)
       record(scheme, 'checkbox checked vs page', contrast(opaque(paint.checkOn['background-color'], `${scheme} checked`), opaque(paint.page['background-color'], `${scheme} page`)), 3)
-      record(scheme, 'slider value bubble', contrast(rgb(paint.bubbleText.color), opaque(paint.bubble['background-color'], `${scheme} bubble`)), 4.5)
-      record(scheme, 'active tab underline', contrast(rgb(paint.indicator['background-color']), opaque(paint.tabActive['background-color'], `${scheme} selected tab`)), 3)
+      record(scheme, 'slider value bubble', paintContrast(paint.bubbleText.color, opaque(paint.bubble['background-color'], `${scheme} bubble`)), 4.5)
+      record(scheme, 'active tab underline', paintContrast(paint.indicator['background-color'], opaque(paint.tabActive['background-color'], `${scheme} selected tab`)), 3)
 
       // Tactile depth: raised faces lift, wells recess, and the active tab is a short drawn
       // underline plus weight, never a full-width rail.
@@ -364,13 +736,13 @@ try {
       await page.focus('.q-field input')
       const focused = await read(page, '.q-field--focused .q-field__control', ['outline-width', 'outline-color', 'border-top-color'])
       assert.ok(parseFloat(focused['outline-width']) >= 1, `${scheme} field focus ring width ${focused['outline-width']}`)
-      record(scheme, 'field focus ring', contrast(rgb(focused['outline-color']), opaque(paint.field['background-color'], `${scheme} focus`)), 3)
+      record(scheme, 'field focus ring', paintContrast(focused['outline-color'], opaque(paint.field['background-color'], `${scheme} focus`)), 3)
 
       // Error state never falls back to Quasar's native #c10015.
       await page.evaluate(() => window.zen.set({ error: true }))
       const error = await read(page, '.q-field--error .q-field__control', ['border-top-color'])
       assert.notDeepEqual(rgb(error['border-top-color']).slice(0, 3), [193, 0, 21], `${scheme} field error must not use the native #c10015`)
-      record(scheme, 'field error boundary', contrast(rgb(error['border-top-color']), opaque(paint.field['background-color'], `${scheme} error`)), 3)
+      record(scheme, 'field error boundary', paintContrast(error['border-top-color'], opaque(paint.field['background-color'], `${scheme} error`)), 3)
     } finally { await page.close() }
   }
 
@@ -381,6 +753,10 @@ try {
       const paint = await observe(page)
       await verifyIconSegments(page, `reading ${scheme}`)
       await verifyRoleSwitches(page, `reading ${scheme}`)
+      await verifyRoleSelection(page, `reading ${scheme}`, false)
+      await verifyChrome(page, `reading ${scheme}`, false)
+      await verifyDestinations(page, `reading ${scheme}`, false)
+      verifyMenuMark(paint, `reading ${scheme}`)
       for (const [label, sample] of [['button', paint.button], ['field', paint.field], ['tabs tray', paint.tabsTrack], ['menu', paint.menu], ['switch track', paint.toggleOff], ['checkbox well', paint.checkOff]]) {
         assert.equal(sample['box-shadow'], 'none', `reading ${scheme} ${label} must drop decorative depth`)
         assert.ok(parseFloat(sample['border-top-width']) >= 1, `reading ${scheme} ${label} must keep its boundary`)

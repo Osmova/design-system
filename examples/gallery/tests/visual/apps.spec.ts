@@ -328,6 +328,43 @@ test.describe('apps', () => {
     })
   }
 
+  for (const mode of MODES) {
+    test(`Zen mini navigation marks the current SVG destination (${mode})`, async ({ page }) => {
+      await openApps(page, mode, 'zen')
+      const drawer = page.locator(byHook('qds-apps-nav-drawer'))
+      const toggle = page.locator(byHook('qds-apps-nav-toggle'))
+      if (await toggle.getAttribute('aria-expanded') === 'true') await toggle.click()
+      await expect(page.locator('.q-drawer--mini')).toHaveCount(1)
+      const current = drawer.locator('[aria-current="page"]')
+      const assertMark = async (destination: string) => {
+        await expect(current).toHaveAttribute('data-nav', destination)
+        await expect(current.locator('svg')).toBeVisible()
+        const mark = await current.evaluate((element) => {
+          const rail = getComputedStyle(element, '::before')
+          return {
+            content: rail.content,
+            display: rail.display,
+            width: parseFloat(rail.width),
+            ink: rail.backgroundColor,
+            face: getComputedStyle(element).backgroundColor,
+            drawer: getComputedStyle(element.closest('.q-drawer')!).backgroundColor,
+          }
+        })
+        expect(mark.content).toBe('""')
+        expect(mark.display).not.toBe('none')
+        expect(mark.width).toBeGreaterThanOrEqual(2)
+        expect(contrast(mark.ink, mark.face)).toBeGreaterThanOrEqual(3)
+        expect(contrast(mark.ink, mark.drawer)).toBeGreaterThanOrEqual(3)
+      }
+      await assertMark('metrics')
+      await drawer.locator('[data-nav="logs"]').click()
+      await assertMark('logs')
+      const previous = drawer.locator('[data-nav="metrics"]')
+      await expect(previous).not.toHaveAttribute('aria-current', 'page')
+      expect(await style(previous, 'content', '::before')).toBe('none')
+    })
+  }
+
   test('mini navigation retains the focused tooltip after a stale native focusout', async ({ page }) => {
     await openApps(page)
     await expandNav(page)
