@@ -146,14 +146,19 @@ async function mount(browser, bodyClass) {
           'data-family': `pagination-${design}`, modelValue: 2, max: 3, color: role,
           activeColor: 'accent', activeDesign: design === 'standard' ? '' : design,
         })),
-        ...['outlined', 'filled', 'standout', 'borderless', 'ghost', 'error', 'standout-role'].map((design) =>
+        ...['standard', 'outlined', 'filled', 'standout', 'borderless', 'ghost', 'readonly-borderless', 'error', 'standout-role'].map((design) =>
           h(QInput, {
             modelValue: 'Value', label: 'Input', prefix: 'Prefix', suffix: 'Suffix', hint: 'Hint',
-            outlined: design === 'error', error: design === 'error', errorMessage: 'Error',
+            outlined: design === 'outlined' || design === 'error', error: design === 'error', errorMessage: 'Error',
             clearable: true, class: design === 'ghost' ? 'qds-field--ghost' : undefined,
-            [design]: true, standout: design === 'standout-role' ? `bg-${role} text-accent` : design === 'standout',
+            filled: design === 'filled', borderless: design === 'borderless' || design === 'readonly-borderless',
+            readonly: design === 'readonly-borderless', standout: design === 'standout-role' ? `bg-${role} text-accent` : design === 'standout',
             'data-audit': `field-${design}`,
           })),
+        h('div', { class: 'qds-field-group' }, [
+          h(QInput, { modelValue: 'Value', label: 'Joined', borderless: true, 'data-audit': 'field-joined' }),
+          h(QSelect, { options: ['Unit'], modelValue: 'Unit', outlined: true, 'data-audit': 'field-joined-select' }),
+        ]),
         h(QInput, { type: 'textarea', modelValue: 'Text', outlined: true, 'data-audit': 'field-textarea' }),
         h(QSelect, { options: ['Value'], modelValue: 'Value', borderless: true, 'data-audit': 'field-select' }),
       ]

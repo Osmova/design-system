@@ -33,7 +33,7 @@ $surface-edge: var(--_qds-zen-surface-ink, var(--qds-stroke-strong));
 $outer-focus: var(--_qds-zen-surface-ink, var(--qds-stroke-focus));
 $selected-content: ':is(.q-item__label, .q-item__section--side, .q-item__section--side > .q-icon)';
 $flat-action: '.q-btn:is(.q-btn--flat, .q-btn--outline):not(#{$role-fill}, .q-btn-toggle *, .disabled)';
-$transparent-field: ':is(.q-field--borderless, .qds-field--ghost):not(.q-pagination *, .qds-field-group > *, .q-field--readonly, .q-field--disabled)';
+$transparent-field: ':is(.q-field--borderless, .qds-field--ghost):not(.q-pagination *, .qds-field-group > *, .q-field--disabled)';
 $push: inset 0 -2px 0 color-mix(in srgb, var(--qds-fg-strong) 22%, transparent);
 // Quasar `size` sets an inline font-size; the height and padding follow it along zen's ramp.
 $btn-height: clamp(var(--qds-button-size-sm), calc(var(--qds-button-min-height) + (1em - 0.875rem) * 2), var(--qds-button-size-lg));
@@ -138,7 +138,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-field--disabled .q-field__control { background: #{$inset}; box-shadow: none; }
 
   #{$zen} .qds-field-group > .q-field .q-field__control { box-shadow: none; }
-  #{$zen} .qds-field-group > .q-field:not(.q-field--focused, .q-field--error, .qds-field--positive, .qds-field--warning) .q-field__control { background: #{$field-fill}; }
+  #{$zen} .qds-field-group > .q-field:not(.q-field--focused, .q-field--error, .qds-field--positive, .qds-field--warning) .q-field__control,
+  #{$zen} .qds-field-group > :is(.q-field--borderless, .qds-field--ghost):not(.q-field--disabled) .q-field__control { background: #{$field-fill}; }
   #{$zen} :where(.qds-field-group) > .q-btn { border-radius: var(--qds-radius-control); transform: none; }
   #{$zen} .qds-field-group > .q-btn:not([class*='bg-']) { background: #{$field-fill}; border-color: #{$soft-edge}; box-shadow: none; }
   #{$zen} .qds-field-group > :is(.q-field, .q-btn):not(:first-child):is(:focus-within, .q-field--error) { z-index: 2; }
