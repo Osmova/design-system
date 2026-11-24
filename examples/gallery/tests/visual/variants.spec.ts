@@ -635,14 +635,14 @@ test.describe('QDS variant distinctiveness lab', () => {
         await page.emulateMedia({ colorScheme: mode, reducedMotion: 'reduce' })
         await page.goto(`${entry}?glass-fill`)
         await applyTheme(page, mode, 'glass')
-        await expect(page.locator('[data-fill-probe]')).toHaveCount(64)
+        await expect(page.locator('[data-fill-probe]')).toHaveCount(72)
         await page.addStyleTag({ content: '[data-fill-matrix] * { transition: none !important; }' })
 
         for (const contrast of ['no-preference', 'more'] as const) {
           await page.emulateMedia({ contrast })
-          const labels = '[data-probe-label], [data-fill-probe] :is(.q-btn__content, .q-tab__content, .q-item__label, .q-chip__content, .q-checkbox__label, .q-radio__label, .q-toggle__label, .q-field__label, .q-field__native, .q-field__marginal, .q-field__messages, .q-field__prefix, .q-field__suffix):not(.disabled *, [hidden], input[tabindex="-1"], .q-field__marginal:has(.q-icon))'
-          const icons = '[data-fill-probe] :is(.q-item__section--side > .q-icon, .q-chip__icon--remove, .q-tab__icon, .q-field__marginal .q-icon):not(.disabled *)'
-          const controls = '[data-fill-probe] :is(.q-btn, .q-tab, .q-item, .q-chip, .q-chip__icon--remove, .q-checkbox, .q-radio, .q-toggle, .q-field, [data-probe-label][tabindex], a[data-probe-label]):not(.disabled, :disabled)'
+          const labels = '[data-probe-label], [data-fill-probe] :is(.q-btn__content, .q-tab__content, .q-item__label, .q-chip__content, .q-checkbox__label, .q-radio__label, .q-toggle__label, .q-field__label, .q-field__native, .q-field__marginal, .q-field__messages, .q-field__prefix, .q-field__suffix, .q-tree__node-header-content, .q-circular-progress__text, .q-editor__content a, .q-stepper__title, .q-table td, .q-uploader__title):not(.disabled *, [hidden], input[tabindex="-1"], .q-field__marginal:has(.q-icon))'
+          const icons = '[data-fill-probe] :is(.q-item__section--side > .q-icon, .q-chip__icon--remove, .q-tab__icon, .q-field__marginal .q-icon, .q-tree__arrow, .q-tree__icon, .q-rating__icon--active, .q-knob):not(.disabled *)'
+          const controls = '[data-fill-probe] :is(.q-btn, .q-tab, .q-item, .q-chip, .q-chip__icon--remove, .q-checkbox, .q-radio, .q-toggle, .q-field, [data-probe-label][tabindex], a[data-probe-label], .q-tree__node-header, .q-knob, .q-rating__icon-container):not(.disabled, :disabled)'
           const links = await glassPaints(page.locator('[data-fill-probe] a[data-probe-label]'))
           const placeholders = await glassPaints(page.locator('[data-fill-probe] input[data-probe="error field"][placeholder]'), '::placeholder')
           const text = [...await glassPaints(page.locator(labels)), ...placeholders]
@@ -657,6 +657,9 @@ test.describe('QDS variant distinctiveness lab', () => {
           expect.soft(failures(links, paint => paint.decorationContrast < 3), `${contrast} underline`).toEqual([])
           expect.soft(failures(symbols, paint => paint.textContrast < 3), `${contrast} icons`).toEqual([])
           expect.soft(failures(marks, paint => paint.markWidth !== '2px' || paint.markContrast < 3), `${contrast} selected marks`).toEqual([])
+          const rails = await glassPaints(page.locator('[data-fill-probe] .q-tree__node--selected'), '::after')
+          expect(rails).toHaveLength(8)
+          expect.soft(failures(rails, paint => paint.fillContrast < 3), `${contrast} tree selection rail`).toEqual([])
           expect.soft(failures(focus, paint => paint.outlineStyle !== 'solid'
             || parseFloat(paint.outlineWidth) < 2
             || (parseFloat(paint.outlineOffset) < 0 ? paint.outlineOnFill : paint.outlineOnSurface) < 3), `${contrast} focus`).toEqual([])

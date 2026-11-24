@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBar, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QFab, QFabAction, QFile, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QLinearProgress, QList, QMenu, QPopupEdit, QPopupProxy, QPagination, QRadio, QRouteTab, QRange, QRating, QSelect, QSlider, QSeparator, QTab, QTabs, QToggle, QToolbar, QToolbarTitle, QTooltip, QUploader } from 'quasar'
+import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBar, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCarousel, QCarouselSlide, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QExpansionItem, QFab, QFabAction, QFile, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QKnob, QLinearProgress, QList, QMarkupTable, QMenu, QPopupEdit, QPopupProxy, QPagination, QRadio, QRouteTab, QRange, QRating, QSelect, QSlider, QSeparator, QStep, QStepper, QTab, QTable, QTabs, QToggle, QToolbar, QToolbarTitle, QTooltip, QTree, QUploader } from 'quasar'
 import { QdsWindow, type QdsWindowInstance } from '@osmova/quasar-design-system/qwindow'
 import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/quasar-design-system'
 import { ppPlus, ppStar } from 'quasar-extras-svg-icons/phosphor-icons-v2'
@@ -62,6 +62,10 @@ const fillSurfaces = [
   ['capsule', QToolbar, 'qds-glass-bar'],
   ['bar', QBar, ''],
 ] as const
+const fillTree = [{ id: 'root', label: 'Folder', icon: ppPlus, children: [{ id: 'leaf', label: 'Leaf' }] }]
+const fillEditor = '<a href="#role-fill">Link</a> text'
+const fillRows = [{ name: 'Alpha' }, { name: 'Beta' }]
+const fillColumns = [{ name: 'name', label: 'Name', field: 'name', align: 'left' as const }]
 const buttonDesigns = ['standard', 'flat', 'outline', 'unelevated', 'push', 'round', 'fab', 'fab-mini'] as const
 const glassSelectionProbe = new URLSearchParams(location.search).has('glass-selection')
 const image = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect width="32" height="32" fill="gray"/%3E%3C/svg%3E'
@@ -175,6 +179,21 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
           <q-route-tab name="route" href="#role-fill" label="Route" :icon="ppPlus" />
           <q-tab name="inactive" label="Inactive" />
         </q-tabs>
+        <div :class="`bg-${role}`" :data-fill-probe="`${role}/surfaces`" style="padding: 16px">
+          <q-tree :nodes="fillTree" node-key="id" default-expand-all selected="leaf" data-probe="tree" />
+          <q-expansion-item default-opened label="Expanded" data-probe="expansion"><div>Body</div></q-expansion-item>
+          <q-knob :model-value="40" show-value aria-label="Knob" data-probe="knob" />
+          <q-rating :model-value="3" :icon="ppStar" :max="5" data-probe="rating" />
+          <q-banner data-probe="banner"><span data-probe-label>Banner</span><template #action><q-btn flat no-caps label="Action" /></template></q-banner>
+          <q-editor :model-value="fillEditor" :toolbar="[['bold', 'link']]" data-probe="editor" />
+          <q-uploader label="Uploader" data-probe="uploader" />
+          <q-table :rows="fillRows" :columns="fillColumns" row-key="name" selection="multiple" :pagination="{ rowsPerPage: 1 }" color="primary" data-probe="table" />
+          <q-markup-table data-probe="markup table"><tbody><tr><td><span data-probe-label>Cell</span><q-btn flat no-caps label="Edit" /></td></tr></tbody></q-markup-table>
+          <q-stepper :model-value="1" header-nav data-probe="stepper"><q-step :name="1" title="First">Step</q-step><q-step :name="2" title="Second" /></q-stepper>
+          <q-carousel :model-value="1" arrows navigation style="height: 120px" data-probe="carousel">
+            <q-carousel-slide :name="1"><span data-probe-label>Slide</span></q-carousel-slide><q-carousel-slide :name="2" />
+          </q-carousel>
+        </div>
       </template>
     </section>
     <section v-if="glassSelectionProbe" data-selection-matrix aria-label="Glass selection matrix">
