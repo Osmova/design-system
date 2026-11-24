@@ -358,6 +358,7 @@ $shadcn-roles: ':is(.text-primary, .text-secondary, .text-accent, .text-positive
   #{$glass} .q-toggle .q-toggle__inner--indet .q-toggle__thumb { inset-inline-start: calc((var(--qds-toggle-track-width) - var(--_qds-glass-knob-width)) / 2); }
   #{$glass} .q-toggle .q-toggle__track { background: var(--_qds-glass-forced-edge, var(--qds-stroke-strong)); border-color: transparent; }
   #{$glass} .q-toggle :is(.q-toggle__inner--truthy, .q-toggle__inner--indet) .q-toggle__track { background: var(--_qds-glass-highlight, var(--_qds-glass-on-track)); border-color: transparent; }
+  #{$glass} .q-toggle :is(.text-accent, .text-positive, .text-warning) { --_qds-glass-on-track: var(--_qds-glass-bright-track, currentColor); }
   #{$glass} .q-toggle.disabled .q-toggle__inner--falsy .q-toggle__track { background: var(--_qds-glass-forced-edge, var(--qds-bg-surface-2)); }
   #{$glass} .q-toggle:is(*, .disabled) :is(.q-toggle__thumb, .q-toggle__inner--truthy .q-toggle__thumb)::after { border-radius: var(--qds-radius-full); background: var(--_qds-glass-canvas, var(--_qds-glass-knob)); box-shadow: var(--qds-shadow-sm); }
   #{$glass} .q-toggle:not(.disabled) .q-toggle__inner--falsy .q-toggle__thumb::after { background: var(--_qds-glass-canvas, var(--_qds-glass-knob-contrast, var(--_qds-glass-knob))); }

@@ -437,6 +437,7 @@
     --qds-chrome-surface: color-mix(in srgb, var(--qds-surface-0) var(--qds-chrome-surface-mix, 86%), transparent);
     // A light role on a dark track would wash out the light knob.
     --_qds-glass-on-track: color-mix(in srgb, currentColor 80%, var(--qds-surface-0));
+    --_qds-glass-bright-track: color-mix(in srgb, currentColor 65%, var(--qds-surface-0));
   }
   --_qds-glass-bar-line: transparent;
   --qds-toolbar-bg: transparent;
@@ -502,6 +503,7 @@
   @include fallbacks.qds-material-tokens(solid);
   --_qds-glass-sheen: none;
   --_qds-glass-bar-line: var(--qds-border);
+  --_qds-glass-scroll-edge: none;
 }
 
 @mixin qds-glass-contrast($scheme) {
@@ -510,7 +512,7 @@
   --qds-stroke-strong: var(--qds-text-muted);
   @if $scheme == dark {
     --_qds-glass-knob-contrast: var(--qds-surface-0);
-    --_qds-glass-on-track: color-mix(in srgb, currentColor 70%, var(--qds-surface-0));
+    --_qds-glass-on-track: color-mix(in srgb, currentColor 72%, var(--qds-surface-0));
   }
 }
 

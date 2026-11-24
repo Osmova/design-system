@@ -61,7 +61,7 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
   #{$glass} .q-footer::before { transform: scaleY(-1); }
   #{$glass} :is(.q-header, .q-footer):has(> :is(.q-toolbar.qds-glass-bar, .q-tabs--horizontal))::before { opacity: 0; }
   @supports (animation-timeline: scroll()) {
-    #{$glass} .q-header:not(:has(> :is(.q-toolbar.qds-glass-bar, .q-tabs--horizontal)))::before { animation: qds-variant-glass-edge linear both; animation-timeline: scroll(root); animation-range: 0 2rem; }
+    #{$glass} .q-header:not(:has(> :is(.q-toolbar.qds-glass-bar, .q-tabs--horizontal)))::before { animation: var(--_qds-glass-scroll-edge, qds-variant-glass-edge) linear both; animation-timeline: scroll(root); animation-range: 0 2rem; }
     @keyframes qds-variant-glass-edge { from { opacity: 0; } }
   }
   @media (prefers-contrast: more), (forced-colors: active) {
@@ -75,6 +75,7 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
     @include glass.contrast-frame;
   }
   #{$glass} .q-toolbar.qds-glass-bar .q-btn:focus-visible { outline-offset: -3px; }
+  #{$glass} .q-toolbar.qds-glass-bar .q-btn[class*='bg-']:not(.qds-tonal, .q-btn-toggle > *):focus-visible { --qds-stroke-focus: currentColor; }
   #{$glass} .q-toolbar__title { padding-inline: 0; font-weight: var(--qds-font-weight-bold); letter-spacing: -0.01em; }
   #{$glass} .q-bar { color: var(--qds-fg-default); border-radius: var(--qds-radius-control); @include glass.material; @include glass.contrast-frame; }
   #{$glass} .q-separator { background: var(--qds-border-subtle); }

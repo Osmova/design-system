@@ -61,6 +61,7 @@ test('no-filter, reduced transparency, forced colours and increased contrast all
     && body.includes('--qds-material-regular-bg:var(--qds-surface-0)')
     && body.includes('--qds-material-regular-filter:none')
     && body.includes('--_qds-glass-sheen:none')
+    && body.includes('--_qds-glass-scroll-edge:none')
     && body.includes('--_qds-glass-bar-line:var(--qds-border)'))
   for (const [name, pattern] of [
     ['no backdrop-filter', /@supports not/],
@@ -107,6 +108,9 @@ function glassTokens(scheme) {
 const FILL_STATES = { hover: 0.88, pressed: 0.76 }
 const ROLE_FG_MIX = 0.86
 const DARK_TRACK_MIX = 0.8
+const DARK_CONTRAST_TRACK_MIX = 0.72
+const DARK_BRIGHT_SWITCH_MIX = 0.65
+const brightSwitchRoles = ['accent', 'positive', 'warning']
 
 export function glassPairs(scheme) {
   const token = glassTokens(scheme)
@@ -157,11 +161,19 @@ export function glassPairs(scheme) {
   }
   add('control edge', 'stroke/segmented track', token['stroke-strong'], token['surface-2'], 3)
   add('state indicator', 'knob/switch off track', parseRgb('#ffffff'), token['stroke-strong'], 3)
-  // Dark tracks shade the role toward the page so the light knob keeps its edge.
   const track = scheme === 'dark' ? mix(token.primary, token['surface-0'], DARK_TRACK_MIX) : token.primary
-  add('state indicator', 'knob/switch on track', parseRgb('#ffffff'), track, 3)
   add('state indicator', 'slider thumb/selection', parseRgb('#ffffff'), track, 3)
   for (const name of ['surface-0', 'surface-1', 'surface-2']) add('state indicator', `on track/${name}`, track, token[name], 3)
+  for (const role of roles) {
+    for (const increased of [false, true]) {
+      const color = increased && role === 'primary' ? token['hc-primary'] : token[role]
+      const amount = brightSwitchRoles.includes(role) ? DARK_BRIGHT_SWITCH_MIX : increased ? DARK_CONTRAST_TRACK_MIX : DARK_TRACK_MIX
+      const fill = scheme === 'dark' ? mix(color, token['surface-0'], amount) : color
+      const state = `${role}/${increased ? 'more' : 'default'}`
+      add('state indicator', `switch thumb/track/${state}`, parseRgb('#ffffff'), fill, 3)
+      for (const [name, surface] of surfaces) add('state indicator', `switch track/${name}/${state}`, fill, surface, 3)
+    }
+  }
   // The empty slider track is the stroke colour, so it reads on the surfaces a slider sits on.
   for (const name of ['surface-0', 'surface-1']) add('state indicator', `slider track/${name}`, token['stroke-strong'], token[name], 3)
   add('state indicator', 'slider thumb/empty track', parseRgb('#ffffff'), token['stroke-strong'], 3)
@@ -186,8 +198,6 @@ export function glassPairs(scheme) {
   add('selection cue', 'thumb/track', thumb, token['surface-2'], 1)
   add('focus indicator', 'focus/thumb', token.primary, thumb, 3)
   add('increased contrast', 'edge/thumb', token['text-muted'], thumb, 3)
-  const contrastTrack = scheme === 'dark' ? mix(token['hc-primary'], token['surface-0'], 0.7) : token['hc-primary']
-  add('increased contrast', 'white knob/on track', parseRgb('#ffffff'), contrastTrack, 3)
   add('increased contrast', 'on-primary/hc fill', token['on-primary'], token['hc-primary'], 7)
   return pairs
 }

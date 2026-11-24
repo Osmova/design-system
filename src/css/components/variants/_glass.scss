@@ -38,6 +38,7 @@ $segment-selected: ".q-btn-toggle > .q-btn-item:is([aria-pressed='true'], .q-btn
     @media (prefers-contrast: more), (forced-colors: active) { border-color: var(--_qds-glass-forced-button, var(--_qds-glass-control-edge)); }
   }
   #{$glass} .q-toolbar.qds-glass-bar :is(.q-btn-group, .q-btn--flat:not(.q-btn-group > *)) { background: transparent; }
+  #{$glass} .q-btn-group:not(.q-btn-toggle) { @include contrast-frame; }
   #{$glass} .q-toolbar .q-btn-group > .q-btn { background: transparent; border-color: transparent; box-shadow: none; }
   #{$glass} .q-btn:is(.q-btn--fab, .q-btn--fab-mini):where(:not([class*='bg-'], .disabled)) { @include material(thin); }
   #{$glass} .q-btn:is(.q-btn--fab, .q-btn--fab-mini):where([class*='bg-']:not(.disabled)) { box-shadow: var(--qds-material-edge), var(--qds-shadow-md); }

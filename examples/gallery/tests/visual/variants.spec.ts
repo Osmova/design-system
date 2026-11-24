@@ -98,6 +98,66 @@ test.describe('QDS variant distinctiveness lab', () => {
       expect.soft(await customProperty(page, '--_qds-glass-bar-line'), 'bars keep a permanent divider once glass is opaque').not.toBe('transparent')
     })
 
+    test(`glass ${mode} keeps a plain header opaque with reduced transparency`, async ({ page }) => {
+      await page.goto('/#components?variant=glass')
+      await applyTheme(page, mode, 'glass')
+      const header = '.gallery-header'
+      const toolbar = page.locator(`${header} .q-toolbar`)
+      await toolbar.evaluate(el => el.classList.remove('qds-glass-bar'))
+      await page.evaluate(() => window.scrollTo(0, 0))
+      await waitForThemePaint(page)
+      expect(await computed(page, header, 'opacity', '::before')).toBe('0')
+
+      const session = await page.context().newCDPSession(page)
+      await session.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }] })
+      const surface = await resolvedColor(page, '--qds-surface-0')
+      for (const top of [0, 16, 64]) {
+        await page.evaluate(top => window.scrollTo(0, top), top)
+        await waitForThemePaint(page)
+        expect(await page.evaluate(() => window.scrollY)).toBe(top)
+        expect.soft(await computed(page, header, 'opacity', '::before'), `header opacity at ${top}px`).toBe('1')
+        expect.soft(await computed(page, header, 'background-color', '::before')).toBe(surface)
+        expect.soft(await computed(page, header, 'backdrop-filter', '::before')).toBe('none')
+      }
+
+      await toolbar.evaluate(el => el.classList.add('qds-glass-bar'))
+      await waitForThemePaint(page)
+      expect.soft(await computed(page, header, 'opacity', '::before')).toBe('0')
+      expect.soft(await computed(page, `${header} .q-toolbar`, 'background-color', '::before')).toBe(surface)
+      expect.soft(await computed(page, `${header} .q-toolbar`, 'backdrop-filter', '::before')).toBe('none')
+      await session.detach()
+    })
+
+    test(`glass ${mode} keeps every checked switch thumb legible on its track`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme: mode })
+      await page.goto('/#components?variant=glass')
+      await applyTheme(page, mode, 'glass')
+      const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
+      await page.getByRole('switch', { name: 'Enable tonal surfaces' }).evaluate((el, roles) => {
+        for (const role of roles) {
+          const toggle = el.cloneNode(true) as HTMLElement
+          const inner = toggle.querySelector('.q-toggle__inner--truthy')!
+          inner.classList.add(`text-${role}`)
+          toggle.dataset.switchRole = role
+          el.parentElement!.append(toggle)
+        }
+      }, roles)
+      for (const media of [
+        { contrast: 'no-preference', forcedColors: 'none' },
+        { contrast: 'more', forcedColors: 'none' },
+        { contrast: 'no-preference', forcedColors: 'active' },
+      ] as const) {
+        await page.emulateMedia(media)
+        await waitForThemePaint(page)
+        for (const role of roles) {
+          const track = page.locator(`[data-switch-role="${role}"] .q-toggle__track`)
+          const paint = await glassPaint(track, undefined, '.q-toggle__thumb')
+          expect.soft(paint.adjacentFillContrast, `${role} thumb/track (${media.contrast}/${media.forcedColors})`).toBeGreaterThanOrEqual(3)
+          expect.soft(paint.fillContrast, `${role} track/surface (${media.contrast}/${media.forcedColors})`).toBeGreaterThanOrEqual(3)
+        }
+      }
+    })
+
     test(`glass resolves increased contrast to opaque glass and a deeper accent in ${mode}`, async ({ page }) => {
       await page.goto('/#components?variant=glass')
       await applyTheme(page, mode, 'glass')
@@ -415,7 +475,7 @@ test.describe('QDS variant distinctiveness lab', () => {
         }
       })
 
-      test(`glass ${mode} keeps bar, caption and chip cues in contrast modes in ${delivery} CSS`, async ({ page }) => {
+      test(`glass ${mode} keeps bar focus, group edges, caption and chip cues in ${delivery} CSS`, async ({ page }) => {
         await page.emulateMedia({ colorScheme: mode })
         await page.goto(entry)
         await applyTheme(page, mode, 'glass')
@@ -426,6 +486,7 @@ test.describe('QDS variant distinctiveness lab', () => {
               <button class="q-btn q-btn-item q-btn--flat q-btn--rectangle" data-bar-item>Back</button>
               <div class="q-btn-group row no-wrap inline" data-bar-item><button class="q-btn q-btn-item q-btn--flat">A</button></div>
             </div></div>
+            <div class="q-toolbar qds-glass-bar row wrap" data-focus-bar></div>
             ${[0, 1, 2].map(surface => `
               <div style="background-color: var(--qds-surface-${surface})">
                 <div class="q-expansion-item q-item-type q-expansion-item--expanded q-expansion-item--standard"><div class="q-expansion-item__container">
@@ -436,8 +497,43 @@ test.describe('QDS variant distinctiveness lab', () => {
                 <div class="q-chip row inline no-wrap items-center q-chip--clickable cursor-pointer bg-primary" tabindex="0" data-tinted-chip><div class="q-chip__content row no-wrap items-center">Filter</div></div>
                 <div class="q-chip row inline no-wrap items-center bg-positive" data-tinted-chip><div class="q-chip__content row no-wrap items-center">Done</div><i class="q-icon q-chip__icon q-chip__icon--remove" role="button" tabindex="0">×</i></div>
               </div>`).join('')}`)
+          el.querySelector('[data-focus-bar]')!.append(...el.querySelectorAll('[data-native="roles"] [data-role]'))
         }, mode)
 
+        const barButtons = page.locator('[data-focus-bar] .q-btn')
+        await expect(barButtons).toHaveCount(7)
+        const groups = page.locator('[data-native="group"], [data-native="split"], [data-native="segments"]')
+        await expect(groups).toHaveCount(3)
+        for (const media of [
+          { contrast: 'no-preference', forcedColors: 'none' },
+          { contrast: 'more', forcedColors: 'none' },
+          { contrast: 'no-preference', forcedColors: 'active' },
+        ] as const) {
+          await page.emulateMedia(media)
+          await waitForThemePaint(page)
+          for (const button of await barButtons.all()) {
+            await button.focus()
+            await expect(button).toBeFocused()
+            const paint = await glassPaint(button)
+            const label = `${await button.getAttribute('data-role')} (${media.contrast}/${media.forcedColors})`
+            expect.soft(paint.outlineStyle, `${label} focus style`).toBe('solid')
+            expect.soft(paint.outlineWidth, `${label} focus width`).toBe('2px')
+            expect.soft(paint.outlineOffset, `${label} focus offset`).toBe('-3px')
+            expect.soft(paint.outlineOnFill, `${label} focus/fill`).toBeGreaterThanOrEqual(3)
+          }
+          for (const group of await groups.all()) {
+            const label = `${await group.getAttribute('data-native')} (${media.contrast}/${media.forcedColors})`
+            const paint = await glassPaint(group)
+            if (media.contrast === 'more' || media.forcedColors === 'active') {
+              expect.soft(paint.outlineStyle, `${label} perimeter style`).toBe('solid')
+              expect.soft(paint.outlineWidth, `${label} perimeter width`).toBe('1px')
+              expect.soft(paint.outlineContrast, `${label} perimeter contrast`).toBeGreaterThanOrEqual(3)
+            } else {
+              expect.soft(paint.outlineStyle, `${label} rest perimeter`).toBe('none')
+            }
+          }
+        }
+        await page.emulateMedia({ contrast: 'no-preference', forcedColors: 'none' })
         for (const caption of await page.locator('[data-expanded-caption]').all()) {
           expect.soft((await glassPaint(caption)).textContrast, 'expanded header caption').toBeGreaterThanOrEqual(4.5)
         }
@@ -494,11 +590,19 @@ test.describe('QDS variant distinctiveness lab', () => {
         el.replaceChildren(icon)
       })
     }
-    expect.soft(await computed(page, `${idleSegment} .q-btn__content`, 'content', '::after')).toBe('none')
-    expect.soft(await computed(page, `${segment} .q-btn__content`, 'border-block-end-width', '::after')).toBe('2px')
+    for (const media of [
+      { contrast: 'no-preference', forcedColors: 'none' },
+      { contrast: 'more', forcedColors: 'none' },
+      { contrast: 'no-preference', forcedColors: 'active' },
+    ] as const) {
+      await page.emulateMedia(media)
+      await waitForThemePaint(page)
+      expect.soft(await computed(page, `${idleSegment} .q-btn__content`, 'content', '::after')).toBe('none')
+      const mark = await glassPaint(page.locator(`${segment} .q-btn__content`), '::after')
+      expect.soft(mark.markWidth).toBe('2px')
+      expect.soft(mark.markContrast, `icon-only selection (${media.contrast}/${media.forcedColors})`).toBeGreaterThanOrEqual(3)
+    }
 
-    await page.emulateMedia({ forcedColors: 'active' })
-    await waitForThemePaint(page)
     const highlight = await systemHighlight(page)
     for (const selector of [tab, segment]) {
       await expect.soft(page.locator(selector)).toHaveCSS('background-color', highlight.fill)
@@ -592,8 +696,8 @@ async function expectMaterialText(page: Page, selector: string) {
   for (const { name, minimum } of results) expect.soft(minimum, name).toBeGreaterThanOrEqual(4.5)
 }
 
-function glassPaint(locator: Locator, pseudo?: string) {
-  return locator.evaluate((el, pseudo) => {
+function glassPaint(locator: Locator, pseudo?: string, adjacent?: string) {
+  return locator.evaluate((el, { pseudo, adjacent }) => {
     const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true })!
     context.fillStyle = 'Canvas'
     context.fillRect(0, 0, 1, 1)
@@ -618,6 +722,11 @@ function glassPaint(locator: Locator, pseudo?: string) {
     const edge = paint(style.borderTopColor)
     context.putImageData(fillPixel, 0, 0)
     const outline = paint(style.outlineColor)
+    context.putImageData(fillPixel, 0, 0)
+    const marker = paint(style.borderBlockEndColor)
+    const neighbor = adjacent ? el.parentElement!.querySelector(adjacent) : null
+    context.putImageData(fillPixel, 0, 0)
+    const adjacentFill = neighbor ? paint(getComputedStyle(neighbor, '::after').backgroundColor) : fill
     const fieldText: Record<string, number> = {}
     for (const [part, selector] of [['placeholder', 'input[placeholder]'], ['prefix', '.q-field__prefix'], ['suffix', '.q-field__suffix']]) {
       const node = el.querySelector(selector)
@@ -635,13 +744,18 @@ function glassPaint(locator: Locator, pseudo?: string) {
       borderWidth: style.borderTopWidth,
       borderStyle: style.borderTopStyle,
       outline: style.outlineColor,
+      outlineStyle: style.outlineStyle,
       outlineWidth: style.outlineWidth,
       outlineOffset: style.outlineOffset,
       edgeContrast: ratio(edge, fill),
+      fillContrast: ratio(fill, surface),
+      adjacentFillContrast: ratio(adjacentFill, fill),
+      markWidth: style.borderBlockEndWidth,
+      markContrast: ratio(marker, fill),
       outlineOnFill: ratio(outline, fill),
       outlineContrast: Math.min(ratio(outline, fill), ratio(outline, surface)),
       textContrast: ratio(paint(style.color, Number(style.opacity)), fill),
       fieldText,
     }
-  }, pseudo)
+  }, { pseudo, adjacent })
 }
