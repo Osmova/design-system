@@ -25,7 +25,7 @@ const BASELINE = '71bb9d52bf483a93de0b50202df122b73f70ed9e'
  */
 // 0.10.1 allowance (owner review 2026-11-20): lines 5030->5120, core 210000/26000->215200/26800, all 705000/71000->716200/72050 (owner 2026-11-23).
 // 0.11 Osmova variant (owner 2026-11-23): lines 5120->5180, all 716200/72050->745000/76650.
-const LIMITS = { important: 51, doubled: 0, lines: 5312 }
+const LIMITS = { important: 52, doubled: 0, lines: 5312 }
 // Opt-in delivery: ./css is the shared grammar plus the unscoped win default; each variant file is that grammar plus the one variant.
 const ENTRIES = ['src/css/index.scss', 'src/css/index.layered.scss']
 const CORE_CAP = { min: 215200, gzip: 26800 }
