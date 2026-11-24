@@ -252,6 +252,23 @@ test('Zen focus pairs the glow with a real outline or boundary, never the glow a
   }
 })
 
+const zenSelector = '.qds-variant-zen:is(.qds-ui,.qds-ui *)'
+// Notify and soft banners must stay out: the shared layer repaints them as neutral washes.
+const paintedSurface = ':is(:is(.bg-primary,.bg-secondary,.bg-accent,.bg-positive,.bg-negative,.bg-warning,.bg-info,.bg-dark),.q-bar--dark)'
+  + ':not(.q-btn,.q-chip,.q-badge,.q-toggle__track,.q-slider__selection,.q-notification,.q-banner:where(.bg-positive,.bg-negative,.bg-warning,.bg-info))'
+const paintedTargets = ['', ' :is(.q-tab:not(.disabled),.q-tab__indicator,.q-tabs__arrow)', ' .q-chip--outline:not(.disabled)',
+  ' .q-btn:is(.q-btn--flat,.q-btn--outline):not(:is(.bg-primary,.bg-secondary,.bg-accent,.bg-positive,.bg-negative,.bg-warning,.bg-info,.bg-dark),.q-btn-toggle *,.disabled):not(.q-pagination [aria-current=page].q-btn--flat)']
+const selectorList = (path) => {
+  const selectors = ['']
+  let depth = 0
+  for (const character of path) {
+    if (character === ',' && depth === 0) { selectors.push(''); continue }
+    depth += character === '(' ? 1 : character === ')' ? -1 : 0
+    selectors[selectors.length - 1] += character
+  }
+  return selectors
+}
+
 test('Zen routes only native color, focus and transparent chrome overrides through the importance layer', () => {
   const css = compile(zenProgram())
   assert.doesNotMatch(css, /@import|@layer/)
@@ -268,9 +285,14 @@ test('Zen routes only native color, focus and transparent chrome overrides throu
     } else if (declaration.startsWith('outline:')) {
       assert.match(path, /\.q-field__focusable-action:focus-visible$/)
       assert.match(declaration, /^outline:var\(--qds-focus-ring-width\) solid currentColor\s*!important/i)
+    } else if (/^color:#fff\s*!important/i.test(declaration)) {
+      assert.equal(path, `${zenSelector} .q-chip.bg-dark`)
     } else {
-      assert.match(path, /\.bg-dark/)
-      assert.match(declaration, /^color:(var\(--_qds-zen-surface-ink,|#fff\s*!important)/)
+      assert.match(declaration, /^color:var\(--_qds-zen-surface-ink,/)
+      for (const selector of selectorList(path)) {
+        assert.ok(selector.startsWith(`${zenSelector} ${paintedSurface}`), `important ink outside a painted surface: ${selector}`)
+        assert.ok(paintedTargets.includes(selector.slice(zenSelector.length + paintedSurface.length + 1)), `unexpected important ink target: ${selector}`)
+      }
     }
   }
   assert.equal(important(layered).length, rules.length)

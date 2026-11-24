@@ -29,11 +29,17 @@ const assets = {
 }
 
 const fixture = `body { margin: 24px; } #app { width: 560px; display: grid; gap: 24px; }
+  .audit-grid { flex: 1 1 100%; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 8px; }
+  .audit-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 8px; }
   *, *::before, *::after { transition: none !important; animation: none !important; }`
 const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
 const barRoles = [...roles, 'dark']
 const barCompositions = ['header-transparent-toolbar', 'footer-transparent-toolbar', 'header-direct', 'header-toolbar', 'header-colored-toolbar', 'footer-direct', 'footer-toolbar', 'footer-colored-toolbar', 'footer-colored-tabs', 'toolbar', 'compact-bar', 'vertical-bar']
 const designs = ['standard', 'flat', 'outline', 'unelevated', 'push']
+const surfaceContainers = ['panel', 'toolbar', 'header', 'footer', 'bar', 'track', 'banner']
+// Author-owned chrome paint: Zen must neither recolor the ink nor cover the fill.
+const authorPaints = ['bg-grey-9 text-white', 'bg-black text-white', 'bg-grey-3 text-black']
+const authorShells = ['header', 'footer', 'header-transparent', 'card', 'card-transparent']
 const actionRole = (index) => roles[(index + 1) % roles.length]
 
 // Chrome serializes a resolved color-mix() as `color(srgb r g b / a)` with 0..1
@@ -61,9 +67,9 @@ async function mount(browser, bodyClass) {
     + `<body class="${bodyClass}"><div id="app"></div></body>`)
   await page.addScriptTag({ content: assets.vue })
   await page.addScriptTag({ content: assets.quasar })
-  await page.evaluate(({ roles, barRoles, barCompositions, barActions, designs }) => {
+  await page.evaluate(({ roles, barRoles, barCompositions, barActions, designs, surfaceContainers, authorPaints, authorShells }) => {
     const { createApp, h, reactive, nextTick } = Vue
-    const { QBtn, QBtnGroup, QBtnToggle, QInput, QTabs, QTab, QRouteTab, QToolbar, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QRadio, QSlider, QRange, QPagination, QBar, QCard, QChip, QSelect, QExpansionItem, QTree, QRating, QDate, QTime, QColor, QStepper, QStep, QSplitter, QEditor, QUploader, QTable } = Quasar
+    const { QBanner, QKnob, QBtn, QBtnGroup, QBtnToggle, QInput, QTabs, QTab, QRouteTab, QToolbar, QMenu, QList, QItem, QItemSection, QSeparator, QToggle, QCheckbox, QRadio, QSlider, QRange, QPagination, QBar, QCard, QChip, QSelect, QExpansionItem, QTree, QRating, QDate, QTime, QColor, QStepper, QStep, QSplitter, QEditor, QUploader, QTable } = Quasar
     const state = reactive({ value: 'Zen', tab: 'a', menu: false, error: false })
     const svg = 'M0 0h24v24H0z'
     const tabs = (props, icons = false) => h(QTabs, { ...props, modelValue: state.tab, 'onUpdate:modelValue': (v) => { state.tab = v } },
@@ -161,14 +167,20 @@ async function mount(browser, bodyClass) {
         ]),
         h(QInput, { type: 'textarea', modelValue: 'Text', outlined: true, 'data-audit': 'field-textarea' }),
         h(QSelect, { options: ['Value'], modelValue: 'Value', borderless: true, 'data-audit': 'field-select' }),
+        h('span', { 'data-audit': 'copy' }, 'Surface copy'),
+        h(QRating, { modelValue: 2, max: 3, icon: svg, 'data-audit': 'rating' }),
+        h(QKnob, { modelValue: 40, showValue: true, size: '3rem', 'data-audit': 'knob' }),
+        h(QSlider, { modelValue: 40, style: 'width:160px', 'data-audit': 'slider' }),
       ]
       const props = { 'data-audit-surface': `${container}-${role}`, class: `bg-${role}` }
       const trays = [false, true].flatMap((vertical) => [false, true].map((route) => contractTabs(vertical, route)))
-      if (container === 'track') return h('div', { 'data-audit-surface': `track-${role}` },
+      if (container === 'track') return h('div', { 'data-audit-surface': `track-${role}`, class: 'audit-stack' },
         [false, true].flatMap((vertical) => [false, true].map((route) => contractTabs(vertical, route, props.class))))
-      if (container === 'toolbar') return h(QToolbar, props, () => h('div', controls.concat(trays)))
-      if (container === 'bar') return h(QBar, { ...props, style: 'height:auto' }, () => h('div', controls.concat(trays)))
-      return h('section', { ...props, class: [props.class, container === 'panel' ? undefined : `q-${container}`] }, controls.concat(trays))
+      const grid = () => h('div', { class: 'audit-grid' }, controls.concat(trays))
+      if (container === 'toolbar') return h(QToolbar, props, grid)
+      if (container === 'bar') return h(QBar, { ...props, style: 'height:auto' }, grid)
+      if (container === 'banner') return h(QBanner, props, grid)
+      return h('section', { ...props, class: [props.class, container === 'panel' ? undefined : `q-${container}`] }, [grid()])
     }
     const app = createApp({ setup: () => () => [
       h('div', { style: 'display:flex;gap:16px;flex-wrap:wrap' }, [
@@ -250,7 +262,16 @@ async function mount(browser, bodyClass) {
         h(QToolbar, { id: 'transparent-header-toolbar', class: 'bg-transparent' }, () => tabs({ id: 'transparent-header-tabs' }, true)),
       ]),
       h(QBar, { id: 'transparent-dark-bar', dark: true, class: 'bg-transparent' }, () => tabs({ id: 'transparent-dark-bar-tabs' }, true)),
-      ...barRoles.flatMap((role) => ['panel', 'toolbar', 'header', 'footer', 'bar', 'track'].map((container) => roleControls(role, container))),
+      ...barRoles.flatMap((role) => surfaceContainers.map((container) => roleControls(role, container))),
+      ...authorPaints.flatMap((paint, index) => authorShells.map((shell) => {
+        const id = `author-${shell}-${index}`
+        const [tag, transparent] = shell.split('-')
+        const toolbar = h(QToolbar, { class: transparent ? 'bg-transparent' : undefined }, () => [
+          h(Quasar.QToolbarTitle, {}, () => 'Author title'), h(QBtn, { id: `${id}-action`, flat: true, label: 'Action' }),
+        ])
+        return tag === 'card' ? h(QCard, { id, class: paint }, () => toolbar) : h(tag, { id, class: `q-${tag} ${paint}` }, [toolbar])
+      })),
+      h(QKnob, { id: 'knob', modelValue: 40, showValue: true, size: '3rem' }),
       destinations('list'),
       h('aside', { id: 'drawer', class: 'q-drawer q-drawer--bordered q-drawer--left' }, [destinations('drawer-list')]),
       h('aside', { id: 'mini-drawer', class: 'q-drawer q-drawer--mini q-drawer--bordered q-drawer--left' }, [
@@ -297,8 +318,43 @@ async function mount(browser, bodyClass) {
     ] })
     app.use(Quasar)
     app.mount('#app')
-    window.zen = { state, async set(values) { Object.assign(state, values); await nextTick() }, dispose() { app.unmount() } }
-  }, { roles, barRoles, barCompositions, designs, barActions: roles.map((_, index) => actionRole(index)) })
+    window.zen = { state, async set(values) { Object.assign(state, values); await nextTick() }, dispose() { app.unmount() },
+      async notify() {
+        const dismiss = [...['positive', 'negative', 'warning', 'info'].map((type) => ['type', type]), ...barRoles.map((color) => ['color', color])]
+          .map(([key, value]) => Quasar.Notify.create({
+            [key]: value, timeout: 0, group: false, position: 'top-right', icon: svg, html: true,
+            message: '<span data-audit="copy">Saved</span>', attrs: { 'data-audit-surface': `notify-${key}-${value}` },
+            actions: [{ label: 'Undo', 'data-audit': 'notify-action' }],
+          }))
+        await nextTick()
+        window.zen.dismiss = () => dismiss.forEach((close) => close())
+      },
+    }
+    window.zenLayers = (node) => {
+      const paints = []
+      for (; node; node = node.parentElement) paints.unshift(getComputedStyle(node).backgroundColor)
+      return paints
+    }
+    // The paint under an outward ring, sampled mid-side; a side touching a neighbouring control is left out.
+    window.zenRing = (element) => {
+      const style = getComputedStyle(element)
+      const offset = parseFloat(style.outlineOffset)
+      const width = parseFloat(style.outlineWidth)
+      if (offset + width <= 0) return [window.zenLayers(element)]
+      element.scrollIntoView({ block: 'center', inline: 'center' })
+      const box = element.getBoundingClientRect()
+      const reach = offset + width / 2
+      const sides = []
+      for (const [x, y] of [[box.left + box.width / 2, box.top - reach], [box.right + reach, box.top + box.height / 2],
+        [box.left + box.width / 2, box.bottom + reach], [box.left - reach, box.top + box.height / 2]]) {
+        const stack = document.elementsFromPoint(x, y).filter((hit) => !element.contains(hit))
+        if (!stack.length || stack.some((hit) => !hit.contains(element))) continue
+        // The body paint propagates to the canvas, including its margin.
+        sides.push([getComputedStyle(document.body).backgroundColor, ...stack.reverse().map((hit) => getComputedStyle(hit).backgroundColor)])
+      }
+      return sides
+    }
+  }, { roles, barRoles, barCompositions, designs, surfaceContainers, authorPaints, authorShells, barActions: roles.map((_, index) => actionRole(index)) })
   return page
 }
 
@@ -603,17 +659,13 @@ async function verifyDestinations(page, scheme, forced) {
   }
 }
 
-async function verifyRoleControls(page, scheme, edges = false) {
+async function verifyRoleControls(page, scheme, edges = false, { scope = '[data-audit-surface]', minimum = 5000 } = {}) {
   await page.keyboard.press('Tab')
-  const observations = await page.evaluate(async ({ edges }) => {
-    const layers = (node) => {
-      const paints = []
-      for (; node; node = node.parentElement) paints.unshift(getComputedStyle(node).backgroundColor)
-      return paints
-    }
+  const observations = await page.evaluate(async ({ edges, scope }) => {
+    const layers = window.zenLayers
     const enabled = (node) => !node.matches('.disabled, [disabled], [aria-disabled="true"]')
     const entries = []
-    for (const container of document.querySelectorAll('[data-audit-surface]')) {
+    for (const container of document.querySelectorAll(scope)) {
       const prefix = container.dataset.auditSurface
       for (const fixture of container.querySelectorAll('[data-audit], .q-pagination .q-btn')) {
         const node = fixture.dataset.audit?.startsWith('field-') ? fixture.closest('.q-field') : fixture
@@ -621,14 +673,20 @@ async function verifyRoleControls(page, scheme, edges = false) {
         const family = node.closest('[data-family]')?.dataset.family
         const name = `${prefix}/${fixture.dataset.audit ?? family + '/' + node.textContent.trim()}`
         const field = node.matches('.q-field')
-        const target = field ? node.querySelector('input, textarea, .q-select__focus-target') : node
+        const kind = field ? 'field' : ['copy', 'rating', 'knob', 'slider'].find((audit) => audit === fixture.dataset.audit) ?? 'control'
+        const target = field ? node.querySelector('input, textarea, .q-select__focus-target')
+          : kind === 'rating' ? node.querySelector('.q-rating__icon-container[tabindex="0"]') : node
         const anchor = field ? node.querySelector('.q-field__control') : node
         const parts = field
           ? node.querySelectorAll('.q-field__native, .q-field__label, .q-field__append .q-icon, .q-field__prefix, .q-field__suffix, .q-field__messages > div')
-          : [node.querySelector('.q-checkbox__label, .q-radio__label, .q-toggle__label') ?? node,
-            ...node.querySelectorAll('.q-item__label--caption, svg, .q-chip__icon--remove')].filter((part) => !part.closest('.q-checkbox__bg, .q-radio__bg'))
-        const focusTarget = node.querySelector('.q-checkbox__inner, .q-radio__inner, .q-toggle__inner') ?? anchor
-        const add = (label, paint, backdrop, minimum, present = true, opacity = 1) => entries.push({ name: `${name} ${label}`, paint, backdrop, minimum, present, opacity })
+          : kind === 'rating' ? node.querySelectorAll('.q-rating__icon')
+            : kind === 'knob' ? node.querySelectorAll('.q-circular-progress__text')
+              : kind === 'slider' ? []
+                : [node.querySelector('.q-checkbox__label, .q-radio__label, .q-toggle__label') ?? node,
+                  ...node.querySelectorAll('.q-item__label--caption, svg, .q-chip__icon--remove')].filter((part) => !part.closest('.q-checkbox__bg, .q-radio__bg'))
+        const focusTarget = kind === 'slider' ? node.querySelector('.q-slider__thumb')
+          : kind === 'rating' ? target : node.querySelector('.q-checkbox__inner, .q-radio__inner, .q-toggle__inner') ?? anchor
+        const add = (label, paint, backdrop, minimum, present = true, opacity = 1, extra = {}) => entries.push({ name: `${name} ${label}`, paint, backdrop, minimum, present, opacity, ...extra })
         const inspect = (state) => {
           for (const part of parts) {
             const computed = getComputedStyle(part)
@@ -656,16 +714,30 @@ async function verifyRoleControls(page, scheme, edges = false) {
             const dash = getComputedStyle(node, '::after')
             add('selected action dash', dash.borderBottomColor, layers(node), 3, dash.content === '""' && parseFloat(dash.borderBottomWidth) >= 2)
           }
+          if (kind === 'rating') {
+            const star = node.querySelector('.q-rating__icon--active')
+            const dash = getComputedStyle(star, '::after')
+            add('current star mark', dash.borderBottomColor, layers(star), 3, dash.content === '""' && parseFloat(dash.borderBottomWidth) >= 2)
+          }
+          if (kind === 'knob') {
+            add('value arc', getComputedStyle(node.querySelector('.q-circular-progress__circle:last-of-type')).stroke, layers(node), 3)
+          }
+        }
+        if (kind === 'copy') {
+          inspect('static')
+          continue
         }
         target.blur()
         if (field) await new Promise(resolve => setTimeout(resolve, 0))
         inspect('unfocused')
         target.focus({ preventScroll: true })
-        if (field) await Vue.nextTick()
+        if (field || kind === 'slider') await Vue.nextTick()
         inspect('focused')
         const focus = getComputedStyle(focusTarget)
-        add('keyboard focus', focus.outlineColor, layers(parseFloat(focus.outlineOffset) < 0 ? focusTarget : focusTarget.parentElement), 3,
-          target.matches(':focus-visible') && parseFloat(focus.outlineWidth) >= 1 && focus.outlineStyle === 'solid')
+        const sides = window.zenRing(focusTarget)
+        add('keyboard focus', focus.outlineColor, null, 3,
+          target.matches(':focus-visible') && sides.length > 0 && parseFloat(focus.outlineWidth) >= 1 && focus.outlineStyle === 'solid'
+            && (kind !== 'slider' || focusTarget.matches('.q-slider--focus')), 1, { sides })
         const action = node.querySelector('.q-chip__icon--remove, .q-field__focusable-action[tabindex]')
         if (action) {
           action.focus({ preventScroll: true })
@@ -675,37 +747,54 @@ async function verifyRoleControls(page, scheme, edges = false) {
           action.blur()
         }
         target.blur()
+        if (field) await new Promise(resolve => setTimeout(resolve, 0))
+        if (field || kind === 'slider') await Vue.nextTick()
         if (edges && node.matches('.q-tab')) {
           const paint = getComputedStyle(node)
           add('increased contrast tab edge', paint.outlineColor, layers(node), 3,
             parseFloat(paint.outlineWidth) >= 1 && paint.outlineStyle === 'solid')
+        } else if (edges && (kind === 'rating' || kind === 'knob')) {
+          const paint = getComputedStyle(target)
+          add('increased contrast boundary', paint.outlineColor, null, 3,
+            parseFloat(paint.outlineWidth) >= 1 && paint.outlineStyle === 'solid', 1, { sides: window.zenRing(target) })
+        } else if (edges && kind === 'slider') {
+          const paint = getComputedStyle(node.querySelector('.q-slider__inner'))
+          add('increased contrast well boundary', paint.borderTopColor, layers(node), 3, parseFloat(paint.borderTopWidth) >= 1)
         } else if (edges) {
           const mark = node.querySelector('.q-checkbox__bg, .q-radio__bg, .q-toggle__track') ?? anchor
           const paint = getComputedStyle(mark)
           const side = node.matches('.q-field--borderless') && !node.matches('.qds-field--ghost') ? 'bottom' : 'top'
           const face = node.matches('.q-btn-toggle .q-btn[aria-pressed="true"]') ? mark : mark.parentElement
+          // A selected mark is bounded by its own role fill as much as by its edge.
+          const filled = mark.matches(':is(.q-checkbox__inner--truthy, .q-checkbox__inner--indet) .q-checkbox__bg, .q-toggle__inner--truthy .q-toggle__track')
           add('increased contrast boundary', paint.getPropertyValue(`border-${side}-color`), layers(face), 3,
-            parseFloat(paint.getPropertyValue(`border-${side}-width`)) >= 1)
+            parseFloat(paint.getPropertyValue(`border-${side}-width`)) >= 1, 1, filled ? { alternative: [paint.backgroundColor, layers(face)] } : {})
         }
       }
     }
     return entries
-  }, { edges })
-  assert.ok(observations.length > 5000, 'the role surface matrix rendered')
-  const failures = []
-  for (const { name, paint, backdrop, minimum, present, opacity } of observations) {
-    const surface = backdrop.map(rgb).reduce((behind, face) => mix(face, behind, face[3]), [255, 255, 255])
+  }, { edges, scope })
+  assert.ok(observations.length > minimum, `the ${scope} matrix rendered`)
+  const composite = (stack) => stack.map(rgb).reduce((behind, face) => mix(face, behind, face[3]), [255, 255, 255])
+  const measure = (paint, stack, opacity) => {
+    const surface = composite(stack)
     const ink = rgb(paint)
-    const ratio = contrast(mix(ink, surface, ink[3] * opacity), surface)
-    if (!present || ratio < minimum) failures.push({ name, present, paint, surface, ratio, minimum })
+    return contrast(mix(ink, surface, ink[3] * opacity), surface)
+  }
+  const failures = []
+  for (const { name, paint, backdrop, sides, alternative, minimum, present, opacity } of observations) {
+    const stacks = sides ?? [backdrop]
+    let ratio = stacks.length ? Math.min(...stacks.map((stack) => measure(paint, stack, opacity))) : 0
+    if (alternative) ratio = Math.max(ratio, measure(alternative[0], alternative[1], opacity))
+    if (!present || ratio < minimum) failures.push({ name, present, paint, surfaces: stacks.map(composite), ratio, minimum })
     else record(scheme, name, ratio, minimum)
   }
   if (failures.length) {
     const unique = new Map(failures.map((failure) => [failure.name.replace(/^[^/]+\//, ''), failure]))
     for (const failure of unique.values()) console.error(JSON.stringify(failure))
   }
-  assert.equal(failures.length, 0, `${scheme}: all role surface observations must meet their contrast and visibility thresholds`)
-  console.log(`${scheme}: ${observations.length} role-surface observations passed`)
+  assert.equal(failures.length, 0, `${scheme}: all ${scope} observations must meet their contrast and visibility thresholds`)
+  console.log(`${scheme}: ${observations.length} ${scope} observations passed`)
 }
 
 async function verifyControlPerimeters(page, scheme) {
@@ -750,11 +839,20 @@ async function verifyControlPerimeters(page, scheme) {
   }
 }
 
-async function verifyKeyboardParts(page, scheme) {
+async function ringContrast(locator, ink) {
+  const sides = await locator.evaluate((element) => window.zenRing(element))
+  assert.ok(sides.length, 'the ring must stay visible on at least one side')
+  return Math.min(...sides.map((stack) => paintContrast(ink, stack.map(rgb).reduce((behind, face) => mix(face, behind, face[3]), [255, 255, 255]).slice(0, 3))))
+}
+
+async function verifyKeyboardParts(page, scheme, edges = true) {
   await page.keyboard.press('Tab')
+  const editor = '#frame-editor [contenteditable="true"]'
   for (const selector of ['#frame-date .q-date__header-link[tabindex="0"]', '#frame-time [role="spinbutton"][tabindex="0"]',
-    '#frame-color-picker .q-color-picker__spectrum[tabindex="0"]', '#frame-editor [contenteditable="true"]',
-    '#tree [role="treeitem"][tabindex="0"]', '#rating-primary [role="radio"][tabindex="0"]']) {
+    '#frame-color-picker .q-color-picker__spectrum[tabindex="0"]', editor,
+    '#tree [role="treeitem"][tabindex="0"]', '#rating-primary [role="radio"][tabindex="0"]', '#knob']) {
+    // At rest contrast the editor shows focus on its frame, not on the editable area.
+    if (!edges && selector === editor) continue
     const targets = page.locator(selector)
     assert.ok(await targets.count(), `${scheme} ${selector} rendered`)
     for (const target of await targets.all()) {
@@ -763,17 +861,42 @@ async function verifyKeyboardParts(page, scheme) {
         return { width: paint.outlineWidth, style: paint.outlineStyle, ink: paint.outlineColor, offset: paint.outlineOffset, focused: el.matches(':focus-visible') }
       })
       await target.blur()
-      const edge = await state()
-      assert.ok(parseFloat(edge.width) >= 1 && edge.style === 'solid', `${scheme} ${selector} control boundary`)
-      const backdrop = (offset) => locatorSurface(parseFloat(offset) < 0 ? target : target.locator('..'))
-      record(scheme, `${selector} control boundary`, paintContrast(edge.ink, await backdrop(edge.offset)), 3)
+      if (edges) {
+        const edge = await state()
+        assert.ok(parseFloat(edge.width) >= 1 && edge.style === 'solid', `${scheme} ${selector} control boundary`)
+        record(scheme, `${selector} control boundary`, await ringContrast(target, edge.ink), 3)
+      }
       await target.focus()
       const focus = await state()
       assert.ok(focus.focused && parseFloat(focus.width) >= 1 && focus.style === 'solid', `${scheme} ${selector} keyboard focus`)
-      record(scheme, `${selector} keyboard focus`, paintContrast(focus.ink, await backdrop(focus.offset)), 3)
+      record(scheme, `${selector} keyboard focus`, await ringContrast(target, focus.ink), 3)
       await target.blur()
     }
   }
+}
+
+async function verifyAuthorChrome(page, scheme) {
+  for (const index of authorPaints.keys()) {
+    for (const shell of authorShells) {
+      const id = `#author-${shell}-${index}`
+      const author = await read(page, id, ['color'])
+      for (const selector of [`${id} .q-toolbar__title`, `${id}-action`]) {
+        const { color } = await read(page, selector, ['color'])
+        record(scheme, `${selector} author chrome text`, paintContrast(color, await surface(page, selector)), 4.5)
+        if (shell === 'card') continue
+        assert.deepEqual(rgb(color), rgb(author.color), `${scheme} ${selector} keeps the author ink`)
+        assert.deepEqual(await surface(page, selector), await surface(page, id), `${scheme} ${selector} keeps the author paint`)
+      }
+    }
+  }
+}
+
+async function verifyNotify(page, scheme, edges = false) {
+  await page.evaluate(() => window.zen.notify())
+  await page.waitForSelector('[data-audit-surface^="notify-"]')
+  await verifyRoleControls(page, `${scheme} notify`, edges, { scope: '[data-audit-surface^="notify-"]', minimum: 40 })
+  await page.evaluate(() => window.zen.dismiss())
+  await page.waitForSelector('[data-audit-surface^="notify-"]', { state: 'detached' })
 }
 
 function verifyMenuMark(paint, scheme) {
@@ -815,6 +938,9 @@ try {
       await verifyIconSegments(page, scheme)
       await verifyRoleSwitches(page, scheme)
       await verifyRoleControls(page, scheme)
+      await verifyNotify(page, scheme)
+      await verifyKeyboardParts(page, scheme, false)
+      await verifyAuthorChrome(page, scheme)
       await verifyBarTabs(page, scheme)
       await verifyRoleSelection(page, scheme, false)
       await verifyChrome(page, scheme, false)
@@ -830,6 +956,7 @@ try {
         assert.equal(material['backdrop-filter'], 'none')
       }
       await verifyChrome(page, `${scheme} reduced transparency`, false, false, true)
+      await verifyAuthorChrome(page, `${scheme} reduced transparency`)
       for (const id of ['transparent-toolbar', 'transparent-header', 'transparent-header-toolbar', 'transparent-dark-bar',
         ...barRoles.flatMap((role) => [`nested-header-transparent-toolbar-${role}`, `nested-footer-transparent-toolbar-${role}`])]) {
         const selector = `#${id}`
@@ -915,8 +1042,10 @@ try {
         await verifyControlPerimeters(page, medium)
         if (media.contrast === 'more') {
           await verifyRoleControls(page, medium, true)
+          await verifyNotify(page, medium, true)
           await verifyKeyboardParts(page, medium)
         }
+        await verifyAuthorChrome(page, medium)
         await verifyRoleSelection(page, medium, media.forcedColors === 'active')
         await verifyChrome(page, medium, media.forcedColors === 'active', true)
         await verifyDestinations(page, medium, media.forcedColors === 'active')
