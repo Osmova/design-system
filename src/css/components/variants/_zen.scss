@@ -532,6 +532,7 @@ $ease: var(--qds-motion-fast);
       &:not(:focus-visible) { outline: 1px solid #{$surface-edge}; outline-offset: -1px; }
       &:focus-visible { outline: var(--qds-focus-ring-width) solid #{$outer-focus}; outline-offset: -2px; }
     }
+    #{$zen} :is(.q-color-picker__spectrum, .q-color-picker__cube)[tabindex]:not(.readonly, [aria-disabled='true']) { outline-offset: 0; }
     #{$zen} :is(.q-field__focusable-action, .q-chip__icon--remove):not(:focus-visible) { border: 1px solid currentColor; }
     #{$zen} :is(.q-knob, .q-scrollarea__container, .q-splitter__separator)[tabindex]:not([aria-disabled='true'], :focus-visible) { outline: 1px solid #{$surface-edge}; outline-offset: -1px; }
   }

@@ -753,23 +753,24 @@ async function verifyControlPerimeters(page, scheme) {
 async function verifyKeyboardParts(page, scheme) {
   await page.keyboard.press('Tab')
   for (const selector of ['#frame-date .q-date__header-link[tabindex="0"]', '#frame-time [role="spinbutton"][tabindex="0"]',
-    '#frame-color-picker [role="slider"][tabindex="0"]', '#frame-editor [contenteditable="true"]',
+    '#frame-color-picker .q-color-picker__spectrum[tabindex="0"]', '#frame-editor [contenteditable="true"]',
     '#tree [role="treeitem"][tabindex="0"]', '#rating-primary [role="radio"][tabindex="0"]']) {
     const targets = page.locator(selector)
     assert.ok(await targets.count(), `${scheme} ${selector} rendered`)
     for (const target of await targets.all()) {
       const state = () => target.evaluate((el) => {
         const paint = getComputedStyle(el)
-        return { width: paint.outlineWidth, style: paint.outlineStyle, ink: paint.outlineColor, focused: el.matches(':focus-visible') }
+        return { width: paint.outlineWidth, style: paint.outlineStyle, ink: paint.outlineColor, offset: paint.outlineOffset, focused: el.matches(':focus-visible') }
       })
       await target.blur()
       const edge = await state()
       assert.ok(parseFloat(edge.width) >= 1 && edge.style === 'solid', `${scheme} ${selector} control boundary`)
-      record(scheme, `${selector} control boundary`, paintContrast(edge.ink, await locatorSurface(target)), 3)
+      const backdrop = (offset) => locatorSurface(parseFloat(offset) < 0 ? target : target.locator('..'))
+      record(scheme, `${selector} control boundary`, paintContrast(edge.ink, await backdrop(edge.offset)), 3)
       await target.focus()
       const focus = await state()
       assert.ok(focus.focused && parseFloat(focus.width) >= 1 && focus.style === 'solid', `${scheme} ${selector} keyboard focus`)
-      record(scheme, `${selector} keyboard focus`, paintContrast(focus.ink, await locatorSurface(target)), 3)
+      record(scheme, `${selector} keyboard focus`, paintContrast(focus.ink, await backdrop(focus.offset)), 3)
       await target.blur()
     }
   }
