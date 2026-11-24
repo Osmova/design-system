@@ -27,7 +27,8 @@ $roles: primary, secondary, accent, positive, negative, warning, info;
 $chrome: ':is(.q-header, .q-footer, .q-toolbar, .q-bar)';
 $role-fill: ':is(.bg-primary, .bg-secondary, .bg-accent, .bg-positive, .bg-negative, .bg-warning, .bg-info, .bg-dark)';
 $surface: ':is(#{$role-fill}, .q-bar--dark)';
-$painted-surface: '#{$surface}:not(.q-btn, .q-chip, .q-badge, .q-toggle__track, .q-slider__selection)';
+// Notify and soft banners are repainted as neutral washes by the shared layer.
+$painted-surface: '#{$surface}:not(.q-btn, .q-chip, .q-badge, .q-toggle__track, .q-slider__selection, .q-notification, .q-banner:where(.bg-positive, .bg-negative, .bg-warning, .bg-info))';
 $surface-ink: var(--_qds-zen-surface-ink, var(--qds-fg-default));
 $surface-edge: var(--_qds-zen-surface-ink, var(--qds-stroke-strong));
 $outer-focus: var(--_qds-zen-surface-ink, var(--qds-stroke-focus));
@@ -240,6 +241,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-slider .q-slider__thumb { border: 1px solid var(--qds-stroke-strong); background: #{$raised}; box-shadow: #{$lift-2}, #{$edge}; }
   #{$zen} .q-slider .q-slider__thumb-shape path { fill: transparent; }
   #{$zen} .q-slider .q-slider__text-container { border-radius: var(--qds-radius-full); padding-inline: 0.625rem; }
+  // On a painted surface the ring moves inside the thumb face, away from the well and the fill.
+  #{$zen} #{$painted-surface} .q-slider .q-slider__thumb.q-slider--focus { outline-offset: calc(-1 * var(--qds-focus-ring-width)); }
 }
 
 @mixin actions {
@@ -291,8 +294,9 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-chip.q-chip--clickable:not(.disabled):hover { box-shadow: #{$lift-2}, #{$edge}; }
   #{$zen} .q-chip.q-chip--clickable:not(.disabled, .q-chip--selected):active { background: #{$inset}; box-shadow: #{$press}; }
   #{$zen} .q-chip.q-chip--selected { background: var(--qds-surface-brand-soft); font-weight: var(--qds-font-weight-semibold); }
-  #{$zen} .q-rating__icon { color: var(--qds-fg-muted); opacity: 1; text-shadow: none; }
-  #{$zen} .q-rating__icon--active { color: var(--qds-fg-warning); }
+  #{$zen} .q-rating__icon { color: var(--_qds-zen-surface-ink, var(--qds-fg-muted)); opacity: 1; text-shadow: none; }
+  #{$zen} .q-rating__icon--active { color: var(--_qds-zen-surface-ink, var(--qds-fg-warning)); }
+  #{$zen} .q-rating .q-rating__icon-container:focus-visible { outline-color: #{$outer-focus}; }
   #{$zen} .q-rating__icon--active::after { content: ''; position: absolute; inset-inline: 30%; bottom: -0.125em; border-bottom: 2px solid currentColor; border-radius: var(--qds-radius-full); }
 }
 
@@ -310,6 +314,7 @@ $ease: var(--qds-motion-fast);
   #{$zen} :is(.q-card, .qds-card, .qds-tile).q-card--flat { box-shadow: none; }
   #{$zen} .q-card.q-card--square { border-radius: 0; }
   #{$zen} .q-card:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: var(--qds-focus-ring-offset); }
+  #{$zen} :is(.q-color-picker__spectrum, .q-color-picker__cube)[tabindex]:focus-visible { outline: var(--qds-focus-ring-width) solid #{$outer-focus}; outline-offset: 0; }
   #{$zen} .qds-tile__label { color: var(--qds-fg-muted); }
   #{$zen} .qds-settings-group > .qds-settings-card + .qds-settings-card { margin-block-start: var(--qds-space-sm); }
   #{$zen} .q-stepper { --qds-stepper-dot-size: 2rem; --qds-stepper-rail: var(--qds-stroke-strong); }
@@ -357,6 +362,7 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-item .q-item__section--side > .q-icon { color: var(--qds-fg-muted); }
   #{$zen} .q-expansion-item { border-radius: var(--qds-radius-lg); }
   #{$zen} .q-tree__node--selected { border-radius: var(--qds-radius-control); outline: 1px solid transparent; outline-offset: -1px; background: var(--qds-surface-brand-soft); }
+  #{$zen} .q-tree__node--selected:focus-visible { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus); outline-offset: calc(-1 * var(--qds-focus-ring-width)); }
   #{$zen} .q-tree__node--selected .q-tree__node-header-content { color: var(--qds-fg-brand); font-weight: var(--qds-font-weight-semibold); }
   #{$zen} .q-tree__node--selected::after { background: var(--qds-fg-brand); }
   #{$zen} .q-table thead th { color: var(--qds-fg-muted); font-weight: var(--qds-font-weight-semibold); background: #{$base}; }
@@ -418,12 +424,20 @@ $ease: var(--qds-motion-fast);
   #{$zen} #{$painted-surface} { @include importance.declarations { color: #{$surface-ink} !important; } }
   #{$zen} .q-bar:has(.q-tabs) { height: auto; }
   #{$zen} .q-toolbar { color: #{$surface-ink}; }
-  #{$zen} #{$chrome} #{$flat-action}:not([class*='text-']) { color: #{$surface-ink}; }
+  // Transparent toolbars keep the ink of the chrome they sit on, including author paint.
+  #{$zen} :is(.q-header .q-toolbar, .q-footer .q-toolbar, .q-toolbar.bg-transparent) { color: var(--_qds-zen-surface-ink, inherit); }
+  #{$zen} #{$chrome} #{$flat-action}:not([class*='text-']) { color: var(--_qds-zen-surface-ink, inherit); }
   @media (prefers-reduced-transparency: reduce) {
     #{$zen} #{$chrome}:not(#{$role-fill}, .q-bar--dark),
     #{$zen} .q-footer:not(#{$role-fill}):has(> .q-tabs) { background-color: var(--_qds-zen-surface-fill, #{$base}); }
-    #{$zen} #{$chrome}.bg-transparent:not(#{$role-fill}) {
+    #{$zen} :is(.q-header, .q-footer) .q-toolbar:not(#{$role-fill}) { background-color: var(--_qds-zen-surface-fill, inherit); }
+    // Where Zen supplies the fallback paint it also supplies the ink.
+    #{$zen} #{$chrome}.bg-transparent:not(#{$role-fill}, :is(.q-header, .q-footer, .q-card, .qds-card) .q-toolbar) {
       @include importance.declarations { background-color: var(--_qds-zen-surface-fill, #{$base}) !important; }
+      color: #{$surface-ink};
+    }
+    #{$zen} :is(.q-header, .q-footer, .q-card, .qds-card) .q-toolbar.bg-transparent:not(#{$role-fill}) {
+      @include importance.declarations { background-color: var(--_qds-zen-surface-fill, inherit) !important; }
     }
   }
   #{$zen} .q-header { border-bottom: 1px solid var(--qds-stroke-default); }
@@ -457,7 +471,9 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-toggle .q-toggle__inner--truthy .q-toggle__track { border-color: var(--_qds-zen-surface-ink, transparent); }
   #{$zen} .q-field__bottom { color: var(--_qds-zen-surface-ink, var(--qds-fg-muted)); }
   #{$zen} #{$painted-surface} .q-field--error .q-field__bottom { color: var(--_qds-zen-surface-ink, var(--qds-fg-negative)); }
-  #{$zen} #{$transparent-field} .q-field__control:not(#{$role-fill}) { --qds-stroke-focus: #{$outer-focus}; --qds-stroke-error: var(--_qds-zen-surface-ink, var(--qds-fg-negative)); }
+  // Resolved on the field so the control's rebind never references itself.
+  #{$zen} #{$transparent-field} { --_qds-zen-field-focus: #{$outer-focus}; }
+  #{$zen} #{$transparent-field} .q-field__control:not(#{$role-fill}) { --qds-stroke-focus: var(--_qds-zen-field-focus); --qds-stroke-error: var(--_qds-zen-surface-ink, var(--qds-fg-negative)); }
   #{$zen} :is(#{$transparent-field}, .q-field:has(.q-field__control#{$role-fill})) .q-field__control :is(.q-field__native, .q-field__input, .q-field__prefix, .q-field__suffix, .q-field__marginal, .q-field__label) {
     color: var(--_qds-zen-field-ink, var(--qds-fg-muted));
   }
@@ -507,6 +523,9 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-linear-progress__track { background: #{$inset}; box-shadow: #{$well}; }
   #{$zen} .q-linear-progress__model { border-radius: var(--qds-radius-full); }
   #{$zen} .q-circular-progress__track { color: color-mix(in srgb, var(--qds-fg-default) 16%, transparent); }
+  #{$zen} .q-knob { color: var(--_qds-zen-surface-ink, var(--qds-color-primary)); }
+  #{$zen} .q-knob .q-circular-progress__text { color: var(--_qds-zen-surface-ink, var(--qds-fg-strong)); }
+  #{$zen} .q-knob:focus-visible { outline: var(--qds-focus-ring-width) solid #{$outer-focus}; outline-offset: var(--qds-focus-ring-offset); }
 }
 
 @mixin contrast {
@@ -525,7 +544,7 @@ $ease: var(--qds-motion-fast);
     #{$zen} .q-tabs .q-tab:not(.disabled, :focus-visible) { outline: 1px solid currentColor; outline-offset: -1px; }
     #{$zen} .q-tabs .q-tab:focus-visible { outline-color: currentColor; }
     #{$zen} :is(.q-header, .q-footer)#{$role-fill} { border-color: var(--_qds-zen-surface-ink); }
-    #{$zen} #{$painted-surface} :is(.q-btn-group, .q-btn:not(.q-btn-group > *), .q-chip, .q-item--clickable, .q-field__control),
+    #{$zen} #{$painted-surface} :is(.q-btn-group, .q-btn:not(.q-btn-group > *), .q-chip, .q-item--clickable, .q-field__control, .q-slider__inner),
     #{$zen} .q-btn-toggle#{$role-fill} > .q-btn[aria-pressed='false'] { border-color: #{$surface-edge}; }
     #{$zen} :where(.q-date, .q-time, .q-color-picker, .q-stepper, .q-tree, .q-rating, .q-carousel, .q-uploader, .q-editor, .q-table__container)
       :where([tabindex], button, input:not([type='hidden']), [contenteditable='true']):not(:where(.q-btn, .q-tab, .q-field *, .q-item, .q-focus-helper, .q-slider *, .q-checkbox *, .disabled, .disabled *, :disabled, [aria-disabled='true'])) {
