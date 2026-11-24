@@ -420,7 +420,8 @@ $ease: var(--qds-motion-fast);
   #{$zen} .q-toolbar { color: #{$surface-ink}; }
   #{$zen} #{$chrome} #{$flat-action}:not([class*='text-']) { color: #{$surface-ink}; }
   @media (prefers-reduced-transparency: reduce) {
-    #{$zen} #{$chrome}:not(#{$role-fill}, .q-bar--dark) { background-color: var(--_qds-zen-surface-fill, #{$base}); }
+    #{$zen} #{$chrome}:not(#{$role-fill}, .q-bar--dark),
+    #{$zen} .q-footer:not(#{$role-fill}):has(> .q-tabs) { background-color: var(--_qds-zen-surface-fill, #{$base}); }
     #{$zen} #{$chrome}.bg-transparent:not(#{$role-fill}) {
       @include importance.declarations { background-color: var(--_qds-zen-surface-fill, #{$base}) !important; }
     }
