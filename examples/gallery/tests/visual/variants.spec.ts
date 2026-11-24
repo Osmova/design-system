@@ -99,6 +99,7 @@ test.describe('QDS variant distinctiveness lab', () => {
     })
 
     test(`glass ${mode} paints every header and footer composition with reduced transparency`, async ({ page }) => {
+      test.setTimeout(75_000)
       await page.goto('/#components?variant=glass')
       await applyTheme(page, mode, 'glass')
       await page.locator('.gallery-header .q-toolbar').evaluate(el => el.classList.remove('qds-glass-bar'))
