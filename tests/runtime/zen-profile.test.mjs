@@ -267,7 +267,7 @@ test('Zen routes only role ink and transparent chrome fallbacks through the impo
       assert.match(declaration, /^background-color:var\(--_qds-zen-surface-fill,/)
     } else {
       assert.match(path, /\.bg-dark/)
-      assert.match(declaration, /^color:(var\(--_qds-zen-surface-ink,|#fff!important)/)
+      assert.match(declaration, /^color:(var\(--_qds-zen-surface-ink,|#fff\s*!important)/)
     }
   }
   assert.equal(important(layered).length, rules.length)
