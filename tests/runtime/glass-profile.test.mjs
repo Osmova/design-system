@@ -136,6 +136,19 @@ export function glassPairs(scheme) {
     if (token[`soft-${wash}`]) add('role text', `fg-${role}/soft-${wash}`, foreground, token[`soft-${wash}`], 4.5)
     add('control edge', `${role} fill/surface-0`, fill, token['surface-0'], 3)
   }
+  for (const role of [...roles, 'dark']) {
+    const label = role === 'dark' ? parseRgb('#fff') : token[`on-${role}`]
+    const shade = role === 'dark' ? parseRgb('#000') : token['text-strong']
+    const fill = role === 'dark' ? parseRgb('#1d1d1d') : token[role]
+    const fills = role === 'primary' ? [['default', fill], ['more', token['hc-primary']]] : [['both', fill]]
+    for (const [mode, surface] of fills) {
+      for (const [state, amount] of [['track', 1], ['control wash', 0.94], ['selected pill', 0.78]]) {
+        const paint = mix(surface, shade, amount)
+        add('role container text', `${role}/${mode}/${state}`, label, paint, 4.5)
+        add('role container focus', `${role}/${mode}/${state}`, label, paint, 3)
+      }
+    }
+  }
   // Strong strokes still draw state indicators and must read on glass and opaque surfaces.
   for (const [name, surface] of surfaces) {
     add('control edge', `stroke/${name}`, token['stroke-strong'], surface, 3)

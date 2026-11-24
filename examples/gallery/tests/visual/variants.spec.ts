@@ -110,6 +110,8 @@ test.describe('QDS variant distinctiveness lab', () => {
       await session.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }] })
       const surface = await resolvedColor(page, '--qds-surface-0')
       const rows = {
+        transparent: '<div class="q-toolbar bg-transparent"><div class="q-toolbar__title">Transparent toolbar</div></div>',
+        transparentCapsule: '<div class="q-toolbar qds-glass-bar bg-transparent"><div class="q-toolbar__title">Transparent capsule</div></div>',
         plain: '<div class="q-toolbar"><div class="q-toolbar__title">Title</div></div>',
         capsule: '<div class="q-toolbar qds-glass-bar"><div class="q-toolbar__title">Title</div></div>',
         tintedToolbar: '<div class="q-toolbar bg-positive"><div class="q-toolbar__title">Tinted toolbar</div></div>',
@@ -117,12 +119,14 @@ test.describe('QDS variant distinctiveness lab', () => {
         tabs: '<div class="q-tabs q-tabs--horizontal">Tabs</div>',
         bar: '<div class="q-bar">Bar</div>',
         darkBar: '<div class="q-bar q-bar--dark bg-primary">Dark bar</div>',
+        transparentBar: '<div class="q-bar bg-transparent">Transparent bar</div>',
+        transparentTabs: '<div class="q-tabs q-tabs--horizontal bg-transparent">Transparent tabs</div>',
         wrapped: '<section><div class="q-toolbar">Wrapped title</div></section>',
       }
       const kinds = Object.keys(rows) as (keyof typeof rows)[]
       const compositions = kinds.flatMap(first => [[first], ...kinds.map(second => [first, second])])
       await page.evaluate(({ rows, compositions }) => {
-        for (const [tag, tint] of [['header', ''], ['footer', ''], ['header', 'bg-primary'], ['footer', 'bg-positive']]) {
+        for (const [tag, tint] of [['header', ''], ['footer', ''], ['header', 'bg-primary'], ['footer', 'bg-positive'], ['header', 'bg-transparent'], ['footer', 'bg-transparent'], ['header', 'bg-dark'], ['footer', 'bg-dark']]) {
           for (const composition of compositions) {
             const bar = document.createElement(tag)
             bar.className = `q-${tag} ${tint}`.trim()
@@ -142,34 +146,41 @@ test.describe('QDS variant distinctiveness lab', () => {
             const style = getComputedStyle(el, '::before')
             return {
               name: el.tagName, composition: (el as HTMLElement).dataset.glassComposition!,
-              tint: el.matches('[class*="bg-"]'), opacity: style.opacity, fill: style.backgroundColor, filter: style.backdropFilter,
+              tint: el.matches('.bg-primary, .bg-positive, .bg-dark'), opacity: style.opacity, fill: style.backgroundColor, filter: style.backdropFilter,
             }
           }),
         )
-        expect(results).toHaveLength(compositions.length * 4)
+        expect(results).toHaveLength(compositions.length * 8)
         for (const { name, composition, tint, opacity, fill, filter } of results) {
-          const covered = tint || !/plain|wrapped/.test(composition)
+          const covered = tint || !composition.split('+').some(row => ['plain', 'wrapped', 'transparent', 'transparentBar', 'transparentTabs'].includes(row))
           const label = `${name} ${composition} (${tint ? 'coloured' : 'neutral'}) at ${top}px`
           expect.soft(opacity, label).toBe(covered ? '0' : '1')
           expect.soft(fill, label).toBe(surface)
           expect.soft(filter, label).toBe('none')
         }
       }
-      for (const row of await page.locator('header[data-glass-composition]:not([data-glass-composition*="+"]) > :is(.q-toolbar.qds-glass-bar, .q-toolbar[class*="bg-"], .q-tabs, .q-bar)').all()) {
-        const pseudo = await row.evaluate(el => el.matches('.q-toolbar.qds-glass-bar:not([class*="bg-"])') ? '::before' : undefined)
-        const paint = await glassPaint(row, pseudo)
+      const singleRow = page.locator('[data-glass-composition]:not([data-glass-composition*="+"])')
+      const paintedRows = [
+        ...await glassPaints(singleRow.locator('> .q-toolbar.qds-glass-bar:not(.bg-warning)'), '::before'),
+        ...await glassPaints(singleRow.locator('> :is(.q-toolbar.bg-positive, .q-toolbar.bg-warning, .q-tabs:not(.bg-transparent), .q-bar:not(.bg-transparent))')),
+      ]
+      expect(paintedRows).toHaveLength(56)
+      for (const paint of paintedRows) {
         expect.soft(paint.fill, 'self-painted row is opaque').toMatch(/^rgb\(/)
         expect.soft(paint.filter).toBe('none')
         expect.soft(paint.textContrast).toBeGreaterThanOrEqual(4.5)
       }
-      const plainRow = '.q-toolbar:not(.qds-glass-bar, [class*="bg-"])'
-      const mixedBars = page.locator('[data-glass-composition]').filter({ has: page.locator(plainRow) })
-      for (const bar of await mixedBars.all()) {
-        const pseudo = await bar.evaluate(el => el.matches('[class*="bg-"]') ? undefined : '::before')
-        const paint = await glassPaint(bar, pseudo, { selector: plainRow, within: '[data-glass-composition]', property: 'color' })
-        expect.soft(paint.fill).toMatch(/^rgb\(/)
-        expect(paint.adjacentContrasts.length).toBeGreaterThan(0)
-        for (const contrast of paint.adjacentContrasts) expect.soft(contrast, 'plain toolbar text on bar paint').toBeGreaterThanOrEqual(4.5)
+      const plainRow = ':is(.q-toolbar:not(.qds-glass-bar, .bg-positive), .q-tabs.bg-transparent, .q-bar.bg-transparent)'
+      for (const tinted of [false, true]) {
+        const fill = '.bg-primary, .bg-positive, .bg-dark'
+        const mixedBars = page.locator(`[data-glass-composition]:${tinted ? 'is' : 'not'}(${fill})`).filter({ has: page.locator(plainRow) })
+        const paints = await glassPaints(mixedBars, tinted ? undefined : '::before', { selector: plainRow, within: '[data-glass-composition]', property: 'color' })
+        expect(paints.length).toBeGreaterThan(0)
+        for (const paint of paints) {
+          expect.soft(paint.fill).toMatch(/^rgb\(/)
+          expect(paint.adjacentContrasts.length).toBeGreaterThan(0)
+          for (const contrast of paint.adjacentContrasts) expect.soft(contrast, 'plain toolbar text on bar paint').toBeGreaterThanOrEqual(4.5)
+        }
       }
       await page.evaluate(() => document.body.insertAdjacentHTML('beforeend', '<div class="q-toolbar" data-standalone-toolbar>Tools</div>'))
       const standalone = await glassPaint(page.locator('[data-standalone-toolbar]'))
@@ -314,7 +325,7 @@ test.describe('QDS variant distinctiveness lab', () => {
         for (const surface of ['--qds-surface-0', '--qds-surface-1', '--qds-surface-2']) {
           await control.evaluate((el, surface) => el.closest<HTMLElement>('[data-test]')!.style.backgroundColor = `var(${surface})`, surface)
           const paint = await glassPaint(control)
-          expect(Object.keys(paint.fieldText)).toEqual(['placeholder', 'prefix', 'suffix'])
+          expect(Object.keys(paint.fieldText)).toEqual(['placeholder', 'prefix', 'suffix', 'label'])
           for (const [part, contrast] of Object.entries(paint.fieldText)) {
             expect.soft(contrast, `${name} ${part} over ${surface}`).toBeGreaterThanOrEqual(4.5)
           }
@@ -618,6 +629,70 @@ test.describe('QDS variant distinctiveness lab', () => {
     }
 
     for (const mode of ['light', 'dark'] as const) {
+      test(`glass ${mode} uses the nearest role fill for control content and focus in ${delivery} CSS`, async ({ page }) => {
+        test.setTimeout(90_000)
+        await page.emulateMedia({ colorScheme: mode, reducedMotion: 'reduce' })
+        await page.goto(`${entry}?glass-fill`)
+        await applyTheme(page, mode, 'glass')
+        await expect(page.locator('[data-fill-probe]')).toHaveCount(64)
+        await page.addStyleTag({ content: '[data-fill-matrix] * { transition: none !important; }' })
+
+        for (const contrast of ['no-preference', 'more'] as const) {
+          await page.emulateMedia({ contrast })
+          const labels = '[data-probe-label], [data-fill-probe] :is(.q-btn__content, .q-tab__content, .q-item__label, .q-chip__content, .q-checkbox__label, .q-radio__label, .q-toggle__label, .q-field__label, .q-field__native, .q-field__marginal, .q-field__messages, .q-field__prefix, .q-field__suffix):not(.disabled *, [hidden], input[tabindex="-1"], .q-field__marginal:has(.q-icon))'
+          const icons = '[data-fill-probe] :is(.q-item__section--side > .q-icon, .q-chip__icon--remove, .q-tab__icon, .q-field__marginal .q-icon):not(.disabled *)'
+          const controls = '[data-fill-probe] :is(.q-btn, .q-tab, .q-item, .q-chip, .q-chip__icon--remove, .q-checkbox, .q-radio, .q-toggle, .q-field, [data-probe-label][tabindex], a[data-probe-label]):not(.disabled, :disabled)'
+          const links = await glassPaints(page.locator('[data-fill-probe] a[data-probe-label]'))
+          const placeholders = await glassPaints(page.locator('[data-fill-probe] input[data-probe="error field"][placeholder]'), '::placeholder')
+          const text = [...await glassPaints(page.locator(labels)), ...placeholders]
+          const symbols = await glassPaints(page.locator(icons))
+          const marks = await glassPaints(page.locator('[data-fill-probe] .q-tab--active .q-tab__content:has(> .q-tab__icon):not(:has(> .q-tab__label))'), '::after')
+          const focus = await glassPaints(page.locator(controls), undefined, undefined, true)
+          expect(marks).toHaveLength(16)
+          const failures = <T extends typeof text[number]>(paints: T[], fails: (paint: T) => boolean) => [...new Map(paints.filter(fails).map(paint => [`${paint.probe?.split('/')[0]} ${paint.part} ${paint.fill} ${paint.outline}`, paint])).values()]
+          expect.soft(failures(text, paint => paint.textContrast < 4.5), `${contrast} text`).toEqual([])
+          expect(placeholders).toHaveLength(48)
+          expect(links).toHaveLength(48)
+          expect.soft(failures(links, paint => paint.decorationContrast < 3), `${contrast} underline`).toEqual([])
+          expect.soft(failures(symbols, paint => paint.textContrast < 3), `${contrast} icons`).toEqual([])
+          expect.soft(failures(marks, paint => paint.markWidth !== '2px' || paint.markContrast < 3), `${contrast} selected marks`).toEqual([])
+          expect.soft(failures(focus, paint => paint.outlineStyle !== 'solid'
+            || parseFloat(paint.outlineWidth) < 2
+            || (parseFloat(paint.outlineOffset) < 0 ? paint.outlineOnFill : paint.outlineOnSurface) < 3), `${contrast} focus`).toEqual([])
+          expect.soft(failures(focus, paint => Object.values(paint.fieldText).some(value => value < 4.5)), `${contrast} focused field text`).toEqual([])
+          const toggles = page.locator('[data-fill-probe] [data-probe="toggle false"]')
+          const offThumbs = await glassPaints(toggles.locator('.q-toggle__track'), undefined, { selector: '.q-toggle__thumb', pseudo: '::after' })
+          expect(offThumbs).toHaveLength(48)
+          expect.soft(failures(offThumbs, paint => paint.adjacentContrasts[0] < 3), `${contrast} off switch thumb`).toEqual([])
+          if (contrast === 'more') {
+            const rowEdges = await glassPaints(page.locator('[data-fill-probe] :is(.q-tab, .q-item)'), '::after')
+            const nativeEdges = await glassPaints(page.locator('[data-probe="link"], [data-probe="native tabindex"]'))
+            expect.soft(failures(nativeEdges, paint => paint.outlineStyle !== 'solid' || paint.outlineOnFill < 3), 'native action edges').toEqual([])
+            expect.soft(failures(rowEdges, paint => paint.borderWidth !== '1px' || paint.edgeContrast < 3), 'row and tab edges').toEqual([])
+          }
+        }
+      })
+
+      test(`glass ${mode} restores keyboard action edges on BottomSheet in ${delivery} CSS`, async ({ page }) => {
+        await page.emulateMedia({ colorScheme: mode, contrast: 'more', reducedMotion: 'reduce' })
+        await page.goto(entry)
+        await applyTheme(page, mode, 'glass')
+        for (const kind of ['Grid', 'List']) {
+          await page.getByRole('button', { name: `${kind} sheet` }).click()
+          const sheet = page.locator(`.q-bottom-sheet--${kind.toLowerCase()}`)
+          const actions = sheet.locator('.q-bottom-sheet__item')
+          await expect(actions).toHaveCount(2)
+          await expect(sheet).toBeVisible()
+          const edges = await glassPaints(actions, '::after')
+          expect.soft(edges.filter(paint => paint.borderWidth !== '1px' || paint.edgeContrast < 3)).toEqual([])
+          await page.keyboard.press('Tab')
+          const focus = await glassPaints(actions, undefined, undefined, true)
+          expect.soft(focus.filter(paint => paint.outlineStyle !== 'solid' || paint.outlineOnFill < 3)).toEqual([])
+          await page.keyboard.press('Escape')
+          await expect(sheet).toBeHidden()
+        }
+      })
+
       test(`glass ${mode} selected destinations and their perimeters stay legible in ${delivery} CSS`, async ({ page }) => {
         await page.emulateMedia({ colorScheme: mode })
         await page.goto(entry)
@@ -1003,80 +1078,109 @@ const glassMedia = [
   { contrast: 'no-preference', forcedColors: 'active' },
 ] as const
 
-function glassPaint(locator: Locator, pseudo?: string, adjacent?: {
+type GlassAdjacentPaint = {
   selector: string
   within?: string
   pseudo?: string
   property?: 'color' | 'fill' | 'stroke'
-}) {
-  return locator.evaluate((el, { pseudo, adjacent }) => {
+}
+
+async function glassPaint(locator: Locator, pseudo?: string, adjacent?: GlassAdjacentPaint) {
+  await locator.waitFor({ state: 'attached' })
+  const [paint] = await glassPaints(locator, pseudo, adjacent)
+  return paint
+}
+
+function glassPaints(locator: Locator, pseudo?: string, adjacent?: GlassAdjacentPaint, focused = false) {
+  return locator.evaluateAll(async (elements, { pseudo, adjacent, focused }) => {
     const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true })!
-    context.fillStyle = 'Canvas'
-    context.fillRect(0, 0, 1, 1)
-    const paint = (color: string, opacity = 1) => {
-      context.fillStyle = 'transparent'
-      context.fillStyle = color
-      context.globalAlpha = opacity
+    function measure(el: Element) {
+      context.globalAlpha = 1
+      context.fillStyle = 'Canvas'
       context.fillRect(0, 0, 1, 1)
-      const [r, g, b] = Array.from(context.getImageData(0, 0, 1, 1).data).map(value => {
-        const channel = value / 255
-        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
-      })
-      return 0.2126 * r + 0.7152 * g + 0.0722 * b
-    }
-    const ratio = (a: number, b: number) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
-    const ancestors: Element[] = []
-    for (let parent = el.parentElement; parent; parent = parent.parentElement) ancestors.unshift(parent)
-    let surface = 0
-    for (const ancestor of ancestors) surface = paint(getComputedStyle(ancestor).backgroundColor)
-    const style = getComputedStyle(el, pseudo)
-    if (pseudo) paint(getComputedStyle(el).backgroundColor)
-    const fill = paint(style.backgroundColor)
-    const fillPixel = context.getImageData(0, 0, 1, 1)
-    const edge = paint(style.borderTopColor)
-    context.putImageData(fillPixel, 0, 0)
-    const outline = paint(style.outlineColor)
-    context.putImageData(fillPixel, 0, 0)
-    const marker = paint(style.borderBlockEndColor)
-    const neighbors = adjacent
-      ? (adjacent.within ? el.closest(adjacent.within) : el.parentElement)?.querySelectorAll(adjacent.selector)
-      : []
-    const adjacentContrasts = Array.from(neighbors ?? [], neighbor => {
+      const paint = (color: string, opacity = 1) => {
+        context.fillStyle = 'transparent'
+        context.fillStyle = color
+        context.globalAlpha = opacity
+        context.fillRect(0, 0, 1, 1)
+        const [r, g, b] = Array.from(context.getImageData(0, 0, 1, 1).data).map(value => {
+          const channel = value / 255
+          return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+        })
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+      }
+      const ratio = (a: number, b: number) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+      const ancestors: Element[] = []
+      for (let parent = el.parentElement; parent; parent = parent.parentElement) ancestors.unshift(parent)
+      let surface = 0
+      for (const ancestor of ancestors) surface = paint(getComputedStyle(ancestor).backgroundColor)
+      const style = getComputedStyle(el, pseudo)
+      if (pseudo) paint(getComputedStyle(el).backgroundColor)
+      const fill = paint(style.backgroundColor)
+      const fillPixel = context.getImageData(0, 0, 1, 1)
+      const edge = paint(style.borderTopColor)
       context.putImageData(fillPixel, 0, 0)
-      const neighborStyle = getComputedStyle(neighbor, adjacent?.pseudo)
-      return ratio(paint(neighborStyle[adjacent?.property ?? 'backgroundColor']), fill)
-    })
-    const fieldText: Record<string, number> = {}
-    for (const [part, selector] of [['placeholder', 'input[placeholder]'], ['prefix', '.q-field__prefix'], ['suffix', '.q-field__suffix']]) {
-      const node = el.querySelector(selector)
-      if (node) {
+      const outline = paint(style.outlineColor)
+      context.putImageData(fillPixel, 0, 0)
+      const marker = paint(style.borderBlockEndColor)
+      context.putImageData(fillPixel, 0, 0)
+      const decorationContrast = ratio(paint(style.textDecorationColor), fill)
+      const neighbors = adjacent
+        ? (adjacent.within ? el.closest(adjacent.within) : el.parentElement)?.querySelectorAll(adjacent.selector)
+        : []
+      const adjacentContrasts = Array.from(neighbors ?? [], neighbor => {
         context.putImageData(fillPixel, 0, 0)
-        const text = getComputedStyle(node, part === 'placeholder' ? '::placeholder' : null)
-        fieldText[part] = ratio(paint(text.color, Number(text.opacity)), fill)
+        const neighborStyle = getComputedStyle(neighbor, adjacent?.pseudo)
+        return ratio(paint(neighborStyle[adjacent?.property ?? 'backgroundColor']), fill)
+      })
+      const fieldText: Record<string, number> = {}
+      for (const [part, selector] of [['placeholder', 'input[placeholder]'], ['prefix', '.q-field__prefix'], ['suffix', '.q-field__suffix'], ['label', '.q-field__label']]) {
+        const node = el.querySelector(selector)
+        if (node) {
+          context.putImageData(fillPixel, 0, 0)
+          const text = getComputedStyle(node, part === 'placeholder' ? '::placeholder' : null)
+          fieldText[part] = ratio(paint(text.color, Number(text.opacity)), fill)
+        }
+      }
+      context.putImageData(fillPixel, 0, 0)
+      return {
+        probe: el.closest('[data-fill-probe]')?.getAttribute('data-fill-probe'),
+        part: `${el.closest('[data-probe]')?.getAttribute('data-probe') ?? el.closest('.q-field')?.querySelector('[data-probe]')?.getAttribute('data-probe') ?? el.closest('[data-probe-group]')?.getAttribute('data-probe-group') ?? ''} ${el.getAttribute('class')}`,
+        fill: style.backgroundColor,
+        shadow: style.boxShadow,
+        border: style.borderTopColor,
+        borderWidth: style.borderTopWidth,
+        borderStyle: style.borderTopStyle,
+        outline: style.outlineColor,
+        outlineStyle: style.outlineStyle,
+        outlineWidth: style.outlineWidth,
+        outlineOffset: style.outlineOffset,
+        edgeContrast: ratio(edge, fill),
+        fillContrast: ratio(fill, surface),
+        adjacentContrasts,
+        filter: style.backdropFilter,
+        markWidth: style.display === 'none' || style.content === 'none' ? '0px' : style.borderBlockEndWidth,
+        markContrast: ratio(marker, fill),
+        decorationContrast,
+        outlineOnFill: ratio(outline, fill),
+        outlineOnSurface: ratio(outline, surface),
+        outlineContrast: Math.min(ratio(outline, fill), ratio(outline, surface)),
+        textContrast: ratio(paint(style.color, Number(style.opacity)), fill),
+        fieldText,
       }
     }
-    context.putImageData(fillPixel, 0, 0)
-    return {
-      fill: style.backgroundColor,
-      shadow: style.boxShadow,
-      border: style.borderTopColor,
-      borderWidth: style.borderTopWidth,
-      borderStyle: style.borderTopStyle,
-      outline: style.outlineColor,
-      outlineStyle: style.outlineStyle,
-      outlineWidth: style.outlineWidth,
-      outlineOffset: style.outlineOffset,
-      edgeContrast: ratio(edge, fill),
-      fillContrast: ratio(fill, surface),
-      adjacentContrasts,
-      filter: style.backdropFilter,
-      markWidth: style.display === 'none' || style.content === 'none' ? '0px' : style.borderBlockEndWidth,
-      markContrast: ratio(marker, fill),
-      outlineOnFill: ratio(outline, fill),
-      outlineOnSurface: ratio(outline, surface),
-      outlineContrast: Math.min(ratio(outline, fill), ratio(outline, surface)),
-      textContrast: ratio(paint(style.color, Number(style.opacity)), fill),
-      fieldText,
+    const results: ReturnType<typeof measure>[] = []
+    for (const el of elements) {
+      let painted = el
+      if (focused) {
+        const target = el.matches('.q-field') ? el.querySelector<HTMLElement>('input:not([tabindex="-1"]), [tabindex="0"]') : el as HTMLElement
+        target?.focus({ preventScroll: true })
+        await Promise.resolve()
+        painted = el.querySelector(':scope > :is(.q-checkbox__inner, .q-radio__inner, .q-toggle__inner), .q-field__control') ?? el
+      }
+      results.push(measure(painted))
+      if (focused) (document.activeElement as HTMLElement | null)?.blur()
     }
-  }, { pseudo, adjacent })
+    return results
+  }, { pseudo, adjacent, focused })
 }

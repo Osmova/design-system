@@ -120,7 +120,7 @@ $role-texts: ();
 
   // QBtn carries Quasar's `no-outline` utility.
   .qds-ui .q-btn:focus-visible {
-    @include importance.declarations { outline: var(--qds-focus-ring-width) solid var(--qds-stroke-focus) !important; }
+    @include importance.declarations { outline: var(--qds-focus-ring-width) solid var(--_qds-focus-on-surface, var(--qds-stroke-focus)) !important; }
     outline-offset: var(--qds-focus-ring-offset);
   }
 
@@ -206,7 +206,7 @@ $role-texts: ();
   @each $role, $_ in $roles {
     #{$win} .q-btn.bg-#{$role} { --_qds-win-role: var(--qds-color-#{$role}); --_qds-win-soft: #{role-soft($role)}; }
     .qds-ui .q-btn.text-#{$role} {
-      @include importance.declarations { color: role-value($role, fg) !important; }
+      @include importance.declarations { color: var(--_qds-context-role-text, #{role-value($role, fg)}) !important; }
     }
 
     .qds-ui .q-btn--outline.text-#{$role} {

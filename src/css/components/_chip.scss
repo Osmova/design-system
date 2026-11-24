@@ -1,5 +1,6 @@
 @use 'sass:map';
 @use 'button';
+@use 'variants/glass';
 @use '../materials';
 @use '../importance';
 
@@ -159,5 +160,21 @@ $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 
   // A label identifies the chip, so its edge is a hairline rather than a 3:1 ring.
   #{$glass} .q-chip:where(:not([class*='bg-'], .q-chip--outline)) { border-color: var(--qds-material-stroke); }
-  @media (prefers-contrast: more) { #{$glass} .q-chip:is(.q-chip--clickable, :has(> .q-chip__icon--remove))[class*='bg-']:not(.qds-solid) { border-color: currentColor; } }
+  #{$glass} .q-chip:where(:not(#{glass.$role-fill}, .bg-grey)) {
+    --qds-chip-on-fill: var(--_qds-glass-surface-ink);
+    color: var(--_qds-glass-surface-ink, var(--qds-fg-default));
+    background-color: var(--_qds-glass-role-wash, var(--qds-control-fill-default));
+  }
+  #{$glass} .q-chip--clickable:where(:not(#{glass.$role-fill}, .bg-grey, .q-chip--outline, .q-chip--selected)):hover { background-color: var(--_qds-glass-role-selection, var(--qds-control-fill-hover)); }
+  #{$glass} .q-chip--clickable:where(:not(#{glass.$role-fill}, .bg-grey, .q-chip--outline, .q-chip--selected)):active { background-color: var(--_qds-glass-role-selection, var(--qds-control-fill-pressed)); }
+  #{$glass} .q-chip--outline:where(:not(#{glass.$role-fill}, .bg-grey)) { background-color: transparent; }
+  #{$glass} .q-chip--selected:where(:not(#{glass.$role-fill}, .bg-grey)) { color: var(--_qds-glass-surface-ink, var(--qds-fg-brand)); background-color: var(--_qds-glass-role-selection, var(--qds-surface-brand-soft)); }
+  #{$glass} .q-chip:focus-visible { outline-color: var(--_qds-glass-forced-edge, var(--_qds-glass-chip-outside, var(--qds-stroke-focus))); }
+  #{$glass} :where(:not(.q-chip)) { --_qds-glass-chip-outside: var(--_qds-glass-surface-ink); }
+  #{$glass} .q-chip .q-chip__icon--remove:focus-visible { outline-color: currentColor; }
+  @media (prefers-contrast: more), (forced-colors: active) {
+    #{$glass} .q-chip:is(.q-chip--clickable, :has(> .q-chip__icon--remove)) { border-color: currentColor; }
+    #{$glass} .q-chip .q-chip__icon--remove { outline: 1px solid currentColor; opacity: 1; }
+    #{$glass} .q-chip .q-chip__icon--remove:focus-visible { outline-width: var(--qds-focus-ring-width); }
+  }
 }

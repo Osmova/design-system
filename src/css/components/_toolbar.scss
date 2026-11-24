@@ -4,7 +4,7 @@ $term: ':is(.qds-ui.qds-variant-term, .qds-ui .qds-variant-term)';
 
 $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
 $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
-$glass-rows: ":is(.q-toolbar.qds-glass-bar, .q-toolbar[class*='bg-'], .q-tabs--horizontal, .q-bar)";
+$glass-rows: ":is(.q-toolbar.qds-glass-bar, .q-toolbar#{glass.$role-fill}, .q-tabs--horizontal:not(.bg-transparent), .q-bar:not(.bg-transparent))";
 $glass-complete: ':has(> #{$glass-rows}):not(:has(> :not(#{$glass-rows}, .q-layout__shadow, [hidden])))';
 
 @mixin styles {
@@ -49,7 +49,7 @@ $glass-complete: ':has(> #{$glass-rows}):not(:has(> :not(#{$glass-rows}, .q-layo
   #{$term} .q-bar:not(.q-bar--dark) { border: var(--qds-border-width-control) solid var(--qds-border-subtle); }
 
   // The scroll edge paints a continuous bar around toolbars without a floating capsule.
-  #{$glass} :is(.q-header, .q-footer) { color: var(--_qds-glass-bar-ink, var(--qds-fg-default)); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); border-color: var(--_qds-glass-bar-line); box-shadow: none; }
+  #{$glass} :is(.q-header, .q-footer) { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); border-color: var(--_qds-glass-bar-line); box-shadow: none; }
   #{$glass} :is(.q-header, .q-footer)::before {
     content: '';
     position: absolute;
@@ -61,31 +61,26 @@ $glass-complete: ':has(> #{$glass-rows}):not(:has(> :not(#{$glass-rows}, .q-layo
   #{$glass} .q-header { padding-top: env(safe-area-inset-top); }
   #{$glass} .q-footer { padding-bottom: env(safe-area-inset-bottom); border-top: var(--qds-border-width-control) solid var(--_qds-glass-bar-line); }
   #{$glass} .q-footer::before { transform: scaleY(-1); }
-  #{$glass} :is(.q-header, .q-footer):is(#{$glass-complete}, [class*='bg-'])::before { opacity: 0; }
+  #{$glass} :is(.q-header, .q-footer):is(#{$glass-complete}, #{glass.$role-fill})::before { opacity: 0; }
   @supports (animation-timeline: scroll()) {
-    #{$glass} .q-header:not(#{$glass-complete}, [class*='bg-'])::before { animation: var(--_qds-glass-scroll-edge, qds-variant-glass-edge) linear both; animation-timeline: scroll(root); animation-range: 0 2rem; }
+    #{$glass} .q-header:not(#{$glass-complete}, #{glass.$role-fill})::before { animation: var(--_qds-glass-scroll-edge, qds-variant-glass-edge) linear both; animation-timeline: scroll(root); animation-range: 0 2rem; }
     @keyframes qds-variant-glass-edge { from { opacity: 0; } }
   }
   @media (prefers-contrast: more), (forced-colors: active) {
-    #{$glass} :is(.q-header, .q-footer) { border-color: var(--_qds-glass-forced-edge, var(--_qds-glass-bar-ink, var(--_qds-glass-control-edge))); }
+    #{$glass} :is(.q-header, .q-footer) { border-color: var(--_qds-glass-forced-edge, var(--_qds-glass-surface-ink, var(--_qds-glass-control-edge))); }
   }
-  #{$glass} .q-toolbar { color: var(--_qds-glass-bar-ink, var(--qds-fg-default)); gap: var(--qds-space-xs); padding-inline: var(--qds-space-md); }
-  #{$glass} .q-toolbar:where(:not(.q-header *, .q-footer *, .q-bar *, .qds-glass-bar)) { background: var(--_qds-glass-plain-toolbar-fill, transparent); }
+  #{$glass} .q-toolbar { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); gap: var(--qds-space-xs); padding-inline: var(--qds-space-md); }
+  #{$glass} .q-toolbar:where(:not(.q-header *, .q-footer *, .q-bar *, .qds-glass-bar)) { background: var(--_qds-glass-role-wash, var(--_qds-glass-plain-toolbar-fill, transparent)); }
   #{$glass} .q-toolbar.qds-glass-bar { position: relative; z-index: 0; background: transparent; }
   #{$glass} #{glass.$untinted-capsule}::before {
     content: ''; position: absolute; inset: var(--_qds-glass-inset); z-index: -1; border-radius: var(--qds-radius-full); pointer-events: none;
     @include glass.material(thin);
     @include glass.contrast-frame;
   }
-  #{$glass} .q-toolbar.qds-glass-bar:where([class*='bg-']) { border-radius: var(--qds-radius-full); @include glass.contrast-frame(var(--_qds-glass-bar-ink, var(--_qds-glass-control-edge))); }
-  #{$glass} :is(.q-header, .q-footer, .q-bar, .q-toolbar) .q-btn[class*='bg-']:not(.qds-tonal, .q-btn-toggle > *):focus-visible { --qds-stroke-focus: currentColor; outline-offset: -3px; }
+  #{$glass} .q-toolbar.qds-glass-bar:where(#{glass.$role-fill}) { border-radius: var(--qds-radius-full); @include glass.contrast-frame(var(--_qds-glass-surface-ink, var(--_qds-glass-control-edge))); }
   #{$glass} .q-toolbar.qds-glass-bar .q-btn:focus-visible { outline-offset: -3px; }
   #{$glass} .q-toolbar__title { padding-inline: 0; font-weight: var(--qds-font-weight-bold); letter-spacing: -0.01em; }
-  #{$glass} .q-bar { color: var(--_qds-glass-bar-ink, var(--qds-fg-default)); border-radius: var(--qds-radius-control); @include glass.material; @include glass.contrast-frame(var(--_qds-glass-bar-ink, var(--_qds-glass-control-edge))); }
-  @each $role in primary, secondary, accent, positive, negative, warning, info {
-    #{$glass} :is(.q-header, .q-footer, .q-toolbar, .q-bar).bg-#{$role} { --_qds-glass-bar-ink: var(--qds-text-on-#{$role}); }
-  }
-  #{$glass} :is(.q-toolbar.qds-glass-bar, .q-bar):not([class*='bg-']) { --_qds-glass-bar-ink: initial; }
+  #{$glass} .q-bar { color: var(--_qds-glass-surface-ink, var(--qds-fg-default)); border-radius: var(--qds-radius-control); @include glass.material; @include glass.contrast-frame(var(--_qds-glass-surface-ink, var(--_qds-glass-control-edge))); }
   #{$glass} .q-separator { background: var(--qds-border-subtle); }
 
 

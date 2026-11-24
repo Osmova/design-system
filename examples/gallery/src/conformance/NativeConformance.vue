@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QFab, QFabAction, QIcon, QInnerLoading, QInput, QItem, QItemSection, QLinearProgress, QList, QMenu, QPopupEdit, QPopupProxy, QRadio, QRange, QRating, QSelect, QSlider, QSeparator, QToggle, QTooltip, QUploader } from 'quasar'
+import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBar, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QFab, QFabAction, QFile, QIcon, QInnerLoading, QInput, QItem, QItemLabel, QItemSection, QLinearProgress, QList, QMenu, QPopupEdit, QPopupProxy, QPagination, QRadio, QRouteTab, QRange, QRating, QSelect, QSlider, QSeparator, QTab, QTabs, QToggle, QToolbar, QToolbarTitle, QTooltip, QUploader } from 'quasar'
 import { QdsWindow, type QdsWindowInstance } from '@osmova/quasar-design-system/qwindow'
 import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/quasar-design-system'
 import { ppPlus, ppStar } from 'quasar-extras-svg-icons/phosphor-icons-v2'
@@ -53,6 +53,16 @@ const editor = ref('<p><a href="https://example.org">Native link</a> and <strong
 const events = ref('Ready')
 const dismissals: Array<() => void> = []
 const roles = ['primary', 'secondary', 'accent', 'positive', 'negative', 'warning', 'info']
+const glassFillProbe = new URLSearchParams(location.search).has('glass-fill')
+const fillSurfaces = [
+  ['block', 'div', ''],
+  ['header', 'header', 'q-header'],
+  ['footer', 'footer', 'q-footer'],
+  ['toolbar', QToolbar, ''],
+  ['capsule', QToolbar, 'qds-glass-bar'],
+  ['bar', QBar, ''],
+] as const
+const buttonDesigns = ['standard', 'flat', 'outline', 'unelevated', 'push', 'round', 'fab', 'fab-mini'] as const
 const glassSelectionProbe = new URLSearchParams(location.search).has('glass-selection')
 const image = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect width="32" height="32" fill="gray"/%3E%3C/svg%3E'
 
@@ -107,6 +117,65 @@ function loading() { $q.loading.show({ group: 'base', delay: 0, message: 'Base g
       <q-btn-group data-native="group"><q-btn no-caps label="One" /><q-btn no-caps label="Two"><q-badge floating label="99+" /></q-btn></q-btn-group>
       <q-btn-toggle v-model="selected" no-caps :options="[{ label: 'Account', value: 'account' }, { label: 'Password', value: 'password' }]" data-native="segments" />
       <q-fab v-model="fab" :icon="ppPlus" label="Create" no-caps data-native="fab"><q-fab-action :icon="ppPlus" label="Draft" /></q-fab>
+    </section>
+    <section v-if="glassFillProbe" data-fill-matrix>
+      <template v-for="role in [...roles, 'dark']" :key="role">
+        <component :is="component" v-for="[surface, component, classes] in fillSurfaces" :key="surface"
+          :class="[classes, `bg-${role}`]" :data-fill-probe="`${role}/${surface}`"
+          style="position: relative; z-index: 0; padding: 16px; display: block; height: auto">
+          <q-toolbar-title v-if="surface === 'toolbar' || surface === 'capsule'" data-probe-label>Tools</q-toolbar-title>
+          <div>
+            <q-btn v-for="design in buttonDesigns" :key="design" :data-probe="design" color="primary"
+              :flat="design === 'flat'" :outline="design === 'outline'" :push="design === 'push'"
+              :unelevated="design === 'unelevated'" :round="design === 'round'" :fab="design === 'fab'"
+              :fab-mini="design === 'fab-mini'" :icon="ppPlus" :aria-label="design" :label="design" />
+          </div>
+          <q-btn flat data-probe="plain flat" label="Flat" />
+          <q-btn unelevated data-probe="plain unelevated" label="Unelevated" />
+          <q-btn outline data-probe="plain outline" label="Outline" />
+          <q-btn push data-probe="plain push" label="Push" />
+          <q-btn data-probe="plain standard" label="Standard" />
+          <q-btn class="qds-tonal" color="primary" data-probe="tonal" label="Tonal" />
+          <q-btn-toggle v-for="tinted in [false, true]" :key="String(tinted)" :class="tinted ? `bg-${role}` : undefined"
+            model-value="selected" :options="[{ label: 'One', value: 'selected' }, { label: 'Two', value: 'other' }]"
+            :data-probe-group="tinted ? 'tinted segments' : 'segments'" />
+          <q-pagination v-for="design in ['standard', 'flat', 'outline', 'push', 'unelevated']" :key="design"
+            :model-value="2" :max="3" :flat="design === 'flat'" :outline="design === 'outline'"
+            :push="design === 'push'" :unelevated="design === 'unelevated'" direction-links boundary-links
+            :data-probe-group="`pagination ${design}`" />
+          <a href="#role-fill" data-probe="link" data-probe-label>Details</a>
+          <span role="button" tabindex="0" data-probe="native tabindex" data-probe-label>Action</span>
+          <q-item v-for="active in [false, true]" :key="String(active)" clickable :active="active" active-class="text-primary" :data-probe="active ? 'active row' : 'row'">
+            <q-item-section side><q-icon :name="ppPlus" /></q-item-section>
+            <q-item-section><q-item-label>Item</q-item-label><q-item-label caption>Caption</q-item-label></q-item-section>
+          </q-item>
+          <q-chip v-for="selected in [false, true]" :key="String(selected)" clickable removable :selected="selected" :data-probe="selected ? 'selected chip' : 'chip'">Chip</q-chip>
+          <q-chip clickable removable color="primary" data-probe="tonal chip">Tonal chip</q-chip>
+          <q-chip clickable removable color="primary" class="qds-solid" data-probe="solid chip">Solid chip</q-chip>
+          <template v-for="state in [true, false]" :key="String(state)">
+            <q-checkbox :model-value="state" :data-probe="`checkbox ${state}`" label="Checkbox" />
+            <q-radio :model-value="state" :val="true" :data-probe="`radio ${state}`" label="Radio" />
+            <q-toggle :model-value="state" :data-probe="`toggle ${state}`" label="Toggle" />
+          </template>
+          <q-input v-for="design in ['standard', 'outlined', 'filled', 'standout', 'borderless']" :key="design"
+            :outlined="design === 'outlined'" :filled="design === 'filled'" :standout="design === 'standout'"
+            :borderless="design === 'borderless'" :data-probe="`input ${design}`"
+            model-value="42" label="Name" hint="Hint" prefix="$" suffix="USD" />
+          <q-input outlined model-value="" label="Required" stack-label placeholder="Enter a name" error error-message="Name required" data-probe="error field" />
+          <q-select model-value="account" :options="['account', 'password']" outlined label="Section" data-probe="select" />
+          <q-file :model-value="null" filled label="File" data-probe="file" />
+          <q-tabs model-value="active" data-probe-group="nested tabs">
+            <q-route-tab name="active" href="#role-fill" label="Active route" /><q-tab name="inactive" label="Inactive" />
+          </q-tabs>
+        </component>
+        <q-tabs v-for="vertical in [false, true]" :key="String(vertical)" :vertical="vertical" model-value="active"
+          :class="`bg-${role}`" :data-fill-probe="`${role}/${vertical ? 'vertical' : 'horizontal'}`"
+          active-color="warning" indicator-color="info" :data-probe-group="vertical ? 'vertical tabs' : 'horizontal tabs'">
+          <q-tab name="active" :icon="ppPlus" aria-label="Active" />
+          <q-route-tab name="route" href="#role-fill" label="Route" :icon="ppPlus" />
+          <q-tab name="inactive" label="Inactive" />
+        </q-tabs>
+      </template>
     </section>
     <section v-if="glassSelectionProbe" data-selection-matrix aria-label="Glass selection matrix">
       <div v-for="role in roles" :key="role" :data-selection-role="role">

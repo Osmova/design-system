@@ -53,7 +53,11 @@ $shadcn: '.qds-variant-shadcn:is(.qds-ui, .qds-ui *)';
     border-radius: var(--qds-radius-sm);
   }
 
-  #{$glass} .q-pagination { --qds-pagination-active-bg: var(--_qds-glass-selection-fill); --qds-pagination-active-text: var(--_qds-glass-selection-label); }
+  #{$glass} .q-pagination { --qds-pagination-text: var(--_qds-glass-surface-ink); --qds-pagination-active-bg: var(--_qds-glass-role-selection, var(--_qds-glass-selection-fill)); --qds-pagination-active-text: var(--_qds-glass-surface-ink, var(--_qds-glass-selection-label)); }
+  #{$glass} .q-pagination .q-btn[aria-current='page'].q-btn--outline { --_qds-context-role-text: var(--_qds-glass-surface-ink); }
+  #{$glass} .q-pagination .q-btn[aria-current='page'].q-btn--outline:focus-visible { --_qds-focus-on-surface: var(--_qds-glass-highlight, var(--_qds-glass-surface-ink)); }
+  #{$glass} .q-pagination .q-btn[aria-current='page']:is(.q-btn--push, .q-btn--unelevated):focus-visible { --_qds-focus-on-surface: currentColor; outline-offset: -3px; }
+  #{$glass} .q-pagination .q-btn[aria-current='page']:is(.q-btn--flat, .q-btn--standard):focus-visible { --_qds-focus-on-surface: var(--_qds-glass-highlight-text, var(--qds-pagination-active-text)); outline-offset: -3px; }
   @media (prefers-contrast: more) {
     #{$glass} .q-pagination .q-btn[aria-current='page']:is(.q-btn--push, .q-btn--unelevated) { border-color: currentColor; }
   }
