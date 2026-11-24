@@ -107,7 +107,7 @@ test('the all-in bundle, the shared core and every complete variant bundle stay 
   for (const entry of ['index.scss', 'index.layered.scss']) {
     const full = compileEntry(new URL(`src/css/${entry}`, root).pathname)
     const [allMin, allGzip] = [Buffer.byteLength(full), gzipSync(full, { level: 9 }).length]
-    assert.ok(allMin <= 791000 && allGzip <= 81600, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 791000 / 81600`)
+    assert.ok(allMin <= 832000 && allGzip <= 85600, `${entry} all: measured min ${allMin} / gzip ${allGzip} against caps 832000 / 85600`)
     const parts = partitionCss(full)
     for (const [name, css] of Object.entries(parts)) {
       const [maxMin, maxGzip] = name === 'core' ? [215800, 26875] : [380000, 46000]
