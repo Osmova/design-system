@@ -39,7 +39,8 @@ const designs = ['standard', 'flat', 'outline', 'unelevated', 'push']
 const surfaceContainers = ['panel', 'toolbar', 'header', 'footer', 'bar', 'track', 'banner']
 // Author-owned chrome paint: Zen must neither recolor the ink nor cover the fill.
 const authorPaints = ['bg-grey-9 text-white', 'bg-black text-white', 'bg-grey-3 text-black']
-const authorShells = ['header', 'footer', 'header-transparent', 'card', 'card-transparent']
+// A clear shell is a transparent header or footer carrying only the author's ink.
+const authorShells = ['header', 'footer', 'header-transparent', 'card', 'card-transparent', 'header-clear', 'footer-clear']
 const actionRole = (index) => roles[(index + 1) % roles.length]
 
 // Chrome serializes a resolved color-mix() as `color(srgb r g b / a)` with 0..1
@@ -168,6 +169,14 @@ async function mount(browser, bodyClass) {
         h(QInput, { type: 'textarea', modelValue: 'Text', outlined: true, 'data-audit': 'field-textarea' }),
         h(QSelect, { options: ['Value'], modelValue: 'Value', borderless: true, 'data-audit': 'field-select' }),
         h('span', { 'data-audit': 'copy' }, 'Surface copy'),
+        h(QBanner, { class: `bg-${['positive', 'negative', 'warning', 'info'][barRoles.indexOf(role) % 4]}` }, () => h('div', { class: 'audit-grid' }, [
+          h('span', { 'data-audit': 'wash-copy' }, 'Nested wash'),
+          h(QBtn, { flat: true, label: 'Wash action', 'data-audit': 'wash-button' }),
+          h(QCheckbox, { modelValue: false, label: 'Wash check', 'data-audit': 'wash-check' }),
+          h(QInput, { modelValue: 'Value', label: 'Wash field', borderless: true, 'data-audit': 'field-wash' }),
+          h(QRating, { modelValue: 2, max: 3, icon: svg, 'data-audit': 'wash-rating' }),
+          h(QKnob, { modelValue: 40, showValue: true, size: '3rem', 'data-audit': 'wash-knob' }),
+        ])),
         h(QRating, { modelValue: 2, max: 3, icon: svg, 'data-audit': 'rating' }),
         h(QKnob, { modelValue: 40, showValue: true, size: '3rem', 'data-audit': 'knob' }),
         h(QSlider, { modelValue: 40, style: 'width:160px', 'data-audit': 'slider' }),
@@ -265,11 +274,12 @@ async function mount(browser, bodyClass) {
       ...barRoles.flatMap((role) => surfaceContainers.map((container) => roleControls(role, container))),
       ...authorPaints.flatMap((paint, index) => authorShells.map((shell) => {
         const id = `author-${shell}-${index}`
-        const [tag, transparent] = shell.split('-')
-        const toolbar = h(QToolbar, { class: transparent ? 'bg-transparent' : undefined }, () => [
+        const [tag, mode] = shell.split('-')
+        const toolbar = h(QToolbar, { class: mode === 'transparent' ? 'bg-transparent' : undefined }, () => [
           h(Quasar.QToolbarTitle, {}, () => 'Author title'), h(QBtn, { id: `${id}-action`, flat: true, label: 'Action' }),
         ])
-        return tag === 'card' ? h(QCard, { id, class: paint }, () => toolbar) : h(tag, { id, class: `q-${tag} ${paint}` }, [toolbar])
+        const shellPaint = mode === 'clear' ? `bg-transparent ${paint.split(' ')[1]}` : paint
+        return tag === 'card' ? h(QCard, { id, class: shellPaint }, () => toolbar) : h(tag, { id, class: `q-${tag} ${shellPaint}` }, [toolbar])
       })),
       h(QKnob, { id: 'knob', modelValue: 40, showValue: true, size: '3rem' }),
       destinations('list'),
@@ -335,12 +345,12 @@ async function mount(browser, bodyClass) {
       for (; node; node = node.parentElement) paints.unshift(getComputedStyle(node).backgroundColor)
       return paints
     }
-    // The paint under an outward ring, sampled mid-side; a side touching a neighbouring control is left out.
+    // The paint under an outward ring, sampled mid-side; a side touching a neighbouring control is left out, so callers require two.
     window.zenRing = (element) => {
       const style = getComputedStyle(element)
       const offset = parseFloat(style.outlineOffset)
       const width = parseFloat(style.outlineWidth)
-      if (offset + width <= 0) return [window.zenLayers(element)]
+      if (offset + width <= 0) return Array(4).fill(window.zenLayers(element))
       element.scrollIntoView({ block: 'center', inline: 'center' })
       const box = element.getBoundingClientRect()
       const reach = offset + width / 2
@@ -673,7 +683,8 @@ async function verifyRoleControls(page, scheme, edges = false, { scope = '[data-
         const family = node.closest('[data-family]')?.dataset.family
         const name = `${prefix}/${fixture.dataset.audit ?? family + '/' + node.textContent.trim()}`
         const field = node.matches('.q-field')
-        const kind = field ? 'field' : ['copy', 'rating', 'knob', 'slider'].find((audit) => audit === fixture.dataset.audit) ?? 'control'
+        const kind = field ? 'field' : fixture.dataset.audit?.endsWith('copy') ? 'copy'
+          : ['rating', 'knob', 'slider'].find((audit) => fixture.dataset.audit?.endsWith(audit)) ?? 'control'
         const target = field ? node.querySelector('input, textarea, .q-select__focus-target')
           : kind === 'rating' ? node.querySelector('.q-rating__icon-container[tabindex="0"]') : node
         const anchor = field ? node.querySelector('.q-field__control') : node
@@ -736,7 +747,7 @@ async function verifyRoleControls(page, scheme, edges = false, { scope = '[data-
         const focus = getComputedStyle(focusTarget)
         const sides = window.zenRing(focusTarget)
         add('keyboard focus', focus.outlineColor, null, 3,
-          target.matches(':focus-visible') && sides.length > 0 && parseFloat(focus.outlineWidth) >= 1 && focus.outlineStyle === 'solid'
+          target.matches(':focus-visible') && sides.length >= 2 && parseFloat(focus.outlineWidth) >= 1 && focus.outlineStyle === 'solid'
             && (kind !== 'slider' || focusTarget.matches('.q-slider--focus')), 1, { sides })
         const action = node.querySelector('.q-chip__icon--remove, .q-field__focusable-action[tabindex]')
         if (action) {
@@ -841,7 +852,7 @@ async function verifyControlPerimeters(page, scheme) {
 
 async function ringContrast(locator, ink) {
   const sides = await locator.evaluate((element) => window.zenRing(element))
-  assert.ok(sides.length, 'the ring must stay visible on at least one side')
+  assert.ok(sides.length >= 2, 'the ring must stay visible on at least two sides')
   return Math.min(...sides.map((stack) => paintContrast(ink, stack.map(rgb).reduce((behind, face) => mix(face, behind, face[3]), [255, 255, 255]).slice(0, 3))))
 }
 
@@ -875,17 +886,19 @@ async function verifyKeyboardParts(page, scheme, edges = true) {
   }
 }
 
-async function verifyAuthorChrome(page, scheme) {
+async function verifyAuthorChrome(page, scheme, reducedTransparency = false) {
   for (const index of authorPaints.keys()) {
     for (const shell of authorShells) {
       const id = `#author-${shell}-${index}`
-      const author = await read(page, id, ['color'])
+      const author = await read(page, id, ['color', 'background-color'])
+      const clear = shell.endsWith('-clear')
+      // Without a fill the author owns the ink over whatever sits behind; reduced transparency hands both to Zen.
+      if (clear && reducedTransparency) opaque(author['background-color'], `${scheme} ${id}`)
       for (const selector of [`${id} .q-toolbar__title`, `${id}-action`]) {
         const { color } = await read(page, selector, ['color'])
-        record(scheme, `${selector} author chrome text`, paintContrast(color, await surface(page, selector)), 4.5)
-        if (shell === 'card') continue
-        assert.deepEqual(rgb(color), rgb(author.color), `${scheme} ${selector} keeps the author ink`)
-        assert.deepEqual(await surface(page, selector), await surface(page, id), `${scheme} ${selector} keeps the author paint`)
+        if (!clear || reducedTransparency) record(scheme, `${selector} author chrome text`, paintContrast(color, await surface(page, selector)), 4.5)
+        assert.deepEqual(rgb(color), rgb(author.color), `${scheme} ${selector} keeps the chrome ink`)
+        if (!clear) assert.deepEqual(await surface(page, selector), await surface(page, id), `${scheme} ${selector} keeps the author paint`)
       }
     }
   }
@@ -956,7 +969,7 @@ try {
         assert.equal(material['backdrop-filter'], 'none')
       }
       await verifyChrome(page, `${scheme} reduced transparency`, false, false, true)
-      await verifyAuthorChrome(page, `${scheme} reduced transparency`)
+      await verifyAuthorChrome(page, `${scheme} reduced transparency`, true)
       for (const id of ['transparent-toolbar', 'transparent-header', 'transparent-header-toolbar', 'transparent-dark-bar',
         ...barRoles.flatMap((role) => [`nested-header-transparent-toolbar-${role}`, `nested-footer-transparent-toolbar-${role}`])]) {
         const selector = `#${id}`

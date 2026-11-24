@@ -285,6 +285,9 @@ test('Zen routes only native color, focus and transparent chrome overrides throu
     } else if (declaration.startsWith('outline:')) {
       assert.match(path, /\.q-field__focusable-action:focus-visible$/)
       assert.match(declaration, /^outline:var\(--qds-focus-ring-width\) solid currentColor\s*!important/i)
+    } else if (/prefers-reduced-transparency/.test(path)) {
+      assert.match(path, /\.bg-transparent/)
+      assert.match(declaration, /^color:var\(--_qds-zen-surface-ink, ?var\(--qds-fg-default\)\)\s*!important/)
     } else if (/^color:#fff\s*!important/i.test(declaration)) {
       assert.equal(path, `${zenSelector} .q-chip.bg-dark`)
     } else {
