@@ -92,6 +92,9 @@ class NextReceiverTests(unittest.TestCase):
             with self.subTest(identity=files["release.json"]):
                 self.reject(files)
 
+    def test_renamed_repository_is_accepted(self):
+        self.receive(fixture(repository="Osmova/design-system"))
+
     def test_bad_checksum_and_unlisted_entries(self):
         files = fixture()
         files["index.html"] = b"tampered"
