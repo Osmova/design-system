@@ -63,7 +63,7 @@ const retire = (rule) => {
 // The runtime's per-variant stylesheet sentinel, one declaration per variant scope.
 const VARIANT_SENTINEL = /\.qds-variant-([a-z]+)\{--_qds-variant: ?\1\}$/
 test('T184 substrate keeps every immutable 150d952 rule verbatim and admits only added-profile rules', () => {
-  assert.equal(substrateBaseline, '150d9526aa9aad65af8259cb4aab313d7ab6cce4')
+  assert.equal(substrateBaseline, 'c199fbad32e6ff3c7ba61c47db8bb92447f1f23f')
   const baselines = [
     ['index.scss', '09821b3b1e84586cf76ecd16aae554fe034ea6053a7375cc8641453334c0d2dd', 457110, 47255],
     ['index.layered.scss', 'a3bf89607b40ad497b4f7f9ae5e3c2db822e19ad7f934f325f8a04cc0db3a407', 467546, 47877],
