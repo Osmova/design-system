@@ -23,8 +23,8 @@ $glass: '.qds-variant-glass:is(.qds-ui,.qds-ui *)';
     padding: var(--qds-chip-padding);
     color: var(--qds-fg-default);
     background: var(--qds-control-fill-default);
-    border: var(--qds-border-width-control) solid;
-    @include materials.elevation-border;
+    // A pill's side edges are its whole end caps: per-side elevation colours would meet on the arc in hard seams.
+    border: var(--qds-border-width-control) solid color-mix(in srgb, var(--qds-control-stroke-top), var(--qds-control-stroke-bottom));
     border-radius: var(--qds-chip-radius);
     font-weight: var(--qds-font-weight-medium);
     letter-spacing: var(--qds-control-letter-spacing);

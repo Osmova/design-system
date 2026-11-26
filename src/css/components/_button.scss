@@ -252,6 +252,9 @@ $role-texts: ();
     @include materials.elevation-border($top: var(--qds-control-stroke-on-accent-top), $side: var(--qds-control-stroke-on-accent-top), $bottom: var(--qds-control-stroke-on-accent-bottom));
   }
 
+  // Pills and circles take the side stroke all round: per-side elevation colours would meet on the arc in hard seams.
+  .qds-ui [class*=q-btn--round] { --qds-control-stroke-top: var(--qds-control-stroke-default); --qds-control-stroke-bottom: var(--qds-control-stroke-top); --qds-control-stroke-on-accent-bottom: var(--qds-control-stroke-on-accent-top); }
+
   // Term role fills carry a rule in their on-fill ink so amber keys stay bounded on cream.
   .qds-ui .qds-variant-term .q-btn:is(#{$accent-fills}):not(.qds-tonal, .disabled),
   .qds-ui.qds-variant-term .q-btn:is(#{$accent-fills}):not(.qds-tonal, .disabled) { border-color: var(--qds-button-on-fill); }

@@ -25,13 +25,14 @@ const BASELINE = '750a603ef16298337599a52ae92ce7858196d4cc'
  */
 // 0.10.1 allowance (owner review 2026-11-20): lines 5030->5120, core 210000/26000->215200/26800, all 705000/71000->716200/72050 (owner 2026-11-23).
 // 0.11 Osmova variant (owner 2026-11-23): lines 5120->5180, all 716200/72050->745000/76650.
+// 0.10.2 (owner OK to ship the pill-seam patch 2026-11-25): core 215200/26800->215400/26850, all min 716200->716400. Carried onto 0.11: core 215800/26875->216000/26925, all min 832000->832200.
 const LIMITS = { important: 54, doubled: 0, lines: 5590 }
 // Opt-in delivery: ./css is the shared grammar plus the unscoped win default; each variant file is that grammar plus the one variant.
 const ENTRIES = ['src/css/index.scss', 'src/css/index.layered.scss']
-const CORE_CAP = { min: 215800, gzip: 26875 }
+const CORE_CAP = { min: 216000, gzip: 26925 }
 const VARIANT_CAP = { min: 380000, gzip: 46000 }
 // css/all and css/all/layered (every variant, for runtime switching); 701858 / 70022 with every 0.10.0 rework.
-const ALL_CAP = { min: 832000, gzip: 85600 }
+const ALL_CAP = { min: 832200, gzip: 85600 }
 const EXTENSION_ALLOWANCE = { lines: 80, min: 5632, gzip: 1024 }
 const failures = []
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })

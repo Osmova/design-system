@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.10.2] — 2026-11-25
+
+### Fixed
+
+- **Win pill edges.** Chips and rounded/round buttons draw one stroke instead of per-side elevation colours, which met on the end-cap arcs in visible seams. Rectangular buttons keep the WinUI top/bottom edge; other variants are unchanged.
+
 ## [0.10.1] — 2026-11-23
 
 ### Changed

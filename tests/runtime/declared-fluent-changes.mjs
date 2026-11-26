@@ -94,6 +94,11 @@ const ALPHA_BEFORE = '.qds-ui .q-color-picker__alpha .q-slider__track{background
 const SHADCN_HEADER_INPUT = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) .q-color-picker__header input{font:inherit;color:var(--qds-fg-default);background:var(--qds-control-fill-default);border:var(--qds-border-width-control) solid var(--qds-control-stroke-strong);border-radius:var(--qds-radius-sm)}'
 const SHADCN_HEADER_INPUT_FOCUS = '.qds-variant-shadcn:is(.qds-ui,.qds-ui *) .q-color-picker__header input:focus-visible{outline:var(--qds-focus-ring-width) solid var(--qds-stroke-focus)}'
 
+// F06: pills draw one stroke, since per-side elevation colours meet on a full radius in hard seams.
+const CHIP_EDGE = ['border:var(--qds-border-width-control) solid;border-color:var(--qds-control-stroke-top) var(--qds-control-stroke-default) var(--qds-control-stroke-bottom);', 'border:var(--qds-border-width-control) solid color-mix(in srgb, var(--qds-control-stroke-top), var(--qds-control-stroke-bottom));']
+const ACCENT_EDGE = '{border-color:var(--qds-control-stroke-on-accent-top) var(--qds-control-stroke-on-accent-top) var(--qds-control-stroke-on-accent-bottom)}'
+const PILL_BUTTON_EDGE = '.qds-ui [class*=q-btn--round]{--qds-control-stroke-top: var(--qds-control-stroke-default);--qds-control-stroke-bottom: var(--qds-control-stroke-top);--qds-control-stroke-on-accent-bottom: var(--qds-control-stroke-on-accent-top)}'
+
 export function applyDeclaredFixes(rules) {
   const out = []
   for (const rule of rules) {
@@ -108,6 +113,15 @@ export function applyDeclaredFixes(rules) {
     }
     if (/(?:^|\|)\.qds-ui \.q-btn:focus-visible\{outline:var\(--qds-focus-ring-width\) solid var\(--qds-stroke-focus\) !important(?:;outline-offset:var\(--qds-focus-ring-offset\))?\}$/.test(rule)) {
       out.push(rule.replace('solid var(--qds-stroke-focus)', 'solid var(--_qds-focus-on-surface, var(--qds-stroke-focus))'))
+      continue
+    }
+    if (/(?:^|\|)\.qds-ui \.q-chip\{/.test(rule) && rule.includes(CHIP_EDGE[0])) {
+      out.push(rule.replace(CHIP_EDGE[0], CHIP_EDGE[1]))
+      continue
+    }
+    if (rule.endsWith(ACCENT_EDGE) && rule.includes('.q-btn:is(.bg-primary')) {
+      out.push(rule)
+      out.push(`${head}${PILL_BUTTON_EDGE}`)
       continue
     }
     // The mobile select dialog trades Quasar's 90vw for even space-lg gutters.
