@@ -7,7 +7,7 @@ import { compileString } from 'sass'
 import { compileEntry, partitionCss } from './css-partition.mjs'
 
 const ROOT = new URL('../', import.meta.url)
-const BASELINE = '71bb9d52bf483a93de0b50202df122b73f70ed9e'
+const BASELINE = '750a603ef16298337599a52ae92ce7858196d4cc'
 /**
  * Full-catalog allocation, reviewed 2026-10-16 (T193 Zen pilot). NOT an auto-ratchet:
  * sized once for the whole planned variant catalog so each new variant does not trigger its
