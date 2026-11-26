@@ -90,7 +90,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/develop' && github.repository_owner == 'Osmova'
+    if: github.ref == 'refs/heads/develop' && github.repository_owner == 'Osmova' && vars.DEPLOY_NEXT_SSH_HOST != ''
     runs-on: ubuntu-latest
     environment: preview
     env:
