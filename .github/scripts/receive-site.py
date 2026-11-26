@@ -26,6 +26,7 @@ MEMBER_LIMIT = 10000
 SITE_BYTE_LIMIT = 256 * 1024 * 1024
 SITE_ENTRY_LIMIT = 10000
 REPOSITORY = "Osmova/quasar-design-system"
+REPOSITORIES = {REPOSITORY, "Osmova/design-system"}
 REQUIRED = {"index.html", "histoire/index.html", "storybook/index.html", "conformance.html", "conformance-layered.html"}
 
 
@@ -133,7 +134,7 @@ def validate(stage, files, sha, run_id):
             if hashlib.file_digest(source, "sha256").hexdigest() != digest:
                 raise ValueError("Checksum mismatch")
     release = json.loads((stage / "release.json").read_text(encoding="utf-8"))
-    if release != {"sha": sha, "run_id": run_id, "repository": REPOSITORY}:
+    if release not in [{"sha": sha, "run_id": run_id, "repository": name} for name in REPOSITORIES]:
         raise ValueError("Release identity mismatch")
 
 
