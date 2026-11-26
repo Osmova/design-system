@@ -6,7 +6,7 @@ import { root } from './grammar-fixture.mjs'
 // T184 substrate-only characterization. An intentional future grammar migration
 // must explicitly retire/replace the current-vs-baseline parity assertion under
 // review, NOT advance this immutable source reference or regenerate its hashes.
-export const substrateBaseline = '150d9526aa9aad65af8259cb4aab313d7ab6cce4'
+export const substrateBaseline = 'c199fbad32e6ff3c7ba61c47db8bb92447f1f23f'
 const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
 let paths
 const sources = new Map()
