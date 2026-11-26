@@ -3,7 +3,7 @@ name: v1 Preview
 # v1 alpha preview under /next/; never touches the stable site, its receiver or its secrets.
 on:
   push:
-    branches: [v1/main]
+    branches: [develop]
   workflow_dispatch:
 
 permissions:
@@ -90,7 +90,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/v1/main' && github.repository_owner == 'Osmova'
+    if: github.ref == 'refs/heads/develop' && github.repository_owner == 'Osmova'
     runs-on: ubuntu-latest
     environment: preview
     env:
@@ -103,7 +103,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(gh api "repos/$GH_REPO/git/ref/heads/v1/main" --jq .object.sha)" = "$RELEASE_SHA"
+          test "$(gh api "repos/$GH_REPO/git/ref/heads/develop" --jq .object.sha)" = "$RELEASE_SHA"
 
       - name: Download verified preview site
         uses: actions/download-artifact@v4
@@ -135,7 +135,7 @@ jobs:
           unset DEPLOY_NEXT_SSH_PRIVATE_KEY DEPLOY_NEXT_SSH_KNOWN_HOSTS
           tar -C site-next -czf "$SSH_DIR/site.tar.gz" .
           # Check again immediately before sending bytes (not just before download).
-          test "$(gh api "repos/$GH_REPO/git/ref/heads/v1/main" --jq .object.sha)" = "$RELEASE_SHA"
+          test "$(gh api "repos/$GH_REPO/git/ref/heads/develop" --jq .object.sha)" = "$RELEASE_SHA"
           ssh -F /dev/null -T -i "$SSH_DIR/key" -p "$DEPLOY_NEXT_SSH_PORT" \
             -o BatchMode=yes -o StrictHostKeyChecking=yes -o IdentitiesOnly=yes \
             -o UserKnownHostsFile="$SSH_DIR/known_hosts" -o ConnectTimeout=20 \
