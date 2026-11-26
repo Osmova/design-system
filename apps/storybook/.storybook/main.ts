@@ -39,7 +39,7 @@ const config: StorybookConfig = {
       },
       optimizeDeps: {
         ...config.optimizeDeps,
-        exclude: [...(config.optimizeDeps?.exclude ?? []), '@osmova/ds-quasar'],
+        exclude: [...(config.optimizeDeps?.exclude ?? []), '@osmova/quasar-design-system'],
       },
       build: { ...config.build, chunkSizeWarningLimit: 4096 },
       server: {

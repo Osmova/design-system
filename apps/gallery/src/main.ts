@@ -9,16 +9,16 @@ import './fonts/plus-jakarta-sans.css'
 import './gallery.css'
 
 // 4. Optional design-system fonts (drive --ods-font-family* faces).
-import '@osmova/ds-quasar/fonts/default.css'
-import '@osmova/ds-quasar/fonts/open-sans.css'
-import '@osmova/ds-quasar/fonts/selawik.css'
-import '@osmova/ds-quasar/fonts/zen.css'
-import '@osmova/ds-quasar/fonts/ink.css'
+import '@osmova/quasar-design-system/fonts/default.css'
+import '@osmova/quasar-design-system/fonts/open-sans.css'
+import '@osmova/quasar-design-system/fonts/selawik.css'
+import '@osmova/quasar-design-system/fonts/zen.css'
+import '@osmova/quasar-design-system/fonts/ink.css'
 
 import {
   configureDesignSystem,
   odsIconSet,
-} from '@osmova/ds-quasar'
+} from '@osmova/quasar-design-system'
 
 import App from './App.vue'
 import { parseGalleryHash } from './gallery-url'

@@ -473,7 +473,7 @@ function warnIfVariantCssMissing(target: HTMLElement, variant: string): void {
   try {
     if (getComputedStyle(target).getPropertyValue('--_ods-variant').trim() !== variant) {
       const file = variant === 'win' ? 'css' : `css/variants/${variant}`
-      console.warn(`[osmova-design-system] The "${variant}" variant is active but its stylesheet is not loaded. Import '@osmova/ds-quasar/${file}' (or css/all) before applying it.`)
+      console.warn(`[osmova-design-system] The "${variant}" variant is active but its stylesheet is not loaded. Import '@osmova/quasar-design-system/${file}' (or css/all) before applying it.`)
     }
   } catch {
     // Diagnostics must never break theming.

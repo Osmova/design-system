@@ -1,4 +1,4 @@
-import { DESIGN_SYSTEM_VARIANTS, type DesignSystemVariantName } from '@osmova/ds-quasar'
+import { DESIGN_SYSTEM_VARIANTS, type DesignSystemVariantName } from '@osmova/quasar-design-system'
 
 const tabs = ['tokens', 'typography', 'compare', 'components', 'forms', 'apps', 'catalog', 'variants', 'scenes', 'plugins', 'window', 'icons', 'fonts'] as const
 export type GalleryTab = typeof tabs[number]

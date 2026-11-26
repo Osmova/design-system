@@ -4,9 +4,9 @@ import {
   createDesignSystemController, configureDesignSystem, DEFAULT_DESIGN_SYSTEM_OPTIONS,
   DESIGN_SYSTEM_VARIANTS, SHADCN_ACCENT_COLORS, SHADCN_BASE_COLORS, isShadcnBaseColor, isBuiltInDesignSystemVariantName,
   INK_COLORS, isInkColor,
-} from '@osmova/ds-quasar'
-import { createDesignSystemController as runtimeExport } from '@osmova/ds-quasar/runtime'
-import { SHADCN_BASE_COLORS as themesExport, INK_COLORS as inkThemesExport } from '@osmova/ds-quasar/themes'
+} from '@osmova/quasar-design-system'
+import { createDesignSystemController as runtimeExport } from '@osmova/quasar-design-system/runtime'
+import { SHADCN_BASE_COLORS as themesExport, INK_COLORS as inkThemesExport } from '@osmova/quasar-design-system/themes'
 
 const storageKey = DEFAULT_DESIGN_SYSTEM_OPTIONS.storageKey
 const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window')

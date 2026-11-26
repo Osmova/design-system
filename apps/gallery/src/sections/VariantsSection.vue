@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { useDesignSystem } from '@osmova/ds-quasar'
+import { useDesignSystem } from '@osmova/quasar-design-system'
 import ShadcnPalettePanels from '../components/ShadcnPalettePanels.vue'
 
 type VariantName = 'win' | 'ink' | 'one' | 'term' | 'shadcn' | 'zen' | 'glass' | 'default'

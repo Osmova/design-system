@@ -25,7 +25,7 @@ const meta = {
           '',
           '**Variant `glass`** — a system-first stack (SF Pro on Apple devices) plus one free SF-like fallback: **Inter**,',
           'chosen over Geist because its text-size metrics (x-height, apertures) track SF Pro Text closest, it is the most',
-          'battle-tested at UI sizes, and it already ships as `@osmova/ds-quasar/fonts/inter.css` — glass would add no new',
+          'battle-tested at UI sizes, and it already ships as `@osmova/quasar-design-system/fonts/inter.css` — glass would add no new',
           'consumer font file. Geist is OFL too, but more geometric/display-flavoured at text sizes.',
           '',
           'Every panel renders the display heading, title, body, label, numbers and French accents',

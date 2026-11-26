@@ -2,7 +2,7 @@ ODS Storybook (private catalog workspace)
 =========================================
 
 Development-only Storybook 10 catalog for the design system. Not shipped with
-`@osmova/ds-quasar`; its dependencies live in this workspace only.
+`@osmova/quasar-design-system`; its dependencies live in this workspace only.
 
 Commands (from this directory, or the root `pnpm stories:sb` / `pnpm stories:sb:build`):
 

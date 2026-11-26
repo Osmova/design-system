@@ -6,7 +6,7 @@ Design tokens, framework skins and a runtime theme controller with light/dark/sy
 
 | Path | Content |
 |---|---|
-| [`packages/quasar`](packages/quasar/README.md) | `@osmova/ds-quasar`, the Quasar 2 package |
+| [`packages/quasar`](packages/quasar/README.md) | `@osmova/quasar-design-system`, the Quasar 2 package |
 | `apps/gallery` | Quasar gallery and Playwright visual gate (private) |
 | `apps/storybook` | Storybook catalog (private) |
 | `examples/shadcn-reference` | pinned upstream shadcn-vue reference (private) |

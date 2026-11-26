@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
 import type { QInput } from 'quasar'
-import { useDesignSystem } from '@osmova/ds-quasar'
+import { useDesignSystem } from '@osmova/quasar-design-system'
 import {
   PhAt,
   PhBookOpen,

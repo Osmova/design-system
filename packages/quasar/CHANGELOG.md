@@ -11,9 +11,8 @@ the rename map applied.
 
 ### Changed
 
-- **Package renamed (breaking)** — `@osmova/quasar-design-system` is now `@osmova/ds-quasar`, published from
-  `packages/quasar` in the `Osmova/design-system` repository. Import paths keep their subpaths
-  (`@osmova/ds-quasar/css`, `/css/variants/<name>`, `/quasar-variables`, `/fonts/*`, …).
+- **New home** — the package keeps its name and is now published from `packages/quasar` in the
+  `Osmova/design-system` repository. 0.x stays maintained on `master`.
 - **`qds` prefix renamed to `ods` (breaking)** — every public name, driven by `scripts/rename-map.json`:
   - custom properties `--qds-*` → `--ods-*` (private `--_qds-*` → `--_ods-*`);
   - classes `.qds-*` → `.ods-*`, including `ods-ui`, `ods-variant-*`, `ods-theme-*`, `ods-tonal`, `ods-solid`,

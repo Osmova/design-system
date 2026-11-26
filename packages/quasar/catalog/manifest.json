@@ -9,7 +9,7 @@
     "inventoryRule": "The native inventory is machine-generated from the installed Quasar source; the case list is separate from the export list."
   },
   "runtime": {
-    "package": "@osmova/ds-quasar",
+    "package": "@osmova/quasar-design-system",
     "controllerEntryRule": "The preview controller is configured from the compiled package entrypoint (dist) by each host's setup file and injected once per preview document/app.",
     "injection": {
       "key": "DESIGN_SYSTEM_THEME_KEY",

@@ -22,4 +22,4 @@ export const Overview = showcase(OverviewShowcase, 'A compact overview of neutra
 export const Tokens = showcase(TokensSection, 'Role colours, surfaces, text, borders and the other semantic tokens.')
 export const Typography = showcase(TypographySection, 'The type ramp from display to caption.')
 export const Icons = showcase(IconsSection, 'Phosphor icon set wired into Quasar through `odsIconSet`.')
-export const Fonts = showcase(FontsSection, 'Optional font faces shipped under `@osmova/ds-quasar/fonts/*`.')
+export const Fonts = showcase(FontsSection, 'Optional font faces shipped under `@osmova/quasar-design-system/fonts/*`.')

@@ -11,7 +11,7 @@
     "test:smoke": "playwright test --config playwright.smoke.config.ts"
   },
   "dependencies": {
-    "@osmova/ds-quasar": "workspace:*",
+    "@osmova/quasar-design-system": "workspace:*",
     "@phosphor-icons/vue": "^2.2.1",
     "@quasar/quasar-ui-qwindow": "^3.0.2",
     "quasar": "^2.35.0",

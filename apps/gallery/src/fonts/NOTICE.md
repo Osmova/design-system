@@ -1,6 +1,6 @@
 # Gallery Font Notice
 
-These files belong to the example gallery, not to the published `@osmova/ds-quasar`
+These files belong to the example gallery, not to the published `@osmova/quasar-design-system`
 package. They are excluded from the npm tarball.
 
 - **Plus Jakarta Sans** — Copyright 2020 The Plus Jakarta Sans Project Authors

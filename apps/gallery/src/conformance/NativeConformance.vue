@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useQuasar, ClosePopup as vClosePopup, QAjaxBar, QAvatar, QBadge, QBanner, QBreadcrumbs, QBreadcrumbsEl, QBtn, QBtnDropdown, QBtnGroup, QBtnToggle, QCard, QCardActions, QCardSection, QCheckbox, QChip, QCircularProgress, QDialog, QEditor, QFab, QFabAction, QIcon, QInnerLoading, QInput, QItem, QItemSection, QLinearProgress, QList, QMenu, QPopupEdit, QPopupProxy, QRating, QSelect, QSeparator, QTooltip, QUploader } from 'quasar'
-import { OdsWindow, type OdsWindowInstance } from '@osmova/ds-quasar/qwindow'
-import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/ds-quasar'
+import { OdsWindow, type OdsWindowInstance } from '@osmova/quasar-design-system/qwindow'
+import { SHADCN_BASE_COLORS, useDesignSystem, type DesignSystemController } from '@osmova/quasar-design-system'
 import { ppPlus, ppStar } from 'quasar-extras-svg-icons/phosphor-icons-v2'
 import NativeScheme from './NativeScheme.vue'
 import NativeStates from './NativeStates.vue'

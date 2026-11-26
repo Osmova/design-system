@@ -1,12 +1,7 @@
 {
   "from": "@osmova/quasar-design-system@0.10.0",
-  "to": "@osmova/ds-quasar@1.0.0-alpha.0",
+  "to": "@osmova/quasar-design-system@1.0.0-alpha.0",
   "rules": [
-    {
-      "kind": "package",
-      "find": "@osmova/quasar-design-system",
-      "replace": "@osmova/ds-quasar"
-    },
     {
       "kind": "repository",
       "find": "github.com/Osmova/quasar-design-system",

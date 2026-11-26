@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Osmova Design System (1.0.0-alpha). `@osmova/ds-quasar` is an opinionated **visual layer** for Quasar 2. Microsoft Fluent 2 is the
+Osmova Design System (1.0.0-alpha). `@osmova/quasar-design-system` is an opinionated **visual layer** for Quasar 2. Microsoft Fluent 2 is the
 primary direction, now with tonal/acrylic defaults; the `ink` variant is a single-ink e-ink
 interface (charcoal, black or navy ink on flat paper, roles as fill patterns, one red for errors), and the `one` variant references Samsung One UI
 (neutral grey or true-black pages, rounded blocks, pill controls, a calm blue accent). It provides design tokens, surfaces, shape, motion, typography,
@@ -27,7 +27,7 @@ selectors. Anything that is not generic, reusable visual language does not belon
 
 ## Layout
 
-pnpm workspace: `packages/quasar` (the published `@osmova/ds-quasar`), `apps/gallery` (release gate),
+pnpm workspace: `packages/quasar` (the published `@osmova/quasar-design-system`), `apps/gallery` (release gate),
 `apps/storybook` (catalog), `examples/shadcn-reference`. Root scripts proxy to them; package paths below
 (`src/`, `tokens/`, `scripts/`, `tests/`) are relative to `packages/quasar`. Changesets run in `alpha` pre mode.
 `scripts/rename-map.json` is the 0.x → 1.0 `qds` → `ods` map (`pnpm rename:check` must report 0).
@@ -58,7 +58,7 @@ Validate visual work via `typecheck` + visual review in the gallery.
 ### Three styling layers (apply in this order of preference)
 
 1. **Quasar Sass variable overrides** — `src/quasar.variables.scss`. Consumed from the app's own
-   `quasar.variables.scss` via `@use '@osmova/ds-quasar/quasar-variables' as *`. Always
+   `quasar.variables.scss` via `@use '@osmova/quasar-design-system/quasar-variables' as *`. Always
    override a Quasar variable here *before* reaching for a direct component selector.
 2. **Design tokens as CSS custom properties** — `--ods-*` vars defined in `src/themes/default.scss`,
    sourced from DTCG JSON in `tokens/**/*.tokens.json` (primitives, light/dark semantics, one file per

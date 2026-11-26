@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { PhFileArrowUp, PhFolderOpen } from '@phosphor-icons/vue'
-import { useDesignSystem } from '@osmova/ds-quasar'
+import { useDesignSystem } from '@osmova/quasar-design-system'
 
 const ds = useDesignSystem()
 

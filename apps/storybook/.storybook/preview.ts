@@ -11,18 +11,18 @@ import {
   type DesignSystemMode,
   type InkColor,
   type ShadcnBaseColor,
-} from '@osmova/ds-quasar'
+} from '@osmova/quasar-design-system'
 import { ownPreviewController } from '../../../packages/quasar/catalog/preview/index'
 
 // Same consumer order as the gallery: native, design system, extension, then fonts and demo helpers.
 import '@gallery/adoption-default.scss'
 import '@gallery/fonts/plus-jakarta-sans.css'
 import '@gallery/gallery.css'
-import '@osmova/ds-quasar/fonts/default.css'
-import '@osmova/ds-quasar/fonts/open-sans.css'
-import '@osmova/ds-quasar/fonts/selawik.css'
-import '@osmova/ds-quasar/fonts/zen.css'
-import '@osmova/ds-quasar/fonts/ink.css'
+import '@osmova/quasar-design-system/fonts/default.css'
+import '@osmova/quasar-design-system/fonts/open-sans.css'
+import '@osmova/quasar-design-system/fonts/selawik.css'
+import '@osmova/quasar-design-system/fonts/zen.css'
+import '@osmova/quasar-design-system/fonts/ink.css'
 import '../demos/showcase.scss'
 
 export interface ThemeGlobals {

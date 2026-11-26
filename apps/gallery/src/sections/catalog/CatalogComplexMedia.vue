@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { useDesignSystem } from '@osmova/ds-quasar'
+import { useDesignSystem } from '@osmova/quasar-design-system'
 import {
   ppPlus,
   ppTrash,

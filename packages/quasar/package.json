@@ -1,5 +1,5 @@
 {
-  "name": "@osmova/ds-quasar",
+  "name": "@osmova/quasar-design-system",
   "version": "1.0.0-alpha.0",
   "description": "Osmova Design System for Quasar 2: tokens, Quasar skin and runtime theme controller.",
   "type": "module",

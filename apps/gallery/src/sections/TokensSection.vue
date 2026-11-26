@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ODS_TOKENS } from '@osmova/ds-quasar'
+import { ODS_TOKENS } from '@osmova/quasar-design-system'
 import TokenSwatch from '../components/TokenSwatch.vue'
 
 // Group the public --ods-* contract by visual category for the gallery.

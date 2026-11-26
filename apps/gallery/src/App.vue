@@ -26,7 +26,7 @@ import {
   type ShadcnBaseColor,
   type DesignSystemMode,
   type DesignSystemVariantName,
-} from '@osmova/ds-quasar'
+} from '@osmova/quasar-design-system'
 
 import TokensSection from './sections/TokensSection.vue'
 import TypographySection from './sections/TypographySection.vue'
