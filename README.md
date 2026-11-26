@@ -7,7 +7,7 @@ other moods.
 It is purely visual: no business logic, no extra components to learn.
 
 [Live gallery](https://qds.osmova.com/) · [Component catalog](https://qds.osmova.com/histoire/) ·
-[Guide](https://github.com/Osmova/quasar-design-system/blob/master/docs/guide.md)
+[Guide](https://github.com/Osmova/design-system/blob/master/docs/guide.md)
 
 ## Install
 
@@ -56,7 +56,7 @@ Each variant ships as its own stylesheet, so you only load the one you use. Impo
 import '@osmova/quasar-design-system/css/variants/zen'
 ```
 
-Switching variants at runtime is covered in the [guide](https://github.com/Osmova/quasar-design-system/blob/master/docs/guide.md#switching-variants-at-runtime).
+Switching variants at runtime is covered in the [guide](https://github.com/Osmova/design-system/blob/master/docs/guide.md#switching-variants-at-runtime).
 
 ## A few conventions
 
@@ -97,7 +97,7 @@ import { QdsWindow } from '@osmova/quasar-design-system/qwindow'
 
 ## Going further
 
-The [guide](https://github.com/Osmova/quasar-design-system/blob/master/docs/guide.md) covers CSS layers,
+The [guide](https://github.com/Osmova/design-system/blob/master/docs/guide.md) covers CSS layers,
 runtime variant switching, theming scope, rebranding, the shadcn and ink options, and known limitations.
 
 ## Development
